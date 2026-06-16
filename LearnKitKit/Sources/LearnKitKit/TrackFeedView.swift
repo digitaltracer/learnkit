@@ -35,32 +35,37 @@ struct TrackFeedView: View {
     }
 
     private var feed: some View {
-        // Size each page to the SAME measured area that the ScrollView pages over.
-        // Using containerRelativeFrame here instead would make pages the safe-area
-        // height while the paging stride uses the full height — leaving the next
-        // page's top (a difficulty badge) peeking into the bottom safe-area band.
+        // The paging ScrollView extends through the bottom safe-area inset to the
+        // screen edge and pages by that full distance. So each page must be
+        // (safe height + bottom inset) tall to match the stride exactly; sizing it
+        // to just the safe height leaves every page short by the inset, which shows
+        // the next page's top (a difficulty badge) in the bottom band.
         GeometryReader { proxy in
             ScrollView(.vertical) {
                 LazyVStack(spacing: 0) {
                     if let overview = track.overview {
-                        page(OverviewPage(track: track, overview: overview), size: proxy.size)
+                        page(OverviewPage(track: track, overview: overview), proxy: proxy)
                     }
                     ForEach(Array(lessons.enumerated()), id: \.element.id) { index, lesson in
-                        page(LessonPage(lesson: lesson, hasNext: index < lessons.count - 1), size: proxy.size)
+                        page(LessonPage(lesson: lesson, hasNext: index < lessons.count - 1), proxy: proxy)
                     }
                 }
                 .scrollTargetLayout()
             }
             .scrollTargetBehavior(.paging)
             .scrollIndicators(.hidden)
+            .ignoresSafeArea(edges: .bottom)
         }
     }
 
-    /// One feed page, framed to exactly the viewport so the paging stride and the
-    /// page height always match — and clipped as a backstop against inner overflow.
-    private func page(_ content: some View, size: CGSize) -> some View {
+    /// One feed page sized to exactly the ScrollView's paging stride: the content
+    /// fills the safe height, then a bottom pad equal to the home-indicator inset
+    /// extends the page to the screen edge — keeping the controls above the
+    /// indicator while making page height == stride so no neighbor can peek in.
+    private func page(_ content: some View, proxy: GeometryProxy) -> some View {
         content
-            .frame(width: size.width, height: size.height)
+            .frame(width: proxy.size.width, height: proxy.size.height)
+            .padding(.bottom, proxy.safeAreaInsets.bottom)
             .clipped()
     }
 }
