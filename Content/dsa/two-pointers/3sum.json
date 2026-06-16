@@ -18,7 +18,7 @@
       "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2] }
     },
     {
-      "caption": "Fix i on the first value. L and R hunt for two more that bring the total to 0. With i=-4 no pair works — move i on.",
+      "caption": "Fix i; L and R then seek two values that, with i, total 0 — here a pair summing to 4. But the two largest left, 1 and 2, make only 3. Move i on.",
       "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2], "pointers": [{ "label": "i", "index": 0 }, { "label": "L", "index": 1 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 0, "state": "compare" }] }
     },
     {
