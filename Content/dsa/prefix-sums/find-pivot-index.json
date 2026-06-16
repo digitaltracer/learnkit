@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "find-pivot-index",
+  "subject": "dsa",
+  "track": "prefix-sums",
+  "title": "Find Pivot Index",
+  "difficulty": "easy",
+  "summary": "Scan once, keeping a running left sum. The right sum is the total minus the left sum minus the current value; the pivot is where the two sides match.",
+  "problem": "Find the index where the sum of all values to its left equals the sum of all values to its right.",
+  "example": { "input": "[1, 7, 3, 6, 5, 6]", "output": "3" },
+  "steps": [
+    {
+      "caption": "Find the index where everything to its left sums to the same as everything to its right.",
+      "visual": { "type": "array", "cells": [1, 7, 3, 6, 5, 6] }
+    },
+    {
+      "caption": "The whole array sums to 28. As we scan, we split it into a left sum and a right sum.",
+      "visual": { "type": "array", "cells": [1, 7, 3, 6, 5, 6] }
+    },
+    {
+      "caption": "Index 0: left sum 0, right sum 27. Not equal.",
+      "visual": { "type": "array", "cells": [1, 7, 3, 6, 5, 6], "pointers": [{ "label": "i", "index": 0 }], "highlights": [{ "index": 0, "state": "active" }] }
+    },
+    {
+      "caption": "Index 1: left 1, right 20. No.",
+      "visual": { "type": "array", "cells": [1, 7, 3, 6, 5, 6], "pointers": [{ "label": "i", "index": 1 }], "highlights": [{ "index": 1, "state": "active" }] }
+    },
+    {
+      "caption": "Index 2: left 8 (1+7), right 17. No.",
+      "visual": { "type": "array", "cells": [1, 7, 3, 6, 5, 6], "pointers": [{ "label": "i", "index": 2 }], "highlights": [{ "index": 2, "state": "active" }] }
+    },
+    {
+      "caption": "Index 3: left 11 (1+7+3) equals right 11 (5+6). Pivot found!",
+      "visual": { "type": "array", "cells": [1, 7, 3, 6, 5, 6], "pointers": [{ "label": "i", "index": 3 }], "highlights": [{ "range": [0, 2], "state": "match" }, { "index": 3, "state": "done" }, { "range": [4, 5], "state": "match" }] }
+    }
+  ]
+}

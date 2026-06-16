@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "running-sum",
+  "subject": "dsa",
+  "track": "prefix-sums",
+  "title": "Running Sum",
+  "difficulty": "easy",
+  "summary": "Sweep left to right, adding each value to the total so far. Every cell becomes the sum of everything up to it — the prefix-sum array.",
+  "problem": "Return the running sum: each output cell is the sum of all input values up to and including that index.",
+  "example": { "input": "[3, 1, 2, 4]", "output": "[3, 4, 6, 10]" },
+  "steps": [
+    {
+      "caption": "Build the running sum: each cell becomes the total of everything up to and including it.",
+      "visual": { "type": "array", "cells": [3, 1, 2, 4] }
+    },
+    {
+      "caption": "Index 0 stays 3 — there's nothing before it.",
+      "visual": { "type": "array", "cells": [3, 1, 2, 4], "highlights": [{ "index": 0, "state": "done" }] }
+    },
+    {
+      "caption": "Index 1: add the running total. 1 + 3 = 4.",
+      "visual": { "type": "array", "cells": [3, 4, 2, 4], "highlights": [{ "index": 0, "state": "done" }, { "index": 1, "state": "active" }] }
+    },
+    {
+      "caption": "Index 2: 2 + 4 = 6.",
+      "visual": { "type": "array", "cells": [3, 4, 6, 4], "highlights": [{ "range": [0, 1], "state": "done" }, { "index": 2, "state": "active" }] }
+    },
+    {
+      "caption": "Index 3: 4 + 6 = 10.",
+      "visual": { "type": "array", "cells": [3, 4, 6, 10], "highlights": [{ "range": [0, 2], "state": "done" }, { "index": 3, "state": "active" }] }
+    },
+    {
+      "caption": "Running sum: [3, 4, 6, 10]. Each cell now holds a prefix total.",
+      "visual": { "type": "array", "cells": [3, 4, 6, 10], "highlights": [{ "range": [0, 3], "state": "done" }] }
+    }
+  ]
+}

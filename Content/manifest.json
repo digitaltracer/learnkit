@@ -92,6 +92,27 @@
             { "id": "selection-sort", "title": "Selection Sort", "difficulty": "easy", "file": "dsa/sorting/selection-sort.json" },
             { "id": "insertion-sort", "title": "Insertion Sort", "difficulty": "medium", "file": "dsa/sorting/insertion-sort.json" }
           ]
+        },
+        {
+          "id": "prefix-sums",
+          "title": "Prefix Sums",
+          "icon": "sum",
+          "overview": {
+            "tagline": "Precompute running totals so any range sum becomes a single subtraction.",
+            "whenToUse": [
+              "You answer many range-sum queries over a fixed array.",
+              "You need a subarray that meets a sum condition, or a balance point.",
+              "Recomputing each range by looping would be O(n) per query.",
+              "The data doesn't change between queries."
+            ],
+            "keyIdea": "Build an array where prefix[i] is the sum of everything up to i. Then the sum of any range [l, r] is prefix[r] - prefix[l-1] — O(1) instead of a loop. The same running-total idea finds balance points and target-sum subarrays in one pass.",
+            "complexity": "O(n) preprocessing, O(1) per range query"
+          },
+          "lessons": [
+            { "id": "running-sum", "title": "Running Sum", "difficulty": "easy", "file": "dsa/prefix-sums/running-sum.json" },
+            { "id": "range-sum-query", "title": "Range Sum Query", "difficulty": "easy", "file": "dsa/prefix-sums/range-sum-query.json" },
+            { "id": "find-pivot-index", "title": "Find Pivot Index", "difficulty": "easy", "file": "dsa/prefix-sums/find-pivot-index.json" }
+          ]
         }
       ]
     }
