@@ -46,6 +46,10 @@
       "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2], "pointers": [{ "label": "i", "index": 2 }], "highlights": [{ "index": 2, "state": "mismatch" }] }
     },
     {
+      "caption": "Next i lands on 0. From here on every value is >= 0, so no three of them can sum to 0. Stop — we've found them all.",
+      "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2], "pointers": [{ "label": "i", "index": 3 }], "highlights": [{ "range": [3, 5], "state": "active" }] }
+    },
+    {
       "caption": "Two unique triples sum to 0: [-1, -1, 2] and [-1, 0, 1].",
       "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2] }
     }
