@@ -48,38 +48,30 @@ struct LessonPage: View {
     }
 
     private var player: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 0) {
             ProgressDots(count: steps.count, current: stepIndex)
 
-            ArrayVisualView(visual: current.visual, palette: palette)
-                .padding(.horizontal, 16)
-                .contentShape(Rectangle())
-                .onTapGesture { advance() }
+            Spacer(minLength: 16)
 
-            Text(current.caption)
-                .font(.title3)
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
-                .frame(minHeight: 84, alignment: .top)
-                .padding(.horizontal, 20)
-                .id(stepIndex)
-                .transition(.opacity)
+            // Keep the diagram and its instruction together as one centered group,
+            // so the text sits with the visual it describes instead of drifting off.
+            VStack(spacing: 22) {
+                ArrayVisualView(visual: current.visual, palette: palette)
+                    .frame(height: 220)
+                    .padding(.horizontal, 16)
+                    .contentShape(Rectangle())
+                    .onTapGesture { advance() }
 
-            HStack {
-                Button { back() } label: { Label("Back", systemImage: "chevron.left") }
-                    .disabled(stepIndex == 0)
-                Spacer()
-                Text("\(stepIndex + 1) / \(steps.count)")
-                    .font(.footnote.monospacedDigit())
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Button { advance() } label: {
-                    Label(isLastStep ? "Finish" : "Next", systemImage: isLastStep ? "checkmark" : "chevron.right")
-                }
+                InstructionView(caption: current.caption)
+                    .id(stepIndex)
+                    .transition(.opacity)
             }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 16)
+
+            Spacer(minLength: 16)
+
+            controls
         }
+        .frame(maxHeight: .infinity)
         // Horizontal swipe advances steps; the enclosing vertical feed owns up/down.
         .gesture(
             DragGesture(minimumDistance: 24)
@@ -88,6 +80,24 @@ struct LessonPage: View {
                     else if value.translation.width > 40 { back() }
                 }
         )
+    }
+
+    private var controls: some View {
+        HStack {
+            Button { back() } label: { Label("Back", systemImage: "chevron.left") }
+                .disabled(stepIndex == 0)
+            Spacer()
+            Text("\(stepIndex + 1) / \(steps.count)")
+                .font(.footnote.monospacedDigit())
+                .foregroundStyle(.secondary)
+            Spacer()
+            Button { advance() } label: {
+                Label(isLastStep ? "Finish" : "Next", systemImage: isLastStep ? "checkmark" : "chevron.right")
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 8)
+        .padding(.bottom, 16)
     }
 
     private var completion: some View {
@@ -162,6 +172,47 @@ private struct ExampleView: View {
                 .fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: 0)
         }
+    }
+}
+
+/// The per-Step instruction text. Renders each sentence on its own line so a
+/// multi-sentence caption reads as distinct beats rather than one block of prose.
+private struct InstructionView: View {
+    let caption: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 9) {
+            ForEach(Array(sentences.enumerated()), id: \.offset) { _, sentence in
+                Text(sentence)
+                    .font(.body)
+                    .lineSpacing(3)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 24)
+    }
+
+    /// Split on sentence-ending punctuation followed by a space. Decimals such as
+    /// "0.5" and "12.75" survive intact because there is no space after their dot.
+    private var sentences: [String] {
+        var result: [String] = []
+        var current = ""
+        let chars = Array(caption)
+        for (i, ch) in chars.enumerated() {
+            current.append(ch)
+            if ch == "." || ch == "!" || ch == "?" {
+                let next = i + 1 < chars.count ? chars[i + 1] : " "
+                if next == " " {
+                    let trimmed = current.trimmingCharacters(in: .whitespaces)
+                    if !trimmed.isEmpty { result.append(trimmed) }
+                    current = ""
+                }
+            }
+        }
+        let tail = current.trimmingCharacters(in: .whitespaces)
+        if !tail.isEmpty { result.append(tail) }
+        return result.isEmpty ? [caption] : result
     }
 }
 

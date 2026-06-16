@@ -34,10 +34,8 @@ struct ArrayVisualView: View {
                 pointersLayer(height: geo.size.height, cell: cell, firstCenterX: firstCenterX, count: n)
             }
         }
-        // Flexible: fills the space the lesson page gives it, with a sensible floor,
-        // so the page always fits on one screen instead of overflowing.
-        .frame(maxHeight: .infinity)
-        .frame(minHeight: 150)
+        // Height is set by the caller (the lesson page gives it a fixed band); the
+        // GeometryReader lays the cells/bars out within whatever it receives.
     }
 
     private func centerX(_ index: Int, cell: CGFloat, firstCenterX: CGFloat) -> CGFloat {
