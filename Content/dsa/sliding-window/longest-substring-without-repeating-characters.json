@@ -34,6 +34,10 @@
       "visual": { "type": "array", "cells": ["a", "b", "c", "a", "b", "c", "b", "b"], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 3 }], "highlights": [{ "range": [1, 3], "state": "active" }] }
     },
     {
+      "caption": "R advances to 'b', already inside the window — so L slides to index 2. Window 'c', 'a', 'b' is unique, still length 3.",
+      "visual": { "type": "array", "cells": ["a", "b", "c", "a", "b", "c", "b", "b"], "pointers": [{ "label": "L", "index": 2 }, { "label": "R", "index": 4 }], "highlights": [{ "range": [2, 4], "state": "active" }] }
+    },
+    {
       "caption": "Each later repeat slides the window the same way. Here it's 'a', 'b', 'c' again — the length never beats 3.",
       "visual": { "type": "array", "cells": ["a", "b", "c", "a", "b", "c", "b", "b"], "pointers": [{ "label": "L", "index": 3 }, { "label": "R", "index": 5 }], "highlights": [{ "range": [3, 5], "state": "active" }] }
     },
