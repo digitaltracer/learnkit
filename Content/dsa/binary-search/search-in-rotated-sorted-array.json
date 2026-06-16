@@ -26,11 +26,15 @@
       "visual": { "type": "array", "cells": [4, 5, 6, 7, 0, 1, 2], "pointers": [{ "label": "lo", "index": 4 }, { "label": "hi", "index": 6 }], "highlights": [{ "range": [4, 6], "state": "active" }] }
     },
     {
-      "caption": "Mid is 1. The left side [0,1] is sorted and 0 falls in [0, 1) — so search left.",
+      "caption": "Mid is 1. The left side [0, 1] is sorted and 0 sits in [0, 1) — search left, so hi moves to 4.",
       "visual": { "type": "array", "cells": [4, 5, 6, 7, 0, 1, 2], "pointers": [{ "label": "lo", "index": 4 }, { "label": "mid", "index": 5 }, { "label": "hi", "index": 6 }], "highlights": [{ "index": 5, "state": "compare" }] }
     },
     {
-      "caption": "Range collapses to index 4 — value 0. Found!",
+      "caption": "lo and hi have met — one cell left, at index 4.",
+      "visual": { "type": "array", "cells": [4, 5, 6, 7, 0, 1, 2], "highlights": [{ "range": [4, 4], "state": "active" }] }
+    },
+    {
+      "caption": "Check it: it's 0. Found at index 4.",
       "visual": { "type": "array", "cells": [4, 5, 6, 7, 0, 1, 2], "pointers": [{ "label": "mid", "index": 4 }], "highlights": [{ "index": 4, "state": "done" }] }
     }
   ]

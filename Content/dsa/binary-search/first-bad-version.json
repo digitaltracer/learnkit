@@ -30,8 +30,8 @@
       "visual": { "type": "array", "cells": [1, 2, 3, 4, 5], "pointers": [{ "label": "mid", "index": 3 }, { "label": "hi", "index": 4 }], "highlights": [{ "index": 3, "state": "compare" }] }
     },
     {
-      "caption": "Version 4 is bad, and version 3 was good — so 4 is the first bad version.",
-      "visual": { "type": "array", "cells": [1, 2, 3, 4, 5], "pointers": [{ "label": "mid", "index": 3 }], "highlights": [{ "index": 3, "state": "done" }] }
+      "caption": "Version 4 is bad. Version 3 (its neighbor) is good — so that good-to-bad boundary is the answer: version 4.",
+      "visual": { "type": "array", "cells": [1, 2, 3, 4, 5], "highlights": [{ "index": 2, "state": "match" }, { "index": 3, "state": "mismatch" }] }
     }
   ]
 }
