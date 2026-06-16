@@ -113,6 +113,26 @@
             { "id": "range-sum-query", "title": "Range Sum Query", "difficulty": "easy", "file": "dsa/prefix-sums/range-sum-query.json" },
             { "id": "find-pivot-index", "title": "Find Pivot Index", "difficulty": "easy", "file": "dsa/prefix-sums/find-pivot-index.json" }
           ]
+        },
+        {
+          "id": "kadane",
+          "title": "Kadane / Max Subarray",
+          "icon": "chart.line.uptrend.xyaxis",
+          "overview": {
+            "tagline": "Track the best subarray ending at each position to find the best overall in one pass.",
+            "whenToUse": [
+              "You want the maximum (or minimum) sum or product of a contiguous subarray.",
+              "A brute force over all subarrays would be O(n^2).",
+              "The answer at position i can be built from the answer at i-1.",
+              "The array can include negative numbers."
+            ],
+            "keyIdea": "Walk left to right, keeping the best subarray that ends at the current cell: either extend the previous best or start fresh here. The largest running best is the answer — a single O(n) pass. For products, also track the min, since a negative can flip it into the new max.",
+            "complexity": "O(n) time, O(1) space"
+          },
+          "lessons": [
+            { "id": "maximum-subarray", "title": "Maximum Subarray", "difficulty": "medium", "file": "dsa/kadane/maximum-subarray.json" },
+            { "id": "maximum-product-subarray", "title": "Maximum Product Subarray", "difficulty": "medium", "file": "dsa/kadane/maximum-product-subarray.json" }
+          ]
         }
       ]
     }
