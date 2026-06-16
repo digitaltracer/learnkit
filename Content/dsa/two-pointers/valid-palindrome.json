@@ -38,8 +38,8 @@
       "visual": { "type": "array", "cells": ["r", "a", "c", "e", "c", "a", "r"], "pointers": [{ "label": "L", "index": 2 }, { "label": "R", "index": 4 }], "highlights": [{ "index": 2, "state": "match" }, { "index": 4, "state": "match" }] }
     },
     {
-      "caption": "The pointers meet in the middle. Every pair matched — \"racecar\" is a palindrome.",
-      "visual": { "type": "array", "cells": ["r", "a", "c", "e", "c", "a", "r"], "pointers": [{ "label": "L", "index": 3 }, { "label": "R", "index": 3 }], "highlights": [{ "index": 3, "state": "done" }] }
+      "caption": "L and R meet at the middle. Every pair matched, so \"racecar\" is a palindrome. Had any pair differed, we'd stop at once and return false.",
+      "visual": { "type": "array", "cells": ["r", "a", "c", "e", "c", "a", "r"], "highlights": [{ "index": 3, "state": "done" }] }
     }
   ]
 }
