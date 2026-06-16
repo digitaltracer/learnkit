@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "container-with-most-water",
+  "subject": "dsa",
+  "track": "two-pointers",
+  "title": "Container With Most Water",
+  "difficulty": "medium",
+  "summary": "Each bar is a wall. Start wide and always move the shorter wall inward — that's the only move that can ever increase the trapped area.",
+  "problem": "Each value is a wall height. Find the two walls that, with the x-axis, hold the most water.",
+  "example": { "input": "[1, 8, 6, 2, 5, 7]", "output": "28" },
+  "steps": [
+    {
+      "caption": "Each bar is a wall. Pick two walls holding the most water. Area = width between them x the shorter wall.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 8, 6, 2, 5, 7] }
+    },
+    {
+      "caption": "Start wide: L=0, R=5. Area = 5 x min(1, 7) = 5. The left wall is shorter, so move L inward.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 8, 6, 2, 5, 7], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 0, "state": "compare" }, { "index": 5, "state": "compare" }] }
+    },
+    {
+      "caption": "L=1, R=5. Area = 4 x min(8, 7) = 28 — our best yet! Now the right wall is shorter, so move R inward.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 8, 6, 2, 5, 7], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 1, "state": "match" }, { "index": 5, "state": "match" }] }
+    },
+    {
+      "caption": "L=1, R=4. Area = 3 x min(8, 5) = 15. Smaller than 28. Right wall is shorter — move R.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 8, 6, 2, 5, 7], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 4 }], "highlights": [{ "index": 1, "state": "compare" }, { "index": 4, "state": "compare" }] }
+    },
+    {
+      "caption": "L=1, R=3. Area = 2 x min(8, 2) = 4. Right wall shorter — move R.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 8, 6, 2, 5, 7], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 3 }], "highlights": [{ "index": 1, "state": "compare" }, { "index": 3, "state": "compare" }] }
+    },
+    {
+      "caption": "L=1, R=2. Area = 1 x min(8, 6) = 6. The pointers are about to meet.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 8, 6, 2, 5, 7], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 2 }], "highlights": [{ "index": 1, "state": "compare" }, { "index": 2, "state": "compare" }] }
+    },
+    {
+      "caption": "Done. The most water was 28, held by the walls at index 1 (height 8) and index 5 (height 7).",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 8, 6, 2, 5, 7], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 1, "state": "done" }, { "index": 5, "state": "done" }] }
+    }
+  ]
+}

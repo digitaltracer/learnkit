@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "subjects": [
+    {
+      "id": "dsa",
+      "title": "DSA",
+      "tracks": [
+        {
+          "id": "two-pointers",
+          "title": "Two Pointers",
+          "icon": "arrow.left.and.right",
+          "overview": {
+            "tagline": "Walk two indices through the array instead of using nested loops.",
+            "whenToUse": [
+              "The array or string is sorted, or order doesn't block a single pass.",
+              "You're searching for a pair, a window, or a partition.",
+              "A brute force would be O(n²) with nested loops over the same array.",
+              "You want to solve it with O(1) extra space."
+            ],
+            "keyIdea": "Place two pointers — often at both ends, or one chasing the other — and move them based on a comparison, so each element is visited at most once. That collapses O(n²) into a single O(n) pass.",
+            "complexity": "Typically O(n) time, O(1) space"
+          },
+          "lessons": [
+            { "id": "valid-palindrome", "title": "Valid Palindrome", "difficulty": "easy", "file": "dsa/two-pointers/valid-palindrome.json" },
+            { "id": "two-sum-ii", "title": "Two Sum II", "difficulty": "medium", "file": "dsa/two-pointers/two-sum-ii.json" },
+            { "id": "container-with-most-water", "title": "Container With Most Water", "difficulty": "medium", "file": "dsa/two-pointers/container-with-most-water.json" }
+          ]
+        }
+      ]
+    }
+  ]
+}

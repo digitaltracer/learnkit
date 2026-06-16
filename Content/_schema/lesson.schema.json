@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LearnKit Lesson",
+  "description": "One self-contained Lesson: an ordered sequence of snapshot Steps. v1 supports only the `array` Primitive.",
+  "type": "object",
+  "required": ["schemaVersion", "id", "subject", "track", "title", "steps"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$", "description": "kebab-case, unique within the track, matches the filename" },
+    "subject": { "type": "string", "enum": ["dsa"] },
+    "track": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "title": { "type": "string" },
+    "difficulty": { "type": "string", "enum": ["easy", "medium", "hard"] },
+    "summary": { "type": "string", "description": "One-sentence framing of the approach." },
+    "problem": { "type": "string", "description": "Short statement of what the problem asks (one or two sentences)." },
+    "example": {
+      "type": "object",
+      "required": ["input", "output"],
+      "additionalProperties": false,
+      "description": "One small concrete example shown atop the Lesson.",
+      "properties": {
+        "input": { "type": "string" },
+        "output": { "type": "string" },
+        "note": { "type": "string" }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 12,
+      "items": { "$ref": "#/$defs/step" }
+    }
+  },
+  "$defs": {
+    "step": {
+      "type": "object",
+      "required": ["caption", "visual"],
+      "additionalProperties": false,
+      "properties": {
+        "caption": { "type": "string", "maxLength": 160 },
+        "visual": { "$ref": "#/$defs/arrayVisual" }
+      }
+    },
+    "arrayVisual": {
+      "type": "object",
+      "required": ["type", "cells"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "array" },
+        "style": {
+          "type": "string",
+          "enum": ["cells", "bars"],
+          "description": "How to draw the array. 'cells' (default) draws boxed values — for indices, characters, sorted numbers. 'bars' draws vertical bars scaled to each cell's numeric value — for heights/magnitudes (e.g. Container With Most Water). 'bars' requires all cells to be numeric."
+        },
+        "cells": {
+          "type": "array",
+          "description": "Full state of the array at this Step. Keep identical across Steps unless the data itself changes.",
+          "items": { "type": ["string", "number"] }
+        },
+        "pointers": {
+          "type": "array",
+          "description": "Named pointers sitting on cells. Moving an index between Steps is what the app animates.",
+          "items": {
+            "type": "object",
+            "required": ["label", "index"],
+            "additionalProperties": false,
+            "properties": {
+              "label": { "type": "string", "maxLength": 3 },
+              "index": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
+        "highlights": {
+          "type": "array",
+          "description": "Per-cell or per-range color states. Use `index` for one cell or `range` [start,end] inclusive.",
+          "items": {
+            "type": "object",
+            "required": ["state"],
+            "additionalProperties": false,
+            "properties": {
+              "index": { "type": "integer", "minimum": 0 },
+              "range": { "type": "array", "items": { "type": "integer" }, "minItems": 2, "maxItems": 2 },
+              "state": { "type": "string", "enum": ["compare", "match", "mismatch", "done", "active"] }
+            }
+          }
+        }
+      }
+    }
+  }
+}

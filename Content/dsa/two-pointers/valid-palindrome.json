@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "valid-palindrome",
+  "subject": "dsa",
+  "track": "two-pointers",
+  "title": "Valid Palindrome",
+  "difficulty": "easy",
+  "summary": "A palindrome reads the same forwards and backwards. Put one pointer at each end and walk them inward, comparing as you go.",
+  "problem": "Return true if the string reads the same forwards and backwards.",
+  "example": { "input": "\"racecar\"", "output": "true" },
+  "steps": [
+    {
+      "caption": "Is \"racecar\" a palindrome? It is, if it reads the same in both directions.",
+      "visual": { "type": "array", "cells": ["r", "a", "c", "e", "c", "a", "r"] }
+    },
+    {
+      "caption": "Put a left pointer L at the start and a right pointer R at the end.",
+      "visual": { "type": "array", "cells": ["r", "a", "c", "e", "c", "a", "r"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 6 }] }
+    },
+    {
+      "caption": "Compare the two characters. 'r' equals 'r' — a match, so keep going.",
+      "visual": { "type": "array", "cells": ["r", "a", "c", "e", "c", "a", "r"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 6 }], "highlights": [{ "index": 0, "state": "match" }, { "index": 6, "state": "match" }] }
+    },
+    {
+      "caption": "Move both pointers inward by one.",
+      "visual": { "type": "array", "cells": ["r", "a", "c", "e", "c", "a", "r"], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 5 }] }
+    },
+    {
+      "caption": "'a' equals 'a' — match again.",
+      "visual": { "type": "array", "cells": ["r", "a", "c", "e", "c", "a", "r"], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 1, "state": "match" }, { "index": 5, "state": "match" }] }
+    },
+    {
+      "caption": "Step inward once more.",
+      "visual": { "type": "array", "cells": ["r", "a", "c", "e", "c", "a", "r"], "pointers": [{ "label": "L", "index": 2 }, { "label": "R", "index": 4 }] }
+    },
+    {
+      "caption": "'c' equals 'c' — still a match.",
+      "visual": { "type": "array", "cells": ["r", "a", "c", "e", "c", "a", "r"], "pointers": [{ "label": "L", "index": 2 }, { "label": "R", "index": 4 }], "highlights": [{ "index": 2, "state": "match" }, { "index": 4, "state": "match" }] }
+    },
+    {
+      "caption": "The pointers meet in the middle. Every pair matched — \"racecar\" is a palindrome.",
+      "visual": { "type": "array", "cells": ["r", "a", "c", "e", "c", "a", "r"], "pointers": [{ "label": "L", "index": 3 }, { "label": "R", "index": 3 }], "highlights": [{ "index": 3, "state": "done" }] }
+    }
+  ]
+}
