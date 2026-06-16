@@ -29,6 +29,27 @@
             { "id": "container-with-most-water", "title": "Container With Most Water", "difficulty": "medium", "file": "dsa/two-pointers/container-with-most-water.json" },
             { "id": "trapping-rain-water", "title": "Trapping Rain Water", "difficulty": "hard", "file": "dsa/two-pointers/trapping-rain-water.json" }
           ]
+        },
+        {
+          "id": "sliding-window",
+          "title": "Sliding Window",
+          "icon": "rectangle.split.3x1",
+          "overview": {
+            "tagline": "Slide a window across the array and update the answer as it grows and shrinks, instead of recomputing it from scratch.",
+            "whenToUse": [
+              "You need the best, longest, or shortest contiguous subarray or substring.",
+              "Recomputing each window from scratch would be O(n·k) or O(n²).",
+              "The window can extend on the right and shrink on the left based on a condition.",
+              "You're tracking a running sum, count, or set over a contiguous range."
+            ],
+            "keyIdea": "Keep a window [L, R]. Expand R to take in new elements; when the window breaks a constraint (or to hold a fixed size), advance L. Each element enters and leaves the window once, so the whole sweep is O(n).",
+            "complexity": "Typically O(n) time, O(1) or O(k) space"
+          },
+          "lessons": [
+            { "id": "maximum-average-subarray", "title": "Maximum Average Subarray", "difficulty": "easy", "file": "dsa/sliding-window/maximum-average-subarray.json" },
+            { "id": "best-time-to-buy-and-sell-stock", "title": "Best Time to Buy and Sell Stock", "difficulty": "easy", "file": "dsa/sliding-window/best-time-to-buy-and-sell-stock.json" },
+            { "id": "longest-substring-without-repeating-characters", "title": "Longest Substring Without Repeating Characters", "difficulty": "medium", "file": "dsa/sliding-window/longest-substring-without-repeating-characters.json" }
+          ]
         }
       ]
     }

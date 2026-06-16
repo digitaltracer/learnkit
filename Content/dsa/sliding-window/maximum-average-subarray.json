@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "maximum-average-subarray",
+  "subject": "dsa",
+  "track": "sliding-window",
+  "title": "Maximum Average Subarray",
+  "difficulty": "easy",
+  "summary": "Sum the first window of size k, then slide: add the entering element and subtract the leaving one. Track the largest sum — each slide is O(1), not a re-sum.",
+  "problem": "Find the contiguous subarray of length k with the largest average.",
+  "example": { "input": "[1, 12, -5, -6, 50, 3], k = 4", "output": "12.75" },
+  "steps": [
+    {
+      "caption": "Find the length-4 window with the highest average.",
+      "visual": { "type": "array", "cells": [1, 12, -5, -6, 50, 3] }
+    },
+    {
+      "caption": "Sum the first 4: 1 + 12 - 5 - 6 = 2. Average 2 / 4 = 0.5.",
+      "visual": { "type": "array", "cells": [1, 12, -5, -6, 50, 3], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 3 }], "highlights": [{ "range": [0, 3], "state": "active" }] }
+    },
+    {
+      "caption": "Slide right: drop 1, add 50. New sum = 2 - 1 + 50 = 51. Average 12.75 — best so far.",
+      "visual": { "type": "array", "cells": [1, 12, -5, -6, 50, 3], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 4 }], "highlights": [{ "range": [1, 4], "state": "match" }] }
+    },
+    {
+      "caption": "Slide again: drop 12, add 3. Sum = 51 - 12 + 3 = 42. Average 10.5.",
+      "visual": { "type": "array", "cells": [1, 12, -5, -6, 50, 3], "pointers": [{ "label": "L", "index": 2 }, { "label": "R", "index": 5 }], "highlights": [{ "range": [2, 5], "state": "active" }] }
+    },
+    {
+      "caption": "Best window is [12, -5, -6, 50]: sum 51, average 12.75.",
+      "visual": { "type": "array", "cells": [1, 12, -5, -6, 50, 3], "highlights": [{ "range": [1, 4], "state": "done" }] }
+    }
+  ]
+}

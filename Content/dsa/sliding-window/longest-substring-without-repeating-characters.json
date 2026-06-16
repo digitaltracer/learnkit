@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "longest-substring-without-repeating-characters",
+  "subject": "dsa",
+  "track": "sliding-window",
+  "title": "Longest Substring Without Repeating Characters",
+  "difficulty": "medium",
+  "summary": "Grow a window to the right while characters stay unique. On a repeat, shrink from the left past the duplicate. Track the largest window you ever reach.",
+  "problem": "Find the length of the longest substring that contains no repeated character.",
+  "example": { "input": "\"abcabcbb\"", "output": "3  (\"abc\")" },
+  "steps": [
+    {
+      "caption": "Find the longest run of characters with no repeats.",
+      "visual": { "type": "array", "cells": ["a", "b", "c", "a", "b", "c", "b", "b"] }
+    },
+    {
+      "caption": "Grow a window from the left, adding one character at a time while every letter inside stays unique.",
+      "visual": { "type": "array", "cells": ["a", "b", "c", "a", "b", "c", "b", "b"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 0 }], "highlights": [{ "range": [0, 0], "state": "active" }] }
+    },
+    {
+      "caption": "'a', 'b' — all unique. Window length 2.",
+      "visual": { "type": "array", "cells": ["a", "b", "c", "a", "b", "c", "b", "b"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 1 }], "highlights": [{ "range": [0, 1], "state": "active" }] }
+    },
+    {
+      "caption": "'a', 'b', 'c' — still unique. Length 3, the best so far.",
+      "visual": { "type": "array", "cells": ["a", "b", "c", "a", "b", "c", "b", "b"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 2 }], "highlights": [{ "range": [0, 2], "state": "active" }] }
+    },
+    {
+      "caption": "R hits 'a', but 'a' is already in the window. To stay unique, shrink from the left.",
+      "visual": { "type": "array", "cells": ["a", "b", "c", "a", "b", "c", "b", "b"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 3 }], "highlights": [{ "range": [0, 2], "state": "active" }, { "index": 3, "state": "mismatch" }] }
+    },
+    {
+      "caption": "Move L past the earlier 'a'. Window 'b', 'c', 'a' is unique again — still length 3.",
+      "visual": { "type": "array", "cells": ["a", "b", "c", "a", "b", "c", "b", "b"], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 3 }], "highlights": [{ "range": [1, 3], "state": "active" }] }
+    },
+    {
+      "caption": "Each later repeat slides the window the same way. Here it's 'a', 'b', 'c' again — the length never beats 3.",
+      "visual": { "type": "array", "cells": ["a", "b", "c", "a", "b", "c", "b", "b"], "pointers": [{ "label": "L", "index": 3 }, { "label": "R", "index": 5 }], "highlights": [{ "range": [3, 5], "state": "active" }] }
+    },
+    {
+      "caption": "Longest substring without a repeat is 'abc' — length 3.",
+      "visual": { "type": "array", "cells": ["a", "b", "c", "a", "b", "c", "b", "b"], "highlights": [{ "range": [0, 2], "state": "match" }] }
+    }
+  ]
+}
