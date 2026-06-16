@@ -22,8 +22,12 @@
           },
           "lessons": [
             { "id": "valid-palindrome", "title": "Valid Palindrome", "difficulty": "easy", "file": "dsa/two-pointers/valid-palindrome.json" },
+            { "id": "remove-duplicates-from-sorted-array", "title": "Remove Duplicates from Sorted Array", "difficulty": "easy", "file": "dsa/two-pointers/remove-duplicates-from-sorted-array.json" },
+            { "id": "move-zeroes", "title": "Move Zeroes", "difficulty": "easy", "file": "dsa/two-pointers/move-zeroes.json" },
             { "id": "two-sum-ii", "title": "Two Sum II", "difficulty": "medium", "file": "dsa/two-pointers/two-sum-ii.json" },
-            { "id": "container-with-most-water", "title": "Container With Most Water", "difficulty": "medium", "file": "dsa/two-pointers/container-with-most-water.json" }
+            { "id": "3sum", "title": "3Sum", "difficulty": "medium", "file": "dsa/two-pointers/3sum.json" },
+            { "id": "container-with-most-water", "title": "Container With Most Water", "difficulty": "medium", "file": "dsa/two-pointers/container-with-most-water.json" },
+            { "id": "trapping-rain-water", "title": "Trapping Rain Water", "difficulty": "hard", "file": "dsa/two-pointers/trapping-rain-water.json" }
           ]
         }
       ]

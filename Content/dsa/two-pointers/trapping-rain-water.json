@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "trapping-rain-water",
+  "subject": "dsa",
+  "track": "two-pointers",
+  "title": "Trapping Rain Water",
+  "difficulty": "hard",
+  "summary": "Two pointers from both ends. The shorter wall bounds the water, so always advance it; the water over a bar is the tallest wall seen behind it minus its own height.",
+  "problem": "Each value is a wall height. Compute how much rain water is trapped between the walls.",
+  "example": { "input": "[4, 2, 0, 3, 2, 5]", "output": "9" },
+  "steps": [
+    {
+      "caption": "Each bar is a wall. Rain pools in the dips. How much water is trapped in total?",
+      "visual": { "type": "array", "style": "bars", "cells": [4, 2, 0, 3, 2, 5] }
+    },
+    {
+      "caption": "Two pointers at the ends. Water over a bar = (the shorter of the tallest walls on each side) minus its own height.",
+      "visual": { "type": "array", "style": "bars", "cells": [4, 2, 0, 3, 2, 5], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 0, "state": "compare" }, { "index": 5, "state": "compare" }] }
+    },
+    {
+      "caption": "Left wall (4) is shorter than right (5), so the left bounds the water. Tallest-on-left = 4; over index 0: 4 - 4 = 0. Move L in.",
+      "visual": { "type": "array", "style": "bars", "cells": [4, 2, 0, 3, 2, 5], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 0, "state": "active" }] }
+    },
+    {
+      "caption": "Tallest-on-left stays 4. Over index 1: 4 - 2 = 2 trapped. Running total: 2. Left is shorter, so move L.",
+      "visual": { "type": "array", "style": "bars", "cells": [4, 2, 0, 3, 2, 5], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 1, "state": "match" }] }
+    },
+    {
+      "caption": "Over index 2: 4 - 0 = 4 trapped. Total: 6. Move L.",
+      "visual": { "type": "array", "style": "bars", "cells": [4, 2, 0, 3, 2, 5], "pointers": [{ "label": "L", "index": 2 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 2, "state": "match" }] }
+    },
+    {
+      "caption": "Over index 3: 4 - 3 = 1 trapped. Total: 7. Move L.",
+      "visual": { "type": "array", "style": "bars", "cells": [4, 2, 0, 3, 2, 5], "pointers": [{ "label": "L", "index": 3 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 3, "state": "match" }] }
+    },
+    {
+      "caption": "Over index 4: 4 - 2 = 2 trapped. Total: 9. Move L.",
+      "visual": { "type": "array", "style": "bars", "cells": [4, 2, 0, 3, 2, 5], "pointers": [{ "label": "L", "index": 4 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 4, "state": "match" }] }
+    },
+    {
+      "caption": "L meets R. Total trapped water = 2 + 4 + 1 + 2 = 9.",
+      "visual": { "type": "array", "style": "bars", "cells": [4, 2, 0, 3, 2, 5], "highlights": [{ "range": [1, 4], "state": "done" }] }
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "id": "3sum",
+  "subject": "dsa",
+  "track": "two-pointers",
+  "title": "3Sum",
+  "difficulty": "medium",
+  "summary": "Sort first. Fix one number, then sweep the rest with two pointers from both ends — just like Two Sum on a sorted array — and skip repeats to avoid duplicate triples.",
+  "problem": "Find every unique triple in the array that sums to 0.",
+  "example": { "input": "[-1, 0, 1, 2, -1, -4]", "output": "[[-1, -1, 2], [-1, 0, 1]]" },
+  "steps": [
+    {
+      "caption": "Find all unique triples that add up to 0.",
+      "visual": { "type": "array", "cells": [-1, 0, 1, 2, -1, -4] }
+    },
+    {
+      "caption": "First sort it. Now equal numbers are adjacent and we can sweep the array with pointers.",
+      "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2] }
+    },
+    {
+      "caption": "Fix i on the first value. L and R hunt for two more that bring the total to 0. With i=-4 no pair works — move i on.",
+      "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2], "pointers": [{ "label": "i", "index": 0 }, { "label": "L", "index": 1 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 0, "state": "compare" }] }
+    },
+    {
+      "caption": "Now i=-1 (index 1). We need the pair L+R to equal 1.",
+      "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2], "pointers": [{ "label": "i", "index": 1 }, { "label": "L", "index": 2 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 1, "state": "compare" }] }
+    },
+    {
+      "caption": "i + L + R = -1 + (-1) + 2 = 0. First triple found: [-1, -1, 2].",
+      "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2], "pointers": [{ "label": "i", "index": 1 }, { "label": "L", "index": 2 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 1, "state": "match" }, { "index": 2, "state": "match" }, { "index": 5, "state": "match" }] }
+    },
+    {
+      "caption": "After a hit, move both inward. Now nums[L] + nums[R] = 0 + 1 = 1 — still the target.",
+      "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2], "pointers": [{ "label": "i", "index": 1 }, { "label": "L", "index": 3 }, { "label": "R", "index": 4 }], "highlights": [{ "index": 3, "state": "compare" }, { "index": 4, "state": "compare" }] }
+    },
+    {
+      "caption": "Second triple found: [-1, 0, 1].",
+      "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2], "pointers": [{ "label": "i", "index": 1 }, { "label": "L", "index": 3 }, { "label": "R", "index": 4 }], "highlights": [{ "index": 1, "state": "match" }, { "index": 3, "state": "match" }, { "index": 4, "state": "match" }] }
+    },
+    {
+      "caption": "Move inward once more and L passes R. No more pairs for this i.",
+      "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2], "pointers": [{ "label": "i", "index": 1 }, { "label": "L", "index": 4 }, { "label": "R", "index": 3 }] }
+    },
+    {
+      "caption": "i would land on another -1 — the same value as before. Skip it so we don't repeat triples.",
+      "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2], "pointers": [{ "label": "i", "index": 2 }], "highlights": [{ "index": 2, "state": "mismatch" }] }
+    },
+    {
+      "caption": "Two unique triples sum to 0: [-1, -1, 2] and [-1, 0, 1].",
+      "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2] }
+    }
+  ]
+}
