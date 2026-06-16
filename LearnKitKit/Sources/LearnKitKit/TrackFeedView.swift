@@ -10,6 +10,9 @@ struct TrackFeedView: View {
 
     @State private var lessons: [Lesson] = []
     @State private var loadError: String?
+    /// The page currently snapped into view. Two-way bound to the scroll position:
+    /// it tracks swipes and, when the jump menu writes it, scrolls straight there.
+    @State private var visibleID: String?
 
     var body: some View {
         Group {
@@ -25,6 +28,13 @@ struct TrackFeedView: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
+        .toolbar {
+            if !lessons.isEmpty {
+                ToolbarItem(placement: .primaryAction) {
+                    jumpMenu
+                }
+            }
+        }
         .task {
             guard lessons.isEmpty, loadError == nil else { return }
             lessons = track.lessons.compactMap { try? ContentStore.loadLesson($0, bundle: bundle) }
@@ -45,17 +55,52 @@ struct TrackFeedView: View {
                 LazyVStack(spacing: 0) {
                     if let overview = track.overview {
                         page(OverviewPage(track: track, overview: overview), proxy: proxy)
+                            .id(Self.overviewID)
                     }
                     ForEach(Array(lessons.enumerated()), id: \.element.id) { index, lesson in
                         page(LessonPage(lesson: lesson, hasNext: index < lessons.count - 1), proxy: proxy)
+                            .id(lesson.id)
                     }
                 }
                 .scrollTargetLayout()
             }
             .scrollTargetBehavior(.paging)
+            .scrollPosition(id: $visibleID)
             .scrollIndicators(.hidden)
             .ignoresSafeArea(edges: .bottom)
         }
+    }
+
+    /// Dropdown that jumps the feed straight to any lesson (or back to the
+    /// Overview), so reaching a later lesson doesn't mean swiping past every one
+    /// before it. Built as a Picker so the current page shows a checkmark.
+    private var jumpMenu: some View {
+        Menu {
+            Picker("Jump to lesson", selection: jumpSelection) {
+                if track.overview != nil {
+                    Label("Overview", systemImage: "doc.text").tag(Self.overviewID)
+                }
+                ForEach(lessons, id: \.id) { lesson in
+                    Text(lesson.title).tag(lesson.id)
+                }
+            }
+        } label: {
+            Label("Jump to lesson", systemImage: "list.bullet")
+        }
+    }
+
+    private static let overviewID = "overview"
+
+    /// The page shown when nothing has scrolled yet — the Overview if present,
+    /// otherwise the first lesson.
+    private var defaultID: String {
+        track.overview != nil ? Self.overviewID : (lessons.first?.id ?? Self.overviewID)
+    }
+
+    /// Non-optional view over `visibleID` for the Picker: reading gives the current
+    /// page; writing scrolls there via `.scrollPosition`.
+    private var jumpSelection: Binding<String> {
+        Binding(get: { visibleID ?? defaultID }, set: { visibleID = $0 })
     }
 
     /// One feed page sized to exactly the ScrollView's paging stride: the content
