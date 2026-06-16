@@ -50,6 +50,27 @@
             { "id": "best-time-to-buy-and-sell-stock", "title": "Best Time to Buy and Sell Stock", "difficulty": "easy", "file": "dsa/sliding-window/best-time-to-buy-and-sell-stock.json" },
             { "id": "longest-substring-without-repeating-characters", "title": "Longest Substring Without Repeating Characters", "difficulty": "medium", "file": "dsa/sliding-window/longest-substring-without-repeating-characters.json" }
           ]
+        },
+        {
+          "id": "binary-search",
+          "title": "Binary Search",
+          "icon": "magnifyingglass",
+          "overview": {
+            "tagline": "Halve the search space every step by exploiting sorted order.",
+            "whenToUse": [
+              "The data is sorted, or the answer is monotonic — true then false.",
+              "You're searching for a value, a boundary, or a threshold.",
+              "A linear scan would be O(n) and you want O(log n).",
+              "You can decide which half to keep after looking at the middle."
+            ],
+            "keyIdea": "Track a range [lo, hi]. Look at the middle: if it's the target you're done; otherwise the comparison tells you which half can't hold the answer, so discard it. Each step throws away half of what remains — O(log n).",
+            "complexity": "O(log n) time, O(1) space"
+          },
+          "lessons": [
+            { "id": "binary-search", "title": "Binary Search", "difficulty": "easy", "file": "dsa/binary-search/binary-search.json" },
+            { "id": "first-bad-version", "title": "First Bad Version", "difficulty": "easy", "file": "dsa/binary-search/first-bad-version.json" },
+            { "id": "search-in-rotated-sorted-array", "title": "Search in Rotated Sorted Array", "difficulty": "medium", "file": "dsa/binary-search/search-in-rotated-sorted-array.json" }
+          ]
         }
       ]
     }

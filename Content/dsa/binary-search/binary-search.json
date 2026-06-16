@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "binary-search",
+  "subject": "dsa",
+  "track": "binary-search",
+  "title": "Binary Search",
+  "difficulty": "easy",
+  "summary": "Track a range [lo, hi]. Compare the middle element to the target; the result tells you which half to throw away. Repeat on the surviving half until it collapses.",
+  "problem": "Return the index of target in a sorted array, or report that it isn't present.",
+  "example": { "input": "[-1, 0, 3, 5, 9, 12], target 5", "output": "3" },
+  "steps": [
+    {
+      "caption": "Find 5 in this sorted array — without checking every cell.",
+      "visual": { "type": "array", "cells": [-1, 0, 3, 5, 9, 12] }
+    },
+    {
+      "caption": "The answer, if any, lies in [lo, hi] — the whole array to start.",
+      "visual": { "type": "array", "cells": [-1, 0, 3, 5, 9, 12], "pointers": [{ "label": "lo", "index": 0 }, { "label": "hi", "index": 5 }], "highlights": [{ "range": [0, 5], "state": "active" }] }
+    },
+    {
+      "caption": "Middle is index 2 (value 3). 3 < 5, so 5 must be to the right. Drop the left half.",
+      "visual": { "type": "array", "cells": [-1, 0, 3, 5, 9, 12], "pointers": [{ "label": "lo", "index": 0 }, { "label": "mid", "index": 2 }, { "label": "hi", "index": 5 }], "highlights": [{ "index": 2, "state": "compare" }] }
+    },
+    {
+      "caption": "New range: [3, 5].",
+      "visual": { "type": "array", "cells": [-1, 0, 3, 5, 9, 12], "pointers": [{ "label": "lo", "index": 3 }, { "label": "hi", "index": 5 }], "highlights": [{ "range": [3, 5], "state": "active" }] }
+    },
+    {
+      "caption": "Middle is index 4 (value 9). 9 > 5, so 5 is to the left. Drop the right half.",
+      "visual": { "type": "array", "cells": [-1, 0, 3, 5, 9, 12], "pointers": [{ "label": "lo", "index": 3 }, { "label": "mid", "index": 4 }, { "label": "hi", "index": 5 }], "highlights": [{ "index": 4, "state": "compare" }] }
+    },
+    {
+      "caption": "Range collapses to index 3 — value 5. Match! Found at index 3, in just 3 probes.",
+      "visual": { "type": "array", "cells": [-1, 0, 3, 5, 9, 12], "pointers": [{ "label": "mid", "index": 3 }], "highlights": [{ "index": 3, "state": "done" }] }
+    }
+  ]
+}

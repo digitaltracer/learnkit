@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "first-bad-version",
+  "subject": "dsa",
+  "track": "binary-search",
+  "title": "First Bad Version",
+  "difficulty": "easy",
+  "summary": "Versions go good then bad — a sorted boolean. Binary search the boundary: if mid is good, the first bad is to the right; if bad, it's here or to the left.",
+  "problem": "Versions 1..n; after the first bad one, every later version is bad too. Find the first bad version with the fewest checks.",
+  "example": { "input": "n = 5, first bad = 4", "output": "4" },
+  "steps": [
+    {
+      "caption": "Versions 1 to 5. Once one is bad, every later version is bad too. Find the first bad one.",
+      "visual": { "type": "array", "cells": [1, 2, 3, 4, 5] }
+    },
+    {
+      "caption": "Binary search the version range [1, 5] instead of checking each in turn.",
+      "visual": { "type": "array", "cells": [1, 2, 3, 4, 5], "pointers": [{ "label": "lo", "index": 0 }, { "label": "hi", "index": 4 }], "highlights": [{ "range": [0, 4], "state": "active" }] }
+    },
+    {
+      "caption": "Check the middle, version 3.",
+      "visual": { "type": "array", "cells": [1, 2, 3, 4, 5], "pointers": [{ "label": "lo", "index": 0 }, { "label": "mid", "index": 2 }, { "label": "hi", "index": 4 }], "highlights": [{ "index": 2, "state": "compare" }] }
+    },
+    {
+      "caption": "Version 3 is good, so the first bad one is later. Discard versions 1-3.",
+      "visual": { "type": "array", "cells": [1, 2, 3, 4, 5], "pointers": [{ "label": "lo", "index": 3 }, { "label": "hi", "index": 4 }], "highlights": [{ "index": 2, "state": "match" }] }
+    },
+    {
+      "caption": "Check version 4.",
+      "visual": { "type": "array", "cells": [1, 2, 3, 4, 5], "pointers": [{ "label": "mid", "index": 3 }, { "label": "hi", "index": 4 }], "highlights": [{ "index": 3, "state": "compare" }] }
+    },
+    {
+      "caption": "Version 4 is bad, and version 3 was good — so 4 is the first bad version.",
+      "visual": { "type": "array", "cells": [1, 2, 3, 4, 5], "pointers": [{ "label": "mid", "index": 3 }], "highlights": [{ "index": 3, "state": "done" }] }
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "search-in-rotated-sorted-array",
+  "subject": "dsa",
+  "track": "binary-search",
+  "title": "Search in Rotated Sorted Array",
+  "difficulty": "medium",
+  "summary": "Even after rotation, one side of the midpoint is always sorted. Check whether the target lies inside that sorted side; if not, search the other side.",
+  "problem": "A sorted array was rotated at an unknown pivot. Find the index of target.",
+  "example": { "input": "[4, 5, 6, 7, 0, 1, 2], target 0", "output": "4" },
+  "steps": [
+    {
+      "caption": "This sorted array was rotated. Find 0 — still in O(log n) time.",
+      "visual": { "type": "array", "cells": [4, 5, 6, 7, 0, 1, 2] }
+    },
+    {
+      "caption": "Search the whole range. The trick: at any midpoint, one side is still in sorted order.",
+      "visual": { "type": "array", "cells": [4, 5, 6, 7, 0, 1, 2], "pointers": [{ "label": "lo", "index": 0 }, { "label": "hi", "index": 6 }], "highlights": [{ "range": [0, 6], "state": "active" }] }
+    },
+    {
+      "caption": "Mid is 7. The left side [4,5,6,7] is sorted. Is 0 within [4, 7]? No — so search the right side.",
+      "visual": { "type": "array", "cells": [4, 5, 6, 7, 0, 1, 2], "pointers": [{ "label": "lo", "index": 0 }, { "label": "mid", "index": 3 }, { "label": "hi", "index": 6 }], "highlights": [{ "range": [0, 3], "state": "active" }, { "index": 3, "state": "compare" }] }
+    },
+    {
+      "caption": "New range [4, 6]: values 0, 1, 2 — back in order.",
+      "visual": { "type": "array", "cells": [4, 5, 6, 7, 0, 1, 2], "pointers": [{ "label": "lo", "index": 4 }, { "label": "hi", "index": 6 }], "highlights": [{ "range": [4, 6], "state": "active" }] }
+    },
+    {
+      "caption": "Mid is 1. The left side [0,1] is sorted and 0 falls in [0, 1) — so search left.",
+      "visual": { "type": "array", "cells": [4, 5, 6, 7, 0, 1, 2], "pointers": [{ "label": "lo", "index": 4 }, { "label": "mid", "index": 5 }, { "label": "hi", "index": 6 }], "highlights": [{ "index": 5, "state": "compare" }] }
+    },
+    {
+      "caption": "Range collapses to index 4 — value 0. Found!",
+      "visual": { "type": "array", "cells": [4, 5, 6, 7, 0, 1, 2], "pointers": [{ "label": "mid", "index": 4 }], "highlights": [{ "index": 4, "state": "done" }] }
+    }
+  ]
+}
