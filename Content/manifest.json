@@ -133,6 +133,27 @@
             { "id": "maximum-subarray", "title": "Maximum Subarray", "difficulty": "medium", "file": "dsa/kadane/maximum-subarray.json" },
             { "id": "maximum-product-subarray", "title": "Maximum Product Subarray", "difficulty": "medium", "file": "dsa/kadane/maximum-product-subarray.json" }
           ]
+        },
+        {
+          "id": "stack",
+          "title": "Stack",
+          "icon": "square.stack.3d.up",
+          "overview": {
+            "tagline": "Use a last-in-first-out pile to track what you've seen but haven't resolved yet.",
+            "whenToUse": [
+              "You process items in order but resolve them in reverse (matching, nesting).",
+              "You need the most recent unmatched or unresolved item, fast.",
+              "You're matching brackets, evaluating expressions, or finding a nearest greater/smaller element.",
+              "A monotonic stack can answer 'nearest bigger/smaller' in O(n)."
+            ],
+            "keyIdea": "Push items as you go and pop when the top is resolved. Because the top is always the most recent item, a stack answers nesting and 'nearest previous' questions in one O(n) pass. Here the highlighted cells stand in for what's currently on the stack.",
+            "complexity": "O(n) time, O(n) space"
+          },
+          "lessons": [
+            { "id": "valid-parentheses", "title": "Valid Parentheses", "difficulty": "easy", "file": "dsa/stack/valid-parentheses.json" },
+            { "id": "min-stack", "title": "Min Stack", "difficulty": "medium", "file": "dsa/stack/min-stack.json" },
+            { "id": "daily-temperatures", "title": "Daily Temperatures", "difficulty": "medium", "file": "dsa/stack/daily-temperatures.json" }
+          ]
         }
       ]
     }

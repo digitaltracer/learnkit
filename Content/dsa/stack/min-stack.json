@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "min-stack",
+  "subject": "dsa",
+  "title": "Min Stack",
+  "track": "stack",
+  "difficulty": "medium",
+  "summary": "A normal stack, except each entry also records the smallest value at or below it. getMin just reads the top entry's record — no scanning.",
+  "problem": "Design a stack that also returns its minimum value in O(1) at any time.",
+  "example": { "input": "push 5, push 3, push 7, getMin", "output": "3" },
+  "steps": [
+    {
+      "caption": "Push 5. The stack is [5] and the min is 5. Tag this entry with min = 5 (the highlighted cell marks the current min).",
+      "visual": { "type": "array", "cells": [5], "pointers": [{ "label": "top", "index": 0 }], "highlights": [{ "index": 0, "state": "match" }] }
+    },
+    {
+      "caption": "Push 3 — smaller, so the new min is 3. Tag this entry with min = 3.",
+      "visual": { "type": "array", "cells": [5, 3], "pointers": [{ "label": "top", "index": 1 }], "highlights": [{ "index": 1, "state": "match" }] }
+    },
+    {
+      "caption": "Push 7. The min stays 3, so 7's entry is tagged min = 3 too.",
+      "visual": { "type": "array", "cells": [5, 3, 7], "pointers": [{ "label": "top", "index": 2 }], "highlights": [{ "index": 1, "state": "match" }] }
+    },
+    {
+      "caption": "getMin? Read the min tagged on the top entry: 3. No scanning.",
+      "visual": { "type": "array", "cells": [5, 3, 7], "pointers": [{ "label": "top", "index": 2 }], "highlights": [{ "index": 1, "state": "match" }] }
+    },
+    {
+      "caption": "Pop removes 7. The new top is 3, tagged min 3 — getMin is still instant.",
+      "visual": { "type": "array", "cells": [5, 3], "pointers": [{ "label": "top", "index": 1 }], "highlights": [{ "index": 1, "state": "match" }] }
+    },
+    {
+      "caption": "Because each entry carries its own min, push, pop, and getMin are all O(1).",
+      "visual": { "type": "array", "cells": [5, 3], "highlights": [{ "index": 1, "state": "done" }] }
+    }
+  ]
+}

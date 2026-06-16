@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "valid-parentheses",
+  "subject": "dsa",
+  "track": "stack",
+  "title": "Valid Parentheses",
+  "difficulty": "easy",
+  "summary": "Push every opener onto a stack. On a closer, the top must be the matching opener — pop it. Valid means every closer matched and the stack ends empty.",
+  "problem": "Return true if every opening bracket is closed by the correct type, in the right order.",
+  "example": { "input": "\"([])\"", "output": "true" },
+  "steps": [
+    {
+      "caption": "Every opener must be closed by the right kind, in the right order. A stack tracks the open ones (highlighted).",
+      "visual": { "type": "array", "cells": ["(", "[", "]", ")"] }
+    },
+    {
+      "caption": "'(' opens — push it onto the stack.",
+      "visual": { "type": "array", "cells": ["(", "[", "]", ")"], "pointers": [{ "label": "i", "index": 0 }], "highlights": [{ "index": 0, "state": "active" }] }
+    },
+    {
+      "caption": "'[' opens — push it too. On the stack: ( and [.",
+      "visual": { "type": "array", "cells": ["(", "[", "]", ")"], "pointers": [{ "label": "i", "index": 1 }], "highlights": [{ "range": [0, 1], "state": "active" }] }
+    },
+    {
+      "caption": "']' closes. The top is '[' — a match, so pop it.",
+      "visual": { "type": "array", "cells": ["(", "[", "]", ")"], "pointers": [{ "label": "i", "index": 2 }], "highlights": [{ "index": 0, "state": "active" }, { "index": 1, "state": "match" }, { "index": 2, "state": "match" }] }
+    },
+    {
+      "caption": "')' closes. The top is now '(' — a match, so pop it. The stack is empty.",
+      "visual": { "type": "array", "cells": ["(", "[", "]", ")"], "pointers": [{ "label": "i", "index": 3 }], "highlights": [{ "index": 0, "state": "match" }, { "index": 1, "state": "match" }, { "index": 2, "state": "match" }, { "index": 3, "state": "match" }] }
+    },
+    {
+      "caption": "Every bracket matched and the stack emptied — the string is valid. A wrong type or a leftover opener would make it false.",
+      "visual": { "type": "array", "cells": ["(", "[", "]", ")"], "highlights": [{ "range": [0, 3], "state": "done" }] }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "daily-temperatures",
+  "subject": "dsa",
+  "track": "stack",
+  "title": "Daily Temperatures",
+  "difficulty": "medium",
+  "summary": "Keep a stack of days still waiting for a warmer one. Each new day pops every colder day it beats, recording the gap — so each day is pushed and popped once.",
+  "problem": "For each day, how many days until a warmer temperature? Answer 0 if none comes.",
+  "example": { "input": "[73, 74, 71, 72, 76]", "output": "[1, 3, 1, 1, 0]" },
+  "steps": [
+    {
+      "caption": "For each day, how many days until it gets warmer? Keep a stack of days still waiting (highlighted).",
+      "visual": { "type": "array", "cells": [73, 74, 71, 72, 76] }
+    },
+    {
+      "caption": "Day 0 (73) has no warmer day yet — push it; it waits.",
+      "visual": { "type": "array", "cells": [73, 74, 71, 72, 76], "pointers": [{ "label": "i", "index": 0 }], "highlights": [{ "index": 0, "state": "active" }] }
+    },
+    {
+      "caption": "Day 1 (74) is warmer than day 0. Day 0 waited 1 day. Day 1 now waits.",
+      "visual": { "type": "array", "cells": [73, 74, 71, 72, 76], "pointers": [{ "label": "i", "index": 1 }], "highlights": [{ "index": 0, "state": "match" }, { "index": 1, "state": "active" }] }
+    },
+    {
+      "caption": "Day 2 (71) isn't warmer than day 1, so it waits too. Waiting: days 1 and 2.",
+      "visual": { "type": "array", "cells": [73, 74, 71, 72, 76], "pointers": [{ "label": "i", "index": 2 }], "highlights": [{ "index": 1, "state": "active" }, { "index": 2, "state": "active" }] }
+    },
+    {
+      "caption": "Day 3 (72) beats day 2 (71): day 2 waited 1 day. But 72 < day 1's 74, so day 1 keeps waiting. Day 3 waits.",
+      "visual": { "type": "array", "cells": [73, 74, 71, 72, 76], "pointers": [{ "label": "i", "index": 3 }], "highlights": [{ "index": 1, "state": "active" }, { "index": 2, "state": "match" }, { "index": 3, "state": "active" }] }
+    },
+    {
+      "caption": "Day 4 (76) beats day 3 (72): 1 day. It also beats day 1 (74): day 1 waited 3 days. Day 4 waits.",
+      "visual": { "type": "array", "cells": [73, 74, 71, 72, 76], "pointers": [{ "label": "i", "index": 4 }], "highlights": [{ "index": 1, "state": "match" }, { "index": 3, "state": "match" }, { "index": 4, "state": "active" }] }
+    },
+    {
+      "caption": "Day 4 never sees a warmer day, so its answer is 0. Final: [1, 3, 1, 1, 0].",
+      "visual": { "type": "array", "cells": [73, 74, 71, 72, 76], "highlights": [{ "index": 4, "state": "mismatch" }] }
+    }
+  ]
+}
