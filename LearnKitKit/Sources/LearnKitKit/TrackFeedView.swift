@@ -35,23 +35,33 @@ struct TrackFeedView: View {
     }
 
     private var feed: some View {
-        ScrollView(.vertical) {
-            LazyVStack(spacing: 0) {
-                if let overview = track.overview {
-                    OverviewPage(track: track, overview: overview)
-                        .containerRelativeFrame([.horizontal, .vertical])
-                        .clipped()
+        // Size each page to the SAME measured area that the ScrollView pages over.
+        // Using containerRelativeFrame here instead would make pages the safe-area
+        // height while the paging stride uses the full height — leaving the next
+        // page's top (a difficulty badge) peeking into the bottom safe-area band.
+        GeometryReader { proxy in
+            ScrollView(.vertical) {
+                LazyVStack(spacing: 0) {
+                    if let overview = track.overview {
+                        page(OverviewPage(track: track, overview: overview), size: proxy.size)
+                    }
+                    ForEach(Array(lessons.enumerated()), id: \.element.id) { index, lesson in
+                        page(LessonPage(lesson: lesson, hasNext: index < lessons.count - 1), size: proxy.size)
+                    }
                 }
-                ForEach(Array(lessons.enumerated()), id: \.element.id) { index, lesson in
-                    LessonPage(lesson: lesson, hasNext: index < lessons.count - 1)
-                        .containerRelativeFrame([.horizontal, .vertical])
-                        .clipped()
-                }
+                .scrollTargetLayout()
             }
-            .scrollTargetLayout()
+            .scrollTargetBehavior(.paging)
+            .scrollIndicators(.hidden)
         }
-        .scrollTargetBehavior(.paging)
-        .scrollIndicators(.hidden)
+    }
+
+    /// One feed page, framed to exactly the viewport so the paging stride and the
+    /// page height always match — and clipped as a backstop against inner overflow.
+    private func page(_ content: some View, size: CGSize) -> some View {
+        content
+            .frame(width: size.width, height: size.height)
+            .clipped()
     }
 }
 
