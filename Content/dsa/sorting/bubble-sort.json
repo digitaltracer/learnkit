@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "bubble-sort",
+  "subject": "dsa",
+  "track": "sorting",
+  "title": "Bubble Sort",
+  "difficulty": "easy",
+  "summary": "Compare each adjacent pair and swap them when they're out of order. Each pass floats the largest remaining value to the end.",
+  "problem": "Sort the array into ascending order by repeatedly swapping adjacent out-of-order pairs.",
+  "example": { "input": "[5, 1, 4, 2]", "output": "[1, 2, 4, 5]" },
+  "steps": [
+    {
+      "caption": "Bubble sort: compare each adjacent pair and swap if the left is bigger. The largest value bubbles to the end each pass.",
+      "visual": { "type": "array", "style": "bars", "cells": [5, 1, 4, 2] }
+    },
+    {
+      "caption": "Compare the first pair, 5 and 1. 5 > 1, so swap them.",
+      "visual": { "type": "array", "style": "bars", "cells": [5, 1, 4, 2], "highlights": [{ "index": 0, "state": "compare" }, { "index": 1, "state": "compare" }] }
+    },
+    {
+      "caption": "Compare 5 and 4. 5 > 4 — swap.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 5, 4, 2], "highlights": [{ "index": 1, "state": "compare" }, { "index": 2, "state": "compare" }] }
+    },
+    {
+      "caption": "Compare 5 and 2. 5 > 2 — swap. 5 has bubbled to the end; it's now in place.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 4, 5, 2], "highlights": [{ "index": 2, "state": "compare" }, { "index": 3, "state": "compare" }] }
+    },
+    {
+      "caption": "Pass 2. Compare 1 and 4: already in order, no swap.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 4, 2, 5], "highlights": [{ "index": 0, "state": "compare" }, { "index": 1, "state": "compare" }, { "index": 3, "state": "done" }] }
+    },
+    {
+      "caption": "Compare 4 and 2. 4 > 2 — swap. Now 4 settles into place.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 4, 2, 5], "highlights": [{ "index": 1, "state": "compare" }, { "index": 2, "state": "compare" }, { "index": 3, "state": "done" }] }
+    },
+    {
+      "caption": "Pass 3. Compare 1 and 2: in order. Nothing left to swap.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 2, 4, 5], "highlights": [{ "index": 0, "state": "compare" }, { "index": 1, "state": "compare" }, { "range": [2, 3], "state": "done" }] }
+    },
+    {
+      "caption": "Sorted: [1, 2, 4, 5].",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 2, 4, 5], "highlights": [{ "range": [0, 3], "state": "done" }] }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "insertion-sort",
+  "subject": "dsa",
+  "track": "sorting",
+  "title": "Insertion Sort",
+  "difficulty": "medium",
+  "summary": "Grow a sorted prefix on the left. Take each next value and slide it back until it sits in the right spot among the already-sorted values.",
+  "problem": "Sort ascending by inserting each element into its correct position among the already-sorted elements before it.",
+  "example": { "input": "[5, 1, 4, 2]", "output": "[1, 2, 4, 5]" },
+  "steps": [
+    {
+      "caption": "Insertion sort: grow a sorted prefix on the left. Take each next value and slide it back to its right spot.",
+      "visual": { "type": "array", "style": "bars", "cells": [5, 1, 4, 2] }
+    },
+    {
+      "caption": "The first element alone counts as sorted. Take 1 (index 1) to insert into the prefix.",
+      "visual": { "type": "array", "style": "bars", "cells": [5, 1, 4, 2], "pointers": [{ "label": "key", "index": 1 }], "highlights": [{ "index": 0, "state": "done" }] }
+    },
+    {
+      "caption": "1 is less than 5, so it slides to the front. Prefix: [1, 5].",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 5, 4, 2], "highlights": [{ "range": [0, 1], "state": "done" }] }
+    },
+    {
+      "caption": "Take 4 (index 2). Slide it left past 5, but stop before 1.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 5, 4, 2], "pointers": [{ "label": "key", "index": 2 }], "highlights": [{ "range": [0, 1], "state": "done" }] }
+    },
+    {
+      "caption": "4 lands between 1 and 5. Prefix: [1, 4, 5].",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 4, 5, 2], "highlights": [{ "range": [0, 2], "state": "done" }] }
+    },
+    {
+      "caption": "Take 2 (index 3). Slide it past 5 and 4, stop just after 1.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 4, 5, 2], "pointers": [{ "label": "key", "index": 3 }], "highlights": [{ "range": [0, 2], "state": "done" }] }
+    },
+    {
+      "caption": "2 lands just after 1. The array is sorted: [1, 2, 4, 5].",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 2, 4, 5], "highlights": [{ "range": [0, 3], "state": "done" }] }
+    }
+  ]
+}

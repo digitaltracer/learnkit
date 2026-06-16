@@ -71,6 +71,27 @@
             { "id": "first-bad-version", "title": "First Bad Version", "difficulty": "easy", "file": "dsa/binary-search/first-bad-version.json" },
             { "id": "search-in-rotated-sorted-array", "title": "Search in Rotated Sorted Array", "difficulty": "medium", "file": "dsa/binary-search/search-in-rotated-sorted-array.json" }
           ]
+        },
+        {
+          "id": "sorting",
+          "title": "Sorting",
+          "icon": "arrow.up.arrow.down",
+          "overview": {
+            "tagline": "Rearrange the array into order by repeatedly comparing and swapping elements.",
+            "whenToUse": [
+              "You need data in order, or sorting unlocks a simpler next step (two pointers, binary search).",
+              "The input is small enough that O(n^2) is fine, or you're learning how ordering works.",
+              "You want an in-place rearrangement with O(1) extra space.",
+              "You need a stable order — insertion and bubble keep equal elements in their original sequence."
+            ],
+            "keyIdea": "Each algorithm grows a sorted region one element at a time. Bubble floats the largest to the end each pass; selection picks the smallest and places it; insertion slides each new value back into the sorted prefix.",
+            "complexity": "O(n^2) time, O(1) space"
+          },
+          "lessons": [
+            { "id": "bubble-sort", "title": "Bubble Sort", "difficulty": "easy", "file": "dsa/sorting/bubble-sort.json" },
+            { "id": "selection-sort", "title": "Selection Sort", "difficulty": "easy", "file": "dsa/sorting/selection-sort.json" },
+            { "id": "insertion-sort", "title": "Insertion Sort", "difficulty": "medium", "file": "dsa/sorting/insertion-sort.json" }
+          ]
         }
       ]
     }
