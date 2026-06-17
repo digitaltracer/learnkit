@@ -211,6 +211,82 @@
           "lessons": [
             { "id": "reverse-linked-list", "title": "Reverse Linked List", "difficulty": "easy", "file": "dsa/linked-list/reverse-linked-list.json" }
           ]
+        },
+        {
+          "id": "graphs",
+          "title": "Graphs",
+          "icon": "point.3.connected.trianglepath.dotted",
+          "overview": {
+            "tagline": "Explore nodes and their connections with BFS or DFS, tracking what you've already visited.",
+            "whenToUse": [
+              "The data is nodes joined by edges: a network, grid, or dependency.",
+              "You're finding connectivity, shortest paths, cycles, or an ordering.",
+              "You can reach an answer by spreading out from a start node.",
+              "A grid problem is really a graph where neighbors are adjacent cells."
+            ],
+            "keyIdea": "Visit nodes from a frontier, marking each visited so you never process it twice. BFS (a queue) explores level by level; DFS (recursion or a stack) goes deep first. The visited set is what keeps cycles from looping forever.",
+            "complexity": "Typically O(V + E) time and space"
+          },
+          "lessons": [
+            { "id": "clone-graph", "title": "Clone Graph", "difficulty": "medium", "file": "dsa/graphs/clone-graph.json" }
+          ]
+        },
+        {
+          "id": "arrays-hashing",
+          "title": "Arrays & Hashing",
+          "icon": "tablecells",
+          "overview": {
+            "tagline": "Trade memory for speed: a hash map turns repeated lookups into O(1) checks.",
+            "whenToUse": [
+              "You repeatedly ask 'have I seen this value?' or 'where is it?'.",
+              "Counting frequencies, finding pairs, or de-duplicating.",
+              "A brute-force scan would be O(n^2) for the lookups.",
+              "Keys map naturally to values: number to index, char to count."
+            ],
+            "keyIdea": "Keep a map (or set) of what you've seen so each new element is one O(1) lookup plus one insert. Most array-and-hashing problems are a single pass that checks the map, then updates it.",
+            "complexity": "Typically O(n) time, O(n) space"
+          },
+          "lessons": [
+            { "id": "two-sum", "title": "Two Sum", "difficulty": "easy", "file": "dsa/arrays-hashing/two-sum.json" }
+          ]
+        },
+        {
+          "id": "intervals",
+          "title": "Intervals",
+          "icon": "calendar.day.timeline.left",
+          "overview": {
+            "tagline": "Sort by an endpoint, then sweep once, deciding overlap from neighbors.",
+            "whenToUse": [
+              "The input is ranges: time slots, segments, or [start, end] pairs.",
+              "You're merging, inserting, or counting overlaps.",
+              "After sorting, each interval only needs to look at the previous one.",
+              "You need the fewest rooms, removals, or merged ranges."
+            ],
+            "keyIdea": "Sort by start (sometimes end). Then a single left-to-right pass settles everything: two intervals overlap when the next start is at or before the current end. Sorting is what makes one comparison per interval enough.",
+            "complexity": "Typically O(n log n) time, dominated by the sort"
+          },
+          "lessons": [
+            { "id": "merge-intervals", "title": "Merge Intervals", "difficulty": "medium", "file": "dsa/intervals/merge-intervals.json" }
+          ]
+        },
+        {
+          "id": "backtracking",
+          "title": "Backtracking",
+          "icon": "arrow.triangle.turn.up.right.diamond",
+          "overview": {
+            "tagline": "Build a candidate step by step; when a choice leads nowhere, undo it and try the next.",
+            "whenToUse": [
+              "You must enumerate combinations, permutations, or subsets.",
+              "A solution is built by a sequence of choices.",
+              "You can prune: abandon a partial answer that can't possibly work.",
+              "The problem asks for 'all' valid arrangements, not just one."
+            ],
+            "keyIdea": "Explore a decision tree depth-first: make a choice, recurse, then undo it (backtrack) and try the next. Each leaf is one candidate. Pruning dead branches early is what keeps the exponential search tractable.",
+            "complexity": "Exponential in the worst case; pruning cuts it down"
+          },
+          "lessons": [
+            { "id": "subsets", "title": "Subsets", "difficulty": "medium", "file": "dsa/backtracking/subsets.json" }
+          ]
         }
       ]
     }

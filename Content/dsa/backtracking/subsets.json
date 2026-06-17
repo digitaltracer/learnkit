@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "id": "subsets",
+  "subject": "dsa",
+  "track": "backtracking",
+  "title": "Subsets",
+  "difficulty": "medium",
+  "summary": "For each element, branch two ways: include it or skip it. Every root-to-leaf path is one subset, so the leaves are all the subsets.",
+  "problem": "Return all possible subsets (the power set) of nums = [1, 2].",
+  "example": { "input": "[1, 2]", "output": "[[], [1], [2], [1,2]]" },
+  "steps": [
+    {
+      "caption": "For each number, decide: include it or skip it. Each root-to-leaf path builds one subset.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "{}", "state": "active", "pointer": "go",
+          "children": [
+            { "value": "{1}", "edge": "+1", "children": [ { "value": "{1,2}", "edge": "+2" }, { "value": "{1}", "edge": "-2" } ] },
+            { "value": "{}", "edge": "-1", "children": [ { "value": "{2}", "edge": "+2" }, { "value": "{}", "edge": "-2" } ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Include 1, then include 2. The path reaches the leaf {1, 2}.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "{}", "state": "active",
+          "children": [
+            { "value": "{1}", "edge": "+1", "state": "active", "children": [ { "value": "{1,2}", "edge": "+2", "state": "done" }, { "value": "{1}", "edge": "-2" } ] },
+            { "value": "{}", "edge": "-1", "children": [ { "value": "{2}", "edge": "+2" }, { "value": "{}", "edge": "-2" } ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Back up one step. Include 1 but skip 2, giving the leaf {1}.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "{}", "state": "active",
+          "children": [
+            { "value": "{1}", "edge": "+1", "state": "active", "children": [ { "value": "{1,2}", "edge": "+2", "state": "done" }, { "value": "{1}", "edge": "-2", "state": "done" } ] },
+            { "value": "{}", "edge": "-1", "children": [ { "value": "{2}", "edge": "+2" }, { "value": "{}", "edge": "-2" } ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Now skip 1 and include 2: the leaf {2}.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "{}", "state": "active",
+          "children": [
+            { "value": "{1}", "edge": "+1", "children": [ { "value": "{1,2}", "edge": "+2", "state": "done" }, { "value": "{1}", "edge": "-2", "state": "done" } ] },
+            { "value": "{}", "edge": "-1", "state": "active", "children": [ { "value": "{2}", "edge": "+2", "state": "done" }, { "value": "{}", "edge": "-2" } ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Skip both numbers: the empty subset {}.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "{}", "state": "active",
+          "children": [
+            { "value": "{1}", "edge": "+1", "children": [ { "value": "{1,2}", "edge": "+2", "state": "done" }, { "value": "{1}", "edge": "-2", "state": "done" } ] },
+            { "value": "{}", "edge": "-1", "state": "active", "children": [ { "value": "{2}", "edge": "+2", "state": "done" }, { "value": "{}", "edge": "-2", "state": "done" } ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Four leaves, four subsets: {}, {1}, {2}, {1, 2}. That's the power set.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "{}", "state": "done",
+          "children": [
+            { "value": "{1}", "edge": "+1", "state": "done", "children": [ { "value": "{1,2}", "edge": "+2", "state": "done" }, { "value": "{1}", "edge": "-2", "state": "done" } ] },
+            { "value": "{}", "edge": "-1", "state": "done", "children": [ { "value": "{2}", "edge": "+2", "state": "done" }, { "value": "{}", "edge": "-2", "state": "done" } ] }
+          ]
+        }
+      }
+    }
+  ]
+}

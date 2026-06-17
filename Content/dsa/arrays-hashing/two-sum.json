@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "two-sum",
+  "subject": "dsa",
+  "track": "arrays-hashing",
+  "title": "Two Sum",
+  "difficulty": "easy",
+  "summary": "Scan once, keeping a map of value to index. For each number, check the map for its complement (target - num) before storing the number itself.",
+  "problem": "Return the indices of the two numbers in nums that add up to target.",
+  "example": { "input": "nums = [2, 7, 11, 15], target = 9", "output": "[0, 1]" },
+  "steps": [
+    {
+      "caption": "For each number we need target - num. Keep a map of value to index so every lookup is O(1). Here target = 9.",
+      "visual": { "type": "hashmap" }
+    },
+    {
+      "caption": "First number is 2 (index 0). It needs 7. The map is empty, so 7 is a miss. Store 2 -> 0.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": 2, "value": 0, "state": "active" } ],
+        "probe": { "key": 7, "found": false }
+      }
+    },
+    {
+      "caption": "Next is 7 (index 1). It needs 2. Look up 2 - hit, at index 0. That's the pair.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": 2, "value": 0, "state": "match" }, { "key": 7, "value": 1 } ],
+        "probe": { "key": 2, "found": true }
+      }
+    },
+    {
+      "caption": "Found in one pass: nums[0] + nums[1] = 2 + 7 = 9. Answer: [0, 1].",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": 2, "value": 0, "state": "done" }, { "key": 7, "value": 1, "state": "done" } ]
+      }
+    }
+  ]
+}

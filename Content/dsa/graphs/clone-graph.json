@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "id": "clone-graph",
+  "subject": "dsa",
+  "track": "graphs",
+  "title": "Clone Graph",
+  "difficulty": "medium",
+  "summary": "DFS the graph, copying each node the first time you reach it and remembering the copy, so shared and cyclic neighbors reuse it instead of being copied again.",
+  "problem": "Return a deep copy of a connected undirected graph.",
+  "example": { "input": "adj = [[2,4],[1,3],[2,4],[1,3]]", "output": "an identical, independent graph" },
+  "steps": [
+    {
+      "caption": "Deep-copy the graph: every node and edge, with no node copied twice. Walk it with DFS, remembering each copy.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "1", "x": 0.25, "y": 0.18 },
+          { "id": "2", "x": 0.75, "y": 0.18 },
+          { "id": "3", "x": 0.75, "y": 0.82 },
+          { "id": "4", "x": 0.25, "y": 0.82 }
+        ],
+        "edges": [
+          { "from": "1", "to": "2" }, { "from": "2", "to": "3" },
+          { "from": "3", "to": "4" }, { "from": "4", "to": "1" }
+        ]
+      }
+    },
+    {
+      "caption": "Start a DFS at node 1. Copy it and mark it visited.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "1", "x": 0.25, "y": 0.18, "state": "active", "pointer": "cur" },
+          { "id": "2", "x": 0.75, "y": 0.18 },
+          { "id": "3", "x": 0.75, "y": 0.82 },
+          { "id": "4", "x": 0.25, "y": 0.82 }
+        ],
+        "edges": [
+          { "from": "1", "to": "2" }, { "from": "2", "to": "3" },
+          { "from": "3", "to": "4" }, { "from": "4", "to": "1" }
+        ]
+      }
+    },
+    {
+      "caption": "Recurse to neighbor 2. Copy it, then link the copies of 1 and 2.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "1", "x": 0.25, "y": 0.18, "state": "done" },
+          { "id": "2", "x": 0.75, "y": 0.18, "state": "active", "pointer": "cur" },
+          { "id": "3", "x": 0.75, "y": 0.82 },
+          { "id": "4", "x": 0.25, "y": 0.82 }
+        ],
+        "edges": [
+          { "from": "1", "to": "2", "state": "match" }, { "from": "2", "to": "3" },
+          { "from": "3", "to": "4" }, { "from": "4", "to": "1" }
+        ]
+      }
+    },
+    {
+      "caption": "From 2, recurse to neighbor 3 and copy it.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "1", "x": 0.25, "y": 0.18, "state": "done" },
+          { "id": "2", "x": 0.75, "y": 0.18, "state": "done" },
+          { "id": "3", "x": 0.75, "y": 0.82, "state": "active", "pointer": "cur" },
+          { "id": "4", "x": 0.25, "y": 0.82 }
+        ],
+        "edges": [
+          { "from": "1", "to": "2", "state": "done" }, { "from": "2", "to": "3", "state": "match" },
+          { "from": "3", "to": "4" }, { "from": "4", "to": "1" }
+        ]
+      }
+    },
+    {
+      "caption": "Recurse to 4 and copy it. Its other neighbor, 1, is already visited, so just reuse that copy.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "1", "x": 0.25, "y": 0.18, "state": "done" },
+          { "id": "2", "x": 0.75, "y": 0.18, "state": "done" },
+          { "id": "3", "x": 0.75, "y": 0.82, "state": "done" },
+          { "id": "4", "x": 0.25, "y": 0.82, "state": "active", "pointer": "cur" }
+        ],
+        "edges": [
+          { "from": "1", "to": "2", "state": "done" }, { "from": "2", "to": "3", "state": "done" },
+          { "from": "3", "to": "4", "state": "match" }, { "from": "4", "to": "1", "state": "compare" }
+        ]
+      }
+    },
+    {
+      "caption": "Every node was copied once and reconnected. The clone mirrors the original, fully independent.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "1", "x": 0.25, "y": 0.18, "state": "done" },
+          { "id": "2", "x": 0.75, "y": 0.18, "state": "done" },
+          { "id": "3", "x": 0.75, "y": 0.82, "state": "done" },
+          { "id": "4", "x": 0.25, "y": 0.82, "state": "done" }
+        ],
+        "edges": [
+          { "from": "1", "to": "2", "state": "done" }, { "from": "2", "to": "3", "state": "done" },
+          { "from": "3", "to": "4", "state": "done" }, { "from": "4", "to": "1", "state": "done" }
+        ]
+      }
+    }
+  ]
+}
