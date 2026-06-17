@@ -30,12 +30,12 @@ So each problem is tagged by what it needs before it can be authored:
 
 | Bucket | Count |
 |---|---|
-| ✅ Done | 16 / 150 |
+| ✅ Done | 17 / 150 |
 | 🟢 Buildable now (array only) | 45 |
-| 🟡 Blocked on a new primitive | 89 |
+| 🟡 Blocked on a new primitive | 88 |
 | **Total** | **150** |
 
-_Primitives shipped: `array`, `grid`, `tree`._
+_Primitives shipped: `array`, `grid`, `tree`, `list`._
 
 Reaching **59 / 150 with zero engine work** is possible — that's Phase 1.
 
@@ -200,11 +200,12 @@ _New track: 2-D Dynamic Programming (DP table)_
 
 ## Phase 4 — `list` primitive (Linked List: 10)
 
-- [ ] **Engine:** add `list` primitive — ordered nodes with `next` arrows,
-      pointer labels (slow/fast/prev/curr), optional cycle/back-edge for
-      Linked List Cycle and Copy-with-Random.
+- [x] **Engine:** add `list` primitive — fixed node row (reuses array's
+      index-addressed `Pointer`/`Highlight`), directed re-pointable `links`,
+      straight arrows for neighbors + arcs for non-adjacent (cycles),
+      `Palette.linkColor`, validator branch, schema, ADR 0007. _(2026-06-17)_
 
-- [ ] Reverse Linked List (E)
+- [x] Reverse Linked List (E) — first list lesson; prv/cur arrow-flip pass _(2026-06-17)_
 - [ ] Merge Two Sorted Lists (E)
 - [ ] Linked List Cycle (E)
 - [ ] Reorder List (M)
