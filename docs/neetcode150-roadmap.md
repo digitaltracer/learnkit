@@ -30,12 +30,14 @@ So each problem is tagged by what it needs before it can be authored:
 
 | Bucket | Count |
 |---|---|
-| ✅ Done | 17 / 150 |
+| ✅ Done | 21 / 150 |
 | 🟢 Buildable now (array only) | 45 |
-| 🟡 Blocked on a new primitive | 88 |
+| 🟡 Blocked on a new primitive | 84 |
 | **Total** | **150** |
 
-_Primitives shipped: `array`, `grid`, `tree`, `list`._
+_Primitives shipped: `array`, `grid`, `tree`, `list`, `graph`, `hashmap`, `intervals`, `rtree`._
+_All renderers the NeetCode 150 needs now exist — Heap and Tries reuse `tree`. The
+rest is largely authoring (chore-work), one representative already proven per primitive._
 
 Reaching **59 / 150 with zero engine work** is possible — that's Phase 1.
 
@@ -218,12 +220,12 @@ _New track: 2-D Dynamic Programming (DP table)_
 
 ## Phase 5 — `graph` primitive (Graphs + Advanced Graphs: 12)
 
-- [ ] **Engine:** add `graph` primitive — nodes, edges (directed flag, optional
-      weight), per-node/edge highlights, adjacency emphasis. Consider a simple
-      auto-layout or explicit node positions in the spec.
+- [x] **Engine:** add `graph` primitive — explicit normalized node positions
+      (no auto-layout), edges referencing node ids, directed (computed
+      arrowheads) + weighted, per-node/edge highlights, ADR 0008. _(2026-06-17)_
 
 _Graphs_
-- [ ] Clone Graph (M)
+- [x] Clone Graph (M) — first graph lesson; DFS visit/clone _(2026-06-17)_
 - [ ] Course Schedule (M)
 - [ ] Course Schedule II (M)
 - [ ] Graph Valid Tree (M)
@@ -240,10 +242,10 @@ _Advanced Graphs (weighted / topological)_
 
 ## Phase 6 — `hashmap` primitive (Arrays & Hashing remainder: 6)
 
-- [ ] **Engine:** add `hashmap` primitive — key→value rows (or a set),
-      highlight on lookup/insert/collision.
+- [x] **Engine:** add `hashmap` primitive — key->value rows + optional lookup
+      `probe` with hit/miss, ADR 0008. _(2026-06-17)_
 
-- [ ] Two Sum (E)
+- [x] Two Sum (E) — first hashmap lesson; complement lookup _(2026-06-17)_
 - [ ] Group Anagrams (M)
 - [ ] Top K Frequent Elements (M) — pairs with bucket/`heap`
 - [ ] Longest Consecutive Sequence (M)
@@ -268,8 +270,9 @@ view is too much.
 - [ ] Find Median from Data Stream (H) — two heaps
 
 **`rtree` primitive (Backtracking: 7)** — decision tree with prune highlights.
-- [ ] **Engine:** `rtree` primitive
-- [ ] Subsets (M)
+- [x] **Engine:** `rtree` primitive — n-ary decision tree, post-order layout,
+      edge choice labels, ADR 0008. _(2026-06-17)_
+- [x] Subsets (M) — first rtree lesson; include/skip decision tree _(2026-06-17)_
 - [ ] Combination Sum (M)
 - [ ] Combination Sum II (M)
 - [ ] Permutations (M)
@@ -278,9 +281,10 @@ view is too much.
 - [ ] Letter Combinations of a Phone Number (M)
 
 **`intervals` primitive (Intervals: 6)** — bars on a shared timeline.
-- [ ] **Engine:** `intervals` primitive
+- [x] **Engine:** `intervals` primitive — bars on a shared time axis, auto or
+      pinned bounds, ADR 0008. _(2026-06-17)_
 - [ ] Insert Interval (M)
-- [ ] Merge Intervals (M)
+- [x] Merge Intervals (M) — first intervals lesson; sorted overlap sweep _(2026-06-17)_
 - [ ] Non-overlapping Intervals (M)
 - [ ] Meeting Rooms (E)
 - [ ] Meeting Rooms II (M)
