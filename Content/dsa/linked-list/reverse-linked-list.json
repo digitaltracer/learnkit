@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "id": "reverse-linked-list",
+  "subject": "dsa",
+  "track": "linked-list",
+  "title": "Reverse Linked List",
+  "difficulty": "easy",
+  "summary": "Walk the list once with two pointers, flipping each node's next-arrow to point at the node behind it.",
+  "problem": "Given the head of a singly linked list, reverse it and return the new head.",
+  "example": { "input": "1 -> 2 -> 3 -> 4 -> null", "output": "4 -> 3 -> 2 -> 1 -> null" },
+  "steps": [
+    {
+      "caption": "Reverse the list so it runs back to front. Walk it once, flipping each node's arrow as you go.",
+      "visual": { "type": "list", "nodes": [1, 2, 3, 4] }
+    },
+    {
+      "caption": "Keep two pointers. prv starts as null, cur at the head. We'll repoint cur's arrow to prv.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4],
+        "links": [[0, 1], [1, 2], [2, 3]],
+        "pointers": [{ "label": "cur", "index": 0 }],
+        "highlights": [{ "index": 0, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Point node 1 at null (it becomes the tail). Then advance: prv = 1, cur = 2.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4],
+        "links": [[1, 2], [2, 3]],
+        "pointers": [{ "label": "prv", "index": 0 }, { "label": "cur", "index": 1 }],
+        "highlights": [{ "index": 0, "state": "done" }, { "index": 1, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Flip node 2's arrow back to 1. Advance: prv = 2, cur = 3.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4],
+        "links": [[1, 0], [2, 3]],
+        "pointers": [{ "label": "prv", "index": 1 }, { "label": "cur", "index": 2 }],
+        "highlights": [{ "range": [0, 1], "state": "done" }, { "index": 2, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Flip node 3's arrow back to 2. Advance: prv = 3, cur = 4.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4],
+        "links": [[1, 0], [2, 1]],
+        "pointers": [{ "label": "prv", "index": 2 }, { "label": "cur", "index": 3 }],
+        "highlights": [{ "range": [0, 2], "state": "done" }, { "index": 3, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Flip node 4 back to 3. cur runs off the end, so prv = 4 is the new head. Reversed: 4 -> 3 -> 2 -> 1.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4],
+        "links": [[1, 0], [2, 1], [3, 2]],
+        "highlights": [{ "range": [0, 3], "state": "done" }]
+      }
+    }
+  ]
+}

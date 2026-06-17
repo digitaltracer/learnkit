@@ -192,6 +192,25 @@
           "lessons": [
             { "id": "invert-binary-tree", "title": "Invert Binary Tree", "difficulty": "easy", "file": "dsa/trees/invert-binary-tree.json" }
           ]
+        },
+        {
+          "id": "linked-list",
+          "title": "Linked List",
+          "icon": "point.topleft.down.to.point.bottomright.curvepath",
+          "overview": {
+            "tagline": "Walk a chain of nodes with a few pointers, rewiring next-arrows as you go.",
+            "whenToUse": [
+              "The data is a chain of nodes, each pointing to the next.",
+              "You're reversing, merging, reordering, or detecting a cycle.",
+              "A couple of pointers (prev, curr, fast/slow) carry the whole solution.",
+              "You want O(1) extra space by re-pointing links instead of copying."
+            ],
+            "keyIdea": "Most list problems are a single pass with two or three pointers. The moves are always the same kit: save next, repoint a link, advance the pointers. The trick is doing it in the right order so you never lose the rest of the list.",
+            "complexity": "Typically O(n) time, O(1) space"
+          },
+          "lessons": [
+            { "id": "reverse-linked-list", "title": "Reverse Linked List", "difficulty": "easy", "file": "dsa/linked-list/reverse-linked-list.json" }
+          ]
         }
       ]
     }
