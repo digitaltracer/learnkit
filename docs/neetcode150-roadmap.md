@@ -30,12 +30,12 @@ So each problem is tagged by what it needs before it can be authored:
 
 | Bucket | Count |
 |---|---|
-| ✅ Done | 15 / 150 |
+| ✅ Done | 16 / 150 |
 | 🟢 Buildable now (array only) | 45 |
-| 🟡 Blocked on a new primitive | 90 |
+| 🟡 Blocked on a new primitive | 89 |
 | **Total** | **150** |
 
-_Primitives shipped: `array`, `grid`._
+_Primitives shipped: `array`, `grid`, `tree`._
 
 Reaching **59 / 150 with zero engine work** is possible — that's Phase 1.
 
@@ -177,11 +177,12 @@ _New track: 2-D Dynamic Programming (DP table)_
 
 ## Phase 3 — `tree` primitive (Trees: 15)
 
-- [ ] **Engine:** add `tree` primitive — node values, left/right children,
-      pointer (current node), highlights, niceties for null children. Reused
-      later by `heap` and `trie`.
+- [x] **Engine:** add `tree` primitive — recursive `TreeNode` (final class),
+      inline per-node `state`/`pointer` (no linear index to address), in-order
+      layout in `TreeVisualView`, validator branch, schema recursion, ADR 0006.
+      Reused later by `heap` and `trie`. _(2026-06-17)_
 
-- [ ] Invert Binary Tree (E)
+- [x] Invert Binary Tree (E) — first tree lesson; recursive child swap _(2026-06-17)_
 - [ ] Maximum Depth of Binary Tree (E)
 - [ ] Diameter of Binary Tree (E)
 - [ ] Balanced Binary Tree (E)
