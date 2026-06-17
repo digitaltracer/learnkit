@@ -154,6 +154,25 @@
             { "id": "min-stack", "title": "Min Stack", "difficulty": "medium", "file": "dsa/stack/min-stack.json" },
             { "id": "daily-temperatures", "title": "Daily Temperatures", "difficulty": "medium", "file": "dsa/stack/daily-temperatures.json" }
           ]
+        },
+        {
+          "id": "math-geometry",
+          "title": "Math & Geometry",
+          "icon": "square.grid.3x3",
+          "overview": {
+            "tagline": "Manipulate numbers and matrices directly, with careful index bookkeeping rather than a fancy data structure.",
+            "whenToUse": [
+              "The problem is a 2-D grid you traverse, rotate, or mark in place.",
+              "It's digit or coordinate arithmetic, not a data-structure trick.",
+              "An in-place, O(1) extra-space rearrangement is expected.",
+              "Boundary-by-boundary or layer-by-layer movement solves it."
+            ],
+            "keyIdea": "Most of these come down to index discipline: track boundaries (top, bottom, left, right) or coordinates exactly and update them as you consume the grid. The challenge is the bookkeeping, not a clever structure.",
+            "complexity": "Typically O(m x n) time"
+          },
+          "lessons": [
+            { "id": "spiral-matrix", "title": "Spiral Matrix", "difficulty": "medium", "file": "dsa/math-geometry/spiral-matrix.json" }
+          ]
         }
       ]
     }

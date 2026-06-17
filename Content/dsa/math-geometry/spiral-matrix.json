@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "id": "spiral-matrix",
+  "subject": "dsa",
+  "track": "math-geometry",
+  "title": "Spiral Matrix",
+  "difficulty": "medium",
+  "summary": "Peel the matrix like an onion: walk the top row, then the right column, the bottom row, the left column, then step inward and repeat.",
+  "problem": "Return all elements of an m x n matrix in spiral order.",
+  "example": { "input": "[[1,2,3],[4,5,6],[7,8,9]]", "output": "[1,2,3,6,9,8,7,4,5]" },
+  "steps": [
+    {
+      "caption": "Read the matrix in spiral order: right across the top, down the right side, left along the bottom, up the left, then inward.",
+      "visual": { "type": "grid", "rows": [[1, 2, 3], [4, 5, 6], [7, 8, 9]] }
+    },
+    {
+      "caption": "Walk the top row left to right: 1, 2, 3.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+        "pointers": [{ "label": "cur", "row": 0, "col": 2 }],
+        "highlights": [{ "rows": [0, 0], "cols": [0, 2], "state": "active" }]
+      }
+    },
+    {
+      "caption": "Turn the corner and go down the right column: 6, then 9.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+        "pointers": [{ "label": "cur", "row": 2, "col": 2 }],
+        "highlights": [
+          { "rows": [0, 0], "cols": [0, 2], "state": "done" },
+          { "rows": [1, 2], "cols": [2, 2], "state": "active" }
+        ]
+      }
+    },
+    {
+      "caption": "Turn again, left across the bottom row: 8, then 7.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+        "pointers": [{ "label": "cur", "row": 2, "col": 0 }],
+        "highlights": [
+          { "rows": [0, 0], "cols": [0, 2], "state": "done" },
+          { "rows": [1, 2], "cols": [2, 2], "state": "done" },
+          { "rows": [2, 2], "cols": [0, 1], "state": "active" }
+        ]
+      }
+    },
+    {
+      "caption": "Turn up the left column. Only 4 is left on this side.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+        "pointers": [{ "label": "cur", "row": 1, "col": 0 }],
+        "highlights": [
+          { "rows": [0, 0], "cols": [0, 2], "state": "done" },
+          { "rows": [1, 2], "cols": [2, 2], "state": "done" },
+          { "rows": [2, 2], "cols": [0, 1], "state": "done" },
+          { "row": 1, "col": 0, "state": "active" }
+        ]
+      }
+    },
+    {
+      "caption": "The outer ring is done. Step inward: only the center, 5, remains.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+        "pointers": [{ "label": "cur", "row": 1, "col": 1 }],
+        "highlights": [
+          { "rows": [0, 0], "cols": [0, 2], "state": "done" },
+          { "rows": [1, 2], "cols": [2, 2], "state": "done" },
+          { "rows": [2, 2], "cols": [0, 1], "state": "done" },
+          { "row": 1, "col": 0, "state": "done" },
+          { "row": 1, "col": 1, "state": "active" }
+        ]
+      }
+    },
+    {
+      "caption": "Every cell visited once, in spiral order: [1, 2, 3, 6, 9, 8, 7, 4, 5].",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+        "highlights": [{ "rows": [0, 2], "cols": [0, 2], "state": "done" }]
+      }
+    }
+  ]
+}
