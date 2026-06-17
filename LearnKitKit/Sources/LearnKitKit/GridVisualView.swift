@@ -9,10 +9,14 @@ struct VisualView: View {
 
     var body: some View {
         switch visual {
-        case .array(let v): ArrayVisualView(visual: v, palette: palette)
-        case .grid(let v):  GridVisualView(visual: v, palette: palette)
-        case .tree(let v):  TreeVisualView(visual: v, palette: palette)
-        case .list(let v):  ListVisualView(visual: v, palette: palette)
+        case .array(let v):     ArrayVisualView(visual: v, palette: palette)
+        case .grid(let v):      GridVisualView(visual: v, palette: palette)
+        case .tree(let v):      TreeVisualView(visual: v, palette: palette)
+        case .list(let v):      ListVisualView(visual: v, palette: palette)
+        case .graph(let v):     GraphVisualView(visual: v, palette: palette)
+        case .hashmap(let v):   HashMapVisualView(visual: v, palette: palette)
+        case .intervals(let v): IntervalsVisualView(visual: v, palette: palette)
+        case .rtree(let v):     RTreeVisualView(visual: v, palette: palette)
         }
     }
 }

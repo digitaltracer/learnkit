@@ -79,6 +79,10 @@ enum Visual: Codable, Equatable, Sendable {
     case grid(GridVisual)
     case tree(TreeVisual)
     case list(ListVisual)
+    case graph(GraphVisual)
+    case hashmap(HashMapVisual)
+    case intervals(IntervalsVisual)
+    case rtree(RTreeVisual)
 
     private enum TypeKey: String, CodingKey { case type }
 
@@ -86,23 +90,31 @@ enum Visual: Codable, Equatable, Sendable {
         let c = try decoder.container(keyedBy: TypeKey.self)
         let type = try c.decode(String.self, forKey: .type)
         switch type {
-        case "array": self = .array(try ArrayVisual(from: decoder))
-        case "grid":  self = .grid(try GridVisual(from: decoder))
-        case "tree":  self = .tree(try TreeVisual(from: decoder))
-        case "list":  self = .list(try ListVisual(from: decoder))
+        case "array":     self = .array(try ArrayVisual(from: decoder))
+        case "grid":      self = .grid(try GridVisual(from: decoder))
+        case "tree":      self = .tree(try TreeVisual(from: decoder))
+        case "list":      self = .list(try ListVisual(from: decoder))
+        case "graph":     self = .graph(try GraphVisual(from: decoder))
+        case "hashmap":   self = .hashmap(try HashMapVisual(from: decoder))
+        case "intervals": self = .intervals(try IntervalsVisual(from: decoder))
+        case "rtree":     self = .rtree(try RTreeVisual(from: decoder))
         default:
             throw DecodingError.dataCorruptedError(
                 forKey: .type, in: c,
-                debugDescription: "Unknown visual type '\(type)'. Known types: array, grid, tree, list.")
+                debugDescription: "Unknown visual type '\(type)'. Known types: array, grid, tree, list, graph, hashmap, intervals, rtree.")
         }
     }
 
     func encode(to encoder: Encoder) throws {
         switch self {
-        case .array(let v): try v.encode(to: encoder)
-        case .grid(let v):  try v.encode(to: encoder)
-        case .tree(let v):  try v.encode(to: encoder)
-        case .list(let v):  try v.encode(to: encoder)
+        case .array(let v):     try v.encode(to: encoder)
+        case .grid(let v):      try v.encode(to: encoder)
+        case .tree(let v):      try v.encode(to: encoder)
+        case .list(let v):      try v.encode(to: encoder)
+        case .graph(let v):     try v.encode(to: encoder)
+        case .hashmap(let v):   try v.encode(to: encoder)
+        case .intervals(let v): try v.encode(to: encoder)
+        case .rtree(let v):     try v.encode(to: encoder)
         }
     }
 }
@@ -347,6 +359,190 @@ struct ListVisual: Codable, Equatable, Sendable {
     func highlightState(for index: Int) -> HighlightState? {
         for h in highlights where h.covers(index) { return h.state }
         return nil
+    }
+}
+
+// MARK: - Visual: the `graph` Primitive
+
+/// A general graph. Nodes carry explicit normalized positions (x,y in 0...1) so
+/// the renderer is deterministic — no auto-layout. Edges reference node `id`s and
+/// may be directed and/or weighted.
+struct GraphVisual: Codable, Equatable, Sendable {
+    let type: String
+    let nodes: [GraphNode]
+    let edges: [GraphEdge]
+
+    enum CodingKeys: String, CodingKey { case type, nodes, edges }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        type = try c.decode(String.self, forKey: .type)
+        nodes = try c.decode([GraphNode].self, forKey: .nodes)
+        edges = try c.decodeIfPresent([GraphEdge].self, forKey: .edges) ?? []
+    }
+
+    init(type: String = "graph", nodes: [GraphNode], edges: [GraphEdge] = []) {
+        self.type = type
+        self.nodes = nodes
+        self.edges = edges
+    }
+
+    func node(id: String) -> GraphNode? { nodes.first { $0.id == id } }
+}
+
+struct GraphNode: Codable, Equatable, Sendable {
+    let id: String
+    let value: CellValue?
+    let x: Double
+    let y: Double
+    let state: HighlightState?
+    let pointer: String?
+
+    /// What to draw inside the node — its `value` if given, else its `id`.
+    var display: String { value?.display ?? id }
+}
+
+struct GraphEdge: Codable, Equatable, Sendable {
+    let from: String
+    let to: String
+    let directed: Bool?
+    let weight: CellValue?
+    let state: HighlightState?
+}
+
+// MARK: - Visual: the `hashmap` Primitive
+
+/// A key -> value map (or set). Rows are drawn in insertion order; an optional
+/// `probe` shows a lookup in progress and whether it hit.
+struct HashMapVisual: Codable, Equatable, Sendable {
+    let type: String
+    let entries: [HashEntry]
+    let probe: HashProbe?
+
+    enum CodingKeys: String, CodingKey { case type, entries, probe }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        type = try c.decode(String.self, forKey: .type)
+        entries = try c.decodeIfPresent([HashEntry].self, forKey: .entries) ?? []
+        probe = try c.decodeIfPresent(HashProbe.self, forKey: .probe)
+    }
+
+    init(type: String = "hashmap", entries: [HashEntry] = [], probe: HashProbe? = nil) {
+        self.type = type
+        self.entries = entries
+        self.probe = probe
+    }
+}
+
+struct HashEntry: Codable, Equatable, Sendable {
+    let key: CellValue
+    let value: CellValue
+    let state: HighlightState?
+}
+
+/// A lookup being performed against the map. `found` colors it as a hit or miss.
+struct HashProbe: Codable, Equatable, Sendable {
+    let key: CellValue
+    let found: Bool?
+}
+
+// MARK: - Visual: the `intervals` Primitive
+
+/// Intervals drawn as horizontal bars on a shared time axis, one per row.
+struct IntervalsVisual: Codable, Equatable, Sendable {
+    let type: String
+    let rows: [IntervalRow]
+    let axisMin: Double?
+    let axisMax: Double?
+
+    enum CodingKeys: String, CodingKey { case type, rows, axisMin, axisMax }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        type = try c.decode(String.self, forKey: .type)
+        rows = try c.decode([IntervalRow].self, forKey: .rows)
+        axisMin = try c.decodeIfPresent(Double.self, forKey: .axisMin)
+        axisMax = try c.decodeIfPresent(Double.self, forKey: .axisMax)
+    }
+
+    init(type: String = "intervals", rows: [IntervalRow], axisMin: Double? = nil, axisMax: Double? = nil) {
+        self.type = type
+        self.rows = rows
+        self.axisMin = axisMin
+        self.axisMax = axisMax
+    }
+
+    var lowerBound: Double { axisMin ?? min(rows.map(\.start).min() ?? 0, 0) }
+    var upperBound: Double {
+        let hi = axisMax ?? (rows.map(\.end).max() ?? 1)
+        return hi > lowerBound ? hi : lowerBound + 1
+    }
+}
+
+struct IntervalRow: Codable, Equatable, Sendable {
+    let start: Double
+    let end: Double
+    let label: String?
+    let state: HighlightState?
+}
+
+// MARK: - Visual: the `rtree` Primitive (recursion / decision tree)
+
+/// An n-ary decision tree — for backtracking. Each node is a partial state; the
+/// `edge` label is the choice that reached it from its parent.
+struct RTreeVisual: Codable, Equatable, Sendable {
+    let type: String
+    let root: RNode?
+
+    enum CodingKeys: String, CodingKey { case type, root }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        type = try c.decode(String.self, forKey: .type)
+        root = try c.decodeIfPresent(RNode.self, forKey: .root)
+    }
+
+    init(type: String = "rtree", root: RNode?) {
+        self.type = type
+        self.root = root
+    }
+}
+
+/// One decision-tree node. Recursive, so a `final class` (like `TreeNode`).
+final class RNode: Codable, Equatable, Sendable {
+    let value: CellValue
+    let edge: String?
+    let state: HighlightState?
+    let pointer: String?
+    let children: [RNode]
+
+    init(value: CellValue,
+         edge: String? = nil,
+         state: HighlightState? = nil,
+         pointer: String? = nil,
+         children: [RNode] = []) {
+        self.value = value
+        self.edge = edge
+        self.state = state
+        self.pointer = pointer
+        self.children = children
+    }
+
+    enum CodingKeys: String, CodingKey { case value, edge, state, pointer, children }
+
+    required init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        value = try c.decode(CellValue.self, forKey: .value)
+        edge = try c.decodeIfPresent(String.self, forKey: .edge)
+        state = try c.decodeIfPresent(HighlightState.self, forKey: .state)
+        pointer = try c.decodeIfPresent(String.self, forKey: .pointer)
+        children = try c.decodeIfPresent([RNode].self, forKey: .children) ?? []
+    }
+
+    static func == (lhs: RNode, rhs: RNode) -> Bool {
+        lhs.value == rhs.value && lhs.edge == rhs.edge && lhs.state == rhs.state
+            && lhs.pointer == rhs.pointer && lhs.children == rhs.children
     }
 }
 

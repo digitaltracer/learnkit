@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "LearnKit Lesson",
-  "description": "One self-contained Lesson: an ordered sequence of snapshot Steps. Each Step's `visual` is one Primitive, chosen by its `type`: `array`, `grid`, `tree`, or `list`.",
+  "description": "One self-contained Lesson: an ordered sequence of snapshot Steps. Each Step's `visual` is one Primitive, chosen by its `type`: `array`, `grid`, `tree`, `list`, `graph`, `hashmap`, `intervals`, or `rtree`.",
   "type": "object",
   "required": ["schemaVersion", "id", "subject", "track", "title", "steps"],
   "additionalProperties": false,
@@ -45,7 +45,11 @@
             { "$ref": "#/$defs/arrayVisual" },
             { "$ref": "#/$defs/gridVisual" },
             { "$ref": "#/$defs/treeVisual" },
-            { "$ref": "#/$defs/listVisual" }
+            { "$ref": "#/$defs/listVisual" },
+            { "$ref": "#/$defs/graphVisual" },
+            { "$ref": "#/$defs/hashmapVisual" },
+            { "$ref": "#/$defs/intervalsVisual" },
+            { "$ref": "#/$defs/rtreeVisual" }
           ]
         }
       }
@@ -212,6 +216,128 @@
             }
           }
         }
+      }
+    },
+    "graphVisual": {
+      "type": "object",
+      "required": ["type", "nodes"],
+      "additionalProperties": false,
+      "description": "A general graph. Nodes carry explicit normalized positions (x,y in 0..1). Edges reference node ids and may be directed and/or weighted.",
+      "properties": {
+        "type": { "const": "graph" },
+        "nodes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["id", "x", "y"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "value": { "type": ["string", "number"], "description": "Drawn inside the node; defaults to the id." },
+              "x": { "type": "number", "minimum": 0, "maximum": 1 },
+              "y": { "type": "number", "minimum": 0, "maximum": 1 },
+              "state": { "type": "string", "enum": ["compare", "match", "mismatch", "done", "active"] },
+              "pointer": { "type": "string", "maxLength": 3 }
+            }
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["from", "to"],
+            "additionalProperties": false,
+            "properties": {
+              "from": { "type": "string" },
+              "to": { "type": "string" },
+              "directed": { "type": "boolean" },
+              "weight": { "type": ["string", "number"] },
+              "state": { "type": "string", "enum": ["compare", "match", "mismatch", "done", "active"] }
+            }
+          }
+        }
+      }
+    },
+    "hashmapVisual": {
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": false,
+      "description": "A key -> value map (or set). An optional `probe` shows a lookup and whether it hit.",
+      "properties": {
+        "type": { "const": "hashmap" },
+        "entries": {
+          "type": "array",
+          "description": "Rows in insertion order. May be empty (an empty map).",
+          "items": {
+            "type": "object",
+            "required": ["key", "value"],
+            "additionalProperties": false,
+            "properties": {
+              "key": { "type": ["string", "number"] },
+              "value": { "type": ["string", "number"] },
+              "state": { "type": "string", "enum": ["compare", "match", "mismatch", "done", "active"] }
+            }
+          }
+        },
+        "probe": {
+          "type": "object",
+          "required": ["key"],
+          "additionalProperties": false,
+          "description": "A lookup in progress. `found` colors it as a hit or miss.",
+          "properties": {
+            "key": { "type": ["string", "number"] },
+            "found": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "intervalsVisual": {
+      "type": "object",
+      "required": ["type", "rows"],
+      "additionalProperties": false,
+      "description": "Intervals as horizontal bars on a shared time axis, one per row.",
+      "properties": {
+        "type": { "const": "intervals" },
+        "rows": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["start", "end"],
+            "additionalProperties": false,
+            "properties": {
+              "start": { "type": "number" },
+              "end": { "type": "number" },
+              "label": { "type": "string" },
+              "state": { "type": "string", "enum": ["compare", "match", "mismatch", "done", "active"] }
+            }
+          }
+        },
+        "axisMin": { "type": "number", "description": "Axis left bound; defaults to min(0, smallest start)." },
+        "axisMax": { "type": "number", "description": "Axis right bound; defaults to the largest end." }
+      }
+    },
+    "rtreeVisual": {
+      "type": "object",
+      "required": ["type", "root"],
+      "additionalProperties": false,
+      "description": "An n-ary decision tree for backtracking. Each node is a partial state; the `edge` label is the choice that reached it.",
+      "properties": {
+        "type": { "const": "rtree" },
+        "root": { "$ref": "#/$defs/rnode" }
+      }
+    },
+    "rnode": {
+      "type": "object",
+      "required": ["value"],
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": ["string", "number"] },
+        "edge": { "type": "string", "description": "Label on the edge from this node's parent (the choice taken)." },
+        "state": { "type": "string", "enum": ["compare", "match", "mismatch", "done", "active"] },
+        "pointer": { "type": "string", "maxLength": 3 },
+        "children": { "type": "array", "items": { "$ref": "#/$defs/rnode" } }
       }
     }
   }

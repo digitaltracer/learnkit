@@ -14,10 +14,14 @@ enum ContentValidator {
         for (i, step) in lesson.steps.enumerated() {
             let where_ = "\(lesson.id) step \(i + 1)"
             switch step.visual {
-            case .array(let v): issues += arrayIssues(v, at: where_)
-            case .grid(let v):  issues += gridIssues(v, at: where_)
-            case .tree(let v):  issues += treeIssues(v, at: where_)
-            case .list(let v):  issues += listIssues(v, at: where_)
+            case .array(let v):     issues += arrayIssues(v, at: where_)
+            case .grid(let v):      issues += gridIssues(v, at: where_)
+            case .tree(let v):      issues += treeIssues(v, at: where_)
+            case .list(let v):      issues += listIssues(v, at: where_)
+            case .graph(let v):     issues += graphIssues(v, at: where_)
+            case .hashmap:          break   // no index/reference constraints to check
+            case .intervals(let v): issues += intervalIssues(v, at: where_)
+            case .rtree(let v):     issues += rtreeIssues(v, at: where_)
             }
         }
 
@@ -139,5 +143,59 @@ enum ContentValidator {
         }
 
         return issues
+    }
+
+    private static func graphIssues(_ visual: GraphVisual, at where_: String) -> [String] {
+        var issues: [String] = []
+
+        if visual.nodes.isEmpty {
+            issues.append("\(where_): graph has no nodes")
+        }
+
+        var ids = Set<String>()
+        for node in visual.nodes {
+            if node.id.isEmpty { issues.append("\(where_): a node has an empty id") }
+            if !ids.insert(node.id).inserted { issues.append("\(where_): duplicate node id '\(node.id)'") }
+            if let label = node.pointer, label.count > 3 {
+                issues.append("\(where_): pointer label '\(label)' longer than 3 characters")
+            }
+        }
+
+        for edge in visual.edges {
+            if !ids.contains(edge.from) { issues.append("\(where_): edge from unknown node '\(edge.from)'") }
+            if !ids.contains(edge.to) { issues.append("\(where_): edge to unknown node '\(edge.to)'") }
+        }
+
+        return issues
+    }
+
+    private static func intervalIssues(_ visual: IntervalsVisual, at where_: String) -> [String] {
+        var issues: [String] = []
+
+        if visual.rows.isEmpty {
+            issues.append("\(where_): intervals has no rows")
+        }
+        for row in visual.rows where row.end < row.start {
+            issues.append("\(where_): interval end \(row.end) is before start \(row.start)")
+        }
+
+        return issues
+    }
+
+    private static func rtreeIssues(_ visual: RTreeVisual, at where_: String) -> [String] {
+        var issues: [String] = []
+        guard let root = visual.root else {
+            issues.append("\(where_): rtree has no root")
+            return issues
+        }
+        walkRNode(root, at: where_, into: &issues)
+        return issues
+    }
+
+    private static func walkRNode(_ node: RNode, at where_: String, into issues: inout [String]) {
+        if let label = node.pointer, label.count > 3 {
+            issues.append("\(where_): pointer label '\(label)' longer than 3 characters")
+        }
+        for child in node.children { walkRNode(child, at: where_, into: &issues) }
     }
 }

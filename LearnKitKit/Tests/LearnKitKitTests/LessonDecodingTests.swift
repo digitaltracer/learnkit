@@ -113,6 +113,74 @@ final class LessonDecodingTests: XCTestCase {
         XCTAssertEqual(chain.resolvedLinks.map(\.to), [1, 2])
     }
 
+    func testDecodesGraphVisualWithNodesAndEdges() throws {
+        let json = """
+        {
+          "type": "graph",
+          "nodes": [
+            { "id": "1", "x": 0.2, "y": 0.2, "state": "done" },
+            { "id": "2", "value": 2, "x": 0.8, "y": 0.2, "pointer": "cur" }
+          ],
+          "edges": [ { "from": "1", "to": "2", "directed": true, "weight": 5 } ]
+        }
+        """
+        let v = try JSONDecoder().decode(GraphVisual.self, from: Data(json.utf8))
+        XCTAssertEqual(v.nodes.count, 2)
+        XCTAssertEqual(v.node(id: "1")?.state, .done)
+        XCTAssertEqual(v.node(id: "2")?.display, "2")
+        XCTAssertEqual(v.node(id: "2")?.pointer, "cur")
+        XCTAssertEqual(v.edges.first?.directed, true)
+        XCTAssertEqual(v.edges.first?.weight?.display, "5")
+    }
+
+    func testDecodesHashMapVisualWithProbe() throws {
+        let json = """
+        {
+          "type": "hashmap",
+          "entries": [ { "key": 2, "value": 0, "state": "match" } ],
+          "probe": { "key": 2, "found": true }
+        }
+        """
+        let v = try JSONDecoder().decode(HashMapVisual.self, from: Data(json.utf8))
+        XCTAssertEqual(v.entries.first?.key.display, "2")
+        XCTAssertEqual(v.entries.first?.state, .match)
+        XCTAssertEqual(v.probe?.found, true)
+
+        // entries and probe both default away when omitted.
+        let empty = try JSONDecoder().decode(HashMapVisual.self, from: Data(#"{ "type": "hashmap" }"#.utf8))
+        XCTAssertTrue(empty.entries.isEmpty)
+        XCTAssertNil(empty.probe)
+    }
+
+    func testDecodesIntervalsVisualWithDefaultBounds() throws {
+        let json = #"{ "type": "intervals", "rows": [ { "start": 1, "end": 3 }, { "start": 8, "end": 10, "state": "done" } ] }"#
+        let v = try JSONDecoder().decode(IntervalsVisual.self, from: Data(json.utf8))
+        XCTAssertEqual(v.rows.count, 2)
+        XCTAssertEqual(v.lowerBound, 0)     // min(0, smallest start)
+        XCTAssertEqual(v.upperBound, 10)    // largest end
+        XCTAssertEqual(v.rows[1].state, .done)
+    }
+
+    func testDecodesRTreeVisualWithChildrenAndEdges() throws {
+        let json = """
+        {
+          "type": "rtree",
+          "root": {
+            "value": "[]",
+            "children": [
+              { "value": "[1]", "edge": "+1", "state": "active" },
+              { "value": "[]", "edge": "-1" }
+            ]
+          }
+        }
+        """
+        let v = try JSONDecoder().decode(RTreeVisual.self, from: Data(json.utf8))
+        XCTAssertEqual(v.root?.children.count, 2)
+        XCTAssertEqual(v.root?.children.first?.edge, "+1")
+        XCTAssertEqual(v.root?.children.first?.state, .active)
+        XCTAssertTrue(v.root?.children.last?.children.isEmpty ?? false)   // omitted children default to []
+    }
+
     func testStepDispatchesVisualByType() throws {
         let json = """
         { "caption": "fill the grid", "visual": { "type": "grid", "rows": [[1, 2], [3, 4]] } }
