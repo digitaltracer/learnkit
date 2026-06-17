@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "LearnKit Lesson",
-  "description": "One self-contained Lesson: an ordered sequence of snapshot Steps. v1 supports only the `array` Primitive.",
+  "description": "One self-contained Lesson: an ordered sequence of snapshot Steps. Each Step's `visual` is one Primitive, chosen by its `type`: `array` or `grid`.",
   "type": "object",
   "required": ["schemaVersion", "id", "subject", "track", "title", "steps"],
   "additionalProperties": false,
@@ -39,7 +39,13 @@
       "additionalProperties": false,
       "properties": {
         "caption": { "type": "string", "maxLength": 160 },
-        "visual": { "$ref": "#/$defs/arrayVisual" }
+        "visual": {
+          "description": "One Primitive's spec. Selected by `type`; `array` and `grid` have disjoint required fields, so exactly one branch matches.",
+          "oneOf": [
+            { "$ref": "#/$defs/arrayVisual" },
+            { "$ref": "#/$defs/gridVisual" }
+          ]
+        }
       }
     },
     "arrayVisual": {
@@ -81,6 +87,55 @@
             "properties": {
               "index": { "type": "integer", "minimum": 0 },
               "range": { "type": "array", "items": { "type": "integer" }, "minItems": 2, "maxItems": 2 },
+              "state": { "type": "string", "enum": ["compare", "match", "mismatch", "done", "active"] }
+            }
+          }
+        }
+      }
+    },
+    "gridVisual": {
+      "type": "object",
+      "required": ["type", "rows"],
+      "additionalProperties": false,
+      "description": "A 2-D matrix of cells — for matrices (rotate, spiral, search) and DP tables.",
+      "properties": {
+        "type": { "const": "grid" },
+        "rows": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Rows of cells, top to bottom. Every row must have the same length. Full state of the matrix at this Step; keep identical across Steps unless the data itself changes.",
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": ["string", "number"] }
+          }
+        },
+        "pointers": {
+          "type": "array",
+          "description": "Named pointers sitting on one cell each. Moving a pointer between Steps is what the app animates.",
+          "items": {
+            "type": "object",
+            "required": ["label", "row", "col"],
+            "additionalProperties": false,
+            "properties": {
+              "label": { "type": "string", "maxLength": 3 },
+              "row": { "type": "integer", "minimum": 0 },
+              "col": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
+        "highlights": {
+          "type": "array",
+          "description": "Per-cell or per-region color states. Use `row`+`col` for one cell, or `rows` [r0,r1] + `cols` [c0,c1] (both inclusive) for a rectangle.",
+          "items": {
+            "type": "object",
+            "required": ["state"],
+            "additionalProperties": false,
+            "properties": {
+              "row": { "type": "integer", "minimum": 0 },
+              "col": { "type": "integer", "minimum": 0 },
+              "rows": { "type": "array", "items": { "type": "integer" }, "minItems": 2, "maxItems": 2 },
+              "cols": { "type": "array", "items": { "type": "integer" }, "minItems": 2, "maxItems": 2 },
               "state": { "type": "string", "enum": ["compare", "match", "mismatch", "done", "active"] }
             }
           }

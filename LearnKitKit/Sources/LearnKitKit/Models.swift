@@ -62,11 +62,43 @@ struct ProblemExample: Codable, Equatable, Sendable {
 /// A self-contained snapshot: one Visual plus a caption.
 struct Step: Codable, Equatable, Sendable {
     let caption: String
-    let visual: ArrayVisual
+    let visual: Visual
 }
 
 enum Difficulty: String, Codable, Equatable, Hashable, Sendable {
     case easy, medium, hard
+}
+
+// MARK: - Visual: one Primitive per Step, chosen by its `type`
+
+/// A Step's diagram. Each case wraps one Primitive's spec; decoding dispatches on
+/// the `type` field, so a Lesson can mix primitives across its Steps and new
+/// primitives are added by extending this enum (not by changing every call site).
+enum Visual: Codable, Equatable, Sendable {
+    case array(ArrayVisual)
+    case grid(GridVisual)
+
+    private enum TypeKey: String, CodingKey { case type }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: TypeKey.self)
+        let type = try c.decode(String.self, forKey: .type)
+        switch type {
+        case "array": self = .array(try ArrayVisual(from: decoder))
+        case "grid":  self = .grid(try GridVisual(from: decoder))
+        default:
+            throw DecodingError.dataCorruptedError(
+                forKey: .type, in: c,
+                debugDescription: "Unknown visual type '\(type)'. Known types: array, grid.")
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        switch self {
+        case .array(let v): try v.encode(to: encoder)
+        case .grid(let v):  try v.encode(to: encoder)
+        }
+    }
 }
 
 // MARK: - Visual: the `array` Primitive
@@ -138,6 +170,75 @@ struct Highlight: Codable, Equatable, Sendable {
 
 enum HighlightState: String, Codable, Equatable, Sendable {
     case compare, match, mismatch, done, active
+}
+
+// MARK: - Visual: the `grid` Primitive
+
+/// A 2-D matrix of cells — for matrices (rotate, spiral, search) and DP tables.
+/// Like `array`, every Step carries the full state; the app animates the diff
+/// between consecutive Steps (a pointer hopping cells, a region changing color).
+struct GridVisual: Codable, Equatable, Sendable {
+    let type: String
+    let rows: [[CellValue]]
+    let pointers: [GridPointer]
+    let highlights: [GridHighlight]
+
+    enum CodingKeys: String, CodingKey { case type, rows, pointers, highlights }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        type = try c.decode(String.self, forKey: .type)
+        rows = try c.decode([[CellValue]].self, forKey: .rows)
+        pointers = try c.decodeIfPresent([GridPointer].self, forKey: .pointers) ?? []
+        highlights = try c.decodeIfPresent([GridHighlight].self, forKey: .highlights) ?? []
+    }
+
+    init(type: String = "grid",
+         rows: [[CellValue]],
+         pointers: [GridPointer] = [],
+         highlights: [GridHighlight] = []) {
+        self.type = type
+        self.rows = rows
+        self.pointers = pointers
+        self.highlights = highlights
+    }
+
+    var rowCount: Int { rows.count }
+    var colCount: Int { rows.map(\.count).max() ?? 0 }
+
+    /// The highlight state covering a given cell, if any.
+    func highlightState(row: Int, col: Int) -> HighlightState? {
+        for h in highlights where h.covers(row: row, col: col) { return h.state }
+        return nil
+    }
+}
+
+/// A named pointer sitting on one grid cell.
+struct GridPointer: Codable, Equatable, Sendable {
+    let label: String
+    let row: Int
+    let col: Int
+}
+
+/// A color state on one cell (`row` + `col`) or a rectangular region
+/// (`rows` [r0,r1] and `cols` [c0,c1], both inclusive).
+struct GridHighlight: Codable, Equatable, Sendable {
+    let row: Int?
+    let col: Int?
+    let rows: [Int]?
+    let cols: [Int]?
+    let state: HighlightState
+
+    /// True if this highlight applies to the given cell.
+    func covers(row r: Int, col c: Int) -> Bool {
+        if let row, let col { return row == r && col == c }
+        if let rows, let cols, rows.count == 2, cols.count == 2 {
+            let r0 = min(rows[0], rows[1]), r1 = max(rows[0], rows[1])
+            let c0 = min(cols[0], cols[1]), c1 = max(cols[0], cols[1])
+            return (r0...r1).contains(r) && (c0...c1).contains(c)
+        }
+        return false
+    }
 }
 
 // MARK: - CellValue (a cell is either a string or a number)

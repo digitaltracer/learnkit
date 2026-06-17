@@ -56,7 +56,7 @@ struct LessonPage: View {
             // Keep the diagram and its instruction together as one centered group,
             // so the text sits with the visual it describes instead of drifting off.
             VStack(spacing: 22) {
-                ArrayVisualView(visual: current.visual, palette: palette)
+                VisualView(visual: current.visual, palette: palette)
                     .frame(height: 220)
                     .padding(.horizontal, 16)
                     .contentShape(Rectangle())

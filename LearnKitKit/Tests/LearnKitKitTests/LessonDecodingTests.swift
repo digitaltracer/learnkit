@@ -30,15 +30,55 @@ final class LessonDecodingTests: XCTestCase {
         XCTAssertEqual(lesson.difficulty, .easy)
         XCTAssertEqual(lesson.steps.count, 2)
 
-        let intro = lesson.steps[0].visual
+        guard case .array(let intro) = lesson.steps[0].visual else {
+            return XCTFail("step 0 should decode as an array visual")
+        }
         XCTAssertTrue(intro.pointers.isEmpty)         // omitted pointers default to []
         XCTAssertTrue(intro.highlights.isEmpty)
 
-        let compare = lesson.steps[1].visual
+        guard case .array(let compare) = lesson.steps[1].visual else {
+            return XCTFail("step 1 should decode as an array visual")
+        }
         XCTAssertEqual(compare.cells.map(\.display), ["r", "a", "r"])
         XCTAssertEqual(compare.pointers.first?.label, "L")
         XCTAssertEqual(compare.highlightState(for: 0), .match)
         XCTAssertNil(compare.highlightState(for: 1))
+    }
+
+    func testDecodesGridVisualWithPointerAndRegion() throws {
+        let json = """
+        {
+          "type": "grid",
+          "rows": [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+          "pointers": [{ "label": "cur", "row": 0, "col": 2 }],
+          "highlights": [
+            { "rows": [0, 0], "cols": [0, 2], "state": "active" },
+            { "row": 2, "col": 2, "state": "done" }
+          ]
+        }
+        """
+        let visual = try JSONDecoder().decode(GridVisual.self, from: Data(json.utf8))
+
+        XCTAssertEqual(visual.rowCount, 3)
+        XCTAssertEqual(visual.colCount, 3)
+        XCTAssertEqual(visual.pointers.first?.label, "cur")
+        XCTAssertEqual(visual.highlightState(row: 0, col: 1), .active)  // inside the row region
+        XCTAssertEqual(visual.highlightState(row: 2, col: 2), .done)    // single cell
+        XCTAssertNil(visual.highlightState(row: 1, col: 1))
+    }
+
+    func testStepDispatchesVisualByType() throws {
+        let json = """
+        { "caption": "fill the grid", "visual": { "type": "grid", "rows": [[1, 2], [3, 4]] } }
+        """
+        let step = try JSONDecoder().decode(Step.self, from: Data(json.utf8))
+
+        guard case .grid(let g) = step.visual else {
+            return XCTFail("a step with a grid visual should decode as .grid")
+        }
+        XCTAssertEqual(g.rowCount, 2)
+        XCTAssertEqual(g.colCount, 2)
+        XCTAssertTrue(g.pointers.isEmpty)             // omitted pointers default to []
     }
 
     func testDecodesNumericCellsAndRangeHighlight() throws {

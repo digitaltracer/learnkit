@@ -12,30 +12,77 @@ enum ContentValidator {
         }
 
         for (i, step) in lesson.steps.enumerated() {
-            let count = step.visual.cells.count
             let where_ = "\(lesson.id) step \(i + 1)"
-
-            if count == 0 {
-                issues.append("\(where_): visual has no cells")
+            switch step.visual {
+            case .array(let v): issues += arrayIssues(v, at: where_)
+            case .grid(let v):  issues += gridIssues(v, at: where_)
             }
+        }
 
-            for pointer in step.visual.pointers where pointer.index < 0 || pointer.index >= count {
-                issues.append("\(where_): pointer '\(pointer.label)' index \(pointer.index) out of bounds (0..<\(count))")
+        return issues
+    }
+
+    private static func arrayIssues(_ visual: ArrayVisual, at where_: String) -> [String] {
+        var issues: [String] = []
+        let count = visual.cells.count
+
+        if count == 0 {
+            issues.append("\(where_): visual has no cells")
+        }
+
+        for pointer in visual.pointers where pointer.index < 0 || pointer.index >= count {
+            issues.append("\(where_): pointer '\(pointer.label)' index \(pointer.index) out of bounds (0..<\(count))")
+        }
+
+        for highlight in visual.highlights {
+            if let index = highlight.index, index < 0 || index >= count {
+                issues.append("\(where_): highlight index \(index) out of bounds (0..<\(count))")
             }
-
-            for highlight in step.visual.highlights {
-                if let index = highlight.index, index < 0 || index >= count {
-                    issues.append("\(where_): highlight index \(index) out of bounds (0..<\(count))")
+            if let range = highlight.range {
+                if range.count != 2 || range[0] < 0 || range[1] >= count || range[0] > range[1] {
+                    issues.append("\(where_): highlight range \(range) invalid for \(count) cells")
                 }
-                if let range = highlight.range {
-                    if range.count != 2 || range[0] < 0 || range[1] >= count || range[0] > range[1] {
-                        issues.append("\(where_): highlight range \(range) invalid for \(count) cells")
-                    }
-                }
             }
+        }
 
-            if step.visual.style == .bars && step.visual.cells.contains(where: { $0.numericValue == nil }) {
-                issues.append("\(where_): style 'bars' requires all cells to be numeric")
+        if visual.style == .bars && visual.cells.contains(where: { $0.numericValue == nil }) {
+            issues.append("\(where_): style 'bars' requires all cells to be numeric")
+        }
+
+        return issues
+    }
+
+    private static func gridIssues(_ visual: GridVisual, at where_: String) -> [String] {
+        var issues: [String] = []
+        let rowCount = visual.rows.count
+
+        if rowCount == 0 || visual.rows.allSatisfy(\.isEmpty) {
+            issues.append("\(where_): grid has no cells")
+            return issues
+        }
+
+        let colCount = visual.rows[0].count
+        if visual.rows.contains(where: { $0.count != colCount }) {
+            issues.append("\(where_): grid rows must all have the same length")
+        }
+
+        for p in visual.pointers where p.row < 0 || p.row >= rowCount || p.col < 0 || p.col >= colCount {
+            issues.append("\(where_): pointer '\(p.label)' at (\(p.row),\(p.col)) out of bounds (\(rowCount)x\(colCount))")
+        }
+
+        for h in visual.highlights {
+            if let row = h.row, let col = h.col {
+                if row < 0 || row >= rowCount || col < 0 || col >= colCount {
+                    issues.append("\(where_): highlight cell (\(row),\(col)) out of bounds (\(rowCount)x\(colCount))")
+                }
+            } else if let rows = h.rows, let cols = h.cols {
+                let rowsBad = rows.count != 2 || rows[0] < 0 || rows[1] >= rowCount || rows[0] > rows[1]
+                let colsBad = cols.count != 2 || cols[0] < 0 || cols[1] >= colCount || cols[0] > cols[1]
+                if rowsBad || colsBad {
+                    issues.append("\(where_): highlight region rows \(rows) cols \(cols) invalid for \(rowCount)x\(colCount)")
+                }
+            } else {
+                issues.append("\(where_): highlight must set either row+col (one cell) or rows+cols (a region)")
             }
         }
 
