@@ -173,6 +173,25 @@
           "lessons": [
             { "id": "spiral-matrix", "title": "Spiral Matrix", "difficulty": "medium", "file": "dsa/math-geometry/spiral-matrix.json" }
           ]
+        },
+        {
+          "id": "trees",
+          "title": "Trees",
+          "icon": "arrow.triangle.branch",
+          "overview": {
+            "tagline": "Process a hierarchy by recursing into the children and combining their answers.",
+            "whenToUse": [
+              "The data is hierarchical: a root with left and right children.",
+              "A node's answer is built from its subtrees' answers.",
+              "You need a traversal: preorder, inorder, postorder, or level by level.",
+              "The problem says 'binary tree' or 'binary search tree'."
+            ],
+            "keyIdea": "Solve a node by asking the same question of its children first, then merging their results. Most tree problems are one short recursive function: handle the empty case, recurse left and right, and combine.",
+            "complexity": "Typically O(n) time, O(h) space for recursion (h = height)"
+          },
+          "lessons": [
+            { "id": "invert-binary-tree", "title": "Invert Binary Tree", "difficulty": "easy", "file": "dsa/trees/invert-binary-tree.json" }
+          ]
         }
       ]
     }

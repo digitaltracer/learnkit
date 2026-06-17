@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "id": "invert-binary-tree",
+  "subject": "dsa",
+  "track": "trees",
+  "title": "Invert Binary Tree",
+  "difficulty": "easy",
+  "summary": "Recursively swap every node's left and right child. Mirror the whole tree, top down.",
+  "problem": "Given the root of a binary tree, invert it (mirror it left-to-right) and return the root.",
+  "example": { "input": "[4,2,7,1,3,6,9]", "output": "[4,7,2,9,6,3,1]" },
+  "steps": [
+    {
+      "caption": "Invert the tree: mirror it left to right, so every node's two children swap places.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 4,
+          "left": { "value": 2, "left": { "value": 1 }, "right": { "value": 3 } },
+          "right": { "value": 7, "left": { "value": 6 }, "right": { "value": 9 } }
+        }
+      }
+    },
+    {
+      "caption": "Start at the root. Swap its children: the 2 subtree and the 7 subtree trade sides.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 4, "state": "active", "pointer": "cur",
+          "left": { "value": 7, "state": "compare", "left": { "value": 6 }, "right": { "value": 9 } },
+          "right": { "value": 2, "state": "compare", "left": { "value": 1 }, "right": { "value": 3 } }
+        }
+      }
+    },
+    {
+      "caption": "Recurse into 7, now on the left. Swap its children too: 6 and 9 trade places.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 4,
+          "left": { "value": 7, "state": "active", "pointer": "cur", "left": { "value": 9, "state": "compare" }, "right": { "value": 6, "state": "compare" } },
+          "right": { "value": 2, "left": { "value": 1 }, "right": { "value": 3 } }
+        }
+      }
+    },
+    {
+      "caption": "Recurse into 2, now on the right. Swap its children: 1 and 3 trade places.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 4,
+          "left": { "value": 7, "left": { "value": 9 }, "right": { "value": 6 } },
+          "right": { "value": 2, "state": "active", "pointer": "cur", "left": { "value": 3, "state": "compare" }, "right": { "value": 1, "state": "compare" } }
+        }
+      }
+    },
+    {
+      "caption": "The leaves have no children to swap. The tree is now a full mirror: [4, 7, 2, 9, 6, 3, 1].",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 4, "state": "done",
+          "left": { "value": 7, "state": "done", "left": { "value": 9, "state": "done" }, "right": { "value": 6, "state": "done" } },
+          "right": { "value": 2, "state": "done", "left": { "value": 3, "state": "done" }, "right": { "value": 1, "state": "done" } }
+        }
+      }
+    }
+  ]
+}
