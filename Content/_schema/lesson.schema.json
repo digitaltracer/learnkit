@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "LearnKit Lesson",
-  "description": "One self-contained Lesson: an ordered sequence of snapshot Steps. Each Step's `visual` is one Primitive, chosen by its `type`: `array`, `grid`, or `tree`.",
+  "description": "One self-contained Lesson: an ordered sequence of snapshot Steps. Each Step's `visual` is one Primitive, chosen by its `type`: `array`, `grid`, `tree`, or `list`.",
   "type": "object",
   "required": ["schemaVersion", "id", "subject", "track", "title", "steps"],
   "additionalProperties": false,
@@ -44,7 +44,8 @@
           "oneOf": [
             { "$ref": "#/$defs/arrayVisual" },
             { "$ref": "#/$defs/gridVisual" },
-            { "$ref": "#/$defs/treeVisual" }
+            { "$ref": "#/$defs/treeVisual" },
+            { "$ref": "#/$defs/listVisual" }
           ]
         }
       }
@@ -164,6 +165,53 @@
         "pointer": { "type": "string", "maxLength": 3, "description": "A short label drawn above this node." },
         "left": { "$ref": "#/$defs/treeNode" },
         "right": { "$ref": "#/$defs/treeNode" }
+      }
+    },
+    "listVisual": {
+      "type": "object",
+      "required": ["type", "nodes"],
+      "additionalProperties": false,
+      "description": "A linked list: values in fixed left-to-right positions, joined by directed `next` links.",
+      "properties": {
+        "type": { "const": "list" },
+        "nodes": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Node values in fixed left-to-right order. Full state at this Step.",
+          "items": { "type": ["string", "number"] }
+        },
+        "links": {
+          "type": "array",
+          "description": "Directed next-pointers as [from, to] node indices. Omit for a simple forward chain (0->1->2->…). Re-pointing links between Steps is what animates a rewire/reversal.",
+          "items": { "type": "array", "items": { "type": "integer", "minimum": 0 }, "minItems": 2, "maxItems": 2 }
+        },
+        "pointers": {
+          "type": "array",
+          "description": "Named pointers sitting on nodes (e.g. prv, cur).",
+          "items": {
+            "type": "object",
+            "required": ["label", "index"],
+            "additionalProperties": false,
+            "properties": {
+              "label": { "type": "string", "maxLength": 3 },
+              "index": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
+        "highlights": {
+          "type": "array",
+          "description": "Per-node or per-range color states. Use `index` for one node or `range` [start,end] inclusive.",
+          "items": {
+            "type": "object",
+            "required": ["state"],
+            "additionalProperties": false,
+            "properties": {
+              "index": { "type": "integer", "minimum": 0 },
+              "range": { "type": "array", "items": { "type": "integer" }, "minItems": 2, "maxItems": 2 },
+              "state": { "type": "string", "enum": ["compare", "match", "mismatch", "done", "active"] }
+            }
+          }
+        }
       }
     }
   }

@@ -5,6 +5,7 @@ import SwiftUI
 struct Palette: Sendable {
     var cellText = Color.primary
     var pointerColor = Color.accentColor
+    var linkColor = Color.secondary       // `next` arrows in the list primitive, tree/graph edges
 
     func fill(for state: HighlightState?) -> Color {
         switch state {

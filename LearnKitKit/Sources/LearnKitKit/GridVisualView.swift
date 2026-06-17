@@ -12,6 +12,7 @@ struct VisualView: View {
         case .array(let v): ArrayVisualView(visual: v, palette: palette)
         case .grid(let v):  GridVisualView(visual: v, palette: palette)
         case .tree(let v):  TreeVisualView(visual: v, palette: palette)
+        case .list(let v):  ListVisualView(visual: v, palette: palette)
         }
     }
 }

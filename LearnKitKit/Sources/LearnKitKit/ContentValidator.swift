@@ -17,6 +17,7 @@ enum ContentValidator {
             case .array(let v): issues += arrayIssues(v, at: where_)
             case .grid(let v):  issues += gridIssues(v, at: where_)
             case .tree(let v):  issues += treeIssues(v, at: where_)
+            case .list(let v):  issues += listIssues(v, at: where_)
             }
         }
 
@@ -106,5 +107,37 @@ enum ContentValidator {
         }
         if let left = node.left { walk(left, at: where_, into: &issues) }
         if let right = node.right { walk(right, at: where_, into: &issues) }
+    }
+
+    private static func listIssues(_ visual: ListVisual, at where_: String) -> [String] {
+        var issues: [String] = []
+        let count = visual.nodes.count
+
+        if count == 0 {
+            issues.append("\(where_): list has no nodes")
+        }
+
+        for pointer in visual.pointers where pointer.index < 0 || pointer.index >= count {
+            issues.append("\(where_): pointer '\(pointer.label)' index \(pointer.index) out of bounds (0..<\(count))")
+        }
+
+        for highlight in visual.highlights {
+            if let index = highlight.index, index < 0 || index >= count {
+                issues.append("\(where_): highlight index \(index) out of bounds (0..<\(count))")
+            }
+            if let range = highlight.range {
+                if range.count != 2 || range[0] < 0 || range[1] >= count || range[0] > range[1] {
+                    issues.append("\(where_): highlight range \(range) invalid for \(count) nodes")
+                }
+            }
+        }
+
+        for link in visual.links {
+            if link.count != 2 || link[0] < 0 || link[0] >= count || link[1] < 0 || link[1] >= count {
+                issues.append("\(where_): link \(link) out of bounds for \(count) nodes")
+            }
+        }
+
+        return issues
     }
 }

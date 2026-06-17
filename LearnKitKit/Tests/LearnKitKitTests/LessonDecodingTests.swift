@@ -89,6 +89,30 @@ final class LessonDecodingTests: XCTestCase {
         XCTAssertEqual(visual.root?.right?.right?.state, .done)
     }
 
+    func testDecodesListVisualWithLinksDefaultingForward() throws {
+        let withLinks = """
+        {
+          "type": "list",
+          "nodes": [1, 2, 3, 4],
+          "links": [[1, 0], [2, 1], [3, 2]],
+          "pointers": [{ "label": "cur", "index": 3 }],
+          "highlights": [{ "range": [0, 2], "state": "done" }]
+        }
+        """
+        let v = try JSONDecoder().decode(ListVisual.self, from: Data(withLinks.utf8))
+        XCTAssertEqual(v.nodes.map(\.display), ["1", "2", "3", "4"])
+        XCTAssertEqual(v.pointers.first?.label, "cur")
+        XCTAssertEqual(v.highlightState(for: 1), .done)
+        XCTAssertEqual(v.resolvedLinks.map(\.from), [1, 2, 3])
+        XCTAssertEqual(v.resolvedLinks.map(\.to), [0, 1, 2])
+
+        // Omitted links default to a consecutive forward chain.
+        let noLinks = #"{ "type": "list", "nodes": [9, 8, 7] }"#
+        let chain = try JSONDecoder().decode(ListVisual.self, from: Data(noLinks.utf8))
+        XCTAssertEqual(chain.resolvedLinks.map(\.from), [0, 1])
+        XCTAssertEqual(chain.resolvedLinks.map(\.to), [1, 2])
+    }
+
     func testStepDispatchesVisualByType() throws {
         let json = """
         { "caption": "fill the grid", "visual": { "type": "grid", "rows": [[1, 2], [3, 4]] } }

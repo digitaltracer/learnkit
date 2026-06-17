@@ -78,6 +78,7 @@ enum Visual: Codable, Equatable, Sendable {
     case array(ArrayVisual)
     case grid(GridVisual)
     case tree(TreeVisual)
+    case list(ListVisual)
 
     private enum TypeKey: String, CodingKey { case type }
 
@@ -88,10 +89,11 @@ enum Visual: Codable, Equatable, Sendable {
         case "array": self = .array(try ArrayVisual(from: decoder))
         case "grid":  self = .grid(try GridVisual(from: decoder))
         case "tree":  self = .tree(try TreeVisual(from: decoder))
+        case "list":  self = .list(try ListVisual(from: decoder))
         default:
             throw DecodingError.dataCorruptedError(
                 forKey: .type, in: c,
-                debugDescription: "Unknown visual type '\(type)'. Known types: array, grid, tree.")
+                debugDescription: "Unknown visual type '\(type)'. Known types: array, grid, tree, list.")
         }
     }
 
@@ -100,6 +102,7 @@ enum Visual: Codable, Equatable, Sendable {
         case .array(let v): try v.encode(to: encoder)
         case .grid(let v):  try v.encode(to: encoder)
         case .tree(let v):  try v.encode(to: encoder)
+        case .list(let v):  try v.encode(to: encoder)
         }
     }
 }
@@ -292,6 +295,58 @@ final class TreeNode: Codable, Equatable, Sendable {
     static func == (lhs: TreeNode, rhs: TreeNode) -> Bool {
         lhs.value == rhs.value && lhs.state == rhs.state && lhs.pointer == rhs.pointer
             && lhs.left == rhs.left && lhs.right == rhs.right
+    }
+}
+
+// MARK: - Visual: the `list` Primitive
+
+/// A linked list: values in fixed left-to-right positions, joined by directed
+/// `links` (next-pointers) that can be re-pointed between Steps — which is how
+/// reversal / rewiring animates. Reuses `Pointer` and `Highlight` (index-addressed,
+/// exactly like `array`).
+struct ListVisual: Codable, Equatable, Sendable {
+    let type: String
+    let nodes: [CellValue]
+    let links: [[Int]]
+    let pointers: [Pointer]
+    let highlights: [Highlight]
+
+    enum CodingKeys: String, CodingKey { case type, nodes, links, pointers, highlights }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        type = try c.decode(String.self, forKey: .type)
+        nodes = try c.decode([CellValue].self, forKey: .nodes)
+        links = try c.decodeIfPresent([[Int]].self, forKey: .links) ?? []
+        pointers = try c.decodeIfPresent([Pointer].self, forKey: .pointers) ?? []
+        highlights = try c.decodeIfPresent([Highlight].self, forKey: .highlights) ?? []
+    }
+
+    init(type: String = "list",
+         nodes: [CellValue],
+         links: [[Int]] = [],
+         pointers: [Pointer] = [],
+         highlights: [Highlight] = []) {
+        self.type = type
+        self.nodes = nodes
+        self.links = links
+        self.pointers = pointers
+        self.highlights = highlights
+    }
+
+    /// The `next`-pointers. When `links` is omitted, the list is a simple
+    /// consecutive forward chain (0->1->2->…).
+    var resolvedLinks: [(from: Int, to: Int)] {
+        if links.isEmpty {
+            return (0..<max(nodes.count - 1, 0)).map { (from: $0, to: $0 + 1) }
+        }
+        return links.compactMap { $0.count == 2 ? (from: $0[0], to: $0[1]) : nil }
+    }
+
+    /// The highlight state covering a given node index, if any.
+    func highlightState(for index: Int) -> HighlightState? {
+        for h in highlights where h.covers(index) { return h.state }
+        return nil
     }
 }
 
