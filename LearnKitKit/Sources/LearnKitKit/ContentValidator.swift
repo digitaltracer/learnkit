@@ -16,6 +16,7 @@ enum ContentValidator {
             switch step.visual {
             case .array(let v): issues += arrayIssues(v, at: where_)
             case .grid(let v):  issues += gridIssues(v, at: where_)
+            case .tree(let v):  issues += treeIssues(v, at: where_)
             }
         }
 
@@ -87,5 +88,23 @@ enum ContentValidator {
         }
 
         return issues
+    }
+
+    private static func treeIssues(_ visual: TreeVisual, at where_: String) -> [String] {
+        var issues: [String] = []
+        guard let root = visual.root else {
+            issues.append("\(where_): tree has no root")
+            return issues
+        }
+        walk(root, at: where_, into: &issues)
+        return issues
+    }
+
+    private static func walk(_ node: TreeNode, at where_: String, into issues: inout [String]) {
+        if let label = node.pointer, label.count > 3 {
+            issues.append("\(where_): pointer label '\(label)' longer than 3 characters")
+        }
+        if let left = node.left { walk(left, at: where_, into: &issues) }
+        if let right = node.right { walk(right, at: where_, into: &issues) }
     }
 }

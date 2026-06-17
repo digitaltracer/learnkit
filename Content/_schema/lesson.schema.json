@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "LearnKit Lesson",
-  "description": "One self-contained Lesson: an ordered sequence of snapshot Steps. Each Step's `visual` is one Primitive, chosen by its `type`: `array` or `grid`.",
+  "description": "One self-contained Lesson: an ordered sequence of snapshot Steps. Each Step's `visual` is one Primitive, chosen by its `type`: `array`, `grid`, or `tree`.",
   "type": "object",
   "required": ["schemaVersion", "id", "subject", "track", "title", "steps"],
   "additionalProperties": false,
@@ -43,7 +43,8 @@
           "description": "One Primitive's spec. Selected by `type`; `array` and `grid` have disjoint required fields, so exactly one branch matches.",
           "oneOf": [
             { "$ref": "#/$defs/arrayVisual" },
-            { "$ref": "#/$defs/gridVisual" }
+            { "$ref": "#/$defs/gridVisual" },
+            { "$ref": "#/$defs/treeVisual" }
           ]
         }
       }
@@ -140,6 +141,29 @@
             }
           }
         }
+      }
+    },
+    "treeVisual": {
+      "type": "object",
+      "required": ["type", "root"],
+      "additionalProperties": false,
+      "description": "A binary tree. Each node carries its own optional highlight `state` and `pointer` label; the whole tree is the full state at this Step.",
+      "properties": {
+        "type": { "const": "tree" },
+        "root": { "$ref": "#/$defs/treeNode" }
+      }
+    },
+    "treeNode": {
+      "type": "object",
+      "required": ["value"],
+      "additionalProperties": false,
+      "description": "One node. Omit `left`/`right` for a missing child.",
+      "properties": {
+        "value": { "type": ["string", "number"] },
+        "state": { "type": "string", "enum": ["compare", "match", "mismatch", "done", "active"] },
+        "pointer": { "type": "string", "maxLength": 3, "description": "A short label drawn above this node." },
+        "left": { "$ref": "#/$defs/treeNode" },
+        "right": { "$ref": "#/$defs/treeNode" }
       }
     }
   }

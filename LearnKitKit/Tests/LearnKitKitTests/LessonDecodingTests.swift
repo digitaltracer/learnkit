@@ -67,6 +67,28 @@ final class LessonDecodingTests: XCTestCase {
         XCTAssertNil(visual.highlightState(row: 1, col: 1))
     }
 
+    func testDecodesTreeVisualWithNestedNodesAndState() throws {
+        let json = """
+        {
+          "type": "tree",
+          "root": {
+            "value": 4, "state": "active", "pointer": "cur",
+            "left": { "value": 2 },
+            "right": { "value": 7, "right": { "value": 9, "state": "done" } }
+          }
+        }
+        """
+        let visual = try JSONDecoder().decode(TreeVisual.self, from: Data(json.utf8))
+
+        XCTAssertEqual(visual.root?.value.display, "4")
+        XCTAssertEqual(visual.root?.state, .active)
+        XCTAssertEqual(visual.root?.pointer, "cur")
+        XCTAssertEqual(visual.root?.left?.value.display, "2")
+        XCTAssertNil(visual.root?.left?.left)            // omitted children default to nil
+        XCTAssertNil(visual.root?.left?.state)           // omitted state defaults to nil
+        XCTAssertEqual(visual.root?.right?.right?.state, .done)
+    }
+
     func testStepDispatchesVisualByType() throws {
         let json = """
         { "caption": "fill the grid", "visual": { "type": "grid", "rows": [[1, 2], [3, 4]] } }

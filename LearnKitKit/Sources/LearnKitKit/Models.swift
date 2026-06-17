@@ -77,6 +77,7 @@ enum Difficulty: String, Codable, Equatable, Hashable, Sendable {
 enum Visual: Codable, Equatable, Sendable {
     case array(ArrayVisual)
     case grid(GridVisual)
+    case tree(TreeVisual)
 
     private enum TypeKey: String, CodingKey { case type }
 
@@ -86,10 +87,11 @@ enum Visual: Codable, Equatable, Sendable {
         switch type {
         case "array": self = .array(try ArrayVisual(from: decoder))
         case "grid":  self = .grid(try GridVisual(from: decoder))
+        case "tree":  self = .tree(try TreeVisual(from: decoder))
         default:
             throw DecodingError.dataCorruptedError(
                 forKey: .type, in: c,
-                debugDescription: "Unknown visual type '\(type)'. Known types: array, grid.")
+                debugDescription: "Unknown visual type '\(type)'. Known types: array, grid, tree.")
         }
     }
 
@@ -97,6 +99,7 @@ enum Visual: Codable, Equatable, Sendable {
         switch self {
         case .array(let v): try v.encode(to: encoder)
         case .grid(let v):  try v.encode(to: encoder)
+        case .tree(let v):  try v.encode(to: encoder)
         }
     }
 }
@@ -238,6 +241,57 @@ struct GridHighlight: Codable, Equatable, Sendable {
             return (r0...r1).contains(r) && (c0...c1).contains(c)
         }
         return false
+    }
+}
+
+// MARK: - Visual: the `tree` Primitive
+
+/// A binary tree. Unlike `array`/`grid`, nodes have no natural linear index, so
+/// each node carries its own optional highlight `state` and `pointer` label
+/// inline — the whole tree is still the full state at this Step.
+struct TreeVisual: Codable, Equatable, Sendable {
+    let type: String
+    let root: TreeNode?
+
+    enum CodingKeys: String, CodingKey { case type, root }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        type = try c.decode(String.self, forKey: .type)
+        root = try c.decodeIfPresent(TreeNode.self, forKey: .root)
+    }
+
+    init(type: String = "tree", root: TreeNode?) {
+        self.type = type
+        self.root = root
+    }
+}
+
+/// One binary-tree node. A recursive value type can't contain itself, so this is
+/// a `final class`; its stored properties are all immutable and Sendable.
+/// Children are omitted when absent.
+final class TreeNode: Codable, Equatable, Sendable {
+    let value: CellValue
+    let state: HighlightState?
+    let pointer: String?
+    let left: TreeNode?
+    let right: TreeNode?
+
+    init(value: CellValue,
+         state: HighlightState? = nil,
+         pointer: String? = nil,
+         left: TreeNode? = nil,
+         right: TreeNode? = nil) {
+        self.value = value
+        self.state = state
+        self.pointer = pointer
+        self.left = left
+        self.right = right
+    }
+
+    static func == (lhs: TreeNode, rhs: TreeNode) -> Bool {
+        lhs.value == rhs.value && lhs.state == rhs.state && lhs.pointer == rhs.pointer
+            && lhs.left == rhs.left && lhs.right == rhs.right
     }
 }
 
