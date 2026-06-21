@@ -90,35 +90,33 @@ struct LessonPage: View {
     }
 
     private var player: some View {
-        VStack(spacing: 0) {
-            ProgressDots(count: steps.count, current: stepIndex)
+        // The visual is the one elastic element: it claims a band that scales with
+        // the height actually available, clamped so it never dominates or vanishes.
+        // Text keeps its intrinsic size and Dynamic Type — we never scale fonts to
+        // the screen. If even the most compact layout still doesn't fit (small
+        // device + large Dynamic Type + a long caption), the middle scrolls instead
+        // of clipping, so nothing is ever lost behind the chrome or the neighbour.
+        GeometryReader { geo in
+            let band = min(260, max(150, geo.size.height * 0.42))
+            VStack(spacing: 0) {
+                ProgressDots(count: steps.count, current: stepIndex)
 
-            Spacer(minLength: 16)
+                Spacer(minLength: 12)
 
-            // Keep the diagram and its instruction together as one centered group,
-            // so the text sits with the visual it describes instead of drifting off.
-            VStack(spacing: 22) {
-                Button { advance() } label: {
-                    VisualView(visual: current.visual, palette: palette)
-                        .frame(height: 220)
-                        .padding(.horizontal, 16)
-                        .contentShape(Rectangle())
+                ViewThatFits(in: .vertical) {
+                    stepBody(visualHeight: band)
+                    ScrollView(.vertical, showsIndicators: false) {
+                        stepBody(visualHeight: 150)
+                            .padding(.vertical, 4)
+                    }
                 }
-                .buttonStyle(.plain)
-                .accessibilityLabel("Lesson visual")
-                .accessibilityValue("Step \(stepIndex + 1) of \(steps.count)")
-                .accessibilityHint(isLastStep ? "Finishes the lesson." : "Advances to the next step.")
 
-                InstructionView(caption: current.caption)
-                    .id(stepIndex)
-                    .transition(.opacity)
+                Spacer(minLength: 12)
+
+                controls
             }
-
-            Spacer(minLength: 16)
-
-            controls
+            .frame(width: geo.size.width, height: geo.size.height)
         }
-        .frame(maxHeight: .infinity)
         // Horizontal swipe advances steps; the enclosing vertical feed owns up/down.
         .gesture(
             DragGesture(minimumDistance: 24)
@@ -136,6 +134,28 @@ struct LessonPage: View {
             @unknown default:
                 break
             }
+        }
+    }
+
+    // The diagram and its instruction as one centered group, so the text stays with
+    // the visual it describes. `visualHeight` is the band the caller computed from
+    // available space (or the compact fallback used inside a scroll view).
+    private func stepBody(visualHeight: CGFloat) -> some View {
+        VStack(spacing: 22) {
+            Button { advance() } label: {
+                VisualView(visual: current.visual, palette: palette)
+                    .frame(height: visualHeight)
+                    .padding(.horizontal, 16)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Lesson visual")
+            .accessibilityValue("Step \(stepIndex + 1) of \(steps.count)")
+            .accessibilityHint(isLastStep ? "Finishes the lesson." : "Advances to the next step.")
+
+            InstructionView(caption: current.caption)
+                .id(stepIndex)
+                .transition(.opacity)
         }
     }
 
