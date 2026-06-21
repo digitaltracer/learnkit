@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "id": "subtree-of-another-tree",
+  "subject": "dsa",
+  "track": "trees",
+  "title": "Subtree of Another Tree",
+  "difficulty": "easy",
+  "summary": "Check each node of root as a candidate match for subRoot. When a node's whole subtree equals subRoot in shape and values, the answer is true.",
+  "problem": "Does tree subRoot appear as a subtree of root? Check each node of root as a candidate match.",
+  "example": { "input": "root = [3,4,5,1,2], subRoot = [4,1,2]", "output": "true" },
+  "steps": [
+    {
+      "caption": "Does subRoot [4, 1, 2] appear as a subtree? Check each node as a possible match root.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "left": { "value": 4, "left": { "value": 1 }, "right": { "value": 2 } },
+          "right": { "value": 5 }
+        }
+      }
+    },
+    {
+      "caption": "Try root 3. Its subtree is the whole tree, whose root 3 is not subRoot's root 4.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3, "state": "compare",
+          "left": { "value": 4, "left": { "value": 1 }, "right": { "value": 2 } },
+          "right": { "value": 5 }
+        }
+      }
+    },
+    {
+      "caption": "Try node 4. It has children 1 and 2, exactly matching subRoot.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "left": { "value": 4, "state": "match", "left": { "value": 1, "state": "match" }, "right": { "value": 2, "state": "match" } },
+          "right": { "value": 5 }
+        }
+      }
+    },
+    {
+      "caption": "Done. subRoot is the subtree rooted at 4, so the answer is true.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "left": { "value": 4, "state": "done", "left": { "value": 1, "state": "done" }, "right": { "value": 2, "state": "done" } },
+          "right": { "value": 5 }
+        }
+      }
+    }
+  ]
+}
