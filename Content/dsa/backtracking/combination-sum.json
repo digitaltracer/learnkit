@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "id": "combination-sum",
+  "subject": "dsa",
+  "track": "backtracking",
+  "title": "Combination Sum",
+  "difficulty": "medium",
+  "summary": "Pick numbers in non-decreasing order, reusing each as often as you like, and prune a branch the moment its running sum passes the target. Leaves that land on the target are the answers.",
+  "problem": "Find every combination of candidates = [2, 3] that sums to target = 6, where numbers may be reused.",
+  "example": { "input": "candidates = [2, 3], target = 6", "output": "[[2,2,2], [3,3]]" },
+  "steps": [
+    {
+      "caption": "Each node is the running sum. Reuse is allowed, but picks only go non-decreasing so no combo is counted twice. Prune any branch whose sum passes 6.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "0", "state": "active", "pointer": "go",
+          "children": [
+            { "value": "2", "edge": "+2", "children": [
+              { "value": "4", "edge": "+2", "children": [ { "value": "6", "edge": "+2" }, { "value": "7", "edge": "+3" } ] },
+              { "value": "5", "edge": "+3", "children": [ { "value": "8", "edge": "+3" } ] }
+            ] },
+            { "value": "3", "edge": "+3", "children": [ { "value": "6", "edge": "+3" } ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Add 2 three times: 0, 2, 4, 6. The sum hits the target exactly, so [2, 2, 2] is a solution.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "0", "state": "active",
+          "children": [
+            { "value": "2", "edge": "+2", "state": "active", "children": [
+              { "value": "4", "edge": "+2", "state": "active", "children": [ { "value": "6", "edge": "+2", "state": "match" }, { "value": "7", "edge": "+3" } ] },
+              { "value": "5", "edge": "+3", "children": [ { "value": "8", "edge": "+3" } ] }
+            ] },
+            { "value": "3", "edge": "+3", "children": [ { "value": "6", "edge": "+3" } ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "From 4, adding 3 overshoots to 7; from 5, adding 3 overshoots to 8. Both branches pass 6, so they are pruned.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "0", "state": "active",
+          "children": [
+            { "value": "2", "edge": "+2", "state": "active", "children": [
+              { "value": "4", "edge": "+2", "state": "active", "children": [ { "value": "6", "edge": "+2", "state": "match" }, { "value": "7", "edge": "+3", "state": "mismatch" } ] },
+              { "value": "5", "edge": "+3", "state": "active", "children": [ { "value": "8", "edge": "+3", "state": "mismatch" } ] }
+            ] },
+            { "value": "3", "edge": "+3", "children": [ { "value": "6", "edge": "+3" } ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Backtrack and start with 3 instead. Adding 3 again gives 6, so [3, 3] is the other solution.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "0", "state": "active",
+          "children": [
+            { "value": "2", "edge": "+2", "children": [
+              { "value": "4", "edge": "+2", "children": [ { "value": "6", "edge": "+2", "state": "match" }, { "value": "7", "edge": "+3", "state": "mismatch" } ] },
+              { "value": "5", "edge": "+3", "children": [ { "value": "8", "edge": "+3", "state": "mismatch" } ] }
+            ] },
+            { "value": "3", "edge": "+3", "state": "active", "children": [ { "value": "6", "edge": "+3", "state": "match" } ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Two leaves reach the target: [2, 2, 2] and [3, 3]. The over-target branches stay pruned.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "0", "state": "done",
+          "children": [
+            { "value": "2", "edge": "+2", "state": "done", "children": [
+              { "value": "4", "edge": "+2", "state": "done", "children": [ { "value": "6", "edge": "+2", "state": "done" }, { "value": "7", "edge": "+3", "state": "mismatch" } ] },
+              { "value": "5", "edge": "+3", "children": [ { "value": "8", "edge": "+3", "state": "mismatch" } ] }
+            ] },
+            { "value": "3", "edge": "+3", "state": "done", "children": [ { "value": "6", "edge": "+3", "state": "done" } ] }
+          ]
+        }
+      }
+    }
+  ]
+}

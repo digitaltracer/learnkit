@@ -324,7 +324,8 @@
           "lessons": [
             { "id": "subsets", "title": "Subsets", "difficulty": "medium", "file": "dsa/backtracking/subsets.json" },
             { "id": "permutations", "title": "Permutations", "difficulty": "medium", "file": "dsa/backtracking/permutations.json" },
-            { "id": "generate-parentheses", "title": "Generate Parentheses", "difficulty": "medium", "file": "dsa/backtracking/generate-parentheses.json" }
+            { "id": "generate-parentheses", "title": "Generate Parentheses", "difficulty": "medium", "file": "dsa/backtracking/generate-parentheses.json" },
+            { "id": "combination-sum", "title": "Combination Sum", "difficulty": "medium", "file": "dsa/backtracking/combination-sum.json" }
           ]
         },
         {
