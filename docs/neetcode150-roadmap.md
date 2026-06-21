@@ -1,6 +1,6 @@
 # NeetCode 150 — LearnKit Content Roadmap
 
-_Status snapshot: 2026-06-17. Source list: https://neetcode.io/practice/practice/neetcode150_
+_Status snapshot: 2026-06-21. Source list: https://neetcode.io/practice/practice/neetcode150_
 
 This is the master backlog for covering the NeetCode 150 as LearnKit Lessons.
 Pick up **one checkbox at a time**; each is sized to be a single, self-contained
@@ -30,9 +30,8 @@ So each problem is tagged by what it needs before it can be authored:
 
 | Bucket | Count |
 |---|---|
-| ✅ Done | 21 / 150 |
-| 🟢 Buildable now (array only) | 45 |
-| 🟡 Blocked on a new primitive | 84 |
+| ✅ Done | 71 / 150 |
+| 🟡 Remaining (all primitives now exist; pure authoring) | 79 |
 | **Total** | **150** |
 
 _Primitives shipped: `array`, `grid`, `tree`, `list`, `graph`, `hashmap`, `intervals`, `rtree`._
@@ -77,7 +76,7 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 **Extend existing track: Stack**
 - [x] Evaluate Reverse Polish Notation (M) _(2026-06-21)_
 - [ ] Car Fleet (M)
-- [ ] Largest Rectangle in Histogram (H) — `bars`
+- [x] Largest Rectangle in Histogram (H) — `bars` _(2026-06-21)_
 
 **Extend existing track: Binary Search**
 - [x] Koko Eating Bananas (M) — binary search on the answer _(2026-06-21)_
@@ -92,13 +91,13 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 
 **New track: 1-D Dynamic Programming**
 - [x] Climbing Stairs (E) _(2026-06-21)_
-- [ ] Min Cost Climbing Stairs (E)
+- [x] Min Cost Climbing Stairs (E) _(2026-06-21)_
 - [x] House Robber (M) _(2026-06-21)_
-- [ ] House Robber II (M)
-- [ ] Decode Ways (M)
+- [x] House Robber II (M) _(2026-06-21)_
+- [x] Decode Ways (M) _(2026-06-21)_
 - [x] Coin Change (M) _(2026-06-21)_
-- [ ] Word Break (M)
-- [ ] Longest Increasing Subsequence (M)
+- [x] Word Break (M) _(2026-06-21)_
+- [x] Longest Increasing Subsequence (M) _(2026-06-21)_
 - [ ] Partition Equal Subset Sum (M) — 1-D boolean dp
 - [ ] Longest Palindromic Substring (M) — expand-around-center
 - [ ] Palindromic Substrings (M) — expand-around-center
@@ -106,25 +105,25 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 **New track: Greedy**
 - [x] Jump Game (M) _(2026-06-21)_
 - [x] Jump Game II (M) _(2026-06-21)_
-- [ ] Gas Station (M)
+- [x] Gas Station (M) _(2026-06-21)_
 - [ ] Hand of Straights (M)
 - [ ] Merge Triplets to Form Target Triplet (M)
-- [ ] Partition Labels (M)
-- [ ] Valid Parenthesis String (M)
+- [x] Partition Labels (M) _(2026-06-21)_
+- [x] Valid Parenthesis String (M) _(2026-06-21)_
 
 **New track: Bit Manipulation** (cells hold bits)
-- [ ] Single Number (E)
-- [ ] Number of 1 Bits (E)
-- [ ] Counting Bits (E)
-- [ ] Reverse Bits (E)
-- [ ] Missing Number (E)
+- [x] Single Number (E) _(2026-06-21)_
+- [x] Number of 1 Bits (E) _(2026-06-21)_
+- [x] Counting Bits (E) _(2026-06-21)_
+- [x] Reverse Bits (E) _(2026-06-21)_
+- [x] Missing Number (E) _(2026-06-21)_
 - [ ] Sum of Two Integers (M)
 - [ ] Reverse Integer (M)
 
 **New track: Math & Geometry** (array-friendly members only)
-- [ ] Happy Number (E) — value sequence
-- [ ] Plus One (E)
-- [ ] Pow(x, n) (M) — caption-heavy; value sequence
+- [x] Happy Number (E) — value sequence _(2026-06-21)_
+- [x] Plus One (E) _(2026-06-21)_
+- [x] Pow(x, n) (M) — caption-heavy; value sequence _(2026-06-21)_
 - [ ] Multiply Strings (M) — digit arrays
 
 **Slots into Linked List / Backtracking but is array-renderable**
@@ -192,10 +191,10 @@ _New track: 2-D Dynamic Programming (DP table)_
 - [ ] Subtree of Another Tree (E)
 - [x] Lowest Common Ancestor of a BST (M) _(2026-06-21)_
 - [x] Binary Tree Level Order Traversal (M) _(2026-06-21)_
-- [ ] Binary Tree Right Side View (M)
-- [ ] Count Good Nodes in Binary Tree (M)
-- [ ] Validate Binary Search Tree (M)
-- [ ] Kth Smallest Element in a BST (M)
+- [x] Binary Tree Right Side View (M) _(2026-06-21)_
+- [x] Count Good Nodes in Binary Tree (M) _(2026-06-21)_
+- [x] Validate Binary Search Tree (M) _(2026-06-21)_
+- [x] Kth Smallest Element in a BST (M) _(2026-06-21)_
 - [ ] Construct Binary Tree from Preorder and Inorder Traversal (M)
 - [ ] Binary Tree Maximum Path Sum (H)
 - [ ] Serialize and Deserialize Binary Tree (H)
@@ -248,7 +247,7 @@ _Advanced Graphs (weighted / topological)_
 - [x] Two Sum (E) — first hashmap lesson; complement lookup _(2026-06-17)_
 - [x] Group Anagrams (M) _(2026-06-21)_
 - [x] Top K Frequent Elements (M) — count + bucket sort _(2026-06-21)_
-- [ ] Longest Consecutive Sequence (M)
+- [x] Longest Consecutive Sequence (M) _(2026-06-21)_
 - [ ] Time Based Key-Value Store (M)
 - [ ] Detect Squares (M)
 - [ ] _(then revisit LRU Cache from Phase 4)_
@@ -275,7 +274,7 @@ view is too much.
 - [x] Subsets (M) — first rtree lesson; include/skip decision tree _(2026-06-17)_
 - [ ] Combination Sum (M)
 - [ ] Combination Sum II (M)
-- [ ] Permutations (M)
+- [x] Permutations (M) _(2026-06-21)_
 - [ ] Subsets II (M)
 - [ ] Palindrome Partitioning (M)
 - [ ] Letter Combinations of a Phone Number (M)
@@ -283,10 +282,10 @@ view is too much.
 **`intervals` primitive (Intervals: 6)** — bars on a shared timeline.
 - [x] **Engine:** `intervals` primitive — bars on a shared time axis, auto or
       pinned bounds, ADR 0008. _(2026-06-17)_
-- [ ] Insert Interval (M)
+- [x] Insert Interval (M) _(2026-06-21)_
 - [x] Merge Intervals (M) — first intervals lesson; sorted overlap sweep _(2026-06-17)_
 - [ ] Non-overlapping Intervals (M)
-- [ ] Meeting Rooms (E)
+- [x] Meeting Rooms (E) _(2026-06-21)_
 - [ ] Meeting Rooms II (M)
 - [ ] Minimum Interval to Include Each Query (H)
 
