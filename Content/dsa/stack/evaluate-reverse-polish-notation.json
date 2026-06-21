@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "evaluate-reverse-polish-notation",
+  "subject": "dsa",
+  "track": "stack",
+  "title": "Evaluate Reverse Polish Notation",
+  "difficulty": "medium",
+  "summary": "Scan the tokens with a stack: push every number, and on an operator pop the top two operands, apply it, and push the result back. The final lone value is the answer.",
+  "problem": "Evaluate an arithmetic expression in Reverse Polish Notation, where each operator follows its two operands.",
+  "example": { "input": "tokens = [\"2\", \"1\", \"+\", \"3\", \"*\"]", "output": "9" },
+  "steps": [
+    {
+      "caption": "Evaluate RPN [2,1,+,3,*] left to right: push numbers; an operator pops the top two, applies it, pushes the result. Start by pushing 2.",
+      "visual": { "type": "array", "cells": [2], "highlights": [{ "index": 0, "state": "active" }] }
+    },
+    {
+      "caption": "Next token 1 is a number — push it. Stack, bottom to top: 2, 1.",
+      "visual": { "type": "array", "cells": [2, 1], "highlights": [{ "range": [0, 1], "state": "active" }] }
+    },
+    {
+      "caption": "'+' pops the top two, 1 then 2, computes 2 + 1 = 3, and pushes 3.",
+      "visual": { "type": "array", "cells": [3], "highlights": [{ "index": 0, "state": "match" }] }
+    },
+    {
+      "caption": "Next token 3 is a number — push it. Stack: 3, 3.",
+      "visual": { "type": "array", "cells": [3, 3], "highlights": [{ "range": [0, 1], "state": "active" }] }
+    },
+    {
+      "caption": "'*' pops 3 and 3, computes 3 * 3 = 9, and pushes 9.",
+      "visual": { "type": "array", "cells": [9], "highlights": [{ "index": 0, "state": "match" }] }
+    },
+    {
+      "caption": "All tokens are consumed and one value remains: 9 = ((2 + 1) * 3).",
+      "visual": { "type": "array", "cells": [9], "highlights": [{ "index": 0, "state": "done" }] }
+    }
+  ]
+}

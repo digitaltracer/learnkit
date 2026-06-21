@@ -156,7 +156,8 @@
           "lessons": [
             { "id": "valid-parentheses", "title": "Valid Parentheses", "difficulty": "easy", "file": "dsa/stack/valid-parentheses.json" },
             { "id": "min-stack", "title": "Min Stack", "difficulty": "medium", "file": "dsa/stack/min-stack.json" },
-            { "id": "daily-temperatures", "title": "Daily Temperatures", "difficulty": "medium", "file": "dsa/stack/daily-temperatures.json" }
+            { "id": "daily-temperatures", "title": "Daily Temperatures", "difficulty": "medium", "file": "dsa/stack/daily-temperatures.json" },
+            { "id": "evaluate-reverse-polish-notation", "title": "Evaluate Reverse Polish Notation", "difficulty": "medium", "file": "dsa/stack/evaluate-reverse-polish-notation.json" }
           ]
         },
         {

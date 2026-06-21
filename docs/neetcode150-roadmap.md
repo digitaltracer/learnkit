@@ -75,7 +75,7 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 - [ ] Sliding Window Maximum (H)
 
 **Extend existing track: Stack**
-- [ ] Evaluate Reverse Polish Notation (M)
+- [x] Evaluate Reverse Polish Notation (M) _(2026-06-21)_
 - [ ] Car Fleet (M)
 - [ ] Largest Rectangle in Histogram (H) — `bars`
 
