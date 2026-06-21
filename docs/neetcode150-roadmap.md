@@ -30,8 +30,8 @@ So each problem is tagged by what it needs before it can be authored:
 
 | Bucket | Count |
 |---|---|
-| ✅ Done | 71 / 150 |
-| 🟡 Remaining (all primitives now exist; pure authoring) | 79 |
+| ✅ Done | 96 / 150 |
+| 🟡 Remaining (all primitives now exist; pure authoring) | 54 |
 | **Total** | **150** |
 
 _Primitives shipped: `array`, `grid`, `tree`, `list`, `graph`, `hashmap`, `intervals`, `rtree`._
@@ -70,12 +70,12 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 **Extend existing track: Sliding Window**
 - [x] Longest Repeating Character Replacement (M) _(2026-06-21)_
 - [x] Permutation in String (M) _(2026-06-21)_
-- [ ] Minimum Window Substring (H)
-- [ ] Sliding Window Maximum (H)
+- [x] Minimum Window Substring (H) _(2026-06-21)_
+- [x] Sliding Window Maximum (H) _(2026-06-21)_
 
 **Extend existing track: Stack**
 - [x] Evaluate Reverse Polish Notation (M) _(2026-06-21)_
-- [ ] Car Fleet (M)
+- [x] Car Fleet (M) _(2026-06-21)_
 - [x] Largest Rectangle in Histogram (H) — `bars` _(2026-06-21)_
 
 **Extend existing track: Binary Search**
@@ -86,7 +86,7 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 **New track: Arrays & Hashing** (array-friendly members only)
 - [x] Contains Duplicate (E) _(2026-06-21)_
 - [x] Valid Anagram (E) — letter-count cancel _(2026-06-21)_
-- [ ] Encode and Decode Strings (M) — length-prefix
+- [x] Encode and Decode Strings (M) — length-prefix _(2026-06-21)_
 - [x] Product of Array Except Self (M) — prefix/suffix passes _(2026-06-21)_
 
 **New track: 1-D Dynamic Programming**
@@ -98,16 +98,16 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 - [x] Coin Change (M) _(2026-06-21)_
 - [x] Word Break (M) _(2026-06-21)_
 - [x] Longest Increasing Subsequence (M) _(2026-06-21)_
-- [ ] Partition Equal Subset Sum (M) — 1-D boolean dp
-- [ ] Longest Palindromic Substring (M) — expand-around-center
-- [ ] Palindromic Substrings (M) — expand-around-center
+- [x] Partition Equal Subset Sum (M) — 1-D boolean dp _(2026-06-21)_
+- [x] Longest Palindromic Substring (M) — expand-around-center _(2026-06-21)_
+- [x] Palindromic Substrings (M) — expand-around-center _(2026-06-21)_
 
 **New track: Greedy**
 - [x] Jump Game (M) _(2026-06-21)_
 - [x] Jump Game II (M) _(2026-06-21)_
 - [x] Gas Station (M) _(2026-06-21)_
-- [ ] Hand of Straights (M)
-- [ ] Merge Triplets to Form Target Triplet (M)
+- [x] Hand of Straights (M) _(2026-06-21)_
+- [x] Merge Triplets to Form Target Triplet (M) _(2026-06-21)_
 - [x] Partition Labels (M) _(2026-06-21)_
 - [x] Valid Parenthesis String (M) _(2026-06-21)_
 
@@ -117,18 +117,18 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 - [x] Counting Bits (E) _(2026-06-21)_
 - [x] Reverse Bits (E) _(2026-06-21)_
 - [x] Missing Number (E) _(2026-06-21)_
-- [ ] Sum of Two Integers (M)
-- [ ] Reverse Integer (M)
+- [x] Sum of Two Integers (M) _(2026-06-21)_
+- [x] Reverse Integer (M) _(2026-06-21)_
 
 **New track: Math & Geometry** (array-friendly members only)
 - [x] Happy Number (E) — value sequence _(2026-06-21)_
 - [x] Plus One (E) _(2026-06-21)_
 - [x] Pow(x, n) (M) — caption-heavy; value sequence _(2026-06-21)_
-- [ ] Multiply Strings (M) — digit arrays
+- [x] Multiply Strings (M) — digit arrays _(2026-06-21)_
 
 **Slots into Linked List / Backtracking but is array-renderable**
-- [ ] Find the Duplicate Number (M) — Floyd's cycle over array indices
-- [ ] Generate Parentheses (M) — string built step by step
+- [x] Find the Duplicate Number (M) — Floyd's cycle over array indices _(2026-06-21)_
+- [x] Generate Parentheses (M) — string built step by step _(2026-06-21)_
 
 ## Phase 2 — `grid` primitive (biggest unlock: 25 lessons)
 
@@ -196,7 +196,7 @@ _New track: 2-D Dynamic Programming (DP table)_
 - [x] Validate Binary Search Tree (M) _(2026-06-21)_
 - [x] Kth Smallest Element in a BST (M) _(2026-06-21)_
 - [ ] Construct Binary Tree from Preorder and Inorder Traversal (M)
-- [ ] Binary Tree Maximum Path Sum (H)
+- [x] Binary Tree Maximum Path Sum (H) _(2026-06-21)_
 - [ ] Serialize and Deserialize Binary Tree (H)
 
 ## Phase 4 — `list` primitive (Linked List: 10)
@@ -225,10 +225,10 @@ _New track: 2-D Dynamic Programming (DP table)_
 
 _Graphs_
 - [x] Clone Graph (M) — first graph lesson; DFS visit/clone _(2026-06-17)_
-- [ ] Course Schedule (M)
+- [x] Course Schedule (M) _(2026-06-21)_
 - [ ] Course Schedule II (M)
-- [ ] Graph Valid Tree (M)
-- [ ] Number of Connected Components in an Undirected Graph (M)
+- [x] Graph Valid Tree (M) _(2026-06-21)_
+- [x] Number of Connected Components in an Undirected Graph (M) _(2026-06-21)_
 - [ ] Redundant Connection (M)
 - [ ] Word Ladder (H)
 
@@ -272,21 +272,21 @@ view is too much.
 - [x] **Engine:** `rtree` primitive — n-ary decision tree, post-order layout,
       edge choice labels, ADR 0008. _(2026-06-17)_
 - [x] Subsets (M) — first rtree lesson; include/skip decision tree _(2026-06-17)_
-- [ ] Combination Sum (M)
-- [ ] Combination Sum II (M)
+- [x] Combination Sum (M) _(2026-06-21)_
+- [x] Combination Sum II (M) _(2026-06-21)_
 - [x] Permutations (M) _(2026-06-21)_
-- [ ] Subsets II (M)
-- [ ] Palindrome Partitioning (M)
-- [ ] Letter Combinations of a Phone Number (M)
+- [x] Subsets II (M) _(2026-06-21)_
+- [x] Palindrome Partitioning (M) _(2026-06-21)_
+- [x] Letter Combinations of a Phone Number (M) _(2026-06-21)_
 
 **`intervals` primitive (Intervals: 6)** — bars on a shared timeline.
 - [x] **Engine:** `intervals` primitive — bars on a shared time axis, auto or
       pinned bounds, ADR 0008. _(2026-06-17)_
 - [x] Insert Interval (M) _(2026-06-21)_
 - [x] Merge Intervals (M) — first intervals lesson; sorted overlap sweep _(2026-06-17)_
-- [ ] Non-overlapping Intervals (M)
+- [x] Non-overlapping Intervals (M) _(2026-06-21)_
 - [x] Meeting Rooms (E) _(2026-06-21)_
-- [ ] Meeting Rooms II (M)
+- [x] Meeting Rooms II (M) _(2026-06-21)_
 - [ ] Minimum Interval to Include Each Query (H)
 
 **`trie` (extends `tree`) (Tries: 3)**
