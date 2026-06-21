@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "id": "lru-cache",
+  "subject": "dsa",
+  "track": "linked-list",
+  "title": "LRU Cache",
+  "difficulty": "medium",
+  "summary": "Order keys most-recent first to evict the least-recently-used.",
+  "problem": "Build a cache of capacity 2 that evicts the least-recently-used key. Keep keys in a list ordered most-recent first. A get or put moves a key to the front, and a put at capacity evicts the back. The calls are put(1,1), put(2,2), get(1), put(3,3), get(2).",
+  "example": {
+    "input": "capacity 2; put(1,1), put(2,2), get(1), put(3,3), get(2)",
+    "output": "get(2) -> -1"
+  },
+  "steps": [
+    {
+      "caption": "Capacity-2 cache. Keep keys most-recent first and evict the least-recent from the back.",
+      "visual": {
+        "type": "list",
+        "nodes": [2, 1]
+      }
+    },
+    {
+      "caption": "After put(1) then put(2) the list of keys is [2,1], with 2 most recent.",
+      "visual": {
+        "type": "list",
+        "nodes": [2, 1]
+      }
+    },
+    {
+      "caption": "get(1) moves key 1 to the front, giving [1,2].",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2],
+        "highlights": [
+          { "index": 0, "state": "active" }
+        ]
+      }
+    },
+    {
+      "caption": "put(3) finds the cache full, so the least-recent key 2 is evicted, giving [3,1].",
+      "visual": {
+        "type": "list",
+        "nodes": [3, 1],
+        "highlights": [
+          { "index": 0, "state": "match" }
+        ]
+      }
+    },
+    {
+      "caption": "get(2) returns -1 because 2 was evicted. The answer is -1.",
+      "visual": {
+        "type": "list",
+        "nodes": [3, 1],
+        "highlights": [
+          { "range": [0, 1], "state": "done" }
+        ]
+      }
+    }
+  ]
+}
