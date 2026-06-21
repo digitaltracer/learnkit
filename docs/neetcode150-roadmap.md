@@ -70,7 +70,7 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 
 **Extend existing track: Sliding Window**
 - [x] Longest Repeating Character Replacement (M) _(2026-06-21)_
-- [ ] Permutation in String (M)
+- [x] Permutation in String (M) _(2026-06-21)_
 - [ ] Minimum Window Substring (H)
 - [ ] Sliding Window Maximum (H)
 
