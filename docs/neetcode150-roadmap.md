@@ -105,7 +105,7 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 
 **New track: Greedy**
 - [x] Jump Game (M) _(2026-06-21)_
-- [ ] Jump Game II (M)
+- [x] Jump Game II (M) _(2026-06-21)_
 - [ ] Gas Station (M)
 - [ ] Hand of Straights (M)
 - [ ] Merge Triplets to Form Target Triplet (M)

@@ -339,7 +339,8 @@
             "complexity": "Typically O(n) or O(n log n) time, O(1) space"
           },
           "lessons": [
-            { "id": "jump-game", "title": "Jump Game", "difficulty": "medium", "file": "dsa/greedy/jump-game.json" }
+            { "id": "jump-game", "title": "Jump Game", "difficulty": "medium", "file": "dsa/greedy/jump-game.json" },
+            { "id": "jump-game-ii", "title": "Jump Game II", "difficulty": "medium", "file": "dsa/greedy/jump-game-ii.json" }
           ]
         }
       ]

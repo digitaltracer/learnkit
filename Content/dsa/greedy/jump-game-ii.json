@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "jump-game-ii",
+  "subject": "dsa",
+  "track": "greedy",
+  "title": "Jump Game II",
+  "difficulty": "medium",
+  "summary": "Grow a reachable window one jump at a time. Each jump extends the window to the farthest index any cell in the current window can reach; count the jumps until it covers the end.",
+  "problem": "Each value is the maximum forward jump from that index. Return the minimum number of jumps to reach the last index (assume it's always reachable).",
+  "example": { "input": "nums = [2, 3, 1, 1, 4]", "output": "2" },
+  "steps": [
+    {
+      "caption": "Now find the fewest jumps to reach the last index. Think in layers: how far can you get with 1 jump, then 2, and so on.",
+      "visual": { "type": "array", "cells": [2, 3, 1, 1, 4] }
+    },
+    {
+      "caption": "With 0 jumps you're at index 0. Its value 2 means the first jump can land up to index 2 — that's the 1-jump window [0..2].",
+      "visual": { "type": "array", "cells": [2, 3, 1, 1, 4], "pointers": [{ "label": "end", "index": 2 }], "highlights": [{ "range": [0, 2], "state": "active" }] }
+    },
+    {
+      "caption": "For a 2nd jump, scan that window for the best onward reach: index 1 jumps 3, landing on index 4. So 2 jumps extend coverage to index 4.",
+      "visual": { "type": "array", "cells": [2, 3, 1, 1, 4], "pointers": [{ "label": "end", "index": 4 }], "highlights": [{ "range": [0, 2], "state": "compare" }, { "range": [3, 4], "state": "active" }] }
+    },
+    {
+      "caption": "Index 4 is the last index, now covered after 2 jumps — no need to look further.",
+      "visual": { "type": "array", "cells": [2, 3, 1, 1, 4], "highlights": [{ "range": [0, 3], "state": "done" }, { "index": 4, "state": "match" }] }
+    },
+    {
+      "caption": "Minimum jumps = 2, for example 0 -> 1 -> 4.",
+      "visual": { "type": "array", "cells": [2, 3, 1, 1, 4], "highlights": [{ "index": 0, "state": "done" }, { "index": 1, "state": "done" }, { "index": 4, "state": "done" }] }
+    }
+  ]
+}
