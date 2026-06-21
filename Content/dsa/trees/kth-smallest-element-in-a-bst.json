@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "id": "kth-smallest-element-in-a-bst",
+  "subject": "dsa",
+  "track": "trees",
+  "title": "Kth Smallest Element in a BST",
+  "difficulty": "medium",
+  "summary": "An in-order traversal of a BST visits values in sorted order. Walk left, then the node, then right, counting visits; the kth node visited is the kth smallest, and you can stop the moment you reach it.",
+  "problem": "Return the kth smallest value in a binary search tree. Here k = 3.",
+  "example": { "input": "root = [3,1,4,null,2], k = 3", "output": "3" },
+  "steps": [
+    {
+      "caption": "In-order traversal of a BST (left, node, right) visits values in sorted order. Count nodes as you visit and stop at the kth. Here k = 3.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "left": { "value": 1, "right": { "value": 2 } },
+          "right": { "value": 4 }
+        }
+      }
+    },
+    {
+      "caption": "Go as far left as possible. 1 is the smallest value — the 1st visited.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "left": { "value": 1, "state": "done", "pointer": "1st", "right": { "value": 2 } },
+          "right": { "value": 4 }
+        }
+      }
+    },
+    {
+      "caption": "1 has a right child 2, which comes next — the 2nd visited.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "left": { "value": 1, "state": "done", "right": { "value": 2, "state": "done", "pointer": "2nd" } },
+          "right": { "value": 4 }
+        }
+      }
+    },
+    {
+      "caption": "Back up to the root 3 — the 3rd value visited.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3, "state": "active", "pointer": "3rd",
+          "left": { "value": 1, "state": "done", "right": { "value": 2, "state": "done" } },
+          "right": { "value": 4 }
+        }
+      }
+    },
+    {
+      "caption": "k = 3, so we stop here — the 3rd smallest is 3. We never even visit 4.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3, "state": "done",
+          "left": { "value": 1, "state": "done", "right": { "value": 2, "state": "done" } },
+          "right": { "value": 4, "state": "compare" }
+        }
+      }
+    }
+  ]
+}
