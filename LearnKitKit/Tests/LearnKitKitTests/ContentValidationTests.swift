@@ -19,18 +19,19 @@ final class ContentValidationTests: XCTestCase {
         let content = contentDirectory()
         let manifestURL = content.appending(path: "manifest.json")
         let manifest = try JSONDecoder().decode(Manifest.self, from: Data(contentsOf: manifestURL))
+        let manifestIssues = ContentValidator.issues(in: manifest)
+        XCTAssertTrue(manifestIssues.isEmpty, "manifest.json:\n - " + manifestIssues.joined(separator: "\n - "))
 
         var validated = 0
         for subject in manifest.subjects {
             for track in subject.tracks {
                 for ref in track.lessons {
                     let url = content.appending(path: ref.file)
-                    // A manifest entry may list a lesson whose JSON isn't generated yet.
+                    XCTAssertTrue(FileManager.default.fileExists(atPath: url.path), "\(ref.file): manifest entry points to a missing file")
                     guard FileManager.default.fileExists(atPath: url.path) else { continue }
 
                     let lesson = try JSONDecoder().decode(Lesson.self, from: Data(contentsOf: url))
-                    XCTAssertEqual(lesson.id, ref.id, "\(ref.file): id doesn't match manifest")
-                    let issues = ContentValidator.issues(in: lesson)
+                    let issues = ContentValidator.issues(in: lesson, manifestRef: ref)
                     XCTAssertTrue(issues.isEmpty, "\(ref.file):\n - " + issues.joined(separator: "\n - "))
                     validated += 1
                 }
