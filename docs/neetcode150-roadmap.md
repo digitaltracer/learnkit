@@ -208,7 +208,7 @@ _New track: 2-D Dynamic Programming (DP table)_
       `Palette.linkColor`, validator branch, schema, ADR 0007. _(2026-06-17)_
 
 - [x] Reverse Linked List (E) — first list lesson; prv/cur arrow-flip pass _(2026-06-17)_
-- [ ] Merge Two Sorted Lists (E)
+- [x] Merge Two Sorted Lists (E) _(2026-06-21)_
 - [ ] Linked List Cycle (E)
 - [ ] Reorder List (M)
 - [ ] Remove Nth Node From End of List (M)

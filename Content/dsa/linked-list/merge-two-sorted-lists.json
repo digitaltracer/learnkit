@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "id": "merge-two-sorted-lists",
+  "subject": "dsa",
+  "track": "linked-list",
+  "title": "Merge Two Sorted Lists",
+  "difficulty": "easy",
+  "summary": "Keep a pointer at the front of each list. Repeatedly take the smaller of the two fronts and advance that pointer, splicing nodes into one sorted chain.",
+  "problem": "Merge two sorted linked lists into one sorted list and return its head.",
+  "example": { "input": "A = 1->2->4, B = 1->3->4", "output": "1->1->2->3->4->4" },
+  "steps": [
+    {
+      "caption": "Two sorted lists: A = 1,2,4 (left) and B = 1,3,4 (right). Merge them into one sorted list by repeatedly taking the smaller front node.",
+      "visual": { "type": "list", "nodes": [1, 2, 4, 1, 3, 4], "links": [[0, 1], [1, 2], [3, 4], [4, 5]] }
+    },
+    {
+      "caption": "Point p1 at A's front and p2 at B's front. Compare them and take the smaller; on a tie, take A's.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 4, 1, 3, 4], "links": [[0, 1], [1, 2], [3, 4], [4, 5]],
+        "pointers": [{ "label": "p1", "index": 0 }, { "label": "p2", "index": 3 }],
+        "highlights": [{ "index": 0, "state": "compare" }, { "index": 3, "state": "compare" }]
+      }
+    },
+    {
+      "caption": "1 vs 1: a tie, so take A's 1. Output: 1. Advance p1. Now compare 2 and 1.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 4, 1, 3, 4], "links": [[0, 1], [1, 2], [3, 4], [4, 5]],
+        "pointers": [{ "label": "p1", "index": 1 }, { "label": "p2", "index": 3 }],
+        "highlights": [{ "index": 0, "state": "done" }, { "index": 1, "state": "compare" }, { "index": 3, "state": "compare" }]
+      }
+    },
+    {
+      "caption": "2 vs 1: take 1. Output: 1,1. Advance p2. Compare 2 and 3.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 4, 1, 3, 4], "links": [[0, 1], [1, 2], [3, 4], [4, 5]],
+        "pointers": [{ "label": "p1", "index": 1 }, { "label": "p2", "index": 4 }],
+        "highlights": [{ "index": 0, "state": "done" }, { "index": 3, "state": "done" }, { "index": 1, "state": "compare" }, { "index": 4, "state": "compare" }]
+      }
+    },
+    {
+      "caption": "2 vs 3: take 2. Output: 1,1,2. Advance p1. Compare 4 and 3.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 4, 1, 3, 4], "links": [[0, 1], [1, 2], [3, 4], [4, 5]],
+        "pointers": [{ "label": "p1", "index": 2 }, { "label": "p2", "index": 4 }],
+        "highlights": [{ "index": 0, "state": "done" }, { "index": 1, "state": "done" }, { "index": 3, "state": "done" }, { "index": 2, "state": "compare" }, { "index": 4, "state": "compare" }]
+      }
+    },
+    {
+      "caption": "4 vs 3: take 3. Output: 1,1,2,3. Advance p2. Compare 4 and 4.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 4, 1, 3, 4], "links": [[0, 1], [1, 2], [3, 4], [4, 5]],
+        "pointers": [{ "label": "p1", "index": 2 }, { "label": "p2", "index": 5 }],
+        "highlights": [{ "index": 0, "state": "done" }, { "index": 1, "state": "done" }, { "index": 3, "state": "done" }, { "index": 4, "state": "done" }, { "index": 2, "state": "compare" }, { "index": 5, "state": "compare" }]
+      }
+    },
+    {
+      "caption": "4 vs 4: a tie, take A's 4. Output: 1,1,2,3,4. List A is now empty.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 4, 1, 3, 4], "links": [[0, 1], [1, 2], [3, 4], [4, 5]],
+        "pointers": [{ "label": "p2", "index": 5 }],
+        "highlights": [{ "range": [0, 4], "state": "done" }, { "index": 5, "state": "compare" }]
+      }
+    },
+    {
+      "caption": "A is empty, so append the rest of B — its remaining 4. Merged list: 1 -> 1 -> 2 -> 3 -> 4 -> 4.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 4, 1, 3, 4], "links": [[0, 1], [1, 2], [3, 4], [4, 5]],
+        "highlights": [{ "range": [0, 5], "state": "done" }]
+      }
+    }
+  ]
+}

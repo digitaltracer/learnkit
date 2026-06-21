@@ -214,7 +214,8 @@
             "complexity": "Typically O(n) time, O(1) space"
           },
           "lessons": [
-            { "id": "reverse-linked-list", "title": "Reverse Linked List", "difficulty": "easy", "file": "dsa/linked-list/reverse-linked-list.json" }
+            { "id": "reverse-linked-list", "title": "Reverse Linked List", "difficulty": "easy", "file": "dsa/linked-list/reverse-linked-list.json" },
+            { "id": "merge-two-sorted-lists", "title": "Merge Two Sorted Lists", "difficulty": "easy", "file": "dsa/linked-list/merge-two-sorted-lists.json" }
           ]
         },
         {
