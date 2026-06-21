@@ -104,7 +104,7 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 - [ ] Palindromic Substrings (M) — expand-around-center
 
 **New track: Greedy**
-- [ ] Jump Game (M)
+- [x] Jump Game (M) _(2026-06-21)_
 - [ ] Jump Game II (M)
 - [ ] Gas Station (M)
 - [ ] Hand of Straights (M)

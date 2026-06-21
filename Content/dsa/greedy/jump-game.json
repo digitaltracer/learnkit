@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "jump-game",
+  "subject": "dsa",
+  "track": "greedy",
+  "title": "Jump Game",
+  "difficulty": "medium",
+  "summary": "Sweep left to right tracking the farthest index reachable so far. If an index ever sits beyond that reach you're stuck; if the reach covers the last index, you win.",
+  "problem": "Each value is the maximum forward jump from that index. Starting at index 0, can you reach the last index?",
+  "example": { "input": "nums = [2, 3, 1, 1, 4]", "output": "true" },
+  "steps": [
+    {
+      "caption": "Each value is the most you can jump forward from that index. Starting at index 0, can you reach the last index?",
+      "visual": { "type": "array", "cells": [2, 3, 1, 1, 4] }
+    },
+    {
+      "caption": "Track the farthest index reachable so far. From index 0 you can jump 2, so reach = 2.",
+      "visual": { "type": "array", "cells": [2, 3, 1, 1, 4], "pointers": [{ "label": "i", "index": 0 }, { "label": "R", "index": 2 }], "highlights": [{ "range": [0, 2], "state": "active" }] }
+    },
+    {
+      "caption": "Index 1 is within reach. From it you can jump 3, extending reach to 1 + 3 = 4.",
+      "visual": { "type": "array", "cells": [2, 3, 1, 1, 4], "pointers": [{ "label": "i", "index": 1 }, { "label": "R", "index": 4 }], "highlights": [{ "range": [0, 4], "state": "active" }] }
+    },
+    {
+      "caption": "Reach is now 4 — the last index. Every index up to here was reachable, so the end is reachable too.",
+      "visual": { "type": "array", "cells": [2, 3, 1, 1, 4], "pointers": [{ "label": "i", "index": 1 }, { "label": "R", "index": 4 }], "highlights": [{ "range": [0, 3], "state": "active" }, { "index": 4, "state": "match" }] }
+    },
+    {
+      "caption": "So yes — the last index is reachable (e.g. 0 -> 1 -> 4). Had reach ever fallen behind the current index, we'd be stuck and return false.",
+      "visual": { "type": "array", "cells": [2, 3, 1, 1, 4], "highlights": [{ "range": [0, 4], "state": "done" }] }
+    }
+  ]
+}
