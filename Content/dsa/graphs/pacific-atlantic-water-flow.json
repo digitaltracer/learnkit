@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "pacific-atlantic-water-flow",
+  "subject": "dsa",
+  "track": "graphs",
+  "title": "Pacific Atlantic Water Flow",
+  "difficulty": "medium",
+  "summary": "Water flows from a cell to an equal-or-lower neighbor. Find the cells that can reach both the Pacific and the Atlantic by searching inward from each ocean's edges.",
+  "problem": "Given a grid of heights, find every cell from which water can flow to BOTH the Pacific (top and left edges) and the Atlantic (bottom and right edges). Water flows to an equal-or-lower 4-directional neighbor.",
+  "example": { "input": "[[5,4,3],[4,3,2],[3,2,1]]", "output": "[[0,0],[0,1],[0,2],[1,0],[2,0]]" },
+  "steps": [
+    {
+      "caption": "Find the cells that drain to both the Pacific and the Atlantic.",
+      "visual": { "type": "grid", "rows": [[5, 4, 3], [4, 3, 2], [3, 2, 1]] }
+    },
+    {
+      "caption": "Heights fall toward the bottom-right corner. Every cell can run downhill to it, so all cells drain to the Atlantic.",
+      "visual": { "type": "grid", "rows": [[5, 4, 3], [4, 3, 2], [3, 2, 1]], "highlights": [{ "rows": [0, 2], "cols": [0, 2], "state": "compare" }] }
+    },
+    {
+      "caption": "The Pacific is only reachable from the top row and the left column. Interior cells have higher ground above and to the left.",
+      "visual": { "type": "grid", "rows": [[5, 4, 3], [4, 3, 2], [3, 2, 1]], "highlights": [{ "rows": [0, 0], "cols": [0, 2], "state": "active" }, { "rows": [1, 2], "cols": [0, 0], "state": "active" }] }
+    },
+    {
+      "caption": "Both oceans are reachable from the intersection: the top row plus the left column.",
+      "visual": { "type": "grid", "rows": [[5, 4, 3], [4, 3, 2], [3, 2, 1]], "highlights": [{ "row": 0, "col": 0, "state": "match" }, { "row": 0, "col": 1, "state": "match" }, { "row": 0, "col": 2, "state": "match" }, { "row": 1, "col": 0, "state": "match" }, { "row": 2, "col": 0, "state": "match" }] }
+    },
+    {
+      "caption": "Done. These 5 cells drain to both oceans.",
+      "visual": { "type": "grid", "rows": [[5, 4, 3], [4, 3, 2], [3, 2, 1]], "highlights": [{ "row": 0, "col": 0, "state": "done" }, { "row": 0, "col": 1, "state": "done" }, { "row": 0, "col": 2, "state": "done" }, { "row": 1, "col": 0, "state": "done" }, { "row": 2, "col": 0, "state": "done" }] }
+    }
+  ]
+}
