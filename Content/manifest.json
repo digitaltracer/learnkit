@@ -436,6 +436,25 @@
             { "id": "sum-of-two-integers", "title": "Sum of Two Integers", "difficulty": "medium", "file": "dsa/bit-manipulation/sum-of-two-integers.json" },
             { "id": "reverse-integer", "title": "Reverse Integer", "difficulty": "medium", "file": "dsa/bit-manipulation/reverse-integer.json" }
           ]
+        },
+        {
+          "id": "2d-dp",
+          "title": "2-D Dynamic Programming",
+          "icon": "square.grid.3x3.fill",
+          "overview": {
+            "tagline": "Fill a 2-D table where each cell builds on a few already-solved neighbours, turning an exponential search into a grid sweep.",
+            "whenToUse": [
+              "The state needs two indices: two strings, or an item-and-capacity pair.",
+              "Each cell's answer depends on the cells above, to the left, or on the diagonal.",
+              "A plain recursion would recompute the same (i, j) subproblem many times.",
+              "You're counting paths or ways, or optimizing a min or max, over two dimensions."
+            ],
+            "keyIdea": "Define dp[i][j] over positions or prefixes in two dimensions, then fill the table row by row so each cell reuses neighbours that are already final. The recurrence, extend the diagonal on a match else take the best of top and left, is the whole algorithm.",
+            "complexity": "Typically O(m x n) time and space"
+          },
+          "lessons": [
+            { "id": "unique-paths", "title": "Unique Paths", "difficulty": "medium", "file": "dsa/2d-dp/unique-paths.json" }
+          ]
         }
       ]
     }

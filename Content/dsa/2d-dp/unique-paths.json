@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "id": "unique-paths",
+  "subject": "dsa",
+  "track": "2d-dp",
+  "title": "Unique Paths",
+  "difficulty": "medium",
+  "summary": "dp[i][j] counts the distinct paths a right/down-only robot can take to reach cell (i, j). The first row and column have exactly one straight-line path; every other cell sums the path counts from above and from the left.",
+  "problem": "A robot starts at the top-left of a 3 x 4 grid and moves only right or down. Count the distinct paths to the bottom-right corner. dp[i][j] holds the number of paths into cell (i, j).",
+  "example": { "input": "m = 3, n = 4", "output": "10" },
+  "steps": [
+    {
+      "caption": "Goal: count right/down paths to the bottom-right. Build dp where each cell holds the number of paths into it.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+      }
+    },
+    {
+      "caption": "The top row and left column each have one straight-line way to reach them, so fill them all with 1.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 1, 1, 1], [1, 0, 0, 0], [1, 0, 0, 0]],
+        "highlights": [{ "rows": [0, 0], "cols": [0, 3], "state": "active" }, { "rows": [0, 2], "cols": [0, 0], "state": "active" }]
+      }
+    },
+    {
+      "caption": "Fill row 1: each cell = paths from the left + paths from above. So 1+1=2, 2+1=3, 3+1=4.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 1, 1, 1], [1, 2, 3, 4], [1, 0, 0, 0]],
+        "highlights": [{ "row": 1, "col": 1, "state": "match" }, { "row": 1, "col": 2, "state": "match" }, { "row": 1, "col": 3, "state": "match" }]
+      }
+    },
+    {
+      "caption": "Fill row 2 the same way: 1+2=3, 3+3=6, 6+4=10.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 1, 1, 1], [1, 2, 3, 4], [1, 3, 6, 10]],
+        "highlights": [{ "row": 2, "col": 1, "state": "match" }, { "row": 2, "col": 2, "state": "match" }, { "row": 2, "col": 3, "state": "match" }]
+      }
+    },
+    {
+      "caption": "The bottom-right cell dp[2][3] = 10, so there are 10 unique paths.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 1, 1, 1], [1, 2, 3, 4], [1, 3, 6, 10]],
+        "highlights": [{ "row": 2, "col": 3, "state": "done" }]
+      }
+    }
+  ]
+}
