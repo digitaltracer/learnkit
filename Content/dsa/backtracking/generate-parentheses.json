@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "id": "generate-parentheses",
+  "subject": "dsa",
+  "track": "backtracking",
+  "title": "Generate Parentheses",
+  "difficulty": "medium",
+  "summary": "Build the string one bracket at a time: add '(' while opens used is below n, add ')' while closes trails opens. Every root-to-leaf path is one well-formed arrangement.",
+  "problem": "Generate all combinations of n = 2 pairs of well-formed parentheses.",
+  "example": { "input": "n = 2", "output": "[\"(())\", \"()()\"]" },
+  "steps": [
+    {
+      "caption": "Grow the string bracket by bracket. Add '(' while opens used is below n; add ')' while closes trails opens. Each leaf is a valid arrangement.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "start", "state": "active", "pointer": "go",
+          "children": [
+            { "value": "(", "edge": "(", "children": [
+              { "value": "((", "edge": "(", "children": [ { "value": "(()", "edge": ")", "children": [ { "value": "(())", "edge": ")" } ] } ] },
+              { "value": "()", "edge": ")", "children": [ { "value": "()(", "edge": "(", "children": [ { "value": "()()", "edge": ")" } ] } ] }
+            ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Open twice (opens hit n = 2), then we can only close. Closing twice reaches the leaf (()).",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "start", "state": "active",
+          "children": [
+            { "value": "(", "edge": "(", "state": "active", "children": [
+              { "value": "((", "edge": "(", "state": "active", "children": [ { "value": "(()", "edge": ")", "state": "active", "children": [ { "value": "(())", "edge": ")", "state": "done" } ] } ] },
+              { "value": "()", "edge": ")", "children": [ { "value": "()(", "edge": "(", "children": [ { "value": "()()", "edge": ")" } ] } ] }
+            ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Backtrack: open once, close once, then open and close again. The path reaches the leaf ()().",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "start", "state": "active",
+          "children": [
+            { "value": "(", "edge": "(", "state": "active", "children": [
+              { "value": "((", "edge": "(", "children": [ { "value": "(()", "edge": ")", "children": [ { "value": "(())", "edge": ")", "state": "done" } ] } ] },
+              { "value": "()", "edge": ")", "state": "active", "children": [ { "value": "()(", "edge": "(", "state": "active", "children": [ { "value": "()()", "edge": ")", "state": "done" } ] } ] }
+            ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Two leaves, two valid strings: (()) and ()(). The rules never let closes outrun opens, so every leaf is well-formed.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "start", "state": "done",
+          "children": [
+            { "value": "(", "edge": "(", "state": "done", "children": [
+              { "value": "((", "edge": "(", "state": "done", "children": [ { "value": "(()", "edge": ")", "state": "done", "children": [ { "value": "(())", "edge": ")", "state": "done" } ] } ] },
+              { "value": "()", "edge": ")", "state": "done", "children": [ { "value": "()(", "edge": "(", "state": "done", "children": [ { "value": "()()", "edge": ")", "state": "done" } ] } ] }
+            ] }
+          ]
+        }
+      }
+    }
+  ]
+}
