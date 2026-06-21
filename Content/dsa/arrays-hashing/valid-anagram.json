@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "id": "valid-anagram",
+  "subject": "dsa",
+  "track": "arrays-hashing",
+  "title": "Valid Anagram",
+  "difficulty": "easy",
+  "summary": "Count every letter in s, then subtract one for each letter in t. If every count lands back at zero, t is a rearrangement of s.",
+  "problem": "Return true if t is an anagram of s — the same letters with the same counts, just reordered.",
+  "example": { "input": "s = \"cat\", t = \"act\"", "output": "true" },
+  "steps": [
+    {
+      "caption": "An anagram uses the exact same letters the same number of times. If the lengths differ it's an instant no; otherwise tally s and cancel with t.",
+      "visual": { "type": "hashmap" }
+    },
+    {
+      "caption": "Count the letters of s = \"cat\": one c, one a, one t.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": "c", "value": 1, "state": "active" }, { "key": "a", "value": 1, "state": "active" }, { "key": "t", "value": 1, "state": "active" } ]
+      }
+    },
+    {
+      "caption": "Now sweep t = \"act\", subtracting one per letter. First 'a': it's in the map, drop its count to 0.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": "c", "value": 1 }, { "key": "a", "value": 0, "state": "active" }, { "key": "t", "value": 1 } ],
+        "probe": { "key": "a", "found": true }
+      }
+    },
+    {
+      "caption": "Next 'c': also present, drop it to 0.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": "c", "value": 0, "state": "active" }, { "key": "a", "value": 0 }, { "key": "t", "value": 1 } ],
+        "probe": { "key": "c", "found": true }
+      }
+    },
+    {
+      "caption": "Last 't': present, drop it to 0. A missing letter or a count going negative here would mean 'not an anagram'.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": "c", "value": 0 }, { "key": "a", "value": 0 }, { "key": "t", "value": 0, "state": "active" } ],
+        "probe": { "key": "t", "found": true }
+      }
+    },
+    {
+      "caption": "Every count is back to zero, so t spent exactly the letters s had. \"act\" is an anagram of \"cat\" — return true.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": "c", "value": 0, "state": "done" }, { "key": "a", "value": 0, "state": "done" }, { "key": "t", "value": 0, "state": "done" } ]
+      }
+    }
+  ]
+}

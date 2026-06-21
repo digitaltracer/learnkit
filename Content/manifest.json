@@ -248,6 +248,7 @@
           },
           "lessons": [
             { "id": "contains-duplicate", "title": "Contains Duplicate", "difficulty": "easy", "file": "dsa/arrays-hashing/contains-duplicate.json" },
+            { "id": "valid-anagram", "title": "Valid Anagram", "difficulty": "easy", "file": "dsa/arrays-hashing/valid-anagram.json" },
             { "id": "two-sum", "title": "Two Sum", "difficulty": "easy", "file": "dsa/arrays-hashing/two-sum.json" }
           ]
         },

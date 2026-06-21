@@ -86,7 +86,7 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 
 **New track: Arrays & Hashing** (array-friendly members only)
 - [x] Contains Duplicate (E) _(2026-06-21)_
-- [ ] Valid Anagram (E) — sort-and-compare framing
+- [x] Valid Anagram (E) — letter-count cancel _(2026-06-21)_
 - [ ] Encode and Decode Strings (M) — length-prefix
 - [ ] Product of Array Except Self (M) — prefix/suffix passes
 
