@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "partition-labels",
+  "subject": "dsa",
+  "track": "greedy",
+  "title": "Partition Labels",
+  "difficulty": "medium",
+  "summary": "Each letter must stay in one part, so a part can't end before the last occurrence of any letter inside it. Sweep right, stretching the part's end to the farthest last-occurrence seen; cut when the scan reaches that end.",
+  "problem": "Partition a string into as many parts as possible so that each letter appears in at most one part. Return the part sizes.",
+  "example": { "input": "s = \"abcacbde\"", "output": "[6, 1, 1]" },
+  "steps": [
+    {
+      "caption": "Cut the string into as many parts as possible, with each letter confined to one part. First record where each letter last appears.",
+      "visual": { "type": "array", "cells": ["a", "b", "c", "a", "c", "b", "d", "e"] }
+    },
+    {
+      "caption": "Start a part at index 0. It must reach at least a's last occurrence, index 3, so the part can't end before there.",
+      "visual": { "type": "array", "cells": ["a", "b", "c", "a", "c", "b", "d", "e"], "highlights": [{ "index": 0, "state": "active" }, { "index": 3, "state": "compare" }] }
+    },
+    {
+      "caption": "Scanning on, b last appears at index 5, stretching the part's end to 5. c's last index 4 already sits inside.",
+      "visual": { "type": "array", "cells": ["a", "b", "c", "a", "c", "b", "d", "e"], "highlights": [{ "range": [0, 5], "state": "active" }, { "index": 5, "state": "compare" }] }
+    },
+    {
+      "caption": "At index 5 the scan reaches the part's end and no letter inside points further. Cut the first part: 'abcacb', size 6.",
+      "visual": { "type": "array", "cells": ["a", "b", "c", "a", "c", "b", "d", "e"], "highlights": [{ "range": [0, 5], "state": "done" }] }
+    },
+    {
+      "caption": "The next part starts at index 6. 'd' appears only here, so it closes immediately as a part of size 1.",
+      "visual": { "type": "array", "cells": ["a", "b", "c", "a", "c", "b", "d", "e"], "highlights": [{ "range": [0, 5], "state": "done" }, { "index": 6, "state": "done" }] }
+    },
+    {
+      "caption": "Likewise 'e' at index 7 is alone. The partition sizes are 6, 1, 1.",
+      "visual": { "type": "array", "cells": ["a", "b", "c", "a", "c", "b", "d", "e"], "highlights": [{ "range": [0, 5], "state": "done" }, { "index": 6, "state": "done" }, { "index": 7, "state": "done" }] }
+    }
+  ]
+}

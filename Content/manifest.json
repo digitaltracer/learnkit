@@ -355,7 +355,8 @@
           "lessons": [
             { "id": "jump-game", "title": "Jump Game", "difficulty": "medium", "file": "dsa/greedy/jump-game.json" },
             { "id": "jump-game-ii", "title": "Jump Game II", "difficulty": "medium", "file": "dsa/greedy/jump-game-ii.json" },
-            { "id": "gas-station", "title": "Gas Station", "difficulty": "medium", "file": "dsa/greedy/gas-station.json" }
+            { "id": "gas-station", "title": "Gas Station", "difficulty": "medium", "file": "dsa/greedy/gas-station.json" },
+            { "id": "partition-labels", "title": "Partition Labels", "difficulty": "medium", "file": "dsa/greedy/partition-labels.json" }
           ]
         },
         {
