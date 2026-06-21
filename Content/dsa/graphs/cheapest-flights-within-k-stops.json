@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "id": "cheapest-flights-within-k-stops",
+  "subject": "dsa",
+  "track": "graphs",
+  "title": "Cheapest Flights Within K Stops",
+  "difficulty": "medium",
+  "summary": "Find the cheapest route from source to destination using at most k intermediate stops.",
+  "problem": "Given directed flights with prices, find the cheapest cost from src to dst using at most k stops. A stop is an intermediate node along the route. If no such route exists, return -1.",
+  "example": {
+    "input": "n=4, flights=[[0,1,100],[1,2,100],[2,3,100],[0,2,500]], src=0, dst=3, k=1",
+    "output": "600"
+  },
+  "steps": [
+    {
+      "caption": "Goal: cheapest cost from 0 to 3 using at most k=1 stop, where a stop is an intermediate node.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "0", "x": 0.12, "y": 0.5},
+          {"id": "1", "x": 0.45, "y": 0.18},
+          {"id": "2", "x": 0.45, "y": 0.82},
+          {"id": "3", "x": 0.88, "y": 0.5}
+        ],
+        "edges": [
+          {"from": "0", "to": "1", "directed": true, "weight": 100},
+          {"from": "1", "to": "2", "directed": true, "weight": 100},
+          {"from": "2", "to": "3", "directed": true, "weight": 100},
+          {"from": "0", "to": "2", "directed": true, "weight": 500}
+        ]
+      }
+    },
+    {
+      "caption": "The chain 0 to 1 to 2 to 3 totals 300, but it passes through 2 stops. That is too many for k=1.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "0", "x": 0.12, "y": 0.5},
+          {"id": "1", "x": 0.45, "y": 0.18},
+          {"id": "2", "x": 0.45, "y": 0.82},
+          {"id": "3", "x": 0.88, "y": 0.5}
+        ],
+        "edges": [
+          {"from": "0", "to": "1", "directed": true, "weight": 100, "state": "mismatch"},
+          {"from": "1", "to": "2", "directed": true, "weight": 100, "state": "mismatch"},
+          {"from": "2", "to": "3", "directed": true, "weight": 100, "state": "mismatch"},
+          {"from": "0", "to": "2", "directed": true, "weight": 500}
+        ]
+      }
+    },
+    {
+      "caption": "Within 1 stop, fly 0 to 2 directly at cost 500.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "0", "x": 0.12, "y": 0.5, "state": "active"},
+          {"id": "1", "x": 0.45, "y": 0.18},
+          {"id": "2", "x": 0.45, "y": 0.82, "state": "active"},
+          {"id": "3", "x": 0.88, "y": 0.5}
+        ],
+        "edges": [
+          {"from": "0", "to": "1", "directed": true, "weight": 100},
+          {"from": "1", "to": "2", "directed": true, "weight": 100},
+          {"from": "2", "to": "3", "directed": true, "weight": 100},
+          {"from": "0", "to": "2", "directed": true, "weight": 500, "state": "active"}
+        ]
+      }
+    },
+    {
+      "caption": "Then fly 2 to 3 at cost 100. The total is 500 plus 100, using just 1 stop.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "0", "x": 0.12, "y": 0.5, "state": "active"},
+          {"id": "1", "x": 0.45, "y": 0.18},
+          {"id": "2", "x": 0.45, "y": 0.82, "state": "active"},
+          {"id": "3", "x": 0.88, "y": 0.5, "state": "active"}
+        ],
+        "edges": [
+          {"from": "0", "to": "1", "directed": true, "weight": 100},
+          {"from": "1", "to": "2", "directed": true, "weight": 100},
+          {"from": "2", "to": "3", "directed": true, "weight": 100, "state": "match"},
+          {"from": "0", "to": "2", "directed": true, "weight": 500, "state": "done"}
+        ]
+      }
+    },
+    {
+      "caption": "The cheapest route within 1 stop costs 600.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "0", "x": 0.12, "y": 0.5, "state": "done"},
+          {"id": "1", "x": 0.45, "y": 0.18},
+          {"id": "2", "x": 0.45, "y": 0.82, "state": "done"},
+          {"id": "3", "x": 0.88, "y": 0.5, "state": "done"}
+        ],
+        "edges": [
+          {"from": "0", "to": "1", "directed": true, "weight": 100},
+          {"from": "1", "to": "2", "directed": true, "weight": 100},
+          {"from": "2", "to": "3", "directed": true, "weight": 100, "state": "done"},
+          {"from": "0", "to": "2", "directed": true, "weight": 500, "state": "done"}
+        ]
+      }
+    }
+  ]
+}
