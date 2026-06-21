@@ -293,7 +293,8 @@
             "complexity": "Typically O(n log n) time, dominated by the sort"
           },
           "lessons": [
-            { "id": "merge-intervals", "title": "Merge Intervals", "difficulty": "medium", "file": "dsa/intervals/merge-intervals.json" }
+            { "id": "merge-intervals", "title": "Merge Intervals", "difficulty": "medium", "file": "dsa/intervals/merge-intervals.json" },
+            { "id": "insert-interval", "title": "Insert Interval", "difficulty": "medium", "file": "dsa/intervals/insert-interval.json" }
           ]
         },
         {
