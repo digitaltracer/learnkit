@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "id": "copy-list-with-random-pointer",
+  "subject": "dsa",
+  "track": "linked-list",
+  "title": "Copy List With Random Pointer",
+  "difficulty": "medium",
+  "summary": "Deep-copy a list whose nodes carry an extra random pointer.",
+  "problem": "Deep-copy a linked list where each node also has a random pointer to any node. The O(1)-space trick weaves each copy right after its original, sets the copies' random pointers, then unweaves the two lists. Here the list is 1 -> 2 -> 3, each node also holding a random pointer.",
+  "example": {
+    "input": "1 -> 2 -> 3 (each with a random pointer)",
+    "output": "an independent copy 1 -> 2 -> 3"
+  },
+  "steps": [
+    {
+      "caption": "Deep-copy a list whose nodes also have random pointers. Weave each copy right after its original.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3]
+      }
+    },
+    {
+      "caption": "Insert each copy after its original, giving 1 -> 1' -> 2 -> 2' -> 3 -> 3'.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 1, 2, 2, 3, 3],
+        "highlights": [
+          { "index": 1, "state": "active" },
+          { "index": 3, "state": "active" },
+          { "index": 5, "state": "active" }
+        ]
+      }
+    },
+    {
+      "caption": "Set each copy's random pointer. It is the copy of the original's random target, which sits one node to its right.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 1, 2, 2, 3, 3],
+        "highlights": [
+          { "index": 1, "state": "active" },
+          { "index": 3, "state": "active" },
+          { "index": 5, "state": "active" }
+        ]
+      }
+    },
+    {
+      "caption": "Unweave the lists, separating the copies into their own chain. The extracted copy is fully independent.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3],
+        "highlights": [
+          { "range": [0, 2], "state": "done" }
+        ]
+      }
+    },
+    {
+      "caption": "The deep copy 1 -> 2 -> 3 is complete with its own random pointers.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3],
+        "highlights": [
+          { "range": [0, 2], "state": "done" }
+        ]
+      }
+    }
+  ]
+}
