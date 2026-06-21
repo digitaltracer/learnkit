@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "id": "edit-distance",
+  "subject": "dsa",
+  "track": "2d-dp",
+  "title": "Edit Distance",
+  "difficulty": "medium",
+  "summary": "dp[i][j] is the minimum insert, delete, or replace operations to turn the first i chars of word1 into the first j chars of word2. Equal chars copy the diagonal; otherwise take 1 plus the smallest of the left, top, and diagonal neighbours.",
+  "problem": "Find the minimum number of insert, delete, or replace operations to turn word1 = \"sea\" into word2 = \"eat\". Rows are prefixes of word1 (\"\", s, e, a); columns are prefixes of word2 (\"\", e, a, t). dp[i][j] is the edit distance of those prefixes.",
+  "example": { "input": "word1 = \"sea\", word2 = \"eat\"", "output": "2" },
+  "steps": [
+    {
+      "caption": "Rows are word1 \"sea\", columns are word2 \"eat\". dp[i][j] is the edits to turn one prefix into the other.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+      }
+    },
+    {
+      "caption": "Fill the base row and column. Turning a prefix into the empty string costs one delete per character, so they count up 0, 1, 2, 3.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 1, 2, 3], [1, 0, 0, 0], [2, 0, 0, 0], [3, 0, 0, 0]],
+        "highlights": [{ "rows": [0, 0], "cols": [0, 3], "state": "active" }, { "rows": [0, 3], "cols": [0, 0], "state": "active" }]
+      }
+    },
+    {
+      "caption": "Row 1 is char s. s matches none of e, a, t, so each cell is 1 plus the smallest neighbour: 1, 2, 3.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 1, 2, 3], [1, 1, 2, 3], [2, 0, 0, 0], [3, 0, 0, 0]],
+        "highlights": [{ "row": 1, "col": 1, "state": "match" }, { "row": 1, "col": 2, "state": "match" }, { "row": 1, "col": 3, "state": "match" }]
+      }
+    },
+    {
+      "caption": "Row 2 is e and row 3 is a. e matches column e and a matches column a, copying those diagonals; the rest take 1 plus the smallest neighbour.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 1, 2, 3], [1, 1, 2, 3], [2, 1, 2, 3], [3, 2, 1, 2]],
+        "highlights": [{ "row": 3, "col": 3, "state": "match" }]
+      }
+    },
+    {
+      "caption": "The bottom-right cell is 2, so 2 edits transform \"sea\" into \"eat\".",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 1, 2, 3], [1, 1, 2, 3], [2, 1, 2, 3], [3, 2, 1, 2]],
+        "highlights": [{ "row": 3, "col": 3, "state": "done" }]
+      }
+    }
+  ]
+}

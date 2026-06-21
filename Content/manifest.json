@@ -455,7 +455,8 @@
           "lessons": [
             { "id": "unique-paths", "title": "Unique Paths", "difficulty": "medium", "file": "dsa/2d-dp/unique-paths.json" },
             { "id": "longest-common-subsequence", "title": "Longest Common Subsequence", "difficulty": "medium", "file": "dsa/2d-dp/longest-common-subsequence.json" },
-            { "id": "coin-change-ii", "title": "Coin Change II", "difficulty": "medium", "file": "dsa/2d-dp/coin-change-ii.json" }
+            { "id": "coin-change-ii", "title": "Coin Change II", "difficulty": "medium", "file": "dsa/2d-dp/coin-change-ii.json" },
+            { "id": "edit-distance", "title": "Edit Distance", "difficulty": "medium", "file": "dsa/2d-dp/edit-distance.json" }
           ]
         }
       ]
