@@ -93,7 +93,7 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 **New track: 1-D Dynamic Programming**
 - [x] Climbing Stairs (E) _(2026-06-21)_
 - [ ] Min Cost Climbing Stairs (E)
-- [ ] House Robber (M)
+- [x] House Robber (M) _(2026-06-21)_
 - [ ] House Robber II (M)
 - [ ] Decode Ways (M)
 - [ ] Coin Change (M)
