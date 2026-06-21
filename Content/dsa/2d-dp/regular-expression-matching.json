@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "id": "regular-expression-matching",
+  "subject": "dsa",
+  "track": "2d-dp",
+  "title": "Regular Expression Matching",
+  "difficulty": "hard",
+  "summary": "dp[i][j] is true when s's first i chars match p's first j chars. A normal char matches when letters are equal or the pattern is a dot; a star either drops its preceding char or, when that char matches, consumes one char of s.",
+  "problem": "Decide whether s = \"aa\" matches pattern p = \"a*\", where '.' matches any char and '*' means zero or more of the preceding char. Rows are prefixes of s (\"\", a, aa); columns are prefixes of p (\"\", a, *). dp[i][j] is true when s's first i chars match p's first j chars.",
+  "example": { "input": "s = \"aa\", p = \"a*\"", "output": "true" },
+  "steps": [
+    {
+      "caption": "Rows are s \"aa\", columns are p \"a*\". A star means zero or more of the char before it. Empty matches empty, so dp[0][0] is T.",
+      "visual": {
+        "type": "grid",
+        "rows": [["T", "F", "F"], ["F", "F", "F"], ["F", "F", "F"]]
+      }
+    },
+    {
+      "caption": "Base row 0 is the empty s. Pattern \"a*\" can match empty by taking zero a's, so dp[0][2] is T while dp[0][1] is F.",
+      "visual": {
+        "type": "grid",
+        "rows": [["T", "F", "T"], ["F", "F", "F"], ["F", "F", "F"]],
+        "highlights": [{ "rows": [0, 0], "cols": [0, 2], "state": "active" }]
+      }
+    },
+    {
+      "caption": "Row a: dp[1][1] is T since a matches a, and dp[1][2] is T since a* consumes one a from s.",
+      "visual": {
+        "type": "grid",
+        "rows": [["T", "F", "T"], ["F", "T", "T"], ["F", "F", "F"]],
+        "highlights": [{ "row": 1, "col": 1, "state": "match" }, { "row": 1, "col": 2, "state": "match" }]
+      }
+    },
+    {
+      "caption": "Row aa: dp[2][1] is F because a alone cannot match aa, but dp[2][2] is T since a* consumes the second a.",
+      "visual": {
+        "type": "grid",
+        "rows": [["T", "F", "T"], ["F", "T", "T"], ["F", "F", "T"]],
+        "highlights": [{ "row": 2, "col": 2, "state": "match" }]
+      }
+    },
+    {
+      "caption": "The bottom-right cell dp[2][2] is T, so \"aa\" matches the pattern \"a*\".",
+      "visual": {
+        "type": "grid",
+        "rows": [["T", "F", "T"], ["F", "T", "T"], ["F", "F", "T"]],
+        "highlights": [{ "row": 2, "col": 2, "state": "done" }]
+      }
+    }
+  ]
+}

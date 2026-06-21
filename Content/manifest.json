@@ -475,7 +475,8 @@
             { "id": "interleaving-string", "title": "Interleaving String", "difficulty": "medium", "file": "dsa/2d-dp/interleaving-string.json" },
             { "id": "target-sum", "title": "Target Sum", "difficulty": "medium", "file": "dsa/2d-dp/target-sum.json" },
             { "id": "distinct-subsequences", "title": "Distinct Subsequences", "difficulty": "hard", "file": "dsa/2d-dp/distinct-subsequences.json" },
-            { "id": "burst-balloons", "title": "Burst Balloons", "difficulty": "hard", "file": "dsa/2d-dp/burst-balloons.json" }
+            { "id": "burst-balloons", "title": "Burst Balloons", "difficulty": "hard", "file": "dsa/2d-dp/burst-balloons.json" },
+            { "id": "regular-expression-matching", "title": "Regular Expression Matching", "difficulty": "hard", "file": "dsa/2d-dp/regular-expression-matching.json" }
           ]
         }
       ]
