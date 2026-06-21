@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "counting-bits",
+  "subject": "dsa",
+  "track": "bit-manipulation",
+  "title": "Counting Bits",
+  "difficulty": "easy",
+  "summary": "Build an answer array left to right. Dropping i's last bit (i >> 1) gives a smaller number whose bit count we already know, so dp[i] = dp[i >> 1] + (i & 1).",
+  "problem": "For every number from 0 to n, count its set bits and return the counts as an array.",
+  "example": { "input": "n = 5", "output": "[0, 1, 1, 2, 1, 2]" },
+  "steps": [
+    {
+      "caption": "dp[i] counts the 1-bits of i. Reuse earlier answers: i >> 1 drops i's last bit, so dp[i] = dp[i >> 1] + (i & 1). Base case dp[0] = 0.",
+      "visual": { "type": "array", "cells": [0, 0, 0, 0, 0, 0], "highlights": [{ "index": 0, "state": "done" }] }
+    },
+    {
+      "caption": "i = 1: 1 >> 1 = 0, so dp[1] = dp[0] + (1 & 1) = 0 + 1 = 1.",
+      "visual": { "type": "array", "cells": [0, 1, 0, 0, 0, 0], "highlights": [{ "index": 0, "state": "compare" }, { "index": 1, "state": "active" }] }
+    },
+    {
+      "caption": "i = 2 (binary 10): 2 >> 1 = 1, so dp[2] = dp[1] + 0 = 1.",
+      "visual": { "type": "array", "cells": [0, 1, 1, 0, 0, 0], "highlights": [{ "index": 1, "state": "compare" }, { "index": 2, "state": "active" }] }
+    },
+    {
+      "caption": "i = 3 (binary 11): 3 >> 1 = 1, so dp[3] = dp[1] + 1 = 2.",
+      "visual": { "type": "array", "cells": [0, 1, 1, 2, 0, 0], "highlights": [{ "index": 1, "state": "compare" }, { "index": 3, "state": "active" }] }
+    },
+    {
+      "caption": "i = 4 (binary 100): 4 >> 1 = 2, so dp[4] = dp[2] + 0 = 1.",
+      "visual": { "type": "array", "cells": [0, 1, 1, 2, 1, 0], "highlights": [{ "index": 2, "state": "compare" }, { "index": 4, "state": "active" }] }
+    },
+    {
+      "caption": "i = 5 (binary 101): 5 >> 1 = 2, so dp[5] = dp[2] + 1 = 2.",
+      "visual": { "type": "array", "cells": [0, 1, 1, 2, 1, 2], "highlights": [{ "index": 2, "state": "compare" }, { "index": 5, "state": "active" }] }
+    },
+    {
+      "caption": "All six counts are filled: [0, 1, 1, 2, 1, 2], each computed in O(1) from an earlier entry.",
+      "visual": { "type": "array", "cells": [0, 1, 1, 2, 1, 2], "highlights": [{ "range": [0, 5], "state": "done" }] }
+    }
+  ]
+}
