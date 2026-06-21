@@ -348,6 +348,25 @@
             { "id": "jump-game", "title": "Jump Game", "difficulty": "medium", "file": "dsa/greedy/jump-game.json" },
             { "id": "jump-game-ii", "title": "Jump Game II", "difficulty": "medium", "file": "dsa/greedy/jump-game-ii.json" }
           ]
+        },
+        {
+          "id": "bit-manipulation",
+          "title": "Bit Manipulation",
+          "icon": "switch.2",
+          "overview": {
+            "tagline": "Treat a number as a row of bits and compute with AND, OR, XOR, and shifts instead of arithmetic.",
+            "whenToUse": [
+              "The problem is about individual bits, parity, or powers of two.",
+              "You want O(1) extra space and no auxiliary data structure.",
+              "XOR's self-cancelling property can isolate a unique or missing value.",
+              "Counting, toggling, or reversing bits is the core operation."
+            ],
+            "keyIdea": "Each bit is an independent on/off flag. AND masks bits, OR sets them, XOR toggles them (and cancels equal pairs), and shifts slide bits into view one at a time. Many counting and uniqueness problems collapse to a single pass of these tricks.",
+            "complexity": "Typically O(n) or O(1) time, O(1) space"
+          },
+          "lessons": [
+            { "id": "single-number", "title": "Single Number", "difficulty": "easy", "file": "dsa/bit-manipulation/single-number.json" }
+          ]
         }
       ]
     }

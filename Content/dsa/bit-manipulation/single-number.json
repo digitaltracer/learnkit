@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "single-number",
+  "subject": "dsa",
+  "track": "bit-manipulation",
+  "title": "Single Number",
+  "difficulty": "easy",
+  "summary": "XOR every element together. A value XORed with itself is 0, so each duplicated pair cancels out and only the number that appears once is left standing.",
+  "problem": "Every element appears exactly twice except for one. Find that single number using O(1) extra space.",
+  "example": { "input": "[4, 1, 2, 1, 2]", "output": "4" },
+  "steps": [
+    {
+      "caption": "Every number appears twice except one. XOR them all: a value XORed with itself is 0, so the pairs vanish and the loner is left.",
+      "visual": { "type": "array", "cells": [4, 1, 2, 1, 2] }
+    },
+    {
+      "caption": "Start with x = 0 and XOR in 4. x = 4.",
+      "visual": { "type": "array", "cells": [4, 1, 2, 1, 2], "pointers": [{ "label": "cur", "index": 0 }], "highlights": [{ "index": 0, "state": "active" }] }
+    },
+    {
+      "caption": "XOR in 1: x = 5. Then XOR in 2: x = 7.",
+      "visual": { "type": "array", "cells": [4, 1, 2, 1, 2], "pointers": [{ "label": "cur", "index": 2 }], "highlights": [{ "range": [1, 2], "state": "active" }] }
+    },
+    {
+      "caption": "XOR in the second 1. It cancels the first 1 (1 ^ 1 = 0), so x drops back to 6.",
+      "visual": { "type": "array", "cells": [4, 1, 2, 1, 2], "pointers": [{ "label": "cur", "index": 3 }], "highlights": [{ "index": 1, "state": "match" }, { "index": 3, "state": "match" }] }
+    },
+    {
+      "caption": "XOR in the second 2. It cancels the first 2, so x = 4. Both pairs are gone.",
+      "visual": { "type": "array", "cells": [4, 1, 2, 1, 2], "pointers": [{ "label": "cur", "index": 4 }], "highlights": [{ "index": 2, "state": "match" }, { "index": 4, "state": "match" }] }
+    },
+    {
+      "caption": "Only the unpaired 4 ever contributed without being cancelled. The single number is 4.",
+      "visual": { "type": "array", "cells": [4, 1, 2, 1, 2], "highlights": [{ "index": 0, "state": "done" }] }
+    }
+  ]
+}
