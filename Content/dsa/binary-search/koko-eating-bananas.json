@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "koko-eating-bananas",
+  "subject": "dsa",
+  "track": "binary-search",
+  "title": "Koko Eating Bananas",
+  "difficulty": "medium",
+  "summary": "Binary-search the answer, not the input. Feasibility is monotonic in speed, so search speeds 1..max; for each, check if the total hours fit, and narrow toward the slowest that works.",
+  "problem": "Koko eats one pile per hour at speed k, taking ceil(pile/k) hours per pile. Find the smallest k that finishes all piles within h hours.",
+  "example": { "input": "piles = [3, 6, 7, 11], h = 8", "output": "4" },
+  "steps": [
+    {
+      "caption": "Koko eats one pile at speed k bananas/hour, taking ceil(pile/k) hours each. Find the slowest k that clears piles [3,6,7,11] within h = 8 hours.",
+      "visual": { "type": "array", "cells": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] }
+    },
+    {
+      "caption": "A higher speed never needs more hours, so feasibility is monotonic. Binary-search the speed over [1, 11] (11 = the largest pile).",
+      "visual": { "type": "array", "cells": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "pointers": [{ "label": "lo", "index": 0 }, { "label": "hi", "index": 10 }], "highlights": [{ "range": [0, 10], "state": "active" }] }
+    },
+    {
+      "caption": "Test mid = 6: hours = 1+1+2+2 = 6 <= 8. Feasible — 6 works, but maybe a slower speed does too.",
+      "visual": { "type": "array", "cells": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "pointers": [{ "label": "lo", "index": 0 }, { "label": "mid", "index": 5 }, { "label": "hi", "index": 10 }], "highlights": [{ "index": 5, "state": "match" }] }
+    },
+    {
+      "caption": "Since 6 works, drop every speed above it and search the lower half, [1..5].",
+      "visual": { "type": "array", "cells": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "pointers": [{ "label": "lo", "index": 0 }, { "label": "hi", "index": 4 }], "highlights": [{ "range": [0, 4], "state": "active" }] }
+    },
+    {
+      "caption": "Test mid = 3: hours = 1+2+3+4 = 10 > 8. Too slow — 3 and anything slower can't finish in time.",
+      "visual": { "type": "array", "cells": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "pointers": [{ "label": "lo", "index": 0 }, { "label": "mid", "index": 2 }, { "label": "hi", "index": 4 }], "highlights": [{ "index": 2, "state": "mismatch" }] }
+    },
+    {
+      "caption": "Drop 3 and below; search [4..5].",
+      "visual": { "type": "array", "cells": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "pointers": [{ "label": "lo", "index": 3 }, { "label": "hi", "index": 4 }], "highlights": [{ "range": [3, 4], "state": "active" }] }
+    },
+    {
+      "caption": "Test mid = 4: hours = 1+2+2+3 = 8 <= 8. Feasible! Look for something even slower.",
+      "visual": { "type": "array", "cells": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "pointers": [{ "label": "lo", "index": 3 }, { "label": "mid", "index": 3 }, { "label": "hi", "index": 4 }], "highlights": [{ "index": 3, "state": "match" }] }
+    },
+    {
+      "caption": "Nothing slower than 4 works, so the minimum eating speed is 4 bananas/hour.",
+      "visual": { "type": "array", "cells": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "pointers": [{ "label": "mid", "index": 3 }], "highlights": [{ "index": 3, "state": "done" }] }
+    }
+  ]
+}

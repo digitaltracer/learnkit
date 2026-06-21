@@ -80,7 +80,7 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 - [ ] Largest Rectangle in Histogram (H) — `bars`
 
 **Extend existing track: Binary Search**
-- [ ] Koko Eating Bananas (M) — binary search on the answer
+- [x] Koko Eating Bananas (M) — binary search on the answer _(2026-06-21)_
 - [ ] Find Minimum in Rotated Sorted Array (M)
 - [ ] Median of Two Sorted Arrays (H) — two arrays + partition
 

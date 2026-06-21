@@ -71,7 +71,8 @@
           "lessons": [
             { "id": "binary-search", "title": "Binary Search", "difficulty": "easy", "file": "dsa/binary-search/binary-search.json" },
             { "id": "first-bad-version", "title": "First Bad Version", "difficulty": "easy", "file": "dsa/binary-search/first-bad-version.json" },
-            { "id": "search-in-rotated-sorted-array", "title": "Search in Rotated Sorted Array", "difficulty": "medium", "file": "dsa/binary-search/search-in-rotated-sorted-array.json" }
+            { "id": "search-in-rotated-sorted-array", "title": "Search in Rotated Sorted Array", "difficulty": "medium", "file": "dsa/binary-search/search-in-rotated-sorted-array.json" },
+            { "id": "koko-eating-bananas", "title": "Koko Eating Bananas", "difficulty": "medium", "file": "dsa/binary-search/koko-eating-bananas.json" }
           ]
         },
         {
