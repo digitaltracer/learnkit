@@ -304,7 +304,8 @@
             { "id": "merge-intervals", "title": "Merge Intervals", "difficulty": "medium", "file": "dsa/intervals/merge-intervals.json" },
             { "id": "insert-interval", "title": "Insert Interval", "difficulty": "medium", "file": "dsa/intervals/insert-interval.json" },
             { "id": "meeting-rooms", "title": "Meeting Rooms", "difficulty": "easy", "file": "dsa/intervals/meeting-rooms.json" },
-            { "id": "non-overlapping-intervals", "title": "Non-overlapping Intervals", "difficulty": "medium", "file": "dsa/intervals/non-overlapping-intervals.json" }
+            { "id": "non-overlapping-intervals", "title": "Non-overlapping Intervals", "difficulty": "medium", "file": "dsa/intervals/non-overlapping-intervals.json" },
+            { "id": "meeting-rooms-ii", "title": "Meeting Rooms II", "difficulty": "medium", "file": "dsa/intervals/meeting-rooms-ii.json" }
           ]
         },
         {

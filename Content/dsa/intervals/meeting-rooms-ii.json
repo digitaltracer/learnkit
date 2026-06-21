@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "meeting-rooms-ii",
+  "subject": "dsa",
+  "track": "intervals",
+  "title": "Meeting Rooms II",
+  "difficulty": "medium",
+  "summary": "The minimum number of rooms equals the maximum number of meetings happening at the same instant. Sweep the timeline; a room frees up when a meeting ends and can be reused later.",
+  "problem": "Given meeting time intervals, find the minimum number of rooms required to hold them all.",
+  "example": { "input": "[[0,30],[5,10],[15,20]]", "output": "2" },
+  "steps": [
+    {
+      "caption": "Find the fewest rooms so no two overlapping meetings share one. That equals the most meetings overlapping at any moment.",
+      "visual": {
+        "type": "intervals",
+        "axisMin": 0, "axisMax": 30,
+        "rows": [ { "start": 0, "end": 30 }, { "start": 5, "end": 10 }, { "start": 15, "end": 20 } ]
+      }
+    },
+    {
+      "caption": "[0,30] starts, so one room is in use.",
+      "visual": {
+        "type": "intervals",
+        "axisMin": 0, "axisMax": 30,
+        "rows": [ { "start": 0, "end": 30, "state": "active" }, { "start": 5, "end": 10 }, { "start": 15, "end": 20 } ]
+      }
+    },
+    {
+      "caption": "At time 5, [5,10] begins while [0,30] is still running. They overlap, so a second room is needed.",
+      "visual": {
+        "type": "intervals",
+        "axisMin": 0, "axisMax": 30,
+        "rows": [ { "start": 0, "end": 30, "state": "compare" }, { "start": 5, "end": 10, "state": "compare" }, { "start": 15, "end": 20 } ]
+      }
+    },
+    {
+      "caption": "[5,10] ends at 10, freeing its room for a later meeting.",
+      "visual": {
+        "type": "intervals",
+        "axisMin": 0, "axisMax": 30,
+        "rows": [ { "start": 0, "end": 30, "state": "active" }, { "start": 5, "end": 10, "state": "done" }, { "start": 15, "end": 20 } ]
+      }
+    },
+    {
+      "caption": "[15,20] starts after 10, so it reuses the freed room. No third room is needed.",
+      "visual": {
+        "type": "intervals",
+        "axisMin": 0, "axisMax": 30,
+        "rows": [ { "start": 0, "end": 30, "state": "active" }, { "start": 5, "end": 10, "state": "done" }, { "start": 15, "end": 20, "state": "match" } ]
+      }
+    },
+    {
+      "caption": "The peak overlap was 2 meetings, so 2 rooms suffice. The answer is 2.",
+      "visual": {
+        "type": "intervals",
+        "axisMin": 0, "axisMax": 30,
+        "rows": [ { "start": 0, "end": 30, "state": "done" }, { "start": 5, "end": 10, "state": "done" }, { "start": 15, "end": 20, "state": "done" } ]
+      }
+    }
+  ]
+}
