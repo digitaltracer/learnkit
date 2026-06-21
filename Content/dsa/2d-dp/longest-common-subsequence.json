@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "id": "longest-common-subsequence",
+  "subject": "dsa",
+  "track": "2d-dp",
+  "title": "Longest Common Subsequence",
+  "difficulty": "medium",
+  "summary": "dp[i][j] is the LCS length of the first i chars of text1 and the first j chars of text2. When the current chars match, extend the diagonal by one; otherwise carry the larger of the value above or to the left.",
+  "problem": "Find the length of the longest common subsequence of text1 = \"abc\" and text2 = \"ac\". Rows are prefixes of text1 (\"\", a, b, c); columns are prefixes of text2 (\"\", a, c). dp[i][j] is the LCS of those prefixes.",
+  "example": { "input": "text1 = \"abc\", text2 = \"ac\"", "output": "2" },
+  "steps": [
+    {
+      "caption": "Rows are text1 \"abc\", columns are text2 \"ac\". Row 0 and column 0 are the empty-prefix base, all 0.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
+      }
+    },
+    {
+      "caption": "Row 1 is char a. a vs a matches, so diagonal+1 = 1. a vs c differs, so carry max(top, left) = 1.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 0, 0], [0, 1, 1], [0, 0, 0], [0, 0, 0]],
+        "highlights": [{ "row": 1, "col": 1, "state": "match" }, { "row": 1, "col": 2, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Row 2 is char b. b matches neither a nor c, so each cell carries max(top, left): both become 1.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 0, 0], [0, 1, 1], [0, 1, 1], [0, 0, 0]],
+        "highlights": [{ "row": 2, "col": 1, "state": "active" }, { "row": 2, "col": 2, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Row 3 is char c. c vs a differs, carry 1. c vs c matches, so diagonal 1 + 1 = 2.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 0, 0], [0, 1, 1], [0, 1, 1], [0, 1, 2]],
+        "highlights": [{ "row": 3, "col": 2, "state": "match" }]
+      }
+    },
+    {
+      "caption": "The bottom-right cell is 2, so the LCS length is 2 (the subsequence \"ac\").",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 0, 0], [0, 1, 1], [0, 1, 1], [0, 1, 2]],
+        "highlights": [{ "row": 3, "col": 2, "state": "done" }]
+      }
+    }
+  ]
+}

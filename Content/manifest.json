@@ -453,7 +453,8 @@
             "complexity": "Typically O(m x n) time and space"
           },
           "lessons": [
-            { "id": "unique-paths", "title": "Unique Paths", "difficulty": "medium", "file": "dsa/2d-dp/unique-paths.json" }
+            { "id": "unique-paths", "title": "Unique Paths", "difficulty": "medium", "file": "dsa/2d-dp/unique-paths.json" },
+            { "id": "longest-common-subsequence", "title": "Longest Common Subsequence", "difficulty": "medium", "file": "dsa/2d-dp/longest-common-subsequence.json" }
           ]
         }
       ]
