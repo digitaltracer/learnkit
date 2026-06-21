@@ -30,8 +30,8 @@ So each problem is tagged by what it needs before it can be authored:
 
 | Bucket | Count |
 |---|---|
-| ✅ Done | 96 / 150 |
-| 🟡 Remaining (all primitives now exist; pure authoring) | 54 |
+| ✅ Done | 121 / 150 |
+| 🟡 Remaining (heap + trie need engine; rest is authoring) | 29 |
 | **Total** | **150** |
 
 _Primitives shipped: `array`, `grid`, `tree`, `list`, `graph`, `hashmap`, `intervals`, `rtree`._
@@ -140,39 +140,39 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 Then author (each a checkbox):
 
 _Math & Geometry (matrices)_
-- [ ] Rotate Image (M)
+- [x] Rotate Image (M) _(2026-06-21)_
 - [x] Spiral Matrix (M) — first grid lesson; proves matrix traversal _(2026-06-17)_
-- [ ] Set Matrix Zeroes (M)
+- [x] Set Matrix Zeroes (M) _(2026-06-21)_
 
 _Binary Search / Arrays & Hashing on a grid_
-- [ ] Search a 2D Matrix (M)
+- [x] Search a 2D Matrix (M) _(2026-06-21)_
 - [ ] Valid Sudoku (M)
 
 _Graphs on a grid (BFS/DFS flood fill)_
 - [x] Number of Islands (M) _(2026-06-21)_
-- [ ] Max Area of Island (M)
+- [x] Max Area of Island (M) _(2026-06-21)_
 - [ ] Pacific Atlantic Water Flow (M)
-- [ ] Surrounded Regions (M)
-- [ ] Rotting Oranges (M)
+- [x] Surrounded Regions (M) _(2026-06-21)_
+- [x] Rotting Oranges (M) _(2026-06-21)_
 - [ ] Walls and Gates (M)
 
 _Backtracking on a grid_
-- [ ] Word Search (M)
-- [ ] N-Queens (H)
+- [x] Word Search (M) _(2026-06-21)_
+- [x] N-Queens (H) _(2026-06-21)_
 
 _Advanced graph on a grid_
 - [ ] Swim in Rising Water (H)
 
 _New track: 2-D Dynamic Programming (DP table)_
-- [ ] Unique Paths (M)
-- [ ] Longest Common Subsequence (M)
+- [x] Unique Paths (M) _(2026-06-21)_
+- [x] Longest Common Subsequence (M) _(2026-06-21)_
 - [ ] Best Time to Buy and Sell Stock with Cooldown (M)
-- [ ] Coin Change II (M)
+- [x] Coin Change II (M) _(2026-06-21)_
 - [ ] Target Sum (M)
 - [ ] Interleaving String (M)
-- [ ] Longest Increasing Path in a Matrix (H)
+- [x] Longest Increasing Path in a Matrix (H) _(2026-06-21)_
 - [ ] Distinct Subsequences (H)
-- [ ] Edit Distance (M)
+- [x] Edit Distance (M) _(2026-06-21)_
 - [ ] Burst Balloons (H)
 - [ ] Regular Expression Matching (H)
 
@@ -195,7 +195,7 @@ _New track: 2-D Dynamic Programming (DP table)_
 - [x] Count Good Nodes in Binary Tree (M) _(2026-06-21)_
 - [x] Validate Binary Search Tree (M) _(2026-06-21)_
 - [x] Kth Smallest Element in a BST (M) _(2026-06-21)_
-- [ ] Construct Binary Tree from Preorder and Inorder Traversal (M)
+- [x] Construct Binary Tree from Preorder and Inorder Traversal (M) _(2026-06-21)_
 - [x] Binary Tree Maximum Path Sum (H) _(2026-06-21)_
 - [ ] Serialize and Deserialize Binary Tree (H)
 
@@ -212,8 +212,8 @@ _New track: 2-D Dynamic Programming (DP table)_
 - [x] Reorder List (M) _(2026-06-21)_
 - [x] Remove Nth Node From End of List (M) _(2026-06-21)_
 - [ ] Copy List With Random Pointer (M)
-- [ ] Add Two Numbers (M)
-- [ ] Reverse Nodes in K-Group (H)
+- [x] Add Two Numbers (M) _(2026-06-21)_
+- [x] Reverse Nodes in K-Group (H) _(2026-06-21)_
 - [ ] Merge K Sorted Lists (H) — pairs with `heap`
 - [ ] LRU Cache (M) — pairs with `hashmap` (do after Phase 6)
 
@@ -226,18 +226,18 @@ _New track: 2-D Dynamic Programming (DP table)_
 _Graphs_
 - [x] Clone Graph (M) — first graph lesson; DFS visit/clone _(2026-06-17)_
 - [x] Course Schedule (M) _(2026-06-21)_
-- [ ] Course Schedule II (M)
+- [x] Course Schedule II (M) _(2026-06-21)_
 - [x] Graph Valid Tree (M) _(2026-06-21)_
 - [x] Number of Connected Components in an Undirected Graph (M) _(2026-06-21)_
-- [ ] Redundant Connection (M)
-- [ ] Word Ladder (H)
+- [x] Redundant Connection (M) _(2026-06-21)_
+- [x] Word Ladder (H) _(2026-06-21)_
 
 _Advanced Graphs (weighted / topological)_
-- [ ] Network Delay Time (M)
+- [x] Network Delay Time (M) _(2026-06-21)_
 - [ ] Reconstruct Itinerary (H)
-- [ ] Min Cost to Connect Points (M)
+- [x] Min Cost to Connect Points (M) _(2026-06-21)_
 - [ ] Alien Dictionary (H)
-- [ ] Cheapest Flights Within K Stops (M)
+- [x] Cheapest Flights Within K Stops (M) _(2026-06-21)_
 
 ## Phase 6 — `hashmap` primitive (Arrays & Hashing remainder: 6)
 
@@ -248,8 +248,8 @@ _Advanced Graphs (weighted / topological)_
 - [x] Group Anagrams (M) _(2026-06-21)_
 - [x] Top K Frequent Elements (M) — count + bucket sort _(2026-06-21)_
 - [x] Longest Consecutive Sequence (M) _(2026-06-21)_
-- [ ] Time Based Key-Value Store (M)
-- [ ] Detect Squares (M)
+- [x] Time Based Key-Value Store (M) _(2026-06-21)_
+- [x] Detect Squares (M) _(2026-06-21)_
 - [ ] _(then revisit LRU Cache from Phase 4)_
 
 ## Phase 7 — Specialty primitives
@@ -287,7 +287,7 @@ view is too much.
 - [x] Non-overlapping Intervals (M) _(2026-06-21)_
 - [x] Meeting Rooms (E) _(2026-06-21)_
 - [x] Meeting Rooms II (M) _(2026-06-21)_
-- [ ] Minimum Interval to Include Each Query (H)
+- [x] Minimum Interval to Include Each Query (H) _(2026-06-21)_
 
 **`trie` (extends `tree`) (Tries: 3)**
 - [ ] **Engine:** trie rendering (reuse `tree`)
