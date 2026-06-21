@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "encode-and-decode-strings",
+  "subject": "dsa",
+  "track": "arrays-hashing",
+  "title": "Encode and Decode Strings",
+  "difficulty": "medium",
+  "summary": "Length-prefix encoding. Write each string as its length, a '#' delimiter, then its characters, so decoding reads the count and then exactly that many chars.",
+  "problem": "Encode a list of strings into one string and decode it back, even when a string contains '#'.",
+  "example": { "input": "[\"ab\", \"c\"]", "output": "\"2#ab1#c\"" },
+  "steps": [
+    {
+      "caption": "Pack a list of strings into one string so it can be split back unambiguously, even if a string contains '#'. Prefix each with its length and a '#'.",
+      "visual": { "type": "array", "cells": ["2", "#", "a", "b", "1", "#", "c"] }
+    },
+    {
+      "caption": "Encode \"ab\": its length is 2, then a '#', then the chars a b. That gives the block \"2#ab\".",
+      "visual": { "type": "array", "cells": ["2", "#", "a", "b", "1", "#", "c"], "highlights": [{ "range": [0, 3], "state": "match" }] }
+    },
+    {
+      "caption": "Encode \"c\": length 1, a '#', then c, giving \"1#c\". The full encoding is \"2#ab1#c\".",
+      "visual": { "type": "array", "cells": ["2", "#", "a", "b", "1", "#", "c"], "highlights": [{ "range": [4, 6], "state": "match" }] }
+    },
+    {
+      "caption": "Decoding starts at index 0. It reads \"2\", so the next string is 2 chars long.",
+      "visual": { "type": "array", "cells": ["2", "#", "a", "b", "1", "#", "c"], "pointers": [{ "label": "i", "index": 0 }], "highlights": [{ "index": 0, "state": "active" }] }
+    },
+    {
+      "caption": "Skip the '#' at index 1, then read 2 chars at indices 2-3 to recover \"ab\".",
+      "visual": { "type": "array", "cells": ["2", "#", "a", "b", "1", "#", "c"], "pointers": [{ "label": "i", "index": 2 }], "highlights": [{ "range": [2, 3], "state": "done" }] }
+    },
+    {
+      "caption": "Continue at index 4. It reads \"1\", so the next string is 1 char long.",
+      "visual": { "type": "array", "cells": ["2", "#", "a", "b", "1", "#", "c"], "pointers": [{ "label": "i", "index": 4 }], "highlights": [{ "index": 4, "state": "active" }] }
+    },
+    {
+      "caption": "Skip the '#', then read 1 char at index 6 to recover \"c\". Decoded back to [\"ab\", \"c\"].",
+      "visual": { "type": "array", "cells": ["2", "#", "a", "b", "1", "#", "c"], "pointers": [{ "label": "i", "index": 6 }], "highlights": [{ "index": 6, "state": "done" }] }
+    }
+  ]
+}
