@@ -22,7 +22,7 @@
       "visual": { "type": "array", "style": "bars", "cells": [2, 0, 3, 1, 0, 2], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 0, "state": "active" }] }
     },
     {
-      "caption": "Left height 0 is still the shorter side. leftMax stays 2. Water over index 1 is 2 - 0 = 2. Total 2. Move L.",
+      "caption": "Left height 0 is still the shorter side, so leftMax stays 2. Water over index 1 is 2 - 0 = 2, running total 2. Move L.",
       "visual": { "type": "array", "style": "bars", "cells": [2, 0, 3, 1, 0, 2], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 1, "state": "match" }] }
     },
     {
@@ -34,7 +34,7 @@
       "visual": { "type": "array", "style": "bars", "cells": [2, 0, 3, 1, 0, 2], "pointers": [{ "label": "L", "index": 2 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 5, "state": "active" }] }
     },
     {
-      "caption": "Right height 0 — still the shorter side. rightMax stays 2. Water over index 4 is 2 - 0 = 2. Total 4. Move R.",
+      "caption": "Right height 0 is still the shorter side, so rightMax stays 2. Water over index 4 is 2 - 0 = 2, running total 4. Move R.",
       "visual": { "type": "array", "style": "bars", "cells": [2, 0, 3, 1, 0, 2], "pointers": [{ "label": "L", "index": 2 }, { "label": "R", "index": 4 }], "highlights": [{ "index": 4, "state": "match" }] }
     },
     {
