@@ -7,8 +7,11 @@ import SwiftUI
 struct TrackFeedView: View {
     let track: TrackNode
     let bundle: Bundle
+    var initialLessonID: String? = nil
 
+    @Environment(LessonProgressStore.self) private var progressStore
     @State private var lessons: [Lesson] = []
+    @State private var loadFailures: [LessonLoadFailure] = []
     @State private var loadError: String?
     /// The page currently snapped into view. Two-way bound to the scroll position:
     /// it tracks swipes and, when the jump menu writes it, scrolls straight there.
@@ -29,7 +32,7 @@ struct TrackFeedView: View {
         .navigationBarTitleDisplayMode(.inline)
         #endif
         .toolbar {
-            if !lessons.isEmpty {
+            if !lessons.isEmpty || !loadFailures.isEmpty {
                 ToolbarItem(placement: .primaryAction) {
                     jumpMenu
                 }
@@ -37,11 +40,32 @@ struct TrackFeedView: View {
         }
         .task {
             guard lessons.isEmpty, loadError == nil else { return }
-            lessons = track.lessons.compactMap { try? ContentStore.loadLesson($0, bundle: bundle) }
-            if lessons.isEmpty && track.overview == nil {
+            let loaded = Self.loadLessons(track.lessons, bundle: bundle)
+            lessons = loaded.lessons
+            loadFailures = loaded.failures
+            if let initialLessonID, lessons.contains(where: { $0.id == initialLessonID }) {
+                visibleID = initialLessonID
+            }
+            if lessons.isEmpty && loadFailures.isEmpty && track.overview == nil {
                 loadError = "No lessons or overview are available for this track yet."
             }
         }
+    }
+
+    private static func loadLessons(_ refs: [LessonRef], bundle: Bundle) -> (lessons: [Lesson], failures: [LessonLoadFailure]) {
+        var lessons: [Lesson] = []
+        var failures: [LessonLoadFailure] = []
+
+        for ref in refs {
+            do {
+                lessons.append(try ContentStore.loadLesson(ref, bundle: bundle))
+            } catch {
+                let message = (error as? ContentError)?.errorDescription ?? error.localizedDescription
+                failures.append(LessonLoadFailure(ref: ref, message: message))
+            }
+        }
+
+        return (lessons, failures)
     }
 
     private var feed: some View {
@@ -57,8 +81,16 @@ struct TrackFeedView: View {
                         page(OverviewPage(track: track, overview: overview), proxy: proxy)
                             .id(Self.overviewID)
                     }
+                    if !loadFailures.isEmpty {
+                        page(LoadFailuresPage(failures: loadFailures), proxy: proxy)
+                            .id(Self.failuresID)
+                    }
                     ForEach(Array(lessons.enumerated()), id: \.element.id) { index, lesson in
-                        page(LessonPage(lesson: lesson, hasNext: index < lessons.count - 1), proxy: proxy)
+                        page(LessonPage(lesson: lesson,
+                                        hasNext: index < lessons.count - 1,
+                                        startStepIndex: progressStore.currentStepIndex(for: lesson.id,
+                                                                                       stepCount: lesson.steps.count)),
+                             proxy: proxy)
                             .id(lesson.id)
                     }
                 }
@@ -80,6 +112,9 @@ struct TrackFeedView: View {
                 if track.overview != nil {
                     Label("Overview", systemImage: "doc.text").tag(Self.overviewID)
                 }
+                if !loadFailures.isEmpty {
+                    Label("Content issues", systemImage: "exclamationmark.triangle").tag(Self.failuresID)
+                }
                 ForEach(lessons, id: \.id) { lesson in
                     Text(lesson.title).tag(lesson.id)
                 }
@@ -90,11 +125,14 @@ struct TrackFeedView: View {
     }
 
     private static let overviewID = "overview"
+    private static let failuresID = "content-issues"
 
     /// The page shown when nothing has scrolled yet — the Overview if present,
     /// otherwise the first lesson.
     private var defaultID: String {
-        track.overview != nil ? Self.overviewID : (lessons.first?.id ?? Self.overviewID)
+        if track.overview != nil { return Self.overviewID }
+        if !loadFailures.isEmpty { return Self.failuresID }
+        return lessons.first?.id ?? Self.overviewID
     }
 
     /// Non-optional view over `visibleID` for the Picker: reading gives the current
@@ -113,6 +151,13 @@ struct TrackFeedView: View {
             .padding(.bottom, proxy.safeAreaInsets.bottom)
             .clipped()
     }
+}
+
+private struct LessonLoadFailure: Identifiable, Hashable {
+    let ref: LessonRef
+    let message: String
+
+    var id: String { ref.id }
 }
 
 /// The first page of a Track feed: what the pattern is and when to use it.
@@ -169,6 +214,52 @@ private struct OverviewPage: View {
             VStack(spacing: 4) {
                 Image(systemName: "chevron.up")
                 Text("Swipe up to start").font(.footnote)
+            }
+            .foregroundStyle(.secondary)
+            .frame(maxWidth: .infinity)
+        }
+        .padding(28)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    }
+}
+
+/// A feed page shown when one or more manifest entries failed to load.
+private struct LoadFailuresPage: View {
+    let failures: [LessonLoadFailure]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            Label("Content issues", systemImage: "exclamationmark.triangle")
+                .font(.largeTitle.bold())
+                .foregroundStyle(.orange)
+
+            Text("\(failures.count) lesson \(failures.count == 1 ? "file" : "files") could not be loaded. The rest of the track is still available.")
+                .font(.title3)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            VStack(alignment: .leading, spacing: 12) {
+                ForEach(failures) { failure in
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(failure.ref.title)
+                            .font(.headline)
+                        Text(failure.ref.file)
+                            .font(.caption.monospaced())
+                            .foregroundStyle(.secondary)
+                        Text(failure.message)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .padding(.vertical, 4)
+                }
+            }
+
+            Spacer(minLength: 0)
+
+            VStack(spacing: 4) {
+                Image(systemName: "chevron.up")
+                Text("Swipe up to continue").font(.footnote)
             }
             .foregroundStyle(.secondary)
             .frame(maxWidth: .infinity)

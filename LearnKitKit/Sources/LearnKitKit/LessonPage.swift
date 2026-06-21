@@ -5,26 +5,49 @@ import SwiftUI
 /// fires per step), then a completion state hinting to swipe up for the next lesson.
 struct LessonPage: View {
     let lesson: Lesson
-    var hasNext: Bool = true
+    let hasNext: Bool
+    private let startStepIndex: Int
 
     enum Phase: Equatable { case playing, complete }
     @State private var phase: Phase = .playing
     @State private var stepIndex = 0
+    @Environment(LessonProgressStore.self) private var progressStore
 
     private let palette: Palette = .standard
     private var steps: [Step] { lesson.steps }
     private var current: Step { steps[min(stepIndex, steps.count - 1)] }
-    private var isLastStep: Bool { stepIndex == steps.count - 1 }
+    private var isLastStep: Bool { !steps.isEmpty && stepIndex == steps.count - 1 }
+
+    init(lesson: Lesson, hasNext: Bool = true, startStepIndex: Int = 0) {
+        self.lesson = lesson
+        self.hasNext = hasNext
+        self.startStepIndex = startStepIndex
+        _stepIndex = State(initialValue: startStepIndex)
+    }
 
     var body: some View {
         VStack(spacing: 12) {
             header
-            if phase == .playing { player } else { completion }
+            if steps.isEmpty {
+                malformedLesson
+            } else if phase == .playing {
+                player
+            } else {
+                completion
+            }
         }
         .padding(.top, 12)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .sensoryFeedback(.selection, trigger: stepIndex)
         .sensoryFeedback(.success, trigger: phase == .complete)
+        .onAppear {
+            guard !steps.isEmpty else { return }
+            let clamped = min(max(startStepIndex, 0), steps.count - 1)
+            if stepIndex != clamped { stepIndex = clamped }
+            progressStore.recordStep(lessonID: lesson.id,
+                                     stepIndex: clamped,
+                                     stepCount: steps.count)
+        }
     }
 
     private var header: some View {
@@ -47,6 +70,25 @@ struct LessonPage: View {
         .padding(.horizontal, 20)
     }
 
+    private var malformedLesson: some View {
+        VStack(spacing: 14) {
+            Spacer()
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(.system(size: 44))
+                .foregroundStyle(.orange)
+            Text("No steps available")
+                .font(.title3.bold())
+            Text("This lesson loaded, but it does not contain any step snapshots.")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 28)
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .accessibilityElement(children: .combine)
+    }
+
     private var player: some View {
         VStack(spacing: 0) {
             ProgressDots(count: steps.count, current: stepIndex)
@@ -56,11 +98,16 @@ struct LessonPage: View {
             // Keep the diagram and its instruction together as one centered group,
             // so the text sits with the visual it describes instead of drifting off.
             VStack(spacing: 22) {
-                VisualView(visual: current.visual, palette: palette)
-                    .frame(height: 220)
-                    .padding(.horizontal, 16)
-                    .contentShape(Rectangle())
-                    .onTapGesture { advance() }
+                Button { advance() } label: {
+                    VisualView(visual: current.visual, palette: palette)
+                        .frame(height: 220)
+                        .padding(.horizontal, 16)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Lesson visual")
+                .accessibilityValue("Step \(stepIndex + 1) of \(steps.count)")
+                .accessibilityHint(isLastStep ? "Finishes the lesson." : "Advances to the next step.")
 
                 InstructionView(caption: current.caption)
                     .id(stepIndex)
@@ -80,6 +127,16 @@ struct LessonPage: View {
                     else if value.translation.width > 40 { back() }
                 }
         )
+        .accessibilityAdjustableAction { direction in
+            switch direction {
+            case .increment:
+                advance()
+            case .decrement:
+                back()
+            @unknown default:
+                break
+            }
+        }
     }
 
     private var controls: some View {
@@ -98,6 +155,8 @@ struct LessonPage: View {
         .padding(.horizontal, 20)
         .padding(.top, 8)
         .padding(.bottom, 16)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Step controls")
     }
 
     private var completion: some View {
@@ -108,10 +167,11 @@ struct LessonPage: View {
                 .foregroundStyle(.green)
             Text("Complete").font(.title2.bold())
             Button { replay() } label: { Label("Replay", systemImage: "arrow.counterclockwise") }
-                .buttonStyle(.bordered)
+                .learnKitGlassButton()
             Spacer()
             VStack(spacing: 4) {
                 Image(systemName: hasNext ? "chevron.up" : "checkmark.seal")
+                    .accessibilityHidden(true)
                 Text(hasNext ? "Swipe up for the next lesson" : "You've finished this track")
                     .font(.footnote)
             }
@@ -122,19 +182,30 @@ struct LessonPage: View {
     }
 
     private func advance() {
+        guard !steps.isEmpty else { return }
         if isLastStep {
+            progressStore.markCompleted(lessonID: lesson.id, stepCount: steps.count)
             withAnimation(.easeInOut(duration: 0.3)) { phase = .complete }
         } else {
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { stepIndex += 1 }
+            let nextIndex = stepIndex + 1
+            progressStore.recordStep(lessonID: lesson.id,
+                                     stepIndex: nextIndex,
+                                     stepCount: steps.count)
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { stepIndex = nextIndex }
         }
     }
 
     private func back() {
         guard stepIndex > 0 else { return }
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { stepIndex -= 1 }
+        let nextIndex = stepIndex - 1
+        progressStore.recordStep(lessonID: lesson.id,
+                                 stepIndex: nextIndex,
+                                 stepCount: steps.count)
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { stepIndex = nextIndex }
     }
 
     private func replay() {
+        progressStore.reset(lessonID: lesson.id, stepCount: steps.count)
         withAnimation(.easeInOut(duration: 0.25)) {
             stepIndex = 0
             phase = .playing
@@ -158,7 +229,7 @@ private struct ExampleView: View {
         }
         .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(RoundedRectangle(cornerRadius: 8, style: .continuous).fill(Color.gray.opacity(0.12)))
+        .learnKitGlassPanel(cornerRadius: 8)
     }
 
     private func row(_ label: String, _ value: String) -> some View {
@@ -229,6 +300,9 @@ private struct ProgressDots: View {
             }
         }
         .animation(.spring(response: 0.3), value: current)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Lesson progress")
+        .accessibilityValue("Step \(current + 1) of \(count)")
     }
 }
 
