@@ -503,6 +503,25 @@
             { "id": "design-twitter", "title": "Design Twitter", "difficulty": "medium", "file": "dsa/heap/design-twitter.json" },
             { "id": "find-median-from-data-stream", "title": "Find Median from Data Stream", "difficulty": "hard", "file": "dsa/heap/find-median-from-data-stream.json" }
           ]
+        },
+        {
+          "id": "tries",
+          "title": "Tries",
+          "icon": "character.book.closed",
+          "overview": {
+            "tagline": "Store a set of words as a tree of shared prefixes, so lookups walk one letter at a time.",
+            "whenToUse": [
+              "You store many strings and query by prefix.",
+              "You need fast insert and search keyed on characters.",
+              "Many words share leading letters you don't want to repeat.",
+              "Autocomplete, spell-check, or word-search style problems."
+            ],
+            "keyIdea": "Each edge is a letter and each root-to-node path spells a prefix, so words with a common start share one branch. Insert and search follow the path letter by letter in O(length), and a flag marks where a full word ends.",
+            "complexity": "O(L) per insert or search, where L is the word length"
+          },
+          "lessons": [
+            { "id": "implement-trie", "title": "Implement Trie (Prefix Tree)", "difficulty": "medium", "file": "dsa/tries/implement-trie.json" }
+          ]
         }
       ]
     }

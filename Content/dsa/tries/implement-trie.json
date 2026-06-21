@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "id": "implement-trie",
+  "subject": "dsa",
+  "track": "tries",
+  "title": "Implement Trie (Prefix Tree)",
+  "difficulty": "medium",
+  "summary": "A trie stores words by their shared prefixes. Each edge is a letter, and a root-to-node path spells a prefix; a node flagged as a word end marks a full inserted word.",
+  "problem": "A trie stores words by shared prefixes; each edge is a letter and a root-to-node path spells a prefix. Insert \"cat\" and \"car\", then search.",
+  "example": { "input": "insert \"cat\",\"car\"; startsWith \"ca\"; search \"ca\"", "output": "startsWith true, search false" },
+  "steps": [
+    {
+      "caption": "A trie stores words by shared prefixes; each edge is a letter. Insert \"cat\" and \"car\".",
+      "visual": {
+        "type": "rtree",
+        "root": { "value": "•" }
+      }
+    },
+    {
+      "caption": "Insert \"cat\": build the path c then a then t, and mark t as a word end.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "•",
+          "children": [
+            { "value": "c", "edge": "c", "children": [
+              { "value": "a", "edge": "a", "children": [
+                { "value": "t", "edge": "t", "state": "match" }
+              ] }
+            ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Insert \"car\": cat and car share the \"ca\" branch, so just add r under a and mark it a word end.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "•",
+          "children": [
+            { "value": "c", "edge": "c", "children": [
+              { "value": "a", "edge": "a", "children": [
+                { "value": "t", "edge": "t", "state": "match" },
+                { "value": "r", "edge": "r", "state": "match" }
+              ] }
+            ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Search \"ca\": the path c then a exists, so startsWith is true. But a was never marked a word end, so search is false.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "•",
+          "children": [
+            { "value": "c", "edge": "c", "state": "compare", "children": [
+              { "value": "a", "edge": "a", "state": "compare", "children": [
+                { "value": "t", "edge": "t", "state": "match" },
+                { "value": "r", "edge": "r", "state": "match" }
+              ] }
+            ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Done. The trie holds cat and car sharing one branch.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "•", "state": "done",
+          "children": [
+            { "value": "c", "edge": "c", "state": "done", "children": [
+              { "value": "a", "edge": "a", "state": "done", "children": [
+                { "value": "t", "edge": "t", "state": "done" },
+                { "value": "r", "edge": "r", "state": "done" }
+              ] }
+            ] }
+          ]
+        }
+      }
+    }
+  ]
+}
