@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "decode-ways",
+  "subject": "dsa",
+  "track": "1d-dp",
+  "title": "Decode Ways",
+  "difficulty": "medium",
+  "summary": "Like Climbing Stairs over digits: the ways to decode up to a position add the ways from one digit back (if this digit is a valid 1-9 letter) and the ways from two digits back (if the last two digits form 10-26).",
+  "problem": "A=1, B=2, ..., Z=26. Count how many ways a digit string can be decoded into letters.",
+  "example": { "input": "s = \"226\"", "output": "3" },
+  "steps": [
+    {
+      "caption": "Decode '226' with A=1 ... Z=26 and count the ways. Let ways[i] = decodings of the first i digits; ways[0] = 1 for the empty prefix.",
+      "visual": { "type": "array", "cells": ["2", "2", "6"] }
+    },
+    {
+      "caption": "First digit '2' is between 1 and 9, a valid single letter (B), so after one digit there is 1 way.",
+      "visual": { "type": "array", "cells": ["2", "2", "6"], "highlights": [{ "index": 0, "state": "active" }] }
+    },
+    {
+      "caption": "Second digit: '2' alone is valid (+1 way), and '22' is between 10 and 26 (+1 way). Total so far: 2 ways.",
+      "visual": { "type": "array", "cells": ["2", "2", "6"], "pointers": [{ "label": "cur", "index": 1 }], "highlights": [{ "range": [0, 1], "state": "compare" }, { "index": 1, "state": "active" }] }
+    },
+    {
+      "caption": "Third digit: '6' alone is valid (carry the 2 ways), and '26' is between 10 and 26 (add the 1 way from before the '2 2').",
+      "visual": { "type": "array", "cells": ["2", "2", "6"], "pointers": [{ "label": "cur", "index": 2 }], "highlights": [{ "range": [1, 2], "state": "compare" }, { "index": 2, "state": "active" }] }
+    },
+    {
+      "caption": "Total decodings of 226 = 3: (2 2 6), (22 6), and (2 26).",
+      "visual": { "type": "array", "cells": ["2", "2", "6"], "highlights": [{ "range": [0, 2], "state": "done" }] }
+    }
+  ]
+}
