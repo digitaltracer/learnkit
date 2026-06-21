@@ -190,7 +190,7 @@ _New track: 2-D Dynamic Programming (DP table)_
 - [x] Balanced Binary Tree (E) _(2026-06-21)_
 - [ ] Same Tree (E)
 - [ ] Subtree of Another Tree (E)
-- [ ] Lowest Common Ancestor of a BST (M)
+- [x] Lowest Common Ancestor of a BST (M) _(2026-06-21)_
 - [x] Binary Tree Level Order Traversal (M) _(2026-06-21)_
 - [ ] Binary Tree Right Side View (M)
 - [ ] Count Good Nodes in Binary Tree (M)

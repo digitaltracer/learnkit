@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "id": "lowest-common-ancestor-of-a-bst",
+  "subject": "dsa",
+  "track": "trees",
+  "title": "Lowest Common Ancestor of a BST",
+  "difficulty": "medium",
+  "summary": "Use the BST ordering. From the root, go left when both targets are smaller, right when both are larger. The node where they split is the lowest common ancestor.",
+  "problem": "Given a binary search tree and two values p and q, return their lowest common ancestor node.",
+  "example": { "input": "root = [6,2,8,0,4,7,9,null,null,3,5], p = 3, q = 5", "output": "4" },
+  "steps": [
+    {
+      "caption": "In a BST the LCA is the first node where p and q split — one goes left, one right (or the node equals p or q). Find the LCA of 3 and 5.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 6,
+          "left": { "value": 2, "left": { "value": 0 }, "right": { "value": 4, "left": { "value": 3, "pointer": "p" }, "right": { "value": 5, "pointer": "q" } } },
+          "right": { "value": 8, "left": { "value": 7 }, "right": { "value": 9 } }
+        }
+      }
+    },
+    {
+      "caption": "Start at root 6. Both 3 and 5 are less than 6, so the LCA must be in the left subtree — go left.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 6, "state": "active", "pointer": "cur",
+          "left": { "value": 2, "left": { "value": 0 }, "right": { "value": 4, "left": { "value": 3, "pointer": "p" }, "right": { "value": 5, "pointer": "q" } } },
+          "right": { "value": 8, "left": { "value": 7 }, "right": { "value": 9 } }
+        }
+      }
+    },
+    {
+      "caption": "At 2: both 3 and 5 are greater than 2, so go right.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 6, "state": "done",
+          "left": { "value": 2, "state": "active", "pointer": "cur", "left": { "value": 0 }, "right": { "value": 4, "left": { "value": 3, "pointer": "p" }, "right": { "value": 5, "pointer": "q" } } },
+          "right": { "value": 8, "left": { "value": 7 }, "right": { "value": 9 } }
+        }
+      }
+    },
+    {
+      "caption": "At 4: 3 is smaller and 5 is larger — they split here. So 4 is the lowest common ancestor.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 6, "state": "done",
+          "left": { "value": 2, "state": "done", "left": { "value": 0 }, "right": { "value": 4, "state": "active", "pointer": "cur", "left": { "value": 3, "state": "compare", "pointer": "p" }, "right": { "value": 5, "state": "compare", "pointer": "q" } } },
+          "right": { "value": 8, "left": { "value": 7 }, "right": { "value": 9 } }
+        }
+      }
+    },
+    {
+      "caption": "LCA(3, 5) = 4 — found by walking down and comparing, in O(h) time with no extra space.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 6,
+          "left": { "value": 2, "left": { "value": 0 }, "right": { "value": 4, "state": "done", "left": { "value": 3, "pointer": "p" }, "right": { "value": 5, "pointer": "q" } } },
+          "right": { "value": 8, "left": { "value": 7 }, "right": { "value": 9 } }
+        }
+      }
+    }
+  ]
+}
