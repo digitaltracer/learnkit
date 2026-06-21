@@ -298,7 +298,8 @@
             { "id": "product-of-array-except-self", "title": "Product of Array Except Self", "difficulty": "medium", "file": "dsa/arrays-hashing/product-of-array-except-self.json" },
             { "id": "top-k-frequent-elements", "title": "Top K Frequent Elements", "difficulty": "medium", "file": "dsa/arrays-hashing/top-k-frequent-elements.json" },
             { "id": "longest-consecutive-sequence", "title": "Longest Consecutive Sequence", "difficulty": "medium", "file": "dsa/arrays-hashing/longest-consecutive-sequence.json" },
-            { "id": "encode-and-decode-strings", "title": "Encode and Decode Strings", "difficulty": "medium", "file": "dsa/arrays-hashing/encode-and-decode-strings.json" }
+            { "id": "encode-and-decode-strings", "title": "Encode and Decode Strings", "difficulty": "medium", "file": "dsa/arrays-hashing/encode-and-decode-strings.json" },
+            { "id": "time-based-key-value-store", "title": "Time Based Key-Value Store", "difficulty": "medium", "file": "dsa/arrays-hashing/time-based-key-value-store.json" }
           ]
         },
         {

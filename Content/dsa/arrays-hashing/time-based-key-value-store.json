@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "time-based-key-value-store",
+  "subject": "dsa",
+  "track": "arrays-hashing",
+  "title": "Time Based Key-Value Store",
+  "difficulty": "medium",
+  "summary": "Store each key's values in timestamp order. For a get, binary search the timestamps for the largest one at or below the query, and return its value.",
+  "problem": "Support set(key, value, timestamp) and get(key, timestamp) returning the value with the largest stored timestamp <= the query, or \"\" if none exists.",
+  "example": { "input": "set(\"foo\",\"bar\",1); set(\"foo\",\"bar2\",4); get(\"foo\",3)", "output": "\"bar\"" },
+  "steps": [
+    {
+      "caption": "Store values stamped with a time. A get returns the value at the largest timestamp <= the query, found by binary search over sorted timestamps.",
+      "visual": { "type": "hashmap" }
+    },
+    {
+      "caption": "set(\"foo\",\"bar\",1) then set(\"foo\",\"bar2\",4). The timestamps for foo stay sorted: 1 then 4.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": 1, "value": "bar" }, { "key": 4, "value": "bar2" } ]
+      }
+    },
+    {
+      "caption": "get(\"foo\",3): find the largest timestamp <= 3. Time 4 is too late, so time 1 wins.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": 1, "value": "bar", "state": "match" }, { "key": 4, "value": "bar2" } ],
+        "probe": { "key": 3, "found": true }
+      }
+    },
+    {
+      "caption": "The value stored at time 1 is \"bar\". Answer: \"bar\".",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": 1, "value": "bar", "state": "done" }, { "key": 4, "value": "bar2", "state": "done" } ]
+      }
+    }
+  ]
+}
