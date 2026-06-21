@@ -294,7 +294,8 @@
           },
           "lessons": [
             { "id": "merge-intervals", "title": "Merge Intervals", "difficulty": "medium", "file": "dsa/intervals/merge-intervals.json" },
-            { "id": "insert-interval", "title": "Insert Interval", "difficulty": "medium", "file": "dsa/intervals/insert-interval.json" }
+            { "id": "insert-interval", "title": "Insert Interval", "difficulty": "medium", "file": "dsa/intervals/insert-interval.json" },
+            { "id": "meeting-rooms", "title": "Meeting Rooms", "difficulty": "easy", "file": "dsa/intervals/meeting-rooms.json" }
           ]
         },
         {

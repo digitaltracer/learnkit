@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "meeting-rooms",
+  "subject": "dsa",
+  "track": "intervals",
+  "title": "Meeting Rooms",
+  "difficulty": "easy",
+  "summary": "You can attend every meeting only if none overlap. Sort by start time, then compare each meeting with the next: if one starts before the previous ends, there's a conflict and the answer is false.",
+  "problem": "Given meeting time intervals, determine whether a single person could attend all of them.",
+  "example": { "input": "[[0,30],[5,10],[15,20]]", "output": "false" },
+  "steps": [
+    {
+      "caption": "You can attend every meeting only if no two overlap. First sort the meetings by start time so any clash shows up between neighbors.",
+      "visual": {
+        "type": "intervals",
+        "axisMin": 0, "axisMax": 30,
+        "rows": [ { "start": 0, "end": 30 }, { "start": 5, "end": 10 }, { "start": 15, "end": 20 } ]
+      }
+    },
+    {
+      "caption": "Compare each meeting with the next. The first runs from 0 to 30, while the next starts at 5 — before the first one ends.",
+      "visual": {
+        "type": "intervals",
+        "axisMin": 0, "axisMax": 30,
+        "rows": [ { "start": 0, "end": 30, "state": "compare" }, { "start": 5, "end": 10, "state": "compare" }, { "start": 15, "end": 20 } ]
+      }
+    },
+    {
+      "caption": "Since 5 < 30, these two meetings overlap — you'd have to be in both at once.",
+      "visual": {
+        "type": "intervals",
+        "axisMin": 0, "axisMax": 30,
+        "rows": [ { "start": 0, "end": 30, "state": "mismatch" }, { "start": 5, "end": 10, "state": "mismatch" }, { "start": 15, "end": 20 } ]
+      }
+    },
+    {
+      "caption": "A single overlap is enough to decide it: you cannot attend all the meetings, so the answer is false.",
+      "visual": {
+        "type": "intervals",
+        "axisMin": 0, "axisMax": 30,
+        "rows": [ { "start": 0, "end": 30, "state": "mismatch" }, { "start": 5, "end": 10, "state": "mismatch" }, { "start": 15, "end": 20 } ]
+      }
+    }
+  ]
+}
