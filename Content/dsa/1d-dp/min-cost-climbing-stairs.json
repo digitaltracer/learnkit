@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "id": "min-cost-climbing-stairs",
+  "subject": "dsa",
+  "track": "1d-dp",
+  "title": "Min Cost Climbing Stairs",
+  "difficulty": "easy",
+  "summary": "dp[i] is the cheapest cost to reach step i: pay the step's own cost plus the cheaper of the two ways you could have arrived, from one or two steps below. The top sits just past the last step.",
+  "problem": "Each step has a cost. You climb one or two steps at a time and may start at step 0 or 1. Find the minimum cost to climb past the top.",
+  "example": { "input": "cost = [10, 15, 20]", "output": "15" },
+  "steps": [
+    {
+      "caption": "Each step costs cost[i] to stand on. You climb 1 or 2 at a time, starting at step 0 or 1. Let dp[i] = cheapest cost to reach step i.",
+      "visual": {
+        "type": "grid",
+        "rows": [[10, 15, 20], ["?", "?", "?"]],
+        "highlights": [{ "rows": [0, 0], "cols": [0, 2], "state": "compare" }]
+      }
+    },
+    {
+      "caption": "dp[0] = 10 and dp[1] = 15: you may start on either bottom step, so reaching it just costs that step itself.",
+      "visual": {
+        "type": "grid",
+        "rows": [[10, 15, 20], [10, 15, "?"]],
+        "highlights": [{ "row": 1, "col": 0, "state": "active" }, { "row": 1, "col": 1, "state": "active" }]
+      }
+    },
+    {
+      "caption": "dp[2] = cost[2] + min(dp[0], dp[1]) = 20 + min(10, 15) = 20 + 10 = 30.",
+      "visual": {
+        "type": "grid",
+        "rows": [[10, 15, 20], [10, 15, 30]],
+        "highlights": [{ "row": 1, "col": 0, "state": "compare" }, { "row": 1, "col": 1, "state": "compare" }, { "row": 1, "col": 2, "state": "active" }]
+      }
+    },
+    {
+      "caption": "The top is just past the last step, reachable from step 1 or step 2. Its cost is min(dp[1], dp[2]) = min(15, 30).",
+      "visual": {
+        "type": "grid",
+        "rows": [[10, 15, 20], [10, 15, 30]],
+        "highlights": [{ "row": 1, "col": 1, "state": "compare" }, { "row": 1, "col": 2, "state": "compare" }]
+      }
+    },
+    {
+      "caption": "The cheapest way past the top costs 15: start on step 1, then take a double step over the top.",
+      "visual": {
+        "type": "grid",
+        "rows": [[10, 15, 20], [10, 15, 30]],
+        "highlights": [{ "row": 1, "col": 1, "state": "done" }]
+      }
+    }
+  ]
+}
