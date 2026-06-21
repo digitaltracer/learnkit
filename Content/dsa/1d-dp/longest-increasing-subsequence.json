@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "longest-increasing-subsequence",
+  "subject": "dsa",
+  "track": "1d-dp",
+  "title": "Longest Increasing Subsequence",
+  "difficulty": "medium",
+  "summary": "dp[i] is the length of the longest increasing subsequence that ends at index i. For each i, look at every earlier index holding a smaller value and extend its best run by one. The answer is the largest dp value.",
+  "problem": "Find the length of the longest strictly increasing subsequence of an array (elements need not be contiguous).",
+  "example": { "input": "nums = [3, 1, 4, 2, 5]", "output": "3" },
+  "steps": [
+    {
+      "caption": "dp[i] = length of the longest increasing subsequence ending at index i. Every element on its own is a run of length 1.",
+      "visual": {
+        "type": "grid",
+        "rows": [[3, 1, 4, 2, 5], ["?", "?", "?", "?", "?"]],
+        "highlights": [{ "rows": [0, 0], "cols": [0, 4], "state": "compare" }]
+      }
+    },
+    {
+      "caption": "dp[0] = 1 (just 3). dp[1] = 1, since no value left of 1 is smaller than it.",
+      "visual": {
+        "type": "grid",
+        "rows": [[3, 1, 4, 2, 5], [1, 1, "?", "?", "?"]],
+        "highlights": [{ "row": 1, "col": 0, "state": "active" }, { "row": 1, "col": 1, "state": "active" }]
+      }
+    },
+    {
+      "caption": "dp[2]: values left of 4 that are smaller are 3 and 1; the best dp among them is 1, so dp[2] = 1 + 1 = 2.",
+      "visual": {
+        "type": "grid",
+        "rows": [[3, 1, 4, 2, 5], [1, 1, 2, "?", "?"]],
+        "highlights": [{ "row": 0, "col": 0, "state": "compare" }, { "row": 0, "col": 1, "state": "compare" }, { "row": 1, "col": 2, "state": "active" }]
+      }
+    },
+    {
+      "caption": "dp[3]: only 1 is smaller than 2 to its left, and dp[1] = 1, so dp[3] = 1 + 1 = 2.",
+      "visual": {
+        "type": "grid",
+        "rows": [[3, 1, 4, 2, 5], [1, 1, 2, 2, "?"]],
+        "highlights": [{ "row": 0, "col": 1, "state": "compare" }, { "row": 1, "col": 3, "state": "active" }]
+      }
+    },
+    {
+      "caption": "dp[4]: 4 and 2 are both smaller than 5; the best dp among them is 2, so dp[4] = 1 + 2 = 3.",
+      "visual": {
+        "type": "grid",
+        "rows": [[3, 1, 4, 2, 5], [1, 1, 2, 2, 3]],
+        "highlights": [{ "row": 1, "col": 2, "state": "compare" }, { "row": 1, "col": 3, "state": "compare" }, { "row": 1, "col": 4, "state": "active" }]
+      }
+    },
+    {
+      "caption": "The largest dp value is 3, so the longest increasing subsequence has length 3 — for example 1, 4, 5 or 1, 2, 5.",
+      "visual": {
+        "type": "grid",
+        "rows": [[3, 1, 4, 2, 5], [1, 1, 2, 2, 3]],
+        "highlights": [{ "row": 0, "col": 1, "state": "done" }, { "row": 0, "col": 3, "state": "done" }, { "row": 0, "col": 4, "state": "done" }, { "row": 1, "col": 4, "state": "done" }]
+      }
+    }
+  ]
+}
