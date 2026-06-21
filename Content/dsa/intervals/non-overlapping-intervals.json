@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "non-overlapping-intervals",
+  "subject": "dsa",
+  "track": "intervals",
+  "title": "Non-overlapping Intervals",
+  "difficulty": "medium",
+  "summary": "To remove the fewest intervals, sort by end time and greedily keep the one that ends earliest. Any later interval that starts before the last kept one's end overlaps and must be removed.",
+  "problem": "Find the minimum number of intervals to remove so that the rest no longer overlap.",
+  "example": { "input": "[[1,2],[2,3],[3,4],[1,3]]", "output": "1" },
+  "steps": [
+    {
+      "caption": "Remove as few intervals as possible so none overlap. Sort by end time and greedily keep the earliest-ending ones.",
+      "visual": {
+        "type": "intervals",
+        "axisMin": 0, "axisMax": 4,
+        "rows": [ { "start": 1, "end": 2 }, { "start": 2, "end": 3 }, { "start": 1, "end": 3 }, { "start": 3, "end": 4 } ]
+      }
+    },
+    {
+      "caption": "Keep [1,2] — it ends first, so it leaves the most room for the rest.",
+      "visual": {
+        "type": "intervals",
+        "axisMin": 0, "axisMax": 4,
+        "rows": [ { "start": 1, "end": 2, "state": "match" }, { "start": 2, "end": 3 }, { "start": 1, "end": 3 }, { "start": 3, "end": 4 } ]
+      }
+    },
+    {
+      "caption": "[2,3] starts at 2, which is >= the last kept end 2, so it fits. Keep it. Touching endpoints don't count as overlap.",
+      "visual": {
+        "type": "intervals",
+        "axisMin": 0, "axisMax": 4,
+        "rows": [ { "start": 1, "end": 2, "state": "done" }, { "start": 2, "end": 3, "state": "match" }, { "start": 1, "end": 3 }, { "start": 3, "end": 4 } ]
+      }
+    },
+    {
+      "caption": "[1,3] starts at 1, before the last kept end 3, so it overlaps. Remove it.",
+      "visual": {
+        "type": "intervals",
+        "axisMin": 0, "axisMax": 4,
+        "rows": [ { "start": 1, "end": 2, "state": "done" }, { "start": 2, "end": 3, "state": "done" }, { "start": 1, "end": 3, "state": "mismatch" }, { "start": 3, "end": 4 } ]
+      }
+    },
+    {
+      "caption": "[3,4] starts at 3, which is >= 3, so there's no overlap. Keep it.",
+      "visual": {
+        "type": "intervals",
+        "axisMin": 0, "axisMax": 4,
+        "rows": [ { "start": 1, "end": 2, "state": "done" }, { "start": 2, "end": 3, "state": "done" }, { "start": 1, "end": 3, "state": "mismatch" }, { "start": 3, "end": 4, "state": "match" } ]
+      }
+    },
+    {
+      "caption": "Exactly one interval was removed ([1,3]); the rest are non-overlapping. The answer is 1.",
+      "visual": {
+        "type": "intervals",
+        "axisMin": 0, "axisMax": 4,
+        "rows": [ { "start": 1, "end": 2, "state": "done" }, { "start": 2, "end": 3, "state": "done" }, { "start": 1, "end": 3, "state": "mismatch" }, { "start": 3, "end": 4, "state": "done" } ]
+      }
+    }
+  ]
+}
