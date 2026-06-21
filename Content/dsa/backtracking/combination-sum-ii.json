@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "id": "combination-sum-ii",
+  "subject": "dsa",
+  "track": "backtracking",
+  "title": "Combination Sum II",
+  "difficulty": "medium",
+  "summary": "Each number is used at most once. Sort first, then skip a duplicate value at the same tree level so the same combination is never built twice.",
+  "problem": "Find every combination of candidates = [1, 1, 2] that sums to target = 3, using each number at most once.",
+  "example": { "input": "candidates = [1, 1, 2], target = 3", "output": "[[1,2]]" },
+  "steps": [
+    {
+      "caption": "Each node is the running sum. After sorting, skip a duplicate value at the same level so the same combo is not repeated. Prune sums past the target.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "0", "state": "active", "pointer": "go",
+          "children": [
+            { "value": "1", "edge": "+1", "children": [
+              { "value": "2", "edge": "+1", "children": [ { "value": "4", "edge": "+2" }, { "value": "3", "edge": "+2" } ] }
+            ] },
+            { "value": "dup", "edge": "+1" },
+            { "value": "2", "edge": "+2" }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Take the first 1, then the second 1, then 2: 0, 1, 2, 3. The sum hits the target, so [1, 2] is a solution.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "0", "state": "active",
+          "children": [
+            { "value": "1", "edge": "+1", "state": "active", "children": [
+              { "value": "2", "edge": "+1", "state": "active", "children": [ { "value": "4", "edge": "+2" }, { "value": "3", "edge": "+2", "state": "match" } ] }
+            ] },
+            { "value": "dup", "edge": "+1" },
+            { "value": "2", "edge": "+2" }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "From the sum 2, adding 2 instead gives 4, which overshoots the target. That branch is pruned.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "0", "state": "active",
+          "children": [
+            { "value": "1", "edge": "+1", "state": "active", "children": [
+              { "value": "2", "edge": "+1", "state": "active", "children": [ { "value": "4", "edge": "+2", "state": "mismatch" }, { "value": "3", "edge": "+2", "state": "match" } ] }
+            ] },
+            { "value": "dup", "edge": "+1" },
+            { "value": "2", "edge": "+2" }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Back at the root, the second 1 is a duplicate of the first 1 at this level. Starting with it would rebuild the same combos, so skip it.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "0", "state": "active",
+          "children": [
+            { "value": "1", "edge": "+1", "children": [
+              { "value": "2", "edge": "+1", "children": [ { "value": "4", "edge": "+2", "state": "mismatch" }, { "value": "3", "edge": "+2", "state": "match" } ] }
+            ] },
+            { "value": "dup", "edge": "+1", "state": "mismatch" },
+            { "value": "2", "edge": "+2" }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Starting with 2 reaches only the sum 2, and no number is left to make 3. That leaf is a dead end.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "0", "state": "active",
+          "children": [
+            { "value": "1", "edge": "+1", "children": [
+              { "value": "2", "edge": "+1", "children": [ { "value": "4", "edge": "+2", "state": "mismatch" }, { "value": "3", "edge": "+2", "state": "match" } ] }
+            ] },
+            { "value": "dup", "edge": "+1", "state": "mismatch" },
+            { "value": "2", "edge": "+2", "state": "mismatch" }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Only one leaf reaches the target: [1, 2]. The duplicate skip kept it from being listed twice.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "0", "state": "done",
+          "children": [
+            { "value": "1", "edge": "+1", "state": "done", "children": [
+              { "value": "2", "edge": "+1", "state": "done", "children": [ { "value": "4", "edge": "+2", "state": "mismatch" }, { "value": "3", "edge": "+2", "state": "done" } ] }
+            ] },
+            { "value": "dup", "edge": "+1", "state": "mismatch" },
+            { "value": "2", "edge": "+2", "state": "mismatch" }
+          ]
+        }
+      }
+    }
+  ]
+}
