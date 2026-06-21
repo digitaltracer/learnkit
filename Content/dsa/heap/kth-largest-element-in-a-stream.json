@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "id": "kth-largest-element-in-a-stream",
+  "subject": "dsa",
+  "track": "heap",
+  "title": "Kth Largest Element in a Stream",
+  "difficulty": "easy",
+  "summary": "Keep a min-heap of size k holding the k largest values seen so far. Its root is always the kth largest, so each new number gives an instant answer.",
+  "problem": "After each number arrives, report the kth largest value (k = 3). Keep a min-heap of size k whose root is the kth largest seen so far.",
+  "example": { "input": "k = 3; add 5, 2, 10, 8", "output": "3rd largest becomes 2 then 5" },
+  "steps": [
+    {
+      "caption": "Report the kth largest after each add, with k = 3. Use a min-heap of size 3 whose root is the answer.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 2,
+          "left": { "value": 5 },
+          "right": { "value": 10 }
+        }
+      }
+    },
+    {
+      "caption": "After adding 5, 2, 10 the heap is full. The root 2 is the 3rd largest.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 2, "state": "active",
+          "left": { "value": 5 },
+          "right": { "value": 10 }
+        }
+      }
+    },
+    {
+      "caption": "Add 8. It is bigger than the root 2, so it belongs in the top 3. Remove the smallest, 2.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 2, "state": "mismatch",
+          "left": { "value": 5 },
+          "right": { "value": 10 }
+        }
+      }
+    },
+    {
+      "caption": "Insert 8 and sift it down. The heap is now 5, 8, 10 with root 5.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 5, "state": "active",
+          "left": { "value": 8 },
+          "right": { "value": 10 }
+        }
+      }
+    },
+    {
+      "caption": "The root now holds 5, the new 3rd largest.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 5, "state": "done",
+          "left": { "value": 8 },
+          "right": { "value": 10 }
+        }
+      }
+    }
+  ]
+}

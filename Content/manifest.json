@@ -478,6 +478,25 @@
             { "id": "burst-balloons", "title": "Burst Balloons", "difficulty": "hard", "file": "dsa/2d-dp/burst-balloons.json" },
             { "id": "regular-expression-matching", "title": "Regular Expression Matching", "difficulty": "hard", "file": "dsa/2d-dp/regular-expression-matching.json" }
           ]
+        },
+        {
+          "id": "heap",
+          "title": "Heap / Priority Queue",
+          "icon": "triangle.fill",
+          "overview": {
+            "tagline": "Keep the largest or smallest item one step away by storing values in a heap, a tree that always surfaces its extreme at the root.",
+            "whenToUse": [
+              "You repeatedly need the current min or max, not a full sort.",
+              "You want the k largest or k smallest, or a running median.",
+              "Items arrive over time and you must react to the extreme so far.",
+              "A full sort at every step would be too slow."
+            ],
+            "keyIdea": "A binary heap is a complete tree where every parent beats its children, so the extreme sits at the root. Push and pop sift one value up or down in O(log n), giving fast access to the min or max without sorting everything.",
+            "complexity": "O(log n) per push or pop, O(1) to peek the root"
+          },
+          "lessons": [
+            { "id": "kth-largest-element-in-a-stream", "title": "Kth Largest Element in a Stream", "difficulty": "easy", "file": "dsa/heap/kth-largest-element-in-a-stream.json" }
+          ]
         }
       ]
     }
