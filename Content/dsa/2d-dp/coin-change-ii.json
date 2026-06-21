@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "coin-change-ii",
+  "subject": "dsa",
+  "track": "2d-dp",
+  "title": "Coin Change II",
+  "difficulty": "medium",
+  "summary": "dp[i][a] counts the distinct combinations of the first i coins that sum to amount a. Introducing a coin adds the combinations that reuse it: dp stays the row above plus dp at the same row, amount minus the coin.",
+  "problem": "Count the distinct combinations of coins = [1, 2] that sum to amount = 4. Rows are coin sets (no coins, then +coin 1, then +coin 2); columns are amounts 0 through 4. dp[i][a] is the number of ways to make amount a.",
+  "example": { "input": "coins = [1, 2], amount = 4", "output": "3" },
+  "steps": [
+    {
+      "caption": "Columns are amounts 0 through 4 and dp counts the ways to make each amount. With no coins there is one way to make 0 and no way to make the rest.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]
+      }
+    },
+    {
+      "caption": "Add coin 1. Every amount is reachable exactly one way using only 1s, so the whole row becomes 1.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 0, 0, 0, 0], [1, 1, 1, 1, 1], [0, 0, 0, 0, 0]],
+        "highlights": [{ "rows": [1, 1], "cols": [0, 4], "state": "active" }]
+      }
+    },
+    {
+      "caption": "Add coin 2: dp[a] = the value above + dp at this row, amount minus 2. That gives 1, 1, 2, 2, 3 across the amounts.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 0, 0, 0, 0], [1, 1, 1, 1, 1], [1, 1, 2, 2, 3]],
+        "highlights": [{ "rows": [2, 2], "cols": [0, 4], "state": "match" }]
+      }
+    },
+    {
+      "caption": "The bottom-right cell is 3, so 3 combinations make 4: 1+1+1+1, 1+1+2, and 2+2.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 0, 0, 0, 0], [1, 1, 1, 1, 1], [1, 1, 2, 2, 3]],
+        "highlights": [{ "row": 2, "col": 4, "state": "done" }]
+      }
+    }
+  ]
+}
