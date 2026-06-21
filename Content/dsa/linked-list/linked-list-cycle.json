@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "linked-list-cycle",
+  "subject": "dsa",
+  "track": "linked-list",
+  "title": "Linked List Cycle",
+  "difficulty": "easy",
+  "summary": "Run two pointers: slow moves one node per step, fast moves two. If the list loops, fast keeps lapping the loop and eventually lands on slow.",
+  "problem": "Return true if the linked list has a cycle — some node's next pointer revisits an earlier node.",
+  "example": { "input": "3 -> 2 -> 0 -> -4, and -4 links back to 2", "output": "true" },
+  "steps": [
+    {
+      "caption": "Does this list cycle? Node -4's arrow loops back to 2, so following next never ends. Detect it with two runners moving at different speeds.",
+      "visual": { "type": "list", "nodes": [3, 2, 0, -4], "links": [[0, 1], [1, 2], [2, 3], [3, 1]] }
+    },
+    {
+      "caption": "Start both at the head. Each step, slow moves 1 node and fast moves 2. If fast meets slow there's a cycle; if fast runs off the end, there isn't.",
+      "visual": {
+        "type": "list",
+        "nodes": [3, 2, 0, -4], "links": [[0, 1], [1, 2], [2, 3], [3, 1]],
+        "pointers": [{ "label": "slo", "index": 0 }, { "label": "fst", "index": 0 }],
+        "highlights": [{ "index": 0, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Step 1: slow advances to 2, fast takes two hops to 0.",
+      "visual": {
+        "type": "list",
+        "nodes": [3, 2, 0, -4], "links": [[0, 1], [1, 2], [2, 3], [3, 1]],
+        "pointers": [{ "label": "slo", "index": 1 }, { "label": "fst", "index": 2 }],
+        "highlights": [{ "index": 1, "state": "active" }, { "index": 2, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Step 2: slow moves to 0; fast takes two hops through the loop and lands back on 2.",
+      "visual": {
+        "type": "list",
+        "nodes": [3, 2, 0, -4], "links": [[0, 1], [1, 2], [2, 3], [3, 1]],
+        "pointers": [{ "label": "slo", "index": 2 }, { "label": "fst", "index": 1 }],
+        "highlights": [{ "index": 2, "state": "active" }, { "index": 1, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Step 3: slow moves to -4, and fast's two hops land on -4 as well. They meet on the same node!",
+      "visual": {
+        "type": "list",
+        "nodes": [3, 2, 0, -4], "links": [[0, 1], [1, 2], [2, 3], [3, 1]],
+        "pointers": [{ "label": "slo", "index": 3 }, { "label": "fst", "index": 3 }],
+        "highlights": [{ "index": 3, "state": "match" }]
+      }
+    },
+    {
+      "caption": "Fast caught slow inside the loop, so the list has a cycle — return true. With no cycle, fast would have reached null first.",
+      "visual": {
+        "type": "list",
+        "nodes": [3, 2, 0, -4], "links": [[0, 1], [1, 2], [2, 3], [3, 1]],
+        "highlights": [{ "range": [1, 3], "state": "done" }]
+      }
+    }
+  ]
+}
