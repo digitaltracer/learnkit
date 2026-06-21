@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "word-search",
+  "subject": "dsa",
+  "track": "backtracking",
+  "title": "Word Search",
+  "difficulty": "medium",
+  "summary": "Walk the board from each starting letter, stepping to 4-directionally adjacent cells that match the next letter and never reusing a cell, backing up the moment a neighbor fails to match.",
+  "problem": "Given a grid of letters, decide whether a word can be spelled by moving between 4-directionally adjacent cells, using each cell at most once. Return true if such a path exists.",
+  "example": { "input": "board = [[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]], word = \"ABCCED\"", "output": "true" },
+  "steps": [
+    {
+      "caption": "Find \"ABCCED\" by stepping to adjacent letters without reusing a cell. Back up when a neighbor does not match.",
+      "visual": {
+        "type": "grid",
+        "rows": [["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]],
+        "highlights": []
+      }
+    },
+    {
+      "caption": "Start at A in the top-left corner, the word's first letter.",
+      "visual": {
+        "type": "grid",
+        "rows": [["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]],
+        "highlights": [{ "row": 0, "col": 0, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Step right to B, then right again to C. The path now spells A, B, C.",
+      "visual": {
+        "type": "grid",
+        "rows": [["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]],
+        "highlights": [{ "row": 0, "col": 0, "state": "done" }, { "row": 0, "col": 1, "state": "active" }, { "row": 0, "col": 2, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Turn down to the second C, matching the word's second C.",
+      "visual": {
+        "type": "grid",
+        "rows": [["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]],
+        "highlights": [{ "row": 0, "col": 0, "state": "done" }, { "row": 0, "col": 1, "state": "done" }, { "row": 0, "col": 2, "state": "done" }, { "row": 1, "col": 2, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Go down to E, then left to D. The full word ABCCED is now spelled.",
+      "visual": {
+        "type": "grid",
+        "rows": [["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]],
+        "highlights": [{ "row": 0, "col": 0, "state": "done" }, { "row": 0, "col": 1, "state": "done" }, { "row": 0, "col": 2, "state": "done" }, { "row": 1, "col": 2, "state": "done" }, { "row": 2, "col": 2, "state": "match" }, { "row": 2, "col": 1, "state": "match" }]
+      }
+    },
+    {
+      "caption": "Every letter matched along an unbroken path, so the word is found. The answer is true.",
+      "visual": {
+        "type": "grid",
+        "rows": [["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]],
+        "highlights": [{ "row": 0, "col": 0, "state": "done" }, { "row": 0, "col": 1, "state": "done" }, { "row": 0, "col": 2, "state": "done" }, { "row": 1, "col": 2, "state": "done" }, { "row": 2, "col": 2, "state": "done" }, { "row": 2, "col": 1, "state": "done" }]
+      }
+    }
+  ]
+}
