@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "id": "subsets-ii",
+  "subject": "dsa",
+  "track": "backtracking",
+  "title": "Subsets II",
+  "difficulty": "medium",
+  "summary": "Like Subsets, but the array has duplicates. When you choose to skip a value, skip all of its copies at once so no subset is generated twice.",
+  "problem": "Return all distinct subsets of nums = [1, 2, 2], which contains a duplicate.",
+  "example": { "input": "[1, 2, 2]", "output": "[[], [1], [2], [1,2], [2,2], [1,2,2]]" },
+  "steps": [
+    {
+      "caption": "For each value, include it or skip it. Because the 2 repeats, skipping a 2 skips its duplicate too, so no subset repeats. Each leaf is one distinct subset.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "{}", "state": "active", "pointer": "go",
+          "children": [
+            { "value": "{1}", "edge": "+1", "children": [
+              { "value": "{1,2}", "edge": "+2", "children": [ { "value": "{1,2,2}", "edge": "+2" }, { "value": "{1,2}", "edge": "skip 2" } ] },
+              { "value": "{1}", "edge": "skip 2s" }
+            ] },
+            { "value": "{}", "edge": "skip 1", "children": [
+              { "value": "{2}", "edge": "+2", "children": [ { "value": "{2,2}", "edge": "+2" }, { "value": "{2}", "edge": "skip 2" } ] },
+              { "value": "{}", "edge": "skip 2s" }
+            ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Include 1, then both 2s, giving {1, 2, 2}. Back up to skip the last 2 for {1, 2}.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "{}", "state": "active",
+          "children": [
+            { "value": "{1}", "edge": "+1", "state": "active", "children": [
+              { "value": "{1,2}", "edge": "+2", "state": "active", "children": [ { "value": "{1,2,2}", "edge": "+2", "state": "done" }, { "value": "{1,2}", "edge": "skip 2", "state": "done" } ] },
+              { "value": "{1}", "edge": "skip 2s" }
+            ] },
+            { "value": "{}", "edge": "skip 1", "children": [
+              { "value": "{2}", "edge": "+2", "children": [ { "value": "{2,2}", "edge": "+2" }, { "value": "{2}", "edge": "skip 2" } ] },
+              { "value": "{}", "edge": "skip 2s" }
+            ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Still inside the 'include 1' branch, skip both 2s at once to get {1}. The whole left side is done.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "{}", "state": "active",
+          "children": [
+            { "value": "{1}", "edge": "+1", "state": "active", "children": [
+              { "value": "{1,2}", "edge": "+2", "children": [ { "value": "{1,2,2}", "edge": "+2", "state": "done" }, { "value": "{1,2}", "edge": "skip 2", "state": "done" } ] },
+              { "value": "{1}", "edge": "skip 2s", "state": "done" }
+            ] },
+            { "value": "{}", "edge": "skip 1", "children": [
+              { "value": "{2}", "edge": "+2", "children": [ { "value": "{2,2}", "edge": "+2" }, { "value": "{2}", "edge": "skip 2" } ] },
+              { "value": "{}", "edge": "skip 2s" }
+            ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Now skip 1 and walk the right side: {2, 2}, then {2}, then the empty set {}.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "{}", "state": "active",
+          "children": [
+            { "value": "{1}", "edge": "+1", "children": [
+              { "value": "{1,2}", "edge": "+2", "children": [ { "value": "{1,2,2}", "edge": "+2", "state": "done" }, { "value": "{1,2}", "edge": "skip 2", "state": "done" } ] },
+              { "value": "{1}", "edge": "skip 2s", "state": "done" }
+            ] },
+            { "value": "{}", "edge": "skip 1", "state": "active", "children": [
+              { "value": "{2}", "edge": "+2", "state": "active", "children": [ { "value": "{2,2}", "edge": "+2", "state": "done" }, { "value": "{2}", "edge": "skip 2", "state": "done" } ] },
+              { "value": "{}", "edge": "skip 2s", "state": "done" }
+            ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Six leaves, six distinct subsets. Skipping a value along with its duplicate is what keeps {2} and {1, 2} from appearing twice.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "{}", "state": "done",
+          "children": [
+            { "value": "{1}", "edge": "+1", "state": "done", "children": [
+              { "value": "{1,2}", "edge": "+2", "state": "done", "children": [ { "value": "{1,2,2}", "edge": "+2", "state": "done" }, { "value": "{1,2}", "edge": "skip 2", "state": "done" } ] },
+              { "value": "{1}", "edge": "skip 2s", "state": "done" }
+            ] },
+            { "value": "{}", "edge": "skip 1", "state": "done", "children": [
+              { "value": "{2}", "edge": "+2", "state": "done", "children": [ { "value": "{2,2}", "edge": "+2", "state": "done" }, { "value": "{2}", "edge": "skip 2", "state": "done" } ] },
+              { "value": "{}", "edge": "skip 2s", "state": "done" }
+            ] }
+          ]
+        }
+      }
+    }
+  ]
+}
