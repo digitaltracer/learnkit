@@ -495,7 +495,8 @@
             "complexity": "O(log n) per push or pop, O(1) to peek the root"
           },
           "lessons": [
-            { "id": "kth-largest-element-in-a-stream", "title": "Kth Largest Element in a Stream", "difficulty": "easy", "file": "dsa/heap/kth-largest-element-in-a-stream.json" }
+            { "id": "kth-largest-element-in-a-stream", "title": "Kth Largest Element in a Stream", "difficulty": "easy", "file": "dsa/heap/kth-largest-element-in-a-stream.json" },
+            { "id": "last-stone-weight", "title": "Last Stone Weight", "difficulty": "easy", "file": "dsa/heap/last-stone-weight.json" }
           ]
         }
       ]

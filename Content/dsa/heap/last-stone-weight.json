@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "id": "last-stone-weight",
+  "subject": "dsa",
+  "track": "heap",
+  "title": "Last Stone Weight",
+  "difficulty": "easy",
+  "summary": "A max-heap always hands you the two heaviest stones at the top. Smash them, push back any difference, and repeat until one or zero stones remain.",
+  "problem": "Repeatedly smash the two heaviest stones. If they differ, the difference returns to the pile. Report the last remaining weight, or 0. Use a max-heap.",
+  "example": { "input": "[2, 7, 4, 1, 8, 1]", "output": "1" },
+  "steps": [
+    {
+      "caption": "Smash the two heaviest stones. If unequal, the difference returns. Find the last weight using a max-heap.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 8,
+          "left": { "value": 7, "left": { "value": 1 }, "right": { "value": 2 } },
+          "right": { "value": 4, "left": { "value": 1 } }
+        }
+      }
+    },
+    {
+      "caption": "The two heaviest are the root 8 and its child 7.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 8, "state": "active",
+          "left": { "value": 7, "state": "active", "left": { "value": 1 }, "right": { "value": 2 } },
+          "right": { "value": 4, "left": { "value": 1 } }
+        }
+      }
+    },
+    {
+      "caption": "Smash 8 and 7. The difference 1 returns, and the heap becomes 2, 4, 1, 1, 1.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 4,
+          "left": { "value": 2, "left": { "value": 1 }, "right": { "value": 1 } },
+          "right": { "value": 1 }
+        }
+      }
+    },
+    {
+      "caption": "Keep smashing: 4 and 2 leave 2, then 2 and 1 leave 1, then 1 and 1 leave 0.",
+      "visual": {
+        "type": "tree",
+        "root": { "value": 1 }
+      }
+    },
+    {
+      "caption": "One stone of weight 1 remains.",
+      "visual": {
+        "type": "tree",
+        "root": { "value": 1, "state": "done" }
+      }
+    }
+  ]
+}
