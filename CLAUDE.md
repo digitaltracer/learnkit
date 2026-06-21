@@ -90,12 +90,16 @@ the overflow, invisibly in CI and only on-device.
    keep the page `.clipped()` so a neighbour can never peek.
 
 **How it's handled now (keep it this way):** `LessonPage.player` makes the visual
-the one elastic element — a band that scales with available height, clamped
-150–260 pt (`stepBody(visualHeight:)`) — and wraps the visual + caption in
-`ViewThatFits(in: .vertical)` with a `ScrollView` fallback, so a page that still
-can't fit *scrolls* instead of clipping. Fonts are never scaled to the screen;
-they stay on Dynamic Type. `LessonLayoutBudgetTests` then enforces per-lesson caps
-so content can't reintroduce overflow:
+the one elastic element — a band that scales with the available height, clamped
+120–260 pt (`stepBody(visualHeight:)`), so it yields space to the caption and
+controls when the screen is tight. Fonts are never scaled to the screen; they
+stay on Dynamic Type. **Do not** reintroduce `ViewThatFits` or a nested
+`ScrollView` in the player: nested inside the feed's paging `ScrollView` they
+crash the SwiftUI async renderer (`EXC_BREAKPOINT` on
+`com.apple.SwiftUI.AsyncRenderer`). The fit guarantee comes from the elastic band
+plus the `LessonLayoutBudgetTests` caps, which keep content small enough to fit —
+at the very largest Dynamic Type a long caption may clip at the page edge (the
+feed's `.clipped()` contains it; no overlap, no crash). The caps:
 
 > **array/list ≤ 8 cells · grid ≤ 7 cols / ≤ 24 cells · tree ≤ 15 nodes / depth ≤ 5
 > · rtree ≤ 8 leaves / depth ≤ 5 · intervals ≤ 6 rows · caption ≤ 4 sentences.**

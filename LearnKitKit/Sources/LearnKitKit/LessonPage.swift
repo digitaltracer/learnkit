@@ -91,27 +91,27 @@ struct LessonPage: View {
 
     private var player: some View {
         // The visual is the one elastic element: it claims a band that scales with
-        // the height actually available, clamped so it never dominates or vanishes.
-        // Text keeps its intrinsic size and Dynamic Type — we never scale fonts to
-        // the screen. If even the most compact layout still doesn't fit (small
-        // device + large Dynamic Type + a long caption), the middle scrolls instead
-        // of clipping, so nothing is ever lost behind the chrome or the neighbour.
+        // the available height, clamped so it never dominates or vanishes — and
+        // yields down to 120pt when space is tight so the caption and controls
+        // always have room. Text keeps its intrinsic size and Dynamic Type; we
+        // never scale fonts to the screen.
+        //
+        // We deliberately avoid ViewThatFits / a nested ScrollView here: nested
+        // inside the feed's paging ScrollView they crash the SwiftUI async
+        // renderer (EXC_BREAKPOINT on com.apple.SwiftUI.AsyncRenderer). The elastic
+        // band plus the LessonLayoutBudget caps keep a page fitting instead; at the
+        // very largest Dynamic Type a long caption may clip at the page edge, which
+        // the feed's `.clipped()` contains — no overlap, no crash.
         GeometryReader { geo in
-            let band = min(260, max(150, geo.size.height * 0.42))
+            let band = min(260, max(120, geo.size.height * 0.42))
             VStack(spacing: 0) {
                 ProgressDots(count: steps.count, current: stepIndex)
 
-                Spacer(minLength: 12)
+                Spacer(minLength: 8)
 
-                ViewThatFits(in: .vertical) {
-                    stepBody(visualHeight: band)
-                    ScrollView(.vertical, showsIndicators: false) {
-                        stepBody(visualHeight: 150)
-                            .padding(.vertical, 4)
-                    }
-                }
+                stepBody(visualHeight: band)
 
-                Spacer(minLength: 12)
+                Spacer(minLength: 8)
 
                 controls
             }
