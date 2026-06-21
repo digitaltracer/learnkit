@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "id": "number-of-connected-components-in-an-undirected-graph",
+  "subject": "dsa",
+  "track": "graphs",
+  "title": "Number of Connected Components in an Undirected Graph",
+  "difficulty": "medium",
+  "summary": "Visit from each unvisited node, flood its whole connected piece with DFS, then move to the next unvisited node; the number of fresh starts you make is the number of connected components.",
+  "problem": "Given n nodes and an edge list, count the connected components in the undirected graph.",
+  "example": { "input": "n = 5, edges = [[0,1],[1,2],[3,4]]", "output": "2" },
+  "steps": [
+    {
+      "caption": "Count the separate connected pieces. Visit from each unvisited node, flood its whole component, then move on to the next unvisited node.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.18, "y": 0.2 },
+          { "id": "1", "x": 0.36, "y": 0.5 },
+          { "id": "2", "x": 0.18, "y": 0.8 },
+          { "id": "3", "x": 0.82, "y": 0.3 },
+          { "id": "4", "x": 0.82, "y": 0.72 }
+        ],
+        "edges": [
+          { "from": "0", "to": "1" },
+          { "from": "1", "to": "2" },
+          { "from": "3", "to": "4" }
+        ]
+      }
+    },
+    {
+      "caption": "Start a DFS at node 0.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.18, "y": 0.2, "state": "active", "pointer": "cur" },
+          { "id": "1", "x": 0.36, "y": 0.5 },
+          { "id": "2", "x": 0.18, "y": 0.8 },
+          { "id": "3", "x": 0.82, "y": 0.3 },
+          { "id": "4", "x": 0.82, "y": 0.72 }
+        ],
+        "edges": [
+          { "from": "0", "to": "1" },
+          { "from": "1", "to": "2" },
+          { "from": "3", "to": "4" }
+        ]
+      }
+    },
+    {
+      "caption": "From 0 reach 1, then 2. That whole piece is component 1.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.18, "y": 0.2, "state": "done" },
+          { "id": "1", "x": 0.36, "y": 0.5, "state": "done" },
+          { "id": "2", "x": 0.18, "y": 0.8, "state": "done" },
+          { "id": "3", "x": 0.82, "y": 0.3 },
+          { "id": "4", "x": 0.82, "y": 0.72 }
+        ],
+        "edges": [
+          { "from": "0", "to": "1", "state": "match" },
+          { "from": "1", "to": "2", "state": "match" },
+          { "from": "3", "to": "4" }
+        ]
+      }
+    },
+    {
+      "caption": "Node 3 has not been visited, so it starts a new component.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.18, "y": 0.2, "state": "done" },
+          { "id": "1", "x": 0.36, "y": 0.5, "state": "done" },
+          { "id": "2", "x": 0.18, "y": 0.8, "state": "done" },
+          { "id": "3", "x": 0.82, "y": 0.3, "state": "active", "pointer": "cur" },
+          { "id": "4", "x": 0.82, "y": 0.72 }
+        ],
+        "edges": [
+          { "from": "0", "to": "1", "state": "done" },
+          { "from": "1", "to": "2", "state": "done" },
+          { "from": "3", "to": "4" }
+        ]
+      }
+    },
+    {
+      "caption": "From 3 reach 4. That is component 2.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.18, "y": 0.2, "state": "done" },
+          { "id": "1", "x": 0.36, "y": 0.5, "state": "done" },
+          { "id": "2", "x": 0.18, "y": 0.8, "state": "done" },
+          { "id": "3", "x": 0.82, "y": 0.3, "state": "done" },
+          { "id": "4", "x": 0.82, "y": 0.72, "state": "done" }
+        ],
+        "edges": [
+          { "from": "0", "to": "1", "state": "done" },
+          { "from": "1", "to": "2", "state": "done" },
+          { "from": "3", "to": "4", "state": "match" }
+        ]
+      }
+    },
+    {
+      "caption": "Two separate DFS starts were needed, so there are 2 connected components. Answer: 2.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.18, "y": 0.2, "state": "done" },
+          { "id": "1", "x": 0.36, "y": 0.5, "state": "done" },
+          { "id": "2", "x": 0.18, "y": 0.8, "state": "done" },
+          { "id": "3", "x": 0.82, "y": 0.3, "state": "done" },
+          { "id": "4", "x": 0.82, "y": 0.72, "state": "done" }
+        ],
+        "edges": [
+          { "from": "0", "to": "1", "state": "done" },
+          { "from": "1", "to": "2", "state": "done" },
+          { "from": "3", "to": "4", "state": "done" }
+        ]
+      }
+    }
+  ]
+}
