@@ -250,7 +250,8 @@
             { "id": "contains-duplicate", "title": "Contains Duplicate", "difficulty": "easy", "file": "dsa/arrays-hashing/contains-duplicate.json" },
             { "id": "valid-anagram", "title": "Valid Anagram", "difficulty": "easy", "file": "dsa/arrays-hashing/valid-anagram.json" },
             { "id": "two-sum", "title": "Two Sum", "difficulty": "easy", "file": "dsa/arrays-hashing/two-sum.json" },
-            { "id": "group-anagrams", "title": "Group Anagrams", "difficulty": "medium", "file": "dsa/arrays-hashing/group-anagrams.json" }
+            { "id": "group-anagrams", "title": "Group Anagrams", "difficulty": "medium", "file": "dsa/arrays-hashing/group-anagrams.json" },
+            { "id": "product-of-array-except-self", "title": "Product of Array Except Self", "difficulty": "medium", "file": "dsa/arrays-hashing/product-of-array-except-self.json" }
           ]
         },
         {
