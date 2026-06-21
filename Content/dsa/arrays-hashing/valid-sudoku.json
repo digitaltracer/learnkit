@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "valid-sudoku",
+  "subject": "dsa",
+  "track": "arrays-hashing",
+  "title": "Valid Sudoku",
+  "difficulty": "medium",
+  "summary": "A board is valid only if no row, column, or 3x3 box repeats a digit. Scan each unit and remember the digits seen; a repeat means the board is invalid.",
+  "problem": "A Sudoku board is valid only if no row, no column, and no 3x3 box repeats a digit from 1 to 9. This lesson shows the no-repeat check on a single 3x3 box; the same check runs on every row, column, and box.",
+  "example": { "input": "one 3x3 box: [[5,3,4],[6,7,2],[1,9,5]]", "output": "false (the box repeats 5)" },
+  "steps": [
+    {
+      "caption": "A board is valid only if no row, column, or 3x3 box repeats a digit. Here is one box; the same check runs on every unit.",
+      "visual": { "type": "grid", "rows": [[5, 3, 4], [6, 7, 2], [1, 9, 5]] }
+    },
+    {
+      "caption": "Scan the box and note the 5 in the top-left corner.",
+      "visual": { "type": "grid", "rows": [[5, 3, 4], [6, 7, 2], [1, 9, 5]], "highlights": [{ "row": 0, "col": 0, "state": "active" }] }
+    },
+    {
+      "caption": "Another 5 appears in the bottom-right. Two 5s in one box, so this box is invalid.",
+      "visual": { "type": "grid", "rows": [[5, 3, 4], [6, 7, 2], [1, 9, 5]], "highlights": [{ "row": 0, "col": 0, "state": "mismatch" }, { "row": 2, "col": 2, "state": "mismatch" }] }
+    },
+    {
+      "caption": "Done. A repeat in any row, column, or box makes the whole board invalid.",
+      "visual": { "type": "grid", "rows": [[5, 3, 4], [6, 7, 2], [1, 9, 5]], "highlights": [{ "row": 0, "col": 0, "state": "done" }, { "row": 2, "col": 2, "state": "done" }] }
+    }
+  ]
+}

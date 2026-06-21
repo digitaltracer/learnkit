@@ -304,7 +304,8 @@
             { "id": "longest-consecutive-sequence", "title": "Longest Consecutive Sequence", "difficulty": "medium", "file": "dsa/arrays-hashing/longest-consecutive-sequence.json" },
             { "id": "encode-and-decode-strings", "title": "Encode and Decode Strings", "difficulty": "medium", "file": "dsa/arrays-hashing/encode-and-decode-strings.json" },
             { "id": "time-based-key-value-store", "title": "Time Based Key-Value Store", "difficulty": "medium", "file": "dsa/arrays-hashing/time-based-key-value-store.json" },
-            { "id": "detect-squares", "title": "Detect Squares", "difficulty": "medium", "file": "dsa/arrays-hashing/detect-squares.json" }
+            { "id": "detect-squares", "title": "Detect Squares", "difficulty": "medium", "file": "dsa/arrays-hashing/detect-squares.json" },
+            { "id": "valid-sudoku", "title": "Valid Sudoku", "difficulty": "medium", "file": "dsa/arrays-hashing/valid-sudoku.json" }
           ]
         },
         {
