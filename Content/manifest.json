@@ -266,7 +266,8 @@
             { "id": "graph-valid-tree", "title": "Graph Valid Tree", "difficulty": "medium", "file": "dsa/graphs/graph-valid-tree.json" },
             { "id": "max-area-of-island", "title": "Max Area of Island", "difficulty": "medium", "file": "dsa/graphs/max-area-of-island.json" },
             { "id": "rotting-oranges", "title": "Rotting Oranges", "difficulty": "medium", "file": "dsa/graphs/rotting-oranges.json" },
-            { "id": "surrounded-regions", "title": "Surrounded Regions", "difficulty": "medium", "file": "dsa/graphs/surrounded-regions.json" }
+            { "id": "surrounded-regions", "title": "Surrounded Regions", "difficulty": "medium", "file": "dsa/graphs/surrounded-regions.json" },
+            { "id": "course-schedule-ii", "title": "Course Schedule II", "difficulty": "medium", "file": "dsa/graphs/course-schedule-ii.json" }
           ]
         },
         {

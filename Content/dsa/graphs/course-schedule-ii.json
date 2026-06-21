@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "id": "course-schedule-ii",
+  "subject": "dsa",
+  "track": "graphs",
+  "title": "Course Schedule II",
+  "difficulty": "medium",
+  "summary": "Order all courses so every prerequisite comes first, using a topological sort.",
+  "problem": "Given numCourses and a list of prerequisite pairs, return a valid order to take all courses. Each pair [a,b] means b must come before a. If no valid order exists, return an empty list.",
+  "example": {
+    "input": "numCourses = 4, prerequisites = [[1,0],[2,0],[3,1],[3,2]]",
+    "output": "[0,1,2,3]"
+  },
+  "steps": [
+    {
+      "caption": "Goal: produce an order respecting prerequisites. Repeatedly take a course with no unmet prerequisite.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "0", "x": 0.5, "y": 0.12},
+          {"id": "1", "x": 0.22, "y": 0.45},
+          {"id": "2", "x": 0.78, "y": 0.45},
+          {"id": "3", "x": 0.5, "y": 0.85}
+        ],
+        "edges": [
+          {"from": "0", "to": "1", "directed": true},
+          {"from": "0", "to": "2", "directed": true},
+          {"from": "1", "to": "3", "directed": true},
+          {"from": "2", "to": "3", "directed": true}
+        ]
+      }
+    },
+    {
+      "caption": "Only course 0 has no prerequisites, so take it first. Order so far: [0].",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "0", "x": 0.5, "y": 0.12, "state": "active", "pointer": "now"},
+          {"id": "1", "x": 0.22, "y": 0.45},
+          {"id": "2", "x": 0.78, "y": 0.45},
+          {"id": "3", "x": 0.5, "y": 0.85}
+        ],
+        "edges": [
+          {"from": "0", "to": "1", "directed": true},
+          {"from": "0", "to": "2", "directed": true},
+          {"from": "1", "to": "3", "directed": true},
+          {"from": "2", "to": "3", "directed": true}
+        ]
+      }
+    },
+    {
+      "caption": "Removing 0 frees courses 1 and 2. Take 1 next. Order so far: [0,1].",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "0", "x": 0.5, "y": 0.12, "state": "done"},
+          {"id": "1", "x": 0.22, "y": 0.45, "state": "active", "pointer": "now"},
+          {"id": "2", "x": 0.78, "y": 0.45},
+          {"id": "3", "x": 0.5, "y": 0.85}
+        ],
+        "edges": [
+          {"from": "0", "to": "1", "directed": true, "state": "done"},
+          {"from": "0", "to": "2", "directed": true},
+          {"from": "1", "to": "3", "directed": true},
+          {"from": "2", "to": "3", "directed": true}
+        ]
+      }
+    },
+    {
+      "caption": "Take 2, which was also freed by removing 0. Order so far: [0,1,2].",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "0", "x": 0.5, "y": 0.12, "state": "done"},
+          {"id": "1", "x": 0.22, "y": 0.45, "state": "done"},
+          {"id": "2", "x": 0.78, "y": 0.45, "state": "active", "pointer": "now"},
+          {"id": "3", "x": 0.5, "y": 0.85}
+        ],
+        "edges": [
+          {"from": "0", "to": "1", "directed": true, "state": "done"},
+          {"from": "0", "to": "2", "directed": true, "state": "done"},
+          {"from": "1", "to": "3", "directed": true},
+          {"from": "2", "to": "3", "directed": true}
+        ]
+      }
+    },
+    {
+      "caption": "Both prerequisites of 3 are done, so take 3 last. Order so far: [0,1,2,3].",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "0", "x": 0.5, "y": 0.12, "state": "done"},
+          {"id": "1", "x": 0.22, "y": 0.45, "state": "done"},
+          {"id": "2", "x": 0.78, "y": 0.45, "state": "done"},
+          {"id": "3", "x": 0.5, "y": 0.85, "state": "active", "pointer": "now"}
+        ],
+        "edges": [
+          {"from": "0", "to": "1", "directed": true, "state": "done"},
+          {"from": "0", "to": "2", "directed": true, "state": "done"},
+          {"from": "1", "to": "3", "directed": true, "state": "done"},
+          {"from": "2", "to": "3", "directed": true, "state": "done"}
+        ]
+      }
+    },
+    {
+      "caption": "All courses placed. A valid order is [0,1,2,3].",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "0", "x": 0.5, "y": 0.12, "state": "done"},
+          {"id": "1", "x": 0.22, "y": 0.45, "state": "done"},
+          {"id": "2", "x": 0.78, "y": 0.45, "state": "done"},
+          {"id": "3", "x": 0.5, "y": 0.85, "state": "done"}
+        ],
+        "edges": [
+          {"from": "0", "to": "1", "directed": true, "state": "done"},
+          {"from": "0", "to": "2", "directed": true, "state": "done"},
+          {"from": "1", "to": "3", "directed": true, "state": "done"},
+          {"from": "2", "to": "3", "directed": true, "state": "done"}
+        ]
+      }
+    }
+  ]
+}
