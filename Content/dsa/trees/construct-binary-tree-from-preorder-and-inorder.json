@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "id": "construct-binary-tree-from-preorder-and-inorder",
+  "subject": "dsa",
+  "track": "trees",
+  "title": "Construct Binary Tree from Preorder and Inorder Traversal",
+  "difficulty": "medium",
+  "summary": "Rebuild a binary tree from its preorder and inorder traversals.",
+  "problem": "Given preorder and inorder traversals of a binary tree, reconstruct the tree. Preorder visits root, then left, then right. Inorder visits left, then root, then right.",
+  "example": {
+    "input": "preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]",
+    "output": "tree with root 3, left 9, right 20 (children 15 and 7)"
+  },
+  "steps": [
+    {
+      "caption": "Rebuild the tree. Preorder gives each subtree's root first, and inorder splits the rest into left and right.",
+      "visual": {
+        "type": "tree",
+        "root": { "value": 3, "state": "active", "pointer": "rt" }
+      }
+    },
+    {
+      "caption": "Preorder's next value 9 sits left of 3 in inorder, so it is the left child of 3.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "state": "done",
+          "left": { "value": 9, "state": "active" }
+        }
+      }
+    },
+    {
+      "caption": "Preorder's next value 20 is the right subtree's root, so it becomes the right child of 3.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "state": "done",
+          "left": { "value": 9, "state": "done" },
+          "right": { "value": 20, "state": "active" }
+        }
+      }
+    },
+    {
+      "caption": "Inorder splits 20's part into left 15 and right 7, so attach both under 20.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "state": "done",
+          "left": { "value": 9, "state": "done" },
+          "right": {
+            "value": 20,
+            "state": "done",
+            "left": { "value": 15, "state": "active" },
+            "right": { "value": 7, "state": "active" }
+          }
+        }
+      }
+    },
+    {
+      "caption": "Tree rebuilt. Root 3, then 9 and 20, with 15 and 7 under 20.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "state": "done",
+          "left": { "value": 9, "state": "done" },
+          "right": {
+            "value": 20,
+            "state": "done",
+            "left": { "value": 15, "state": "done" },
+            "right": { "value": 7, "state": "done" }
+          }
+        }
+      }
+    }
+  ]
+}
