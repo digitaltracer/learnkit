@@ -316,7 +316,8 @@
             "complexity": "Exponential in the worst case; pruning cuts it down"
           },
           "lessons": [
-            { "id": "subsets", "title": "Subsets", "difficulty": "medium", "file": "dsa/backtracking/subsets.json" }
+            { "id": "subsets", "title": "Subsets", "difficulty": "medium", "file": "dsa/backtracking/subsets.json" },
+            { "id": "permutations", "title": "Permutations", "difficulty": "medium", "file": "dsa/backtracking/permutations.json" }
           ]
         },
         {
