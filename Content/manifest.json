@@ -301,6 +301,25 @@
           "lessons": [
             { "id": "subsets", "title": "Subsets", "difficulty": "medium", "file": "dsa/backtracking/subsets.json" }
           ]
+        },
+        {
+          "id": "1d-dp",
+          "title": "1-D Dynamic Programming",
+          "icon": "stairs",
+          "overview": {
+            "tagline": "Solve each subproblem once and store its answer, so larger cases reuse the smaller ones instead of recomputing them.",
+            "whenToUse": [
+              "The answer for size n is built from answers to smaller sizes (n-1, n-2, ...).",
+              "A plain recursion would recompute the same subproblems over and over.",
+              "You're counting ways, or optimizing a min/max, over a 1-D sequence.",
+              "Each state depends on only a handful of earlier states."
+            ],
+            "keyIdea": "Define dp[i] as the answer up to position i, then fill the array left to right with a recurrence that combines a few earlier entries. Each entry is computed once, so an exponential search collapses to a single O(n) sweep.",
+            "complexity": "Typically O(n) time, O(n) or O(1) space"
+          },
+          "lessons": [
+            { "id": "climbing-stairs", "title": "Climbing Stairs", "difficulty": "easy", "file": "dsa/1d-dp/climbing-stairs.json" }
+          ]
         }
       ]
     }

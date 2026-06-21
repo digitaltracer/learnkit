@@ -91,7 +91,7 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 - [x] Product of Array Except Self (M) — prefix/suffix passes _(2026-06-21)_
 
 **New track: 1-D Dynamic Programming**
-- [ ] Climbing Stairs (E)
+- [x] Climbing Stairs (E) _(2026-06-21)_
 - [ ] Min Cost Climbing Stairs (E)
 - [ ] House Robber (M)
 - [ ] House Robber II (M)
