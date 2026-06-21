@@ -7,6 +7,9 @@ struct LessonPage: View {
     let lesson: Lesson
     let hasNext: Bool
     private let startStepIndex: Int
+    /// Opens the track's jump-to-lesson sheet. Supplied by the feed; nil when a
+    /// LessonPage is shown standalone (previews/tests), where the control hides.
+    private let onShowJumpMenu: (() -> Void)?
 
     enum Phase: Equatable { case playing, complete }
     @State private var phase: Phase = .playing
@@ -18,10 +21,11 @@ struct LessonPage: View {
     private var current: Step { steps[min(stepIndex, steps.count - 1)] }
     private var isLastStep: Bool { !steps.isEmpty && stepIndex == steps.count - 1 }
 
-    init(lesson: Lesson, hasNext: Bool = true, startStepIndex: Int = 0) {
+    init(lesson: Lesson, hasNext: Bool = true, startStepIndex: Int = 0, onShowJumpMenu: (() -> Void)? = nil) {
         self.lesson = lesson
         self.hasNext = hasNext
         self.startStepIndex = startStepIndex
+        self.onShowJumpMenu = onShowJumpMenu
         _stepIndex = State(initialValue: startStepIndex)
     }
 
@@ -164,9 +168,7 @@ struct LessonPage: View {
             Button { back() } label: { Label("Back", systemImage: "chevron.left") }
                 .disabled(stepIndex == 0)
             Spacer()
-            Text("\(stepIndex + 1) / \(steps.count)")
-                .font(.footnote.monospacedDigit())
-                .foregroundStyle(.secondary)
+            stepIndicator
             Spacer()
             Button { advance() } label: {
                 Label(isLastStep ? "Finish" : "Next", systemImage: isLastStep ? "checkmark" : "chevron.right")
@@ -177,6 +179,28 @@ struct LessonPage: View {
         .padding(.bottom, 16)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Step controls")
+    }
+
+    /// The "n / total" position indicator. When the feed supplies a jump action it
+    /// doubles as a bottom-reachable button that opens the jump-to-lesson sheet (a
+    /// small list glyph signals it's tappable); standalone it's just the count.
+    @ViewBuilder private var stepIndicator: some View {
+        let label = HStack(spacing: 5) {
+            if onShowJumpMenu != nil {
+                Image(systemName: "list.bullet").font(.caption2)
+            }
+            Text("\(stepIndex + 1) / \(steps.count)").font(.footnote.monospacedDigit())
+        }
+        .foregroundStyle(.secondary)
+
+        if let onShowJumpMenu {
+            Button { onShowJumpMenu() } label: { label.contentShape(Rectangle()) }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Lesson \(stepIndex + 1) of \(steps.count). Jump to lesson")
+                .accessibilityHint("Shows all lessons in this topic.")
+        } else {
+            label
+        }
     }
 
     private var completion: some View {

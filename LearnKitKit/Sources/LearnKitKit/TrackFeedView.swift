@@ -107,7 +107,8 @@ struct TrackFeedView: View {
                         page(LessonPage(lesson: lesson,
                                         hasNext: index < lessons.count - 1,
                                         startStepIndex: progressStore.currentStepIndex(for: lesson.id,
-                                                                                       stepCount: lesson.steps.count)),
+                                                                                       stepCount: lesson.steps.count),
+                                        onShowJumpMenu: { showJumpSheet = true }),
                              proxy: proxy)
                             .id(lesson.id)
                     }
