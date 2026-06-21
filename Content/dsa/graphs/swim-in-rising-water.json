@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "swim-in-rising-water",
+  "subject": "dsa",
+  "track": "graphs",
+  "title": "Swim in Rising Water",
+  "difficulty": "hard",
+  "summary": "Water rises over time. The least time to cross equals the smallest possible maximum elevation along any path from the top-left to the bottom-right.",
+  "problem": "Water rises over time. At time t you may enter any cell with elevation at most t. Find the least time at which a path exists from the top-left to the bottom-right. This equals the smallest possible maximum elevation along a path.",
+  "example": { "input": "[[0,1,2],[3,8,1],[4,5,2]]", "output": "2" },
+  "steps": [
+    {
+      "caption": "Find the least time at which water lets you reach the bottom-right corner.",
+      "visual": { "type": "grid", "rows": [[0, 1, 2], [3, 8, 1], [4, 5, 2]] }
+    },
+    {
+      "caption": "The destination has elevation 2, so the time must be at least 2.",
+      "visual": { "type": "grid", "rows": [[0, 1, 2], [3, 8, 1], [4, 5, 2]], "highlights": [{ "row": 2, "col": 2, "state": "compare" }] }
+    },
+    {
+      "caption": "At time 2, the path across the top then down the right uses only cells of elevation at most 2. The 8 is impassable.",
+      "visual": { "type": "grid", "rows": [[0, 1, 2], [3, 8, 1], [4, 5, 2]], "highlights": [{ "row": 0, "col": 0, "state": "active" }, { "row": 0, "col": 1, "state": "active" }, { "row": 0, "col": 2, "state": "active" }, { "row": 1, "col": 2, "state": "active" }, { "row": 2, "col": 2, "state": "active" }] }
+    },
+    {
+      "caption": "Done. That path works at time 2, so the answer is 2.",
+      "visual": { "type": "grid", "rows": [[0, 1, 2], [3, 8, 1], [4, 5, 2]], "highlights": [{ "row": 0, "col": 0, "state": "match" }, { "row": 0, "col": 1, "state": "match" }, { "row": 0, "col": 2, "state": "match" }, { "row": 1, "col": 2, "state": "match" }, { "row": 2, "col": 2, "state": "match" }] }
+    }
+  ]
+}
