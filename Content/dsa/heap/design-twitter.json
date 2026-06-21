@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "design-twitter",
+  "subject": "dsa",
+  "track": "heap",
+  "title": "Design Twitter",
+  "difficulty": "medium",
+  "summary": "A news feed merges the newest tweets from many people in time order. Push each person's latest tweet into a max-heap keyed by timestamp, pop the newest, then push that person's next tweet so the heap stays small.",
+  "problem": "getNewsFeed returns the 10 most recent tweets from a user and everyone they follow, merged by time with a max-heap keyed by timestamp. User 1 follows user 2. User 1 posted tweet 5 at time 5; user 2 posted tweet 6 at time 6 and tweet 7 at time 7.",
+  "example": { "input": "user1 follows user2; getNewsFeed(user1)", "output": "[7,6,5]" },
+  "steps": [
+    {
+      "caption": "The feed is the most recent tweets from self and followees, merged with a max-heap keyed by time.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 7,
+          "left": { "value": 5 }
+        }
+      }
+    },
+    {
+      "caption": "Push the newest tweet from each person: time 7 from user 2 and time 5 from user 1. The root is 7.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 7, "state": "active",
+          "left": { "value": 5 }
+        }
+      }
+    },
+    {
+      "caption": "Pop 7 into the feed, then push user 2's next tweet, 6. The heap is now 6 and 5 with root 6. The feed is [7], then popping 6 makes it [7, 6].",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 6, "state": "active",
+          "left": { "value": 5 }
+        }
+      }
+    },
+    {
+      "caption": "Pop 5 into the feed, giving [7, 6, 5]. User 1 has no more tweets, so the heap is empty.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 5, "state": "done"
+        }
+      }
+    },
+    {
+      "caption": "Done. The news feed is [7, 6, 5], newest first.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 5, "state": "done"
+        }
+      }
+    }
+  ]
+}

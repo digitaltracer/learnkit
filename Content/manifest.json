@@ -499,7 +499,8 @@
             { "id": "last-stone-weight", "title": "Last Stone Weight", "difficulty": "easy", "file": "dsa/heap/last-stone-weight.json" },
             { "id": "k-closest-points-to-origin", "title": "K Closest Points to Origin", "difficulty": "medium", "file": "dsa/heap/k-closest-points-to-origin.json" },
             { "id": "kth-largest-element-in-an-array", "title": "Kth Largest Element in an Array", "difficulty": "medium", "file": "dsa/heap/kth-largest-element-in-an-array.json" },
-            { "id": "task-scheduler", "title": "Task Scheduler", "difficulty": "medium", "file": "dsa/heap/task-scheduler.json" }
+            { "id": "task-scheduler", "title": "Task Scheduler", "difficulty": "medium", "file": "dsa/heap/task-scheduler.json" },
+            { "id": "design-twitter", "title": "Design Twitter", "difficulty": "medium", "file": "dsa/heap/design-twitter.json" }
           ]
         }
       ]
