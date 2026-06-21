@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "id": "design-add-and-search-words-data-structure",
+  "subject": "dsa",
+  "track": "tries",
+  "title": "Design Add and Search Words Data Structure",
+  "difficulty": "medium",
+  "summary": "Store words in a trie. A search with a '.' wildcard matches any single letter, so at a dot you try every child branch instead of one fixed letter.",
+  "problem": "A word dictionary (trie) where search allows '.' to match any single letter. Add \"bad\" and \"dad\", then search \"b.d\".",
+  "example": { "input": "add \"bad\",\"dad\"; search \"b.d\"", "output": "true" },
+  "steps": [
+    {
+      "caption": "A dictionary where search lets '.' match any single letter. Added \"bad\" and \"dad\".",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "•",
+          "children": [
+            { "value": "b", "edge": "b", "children": [
+              { "value": "a", "edge": "a", "children": [
+                { "value": "d", "edge": "d", "state": "match" }
+              ] }
+            ] },
+            { "value": "d", "edge": "d", "children": [
+              { "value": "a", "edge": "a", "children": [
+                { "value": "d", "edge": "d", "state": "match" }
+              ] }
+            ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Search \"b.d\": match 'b', so take the b branch.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "•",
+          "children": [
+            { "value": "b", "edge": "b", "state": "active", "children": [
+              { "value": "a", "edge": "a", "children": [
+                { "value": "d", "edge": "d", "state": "match" }
+              ] }
+            ] },
+            { "value": "d", "edge": "d", "children": [
+              { "value": "a", "edge": "a", "children": [
+                { "value": "d", "edge": "d", "state": "match" }
+              ] }
+            ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "The '.' matches any letter, so follow a; then 'd' reaches a word end.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "•",
+          "children": [
+            { "value": "b", "edge": "b", "state": "match", "children": [
+              { "value": "a", "edge": "a", "state": "match", "children": [
+                { "value": "d", "edge": "d", "state": "match" }
+              ] }
+            ] },
+            { "value": "d", "edge": "d", "children": [
+              { "value": "a", "edge": "a", "children": [
+                { "value": "d", "edge": "d", "state": "match" }
+              ] }
+            ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Done. \"b.d\" matches \"bad\". Answer true.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "•", "state": "done",
+          "children": [
+            { "value": "b", "edge": "b", "state": "done", "children": [
+              { "value": "a", "edge": "a", "state": "done", "children": [
+                { "value": "d", "edge": "d", "state": "done" }
+              ] }
+            ] },
+            { "value": "d", "edge": "d", "children": [
+              { "value": "a", "edge": "a", "children": [
+                { "value": "d", "edge": "d", "state": "match" }
+              ] }
+            ] }
+          ]
+        }
+      }
+    }
+  ]
+}

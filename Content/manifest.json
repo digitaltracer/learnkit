@@ -520,7 +520,8 @@
             "complexity": "O(L) per insert or search, where L is the word length"
           },
           "lessons": [
-            { "id": "implement-trie", "title": "Implement Trie (Prefix Tree)", "difficulty": "medium", "file": "dsa/tries/implement-trie.json" }
+            { "id": "implement-trie", "title": "Implement Trie (Prefix Tree)", "difficulty": "medium", "file": "dsa/tries/implement-trie.json" },
+            { "id": "design-add-and-search-words-data-structure", "title": "Design Add and Search Words Data Structure", "difficulty": "medium", "file": "dsa/tries/design-add-and-search-words-data-structure.json" }
           ]
         }
       ]
