@@ -526,6 +526,31 @@
           ]
         }
       ]
+    },
+    {
+      "id": "system-design",
+      "title": "System Design",
+      "tracks": [
+        {
+          "id": "fundamentals",
+          "title": "Fundamentals",
+          "icon": "rectangle.3.group",
+          "format": "article",
+          "overview": {
+            "tagline": "The vocabulary of large systems — how to add capacity, keep data consistent, and stay up when parts fail.",
+            "whenToUse": [
+              "You're sizing a system before designing it.",
+              "You need the tradeoffs behind scaling, caching, and replication.",
+              "You're preparing for a system-design interview.",
+              "You want the why behind the building blocks, not just their names."
+            ],
+            "keyIdea": "Most design decisions trace back to a few fundamentals: scale up versus out, where state lives, and what you trade away — consistency, latency, or availability — when something has to give."
+          },
+          "lessons": [
+            { "id": "scaling-basics", "title": "Scaling: Vertical vs Horizontal", "file": "system-design/fundamentals/scaling-basics.json" }
+          ]
+        }
+      ]
     }
   ]
 }
