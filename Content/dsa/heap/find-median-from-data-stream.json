@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "id": "find-median-from-data-stream",
+  "subject": "dsa",
+  "track": "heap",
+  "title": "Find Median from Data Stream",
+  "difficulty": "hard",
+  "summary": "Split the stream into a low half and a high half. A max-heap holds the low half so its root is the largest small value, and a min-heap holds the high half so its root is the smallest large value. Keep the halves balanced and the two roots straddle the median.",
+  "problem": "Report the running median using two heaps: a max-heap for the lower half and a min-heap for the upper half, kept balanced. The stream adds 1, then 2, then 3.",
+  "example": { "input": "add 1, 2, 3", "output": "median 1, then 1.5, then 2" },
+  "steps": [
+    {
+      "caption": "Keep a max-heap for the low half and a min-heap for the high half, balanced. The median comes from their roots.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "med",
+          "children": [
+            { "value": 1, "edge": "lo" },
+            { "value": 2, "edge": "hi" }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "After adding 1 and 2, lo holds 1 and hi holds 2. The count is even, so the median is the average of the two roots, which is 1.5.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "med",
+          "children": [
+            { "value": 1, "edge": "lo", "state": "active" },
+            { "value": 2, "edge": "hi", "state": "active" }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Add 3. It joins hi, making it 2 and 3. Hi is now bigger, so move its smallest, 2, down to lo. Now lo is 1 and 2 with root 2, and hi is 3.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "med",
+          "children": [
+            { "value": 2, "edge": "lo", "state": "active", "children": [ { "value": 1 } ] },
+            { "value": 3, "edge": "hi" }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Done. The count is odd, so the larger heap, lo, holds the extra value and its root is the median, which is 2.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "med",
+          "children": [
+            { "value": 2, "edge": "lo", "state": "done", "children": [ { "value": 1 } ] },
+            { "value": 3, "edge": "hi" }
+          ]
+        }
+      }
+    }
+  ]
+}
