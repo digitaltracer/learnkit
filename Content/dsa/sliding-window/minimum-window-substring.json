@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "minimum-window-substring",
+  "subject": "dsa",
+  "track": "sliding-window",
+  "title": "Minimum Window Substring",
+  "difficulty": "hard",
+  "summary": "Grow a window with the right pointer until it covers every needed char, then shrink from the left while it stays valid. The smallest valid window seen along the way is the answer.",
+  "problem": "Given strings s and t, find the shortest substring of s that contains every character of t.",
+  "example": { "input": "s = \"ADBAC\", t = \"ABC\"", "output": "\"BAC\"" },
+  "steps": [
+    {
+      "caption": "Find the shortest substring of s = ADBAC that contains every char of t (A, B and C). Slide a window and track the smallest valid one.",
+      "visual": { "type": "array", "cells": ["A", "D", "B", "A", "C"] }
+    },
+    {
+      "caption": "Start with both pointers at 0, window \"A\". Expand R to take in chars until the window covers A, B and C.",
+      "visual": { "type": "array", "cells": ["A", "D", "B", "A", "C"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 0 }], "highlights": [{ "range": [0, 0], "state": "active" }] }
+    },
+    {
+      "caption": "R = 2, window \"ADB\" has A and B but still no C. Keep expanding.",
+      "visual": { "type": "array", "cells": ["A", "D", "B", "A", "C"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 2 }], "highlights": [{ "range": [0, 2], "state": "active" }] }
+    },
+    {
+      "caption": "R = 4, window \"ADBAC\" now holds A, B and C. A valid window — now shrink from the left to make it smaller.",
+      "visual": { "type": "array", "cells": ["A", "D", "B", "A", "C"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 4 }], "highlights": [{ "range": [0, 4], "state": "match" }] }
+    },
+    {
+      "caption": "Drop the leading A: L = 1, window \"DBAC\". A still appears later, so it's still valid.",
+      "visual": { "type": "array", "cells": ["A", "D", "B", "A", "C"], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 4 }], "highlights": [{ "range": [1, 4], "state": "match" }] }
+    },
+    {
+      "caption": "Drop D: L = 2, window \"BAC\", length 3. Still valid and shorter.",
+      "visual": { "type": "array", "cells": ["A", "D", "B", "A", "C"], "pointers": [{ "label": "L", "index": 2 }, { "label": "R", "index": 4 }], "highlights": [{ "range": [2, 4], "state": "match" }] }
+    },
+    {
+      "caption": "Try to drop B: L = 3, window \"AC\" no longer covers B. Invalid, so stop shrinking.",
+      "visual": { "type": "array", "cells": ["A", "D", "B", "A", "C"], "pointers": [{ "label": "L", "index": 3 }, { "label": "R", "index": 4 }], "highlights": [{ "range": [3, 4], "state": "mismatch" }] }
+    },
+    {
+      "caption": "The smallest valid window is \"BAC\".",
+      "visual": { "type": "array", "cells": ["A", "D", "B", "A", "C"], "highlights": [{ "range": [2, 4], "state": "done" }] }
+    }
+  ]
+}
