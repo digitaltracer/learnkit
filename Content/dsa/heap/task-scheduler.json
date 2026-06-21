@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "id": "task-scheduler",
+  "subject": "dsa",
+  "track": "heap",
+  "title": "Task Scheduler",
+  "difficulty": "medium",
+  "summary": "With a cooldown of n between identical tasks, greedily fill windows of n+1 slots with the most frequent tasks. A max-heap of remaining counts always hands you the busiest tasks first, inserting idle slots only when nothing is ready.",
+  "problem": "Schedule tasks with a cooldown of n = 2 between identical tasks, and find the least total time. Use a max-heap of remaining counts and fill each window of n+1 = 3 slots with the most frequent tasks.",
+  "example": { "input": "tasks = [\"A\",\"A\",\"A\",\"B\",\"B\",\"B\"], n = 2", "output": "8" },
+  "steps": [
+    {
+      "caption": "A cooldown of n = 2 means windows of 3 slots. Use a max-heap of counts, with A = 3 and B = 3.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "left": { "value": 3 }
+        }
+      }
+    },
+    {
+      "caption": "A window has 3 slots. Take the two highest counts, A then B, then idle. The slots so far are A B idle, and the counts drop to 2 and 2.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3, "state": "active",
+          "left": { "value": 3, "state": "active" }
+        }
+      }
+    },
+    {
+      "caption": "Repeat the window: A B idle drops the counts to 1 and 1, then A B fills the last window with no idle.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 1, "state": "compare",
+          "left": { "value": 1, "state": "compare" }
+        }
+      }
+    },
+    {
+      "caption": "Done. The schedule is A B idle A B idle A B, so the total time is 8 units.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 0, "state": "done",
+          "left": { "value": 0 }
+        }
+      }
+    }
+  ]
+}
