@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "id": "validate-binary-search-tree",
+  "subject": "dsa",
+  "track": "trees",
+  "title": "Validate Binary Search Tree",
+  "difficulty": "medium",
+  "summary": "A node-vs-parent check isn't enough: every node must fall inside the (low, high) range its ancestors imply. Pass the range down — going left tightens the high bound, going right tightens the low bound.",
+  "problem": "Determine whether a binary tree is a valid binary search tree, where every node is greater than all nodes to its left and less than all to its right.",
+  "example": { "input": "[5,3,7,null,null,4,8]", "output": "false" },
+  "steps": [
+    {
+      "caption": "A valid BST needs every node to fit the (low, high) range set by all its ancestors — not just its parent. Pass a shrinking range down.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 5,
+          "left": { "value": 3 },
+          "right": { "value": 7, "left": { "value": 4 }, "right": { "value": 8 } }
+        }
+      }
+    },
+    {
+      "caption": "Root 5 has range (-inf, +inf). Everything in its left subtree must be < 5, everything in its right subtree > 5.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 5, "state": "active",
+          "left": { "value": 3 },
+          "right": { "value": 7, "left": { "value": 4 }, "right": { "value": 8 } }
+        }
+      }
+    },
+    {
+      "caption": "Left child 3 must be in (-inf, 5). It fits.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 5,
+          "left": { "value": 3, "state": "done" },
+          "right": { "value": 7, "left": { "value": 4 }, "right": { "value": 8 } }
+        }
+      }
+    },
+    {
+      "caption": "Right child 7 must be in (5, +inf). It fits, and now its subtree is bounded to (5, 7) on the left and (7, +inf) on the right.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 5,
+          "left": { "value": 3, "state": "done" },
+          "right": { "value": 7, "state": "done", "left": { "value": 4 }, "right": { "value": 8 } }
+        }
+      }
+    },
+    {
+      "caption": "But 7's left child is 4. Its allowed range is (5, 7), and 4 < 5 — it's on the wrong side of the root, even though 4 < 7 looks fine locally.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 5,
+          "left": { "value": 3, "state": "done" },
+          "right": { "value": 7, "state": "done", "left": { "value": 4, "state": "mismatch" }, "right": { "value": 8 } }
+        }
+      }
+    },
+    {
+      "caption": "A node breaks its inherited range, so this is not a valid BST.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 5,
+          "left": { "value": 3 },
+          "right": { "value": 7, "left": { "value": 4, "state": "mismatch" }, "right": { "value": 8 } }
+        }
+      }
+    }
+  ]
+}
