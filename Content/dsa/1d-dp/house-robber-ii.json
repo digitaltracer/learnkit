@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "house-robber-ii",
+  "subject": "dsa",
+  "track": "1d-dp",
+  "title": "House Robber II",
+  "difficulty": "medium",
+  "summary": "The houses form a circle, so the first and last are adjacent and can't both be robbed. Run the plain House Robber line solution twice — once without the last house, once without the first — and take the larger result.",
+  "problem": "Houses are arranged in a circle, so the first and last are adjacent. Rob the maximum total without robbing two adjacent houses.",
+  "example": { "input": "nums = [1, 2, 3, 1]", "output": "4" },
+  "steps": [
+    {
+      "caption": "The houses form a circle, so the first and last are neighbors — you can't rob both. Trick: solve the line version twice, dropping one end each time.",
+      "visual": { "type": "array", "cells": [1, 2, 3, 1] }
+    },
+    {
+      "caption": "Case A: ignore the last house. Find the best non-adjacent haul in houses 0 through 2.",
+      "visual": { "type": "array", "cells": [1, 2, 3, 1], "highlights": [{ "range": [0, 2], "state": "active" }, { "index": 3, "state": "mismatch" }] }
+    },
+    {
+      "caption": "In [1, 2, 3], the best is house 0 plus house 2 = 1 + 3 = 4.",
+      "visual": { "type": "array", "cells": [1, 2, 3, 1], "highlights": [{ "index": 0, "state": "match" }, { "index": 2, "state": "match" }] }
+    },
+    {
+      "caption": "Case B: ignore the first house. Find the best non-adjacent haul in houses 1 through 3.",
+      "visual": { "type": "array", "cells": [1, 2, 3, 1], "highlights": [{ "index": 0, "state": "mismatch" }, { "range": [1, 3], "state": "active" }] }
+    },
+    {
+      "caption": "In [2, 3, 1], the best is 3 — take the 3 alone, or the 2 and 1 (also 3).",
+      "visual": { "type": "array", "cells": [1, 2, 3, 1], "highlights": [{ "index": 2, "state": "match" }] }
+    },
+    {
+      "caption": "Answer = max(Case A, Case B) = max(4, 3) = 4, robbing house 0 and house 2.",
+      "visual": { "type": "array", "cells": [1, 2, 3, 1], "highlights": [{ "index": 0, "state": "done" }, { "index": 2, "state": "done" }] }
+    }
+  ]
+}

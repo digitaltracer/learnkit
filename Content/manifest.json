@@ -330,7 +330,8 @@
             { "id": "climbing-stairs", "title": "Climbing Stairs", "difficulty": "easy", "file": "dsa/1d-dp/climbing-stairs.json" },
             { "id": "house-robber", "title": "House Robber", "difficulty": "medium", "file": "dsa/1d-dp/house-robber.json" },
             { "id": "coin-change", "title": "Coin Change", "difficulty": "medium", "file": "dsa/1d-dp/coin-change.json" },
-            { "id": "min-cost-climbing-stairs", "title": "Min Cost Climbing Stairs", "difficulty": "easy", "file": "dsa/1d-dp/min-cost-climbing-stairs.json" }
+            { "id": "min-cost-climbing-stairs", "title": "Min Cost Climbing Stairs", "difficulty": "easy", "file": "dsa/1d-dp/min-cost-climbing-stairs.json" },
+            { "id": "house-robber-ii", "title": "House Robber II", "difficulty": "medium", "file": "dsa/1d-dp/house-robber-ii.json" }
           ]
         },
         {
