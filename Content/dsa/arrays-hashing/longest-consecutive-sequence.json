@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "longest-consecutive-sequence",
+  "subject": "dsa",
+  "track": "arrays-hashing",
+  "title": "Longest Consecutive Sequence",
+  "difficulty": "medium",
+  "summary": "Put every value in a hash set, then only start counting a run at a number whose predecessor is absent. Walking each run once from its true start makes the whole thing O(n) despite looking nested.",
+  "problem": "Find the length of the longest run of consecutive integers in an unsorted array, in O(n) time.",
+  "example": { "input": "[100, 4, 200, 1, 3, 2]", "output": "4" },
+  "steps": [
+    {
+      "caption": "Find the longest run of consecutive integers. Drop every value into a hash set so checking 'is x present?' is O(1).",
+      "visual": { "type": "array", "cells": [100, 4, 200, 1, 3, 2] }
+    },
+    {
+      "caption": "Only begin a count at a number with no predecessor in the set — a true start. 1 qualifies (0 is absent), and so do 100 and 200.",
+      "visual": { "type": "array", "cells": [100, 4, 200, 1, 3, 2], "highlights": [{ "index": 0, "state": "compare" }, { "index": 2, "state": "compare" }, { "index": 3, "state": "compare" }] }
+    },
+    {
+      "caption": "Start at 1 and walk upward while the next value exists: 2, then 3, then 4 are all in the set.",
+      "visual": { "type": "array", "cells": [100, 4, 200, 1, 3, 2], "highlights": [{ "index": 3, "state": "active" }, { "index": 5, "state": "active" }, { "index": 4, "state": "active" }, { "index": 1, "state": "active" }] }
+    },
+    {
+      "caption": "5 is not in the set, so this run stops. Its length is 4.",
+      "visual": { "type": "array", "cells": [100, 4, 200, 1, 3, 2], "highlights": [{ "index": 1, "state": "match" }, { "index": 3, "state": "match" }, { "index": 4, "state": "match" }, { "index": 5, "state": "match" }] }
+    },
+    {
+      "caption": "The runs from 100 and 200 are length 1 each. The longest consecutive sequence is 1-2-3-4, length 4.",
+      "visual": { "type": "array", "cells": [100, 4, 200, 1, 3, 2], "highlights": [{ "index": 0, "state": "compare" }, { "index": 2, "state": "compare" }, { "index": 1, "state": "done" }, { "index": 3, "state": "done" }, { "index": 4, "state": "done" }, { "index": 5, "state": "done" }] }
+    }
+  ]
+}
