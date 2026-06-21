@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "id": "palindrome-partitioning",
+  "subject": "dsa",
+  "track": "backtracking",
+  "title": "Palindrome Partitioning",
+  "difficulty": "medium",
+  "summary": "Cut the string into pieces, but only where the prefix is a palindrome. A cut whose prefix is not a palindrome is pruned, so every leaf is a valid partition.",
+  "problem": "Partition the string \"aab\" so that every piece is a palindrome.",
+  "example": { "input": "\"aab\"", "output": "[[\"a\",\"a\",\"b\"], [\"aa\",\"b\"]]" },
+  "steps": [
+    {
+      "caption": "Each node shows the pieces cut so far. Only cut where the prefix is a palindrome; a non-palindrome prefix is pruned. Each leaf is a full partition.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "aab", "state": "active", "pointer": "go",
+          "children": [
+            { "value": "a | ab", "edge": "a", "children": [
+              { "value": "a a | b", "edge": "a", "children": [ { "value": "a a b", "edge": "b" } ] },
+              { "value": "ab (no)", "edge": "ab" }
+            ] },
+            { "value": "aa | b", "edge": "aa", "children": [ { "value": "aa b", "edge": "b" } ] },
+            { "value": "aab (no)", "edge": "aab" }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Cut 'a' (a palindrome), then 'a', then 'b'. Every piece is a palindrome, so [a, a, b] is a solution.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "aab", "state": "active",
+          "children": [
+            { "value": "a | ab", "edge": "a", "state": "active", "children": [
+              { "value": "a a | b", "edge": "a", "state": "active", "children": [ { "value": "a a b", "edge": "b", "state": "match" } ] },
+              { "value": "ab (no)", "edge": "ab" }
+            ] },
+            { "value": "aa | b", "edge": "aa", "children": [ { "value": "aa b", "edge": "b" } ] },
+            { "value": "aab (no)", "edge": "aab" }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "After the first 'a', the prefix 'ab' is not a palindrome. That cut is pruned.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "aab", "state": "active",
+          "children": [
+            { "value": "a | ab", "edge": "a", "state": "active", "children": [
+              { "value": "a a | b", "edge": "a", "children": [ { "value": "a a b", "edge": "b", "state": "match" } ] },
+              { "value": "ab (no)", "edge": "ab", "state": "mismatch" }
+            ] },
+            { "value": "aa | b", "edge": "aa", "children": [ { "value": "aa b", "edge": "b" } ] },
+            { "value": "aab (no)", "edge": "aab" }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Backtrack to the start and cut 'aa' (a palindrome), leaving 'b'. That gives the partition [aa, b].",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "aab", "state": "active",
+          "children": [
+            { "value": "a | ab", "edge": "a", "children": [
+              { "value": "a a | b", "edge": "a", "children": [ { "value": "a a b", "edge": "b", "state": "match" } ] },
+              { "value": "ab (no)", "edge": "ab", "state": "mismatch" }
+            ] },
+            { "value": "aa | b", "edge": "aa", "state": "active", "children": [ { "value": "aa b", "edge": "b", "state": "match" } ] },
+            { "value": "aab (no)", "edge": "aab" }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "The whole-string cut 'aab' is not a palindrome, so it is pruned. Two valid partitions remain: [a, a, b] and [aa, b].",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "aab", "state": "done",
+          "children": [
+            { "value": "a | ab", "edge": "a", "state": "done", "children": [
+              { "value": "a a | b", "edge": "a", "state": "done", "children": [ { "value": "a a b", "edge": "b", "state": "done" } ] },
+              { "value": "ab (no)", "edge": "ab", "state": "mismatch" }
+            ] },
+            { "value": "aa | b", "edge": "aa", "state": "done", "children": [ { "value": "aa b", "edge": "b", "state": "done" } ] },
+            { "value": "aab (no)", "edge": "aab", "state": "mismatch" }
+          ]
+        }
+      }
+    }
+  ]
+}
