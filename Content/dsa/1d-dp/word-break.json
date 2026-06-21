@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "word-break",
+  "subject": "dsa",
+  "track": "1d-dp",
+  "title": "Word Break",
+  "difficulty": "medium",
+  "summary": "A position is reachable if some dictionary word ends there, starting from an earlier reachable position. Sweep left to right; if you can reach the end of the string, it breaks into words.",
+  "problem": "Given a string and a dictionary, decide whether the string can be segmented into a sequence of dictionary words.",
+  "example": { "input": "s = \"leetcode\", dict = [\"leet\", \"code\"]", "output": "true" },
+  "steps": [
+    {
+      "caption": "Can 'leetcode' be cut into dictionary words {leet, code}? Mark a position reachable if a dictionary word ends there from an earlier reachable spot.",
+      "visual": { "type": "array", "cells": ["l", "e", "e", "t", "c", "o", "d", "e"] }
+    },
+    {
+      "caption": "Start from the beginning, which counts as reachable. 'leet' is in the dictionary and covers indices 0 through 3.",
+      "visual": { "type": "array", "cells": ["l", "e", "e", "t", "c", "o", "d", "e"], "highlights": [{ "range": [0, 3], "state": "match" }] }
+    },
+    {
+      "caption": "So everything up to index 3 is segmentable. Now continue the search from index 4.",
+      "visual": { "type": "array", "cells": ["l", "e", "e", "t", "c", "o", "d", "e"], "pointers": [{ "label": "cur", "index": 4 }], "highlights": [{ "range": [0, 3], "state": "done" }, { "index": 4, "state": "active" }] }
+    },
+    {
+      "caption": "From index 4, 'code' is in the dictionary and covers indices 4 through 7.",
+      "visual": { "type": "array", "cells": ["l", "e", "e", "t", "c", "o", "d", "e"], "highlights": [{ "range": [0, 3], "state": "done" }, { "range": [4, 7], "state": "match" }] }
+    },
+    {
+      "caption": "That reaches the end of the string. 'leet' + 'code' segments it fully, so the answer is true.",
+      "visual": { "type": "array", "cells": ["l", "e", "e", "t", "c", "o", "d", "e"], "highlights": [{ "range": [0, 7], "state": "done" }] }
+    }
+  ]
+}
