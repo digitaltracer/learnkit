@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "merge-triplets-to-form-target-triplet",
+  "subject": "dsa",
+  "track": "greedy",
+  "title": "Merge Triplets to Form Target Triplet",
+  "difficulty": "medium",
+  "summary": "Merging keeps the larger value in each position, so a triplet is usable only if no value exceeds the target. If the column-wise max over the usable triplets equals the target, it is achievable.",
+  "problem": "Merging two triplets keeps the element-wise maximum; decide if some sequence of merges can produce the target triplet.",
+  "example": { "input": "triplets = [[2,5,3],[1,8,4],[1,7,5]], target = [2,7,5]", "output": "true" },
+  "steps": [
+    {
+      "caption": "Merging two triplets keeps the larger value in each spot. Reach the target [2,7,5] using only triplets that never exceed it.",
+      "visual": { "type": "grid", "rows": [[2, 5, 3], [1, 8, 4], [1, 7, 5]] }
+    },
+    {
+      "caption": "Row 0 is [2,5,3]: every value is <= the target [2,7,5], so this triplet is usable.",
+      "visual": { "type": "grid", "rows": [[2, 5, 3], [1, 8, 4], [1, 7, 5]], "highlights": [{ "rows": [0, 0], "cols": [0, 2], "state": "match" }] }
+    },
+    {
+      "caption": "Row 1 is [1,8,4]: its middle value 8 > 7, so it is rejected. Using it would overshoot that position forever.",
+      "visual": { "type": "grid", "rows": [[2, 5, 3], [1, 8, 4], [1, 7, 5]], "highlights": [{ "rows": [0, 0], "cols": [0, 2], "state": "done" }, { "rows": [1, 1], "cols": [0, 2], "state": "mismatch" }] }
+    },
+    {
+      "caption": "Row 2 is [1,7,5]: all values are <= the target, so it is usable too.",
+      "visual": { "type": "grid", "rows": [[2, 5, 3], [1, 8, 4], [1, 7, 5]], "highlights": [{ "rows": [0, 0], "cols": [0, 2], "state": "done" }, { "rows": [1, 1], "cols": [0, 2], "state": "mismatch" }, { "rows": [2, 2], "cols": [0, 2], "state": "match" }] }
+    },
+    {
+      "caption": "Now take the column-wise max of the usable rows 0 and 2. Column 0: max(2, 1) = 2, supplied by row 0.",
+      "visual": { "type": "grid", "rows": [[2, 5, 3], [1, 8, 4], [1, 7, 5]], "highlights": [{ "rows": [1, 1], "cols": [0, 2], "state": "mismatch" }, { "row": 0, "col": 0, "state": "active" }] }
+    },
+    {
+      "caption": "Column 1: max(5, 7) = 7 from row 2. Column 2: max(3, 5) = 5 from row 2. The usable rows combine to [2,7,5].",
+      "visual": { "type": "grid", "rows": [[2, 5, 3], [1, 8, 4], [1, 7, 5]], "highlights": [{ "rows": [1, 1], "cols": [0, 2], "state": "mismatch" }, { "row": 0, "col": 0, "state": "done" }, { "row": 2, "col": 1, "state": "active" }, { "row": 2, "col": 2, "state": "active" }] }
+    },
+    {
+      "caption": "The merged maxima equal the target [2,7,5], so it is achievable. Answer: true.",
+      "visual": { "type": "grid", "rows": [[2, 5, 3], [1, 8, 4], [1, 7, 5]], "highlights": [{ "rows": [0, 0], "cols": [0, 2], "state": "done" }, { "rows": [1, 1], "cols": [0, 2], "state": "mismatch" }, { "rows": [2, 2], "cols": [0, 2], "state": "done" }] }
+    }
+  ]
+}
