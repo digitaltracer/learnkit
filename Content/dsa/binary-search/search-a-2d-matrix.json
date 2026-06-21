@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "id": "search-a-2d-matrix",
+  "subject": "dsa",
+  "track": "binary-search",
+  "title": "Search a 2D Matrix",
+  "difficulty": "medium",
+  "summary": "Each row is sorted and every row's first value beats the previous row's last, so the matrix is one sorted list. Binary-search it.",
+  "problem": "Given an m by n matrix where each row is sorted and the first integer of each row is greater than the last of the previous row, decide whether a target value is present.",
+  "example": {
+    "input": "matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 16",
+    "output": "true"
+  },
+  "steps": [
+    {
+      "caption": "Goal: find 16. The matrix is fully sorted, so treat it as one sorted list of 12 and binary-search.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 3, 5, 7], [10, 11, 16, 20], [23, 30, 34, 60]]
+      }
+    },
+    {
+      "caption": "lo=0, hi=11, mid=5 maps to cell (1,1)=11. 11 is less than 16, so search the right half.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 3, 5, 7], [10, 11, 16, 20], [23, 30, 34, 60]],
+        "pointers": [
+          {"label": "mid", "row": 1, "col": 1}
+        ],
+        "highlights": [
+          {"row": 1, "col": 1, "state": "compare"}
+        ]
+      }
+    },
+    {
+      "caption": "lo=6, hi=11, mid=8 maps to cell (2,0)=23. 23 is greater than 16, so search the left half.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 3, 5, 7], [10, 11, 16, 20], [23, 30, 34, 60]],
+        "pointers": [
+          {"label": "mid", "row": 2, "col": 0}
+        ],
+        "highlights": [
+          {"row": 2, "col": 0, "state": "compare"}
+        ]
+      }
+    },
+    {
+      "caption": "lo=6, hi=7, mid=6 maps to cell (1,2)=16. Found it.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 3, 5, 7], [10, 11, 16, 20], [23, 30, 34, 60]],
+        "pointers": [
+          {"label": "mid", "row": 1, "col": 2}
+        ],
+        "highlights": [
+          {"row": 1, "col": 2, "state": "match"}
+        ]
+      }
+    },
+    {
+      "caption": "Done. Target 16 is in the matrix, so the answer is true.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 3, 5, 7], [10, 11, 16, 20], [23, 30, 34, 60]],
+        "highlights": [
+          {"row": 1, "col": 2, "state": "done"}
+        ]
+      }
+    }
+  ]
+}
