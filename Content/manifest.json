@@ -216,7 +216,8 @@
           "lessons": [
             { "id": "reverse-linked-list", "title": "Reverse Linked List", "difficulty": "easy", "file": "dsa/linked-list/reverse-linked-list.json" },
             { "id": "merge-two-sorted-lists", "title": "Merge Two Sorted Lists", "difficulty": "easy", "file": "dsa/linked-list/merge-two-sorted-lists.json" },
-            { "id": "linked-list-cycle", "title": "Linked List Cycle", "difficulty": "easy", "file": "dsa/linked-list/linked-list-cycle.json" }
+            { "id": "linked-list-cycle", "title": "Linked List Cycle", "difficulty": "easy", "file": "dsa/linked-list/linked-list-cycle.json" },
+            { "id": "remove-nth-node-from-end-of-list", "title": "Remove Nth Node From End of List", "difficulty": "medium", "file": "dsa/linked-list/remove-nth-node-from-end-of-list.json" }
           ]
         },
         {

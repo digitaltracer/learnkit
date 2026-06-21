@@ -211,7 +211,7 @@ _New track: 2-D Dynamic Programming (DP table)_
 - [x] Merge Two Sorted Lists (E) _(2026-06-21)_
 - [x] Linked List Cycle (E) _(2026-06-21)_
 - [ ] Reorder List (M)
-- [ ] Remove Nth Node From End of List (M)
+- [x] Remove Nth Node From End of List (M) _(2026-06-21)_
 - [ ] Copy List With Random Pointer (M)
 - [ ] Add Two Numbers (M)
 - [ ] Reverse Nodes in K-Group (H)

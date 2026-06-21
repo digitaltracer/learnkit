@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "remove-nth-node-from-end-of-list",
+  "subject": "dsa",
+  "track": "linked-list",
+  "title": "Remove Nth Node From End of List",
+  "difficulty": "medium",
+  "summary": "Hold two pointers n nodes apart. Advance fast to the end and slow lands just before the target, so one re-link removes it in a single pass.",
+  "problem": "Remove the nth node counting from the end of the list and return the head.",
+  "example": { "input": "1->2->3->4->5, n = 2", "output": "1->2->3->5" },
+  "steps": [
+    {
+      "caption": "Remove the 2nd node from the end. We don't know the length up front, so keep two pointers held exactly n nodes apart.",
+      "visual": { "type": "list", "nodes": [1, 2, 3, 4, 5] }
+    },
+    {
+      "caption": "Put fast at the head, then move it n = 2 nodes ahead. Slow stays at the head, so fast leads by 2.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4, 5],
+        "pointers": [{ "label": "slo", "index": 0 }, { "label": "fst", "index": 2 }],
+        "highlights": [{ "index": 0, "state": "active" }, { "index": 2, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Move both one step at a time. Slow to 2, fast to 4.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4, 5],
+        "pointers": [{ "label": "slo", "index": 1 }, { "label": "fst", "index": 3 }],
+        "highlights": [{ "index": 1, "state": "active" }, { "index": 3, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Again: slow to 3, fast reaches the last node, 5. Stop — slow now sits just before the node to remove.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4, 5],
+        "pointers": [{ "label": "slo", "index": 2 }, { "label": "fst", "index": 4 }],
+        "highlights": [{ "index": 2, "state": "active" }, { "index": 4, "state": "active" }]
+      }
+    },
+    {
+      "caption": "The node after slow is 4 — the 2nd from the end. Re-point slow's arrow past it, from 3 straight to 5.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4, 5], "links": [[0, 1], [1, 2], [2, 4]],
+        "pointers": [{ "label": "slo", "index": 2 }],
+        "highlights": [{ "index": 2, "state": "active" }, { "index": 3, "state": "mismatch" }]
+      }
+    },
+    {
+      "caption": "Node 4 is unlinked and gone. The list is now 1 -> 2 -> 3 -> 5.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4, 5], "links": [[0, 1], [1, 2], [2, 4]],
+        "highlights": [{ "range": [0, 2], "state": "done" }, { "index": 4, "state": "done" }, { "index": 3, "state": "mismatch" }]
+      }
+    }
+  ]
+}
