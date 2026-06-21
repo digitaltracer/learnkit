@@ -18,8 +18,8 @@ Xcode app shell is in `LearnKit/`.
 ## Build, validate, commit
 - Run the suite / validate content: `swift test --package-path LearnKitKit`
   (fast — ~0.5s when only JSON changed). Green looks like
-  `Executed 13 tests, with 0 failures`. The test *count* is fixed (lessons are
-  asserted inside one test), so judge by **0 failures**, not the number.
+  `Executed 14 tests, with 0 failures`. Most lessons are asserted *inside* a
+  single test, so judge by **0 failures**, not the number.
 - `ContentValidationTests` decodes the real `Content/` directory and runs
   `ContentValidator` on the manifest plus every lesson it references. A manifest
   entry pointing at a missing file fails; a file *not* referenced by the manifest
@@ -51,7 +51,8 @@ Xcode app shell is in `LearnKit/`.
 misplaced/clipped, controls are cramped, or the *next* lesson bleeds into the
 current screen.
 
-**Root cause:** a lesson is rendered as a **fixed-height, non-scrolling page**.
+**Root cause (now fixed — see "How it's handled now"):** the lesson *was* rendered
+as a **fixed-height, non-scrolling page**.
 `TrackFeedView.page(...)` pins each page to the viewport height and `.clipped()`;
 inside, `LessonPage.player` is a `VStack` of `Spacer`s around a **hard-coded
 `220`-pt visual band** (`VisualView(...).frame(height: 220)`), and
@@ -88,13 +89,20 @@ the overflow, invisibly in CI and only on-device.
    `house-robber-ii`, `min-cost-climbing-stairs`) on the smallest device, and
    keep the page `.clipped()` so a neighbour can never peek.
 
-**The durable fix (prefer this over only trimming content):** make the page
-resilient to variable height — give the visual a *flexible* band
-(`minHeight`/`maxHeight` so it yields under pressure) and/or let the player's
-middle scroll when it overflows, so content is never clipped or misplaced. Then
-add a test that renders representative full `LessonPage`s at the smallest device
-size and asserts the content's ideal height ≤ the viewport. Until that lands, the
-rules above are the guardrail.
+**How it's handled now (keep it this way):** `LessonPage.player` makes the visual
+the one elastic element — a band that scales with available height, clamped
+150–260 pt (`stepBody(visualHeight:)`) — and wraps the visual + caption in
+`ViewThatFits(in: .vertical)` with a `ScrollView` fallback, so a page that still
+can't fit *scrolls* instead of clipping. Fonts are never scaled to the screen;
+they stay on Dynamic Type. `LessonLayoutBudgetTests` then enforces per-lesson caps
+so content can't reintroduce overflow:
+
+> **array/list ≤ 8 cells · grid ≤ 7 cols / ≤ 24 cells · tree ≤ 15 nodes / depth ≤ 5
+> · rtree ≤ 8 leaves / depth ≤ 5 · intervals ≤ 6 rows · caption ≤ 4 sentences.**
+
+If a new lesson trips a cap, **shrink the example or tighten the caption — don't
+raise the cap.** The caps are sized for the narrowest supported device; raising
+one reopens the overflow this whole section exists to prevent.
 
 ## Pre-flight checklist (every change)
 - [ ] `swift test --package-path LearnKitKit` is green (0 failures).
