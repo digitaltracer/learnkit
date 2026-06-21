@@ -160,7 +160,8 @@
             { "id": "min-stack", "title": "Min Stack", "difficulty": "medium", "file": "dsa/stack/min-stack.json" },
             { "id": "daily-temperatures", "title": "Daily Temperatures", "difficulty": "medium", "file": "dsa/stack/daily-temperatures.json" },
             { "id": "evaluate-reverse-polish-notation", "title": "Evaluate Reverse Polish Notation", "difficulty": "medium", "file": "dsa/stack/evaluate-reverse-polish-notation.json" },
-            { "id": "largest-rectangle-in-histogram", "title": "Largest Rectangle in Histogram", "difficulty": "hard", "file": "dsa/stack/largest-rectangle-in-histogram.json" }
+            { "id": "largest-rectangle-in-histogram", "title": "Largest Rectangle in Histogram", "difficulty": "hard", "file": "dsa/stack/largest-rectangle-in-histogram.json" },
+            { "id": "car-fleet", "title": "Car Fleet", "difficulty": "medium", "file": "dsa/stack/car-fleet.json" }
           ]
         },
         {

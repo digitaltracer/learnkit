@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "car-fleet",
+  "subject": "dsa",
+  "track": "stack",
+  "title": "Car Fleet",
+  "difficulty": "medium",
+  "summary": "Sort cars by position, closest to the target first, and walk them keeping each fleet's arrival time on a stack. A car slower than the fleet ahead can't catch up, so it starts a new fleet.",
+  "problem": "Cars on a one-lane road head to a target and can't pass; count how many fleets arrive.",
+  "example": { "input": "target = 12, pos = [10,8,0,5,3], speed = [2,4,1,1,3]", "output": "3" },
+  "steps": [
+    {
+      "caption": "Cars on a one-lane road can't pass. A slower car ahead bunches faster cars behind it into one fleet. Count the fleets that reach the target.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 1, 7, 3, 12] }
+    },
+    {
+      "caption": "Arrival time = (target - pos) / speed. Sort by position, closest first, giving these times. Index 0 is the car nearest the target.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 1, 7, 3, 12] }
+    },
+    {
+      "caption": "The nearest car arrives at time 1 and leads the first fleet.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 1, 7, 3, 12], "pointers": [{ "label": "cur", "index": 0 }], "highlights": [{ "index": 0, "state": "active" }] }
+    },
+    {
+      "caption": "Next car also arrives at time 1, and 1 <= 1 means it catches the fleet ahead. Same or earlier arrival bunches it in.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 1, 7, 3, 12], "pointers": [{ "label": "cur", "index": 1 }], "highlights": [{ "index": 0, "state": "done" }, { "index": 1, "state": "match" }] }
+    },
+    {
+      "caption": "Time 7 is later than the fleet ahead (1), so this car never catches up. A later time starts a new fleet.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 1, 7, 3, 12], "pointers": [{ "label": "cur", "index": 2 }], "highlights": [{ "index": 2, "state": "active" }] }
+    },
+    {
+      "caption": "Time 3 is earlier than the fleet led by 7, so it catches up and merges in.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 1, 7, 3, 12], "pointers": [{ "label": "cur", "index": 3 }], "highlights": [{ "index": 2, "state": "done" }, { "index": 3, "state": "match" }] }
+    },
+    {
+      "caption": "Time 12 is later than the fleet ahead (7), so this car can't catch up and starts a new fleet.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 1, 7, 3, 12], "pointers": [{ "label": "cur", "index": 4 }], "highlights": [{ "index": 4, "state": "active" }] }
+    },
+    {
+      "caption": "Three fleet leaders remain, at times 1, 7, and 12. So 3 fleets reach the target.",
+      "visual": { "type": "array", "style": "bars", "cells": [1, 1, 7, 3, 12], "highlights": [{ "index": 0, "state": "done" }, { "index": 2, "state": "done" }, { "index": 4, "state": "done" }] }
+    }
+  ]
+}
