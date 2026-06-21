@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "number-of-1-bits",
+  "subject": "dsa",
+  "track": "bit-manipulation",
+  "title": "Number of 1 Bits",
+  "difficulty": "easy",
+  "summary": "Repeatedly apply n & (n - 1), which erases the lowest set bit each time. Count how many times you can do it before n reaches 0 — that's the number of 1-bits.",
+  "problem": "Return the number of set bits (the Hamming weight) in the binary representation of an unsigned integer.",
+  "example": { "input": "11 (binary 1011)", "output": "3" },
+  "steps": [
+    {
+      "caption": "Count the 1-bits in 11, which is 1011 in binary. Trick: n & (n - 1) erases the lowest set bit, so count how many times we can do that.",
+      "visual": { "type": "array", "cells": [1, 0, 1, 1] }
+    },
+    {
+      "caption": "The lowest set bit is the final 1. Subtracting 1 gives 1010; AND-ing it with n clears exactly that bit.",
+      "visual": { "type": "array", "cells": [1, 0, 1, 1], "highlights": [{ "index": 3, "state": "active" }] }
+    },
+    {
+      "caption": "n becomes 1010. That is one bit cleared, so count = 1.",
+      "visual": { "type": "array", "cells": [1, 0, 1, 0], "highlights": [{ "index": 3, "state": "done" }] }
+    },
+    {
+      "caption": "Repeat: the lowest set bit is now bit 1. Clearing it gives 1000, count = 2.",
+      "visual": { "type": "array", "cells": [1, 0, 0, 0], "highlights": [{ "index": 2, "state": "done" }] }
+    },
+    {
+      "caption": "Once more: clear the top bit, so 1000 becomes 0000 and count = 3. Now n is 0, so stop.",
+      "visual": { "type": "array", "cells": [0, 0, 0, 0], "highlights": [{ "index": 0, "state": "done" }] }
+    },
+    {
+      "caption": "We erased a bit three times, so 11 has three 1-bits.",
+      "visual": { "type": "array", "cells": [1, 0, 1, 1], "highlights": [{ "index": 0, "state": "done" }, { "index": 2, "state": "done" }, { "index": 3, "state": "done" }] }
+    }
+  ]
+}
