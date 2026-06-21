@@ -210,7 +210,7 @@ _New track: 2-D Dynamic Programming (DP table)_
 - [x] Reverse Linked List (E) — first list lesson; prv/cur arrow-flip pass _(2026-06-17)_
 - [x] Merge Two Sorted Lists (E) _(2026-06-21)_
 - [x] Linked List Cycle (E) _(2026-06-21)_
-- [ ] Reorder List (M)
+- [x] Reorder List (M) _(2026-06-21)_
 - [x] Remove Nth Node From End of List (M) _(2026-06-21)_
 - [ ] Copy List With Random Pointer (M)
 - [ ] Add Two Numbers (M)

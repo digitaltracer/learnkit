@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "id": "reorder-list",
+  "subject": "dsa",
+  "track": "linked-list",
+  "title": "Reorder List",
+  "difficulty": "medium",
+  "summary": "Three moves: find the middle, reverse the second half, then weave the two halves together one node at a time.",
+  "problem": "Reorder the list so it runs first, last, second, second-last, ... — i.e. L0, Ln, L1, Ln-1, ...",
+  "example": { "input": "1 -> 2 -> 3 -> 4", "output": "1 -> 4 -> 2 -> 3" },
+  "steps": [
+    {
+      "caption": "Reorder so it alternates front, back, front, back: 1, 4, 2, 3. Do it in three moves — find the middle, reverse the back, then weave.",
+      "visual": { "type": "list", "nodes": [1, 2, 3, 4] }
+    },
+    {
+      "caption": "Move 1: find the middle with slow/fast pointers. Slow stops at 2, splitting the list into front [1, 2] and back [3, 4].",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4],
+        "pointers": [{ "label": "slo", "index": 1 }, { "label": "fst", "index": 3 }],
+        "highlights": [{ "range": [0, 1], "state": "active" }, { "range": [2, 3], "state": "compare" }]
+      }
+    },
+    {
+      "caption": "Move 2: reverse the back half in place, so 3 -> 4 becomes 4 -> 3. Now the front runs 1 -> 2 and the back runs 4 -> 3.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4], "links": [[0, 1], [3, 2]],
+        "highlights": [{ "range": [0, 1], "state": "active" }, { "range": [2, 3], "state": "match" }]
+      }
+    },
+    {
+      "caption": "Move 3: weave the halves. Take front's head 1, then back's head 4 — link 1 -> 4.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4], "links": [[0, 3], [3, 2]],
+        "pointers": [{ "label": "f", "index": 0 }, { "label": "b", "index": 3 }],
+        "highlights": [{ "index": 0, "state": "done" }, { "index": 3, "state": "done" }]
+      }
+    },
+    {
+      "caption": "Continue the weave: after 4 comes front's next node 2, then back's next node 3. Link 4 -> 2 -> 3.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4], "links": [[0, 3], [3, 1], [1, 2]],
+        "pointers": [{ "label": "f", "index": 1 }, { "label": "b", "index": 2 }],
+        "highlights": [{ "index": 1, "state": "done" }, { "index": 2, "state": "done" }]
+      }
+    },
+    {
+      "caption": "Every node is placed. The reordered list is 1 -> 4 -> 2 -> 3.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4], "links": [[0, 3], [3, 1], [1, 2]],
+        "highlights": [{ "range": [0, 3], "state": "done" }]
+      }
+    }
+  ]
+}
