@@ -470,7 +470,8 @@
             { "id": "longest-common-subsequence", "title": "Longest Common Subsequence", "difficulty": "medium", "file": "dsa/2d-dp/longest-common-subsequence.json" },
             { "id": "coin-change-ii", "title": "Coin Change II", "difficulty": "medium", "file": "dsa/2d-dp/coin-change-ii.json" },
             { "id": "edit-distance", "title": "Edit Distance", "difficulty": "medium", "file": "dsa/2d-dp/edit-distance.json" },
-            { "id": "longest-increasing-path-in-a-matrix", "title": "Longest Increasing Path in a Matrix", "difficulty": "hard", "file": "dsa/2d-dp/longest-increasing-path-in-a-matrix.json" }
+            { "id": "longest-increasing-path-in-a-matrix", "title": "Longest Increasing Path in a Matrix", "difficulty": "hard", "file": "dsa/2d-dp/longest-increasing-path-in-a-matrix.json" },
+            { "id": "best-time-to-buy-and-sell-stock-with-cooldown", "title": "Best Time to Buy and Sell Stock with Cooldown", "difficulty": "medium", "file": "dsa/2d-dp/best-time-to-buy-and-sell-stock-with-cooldown.json" }
           ]
         }
       ]

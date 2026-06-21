@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "id": "best-time-to-buy-and-sell-stock-with-cooldown",
+  "subject": "dsa",
+  "track": "2d-dp",
+  "title": "Best Time to Buy and Sell Stock with Cooldown",
+  "difficulty": "medium",
+  "summary": "Track three states per day. holding[d] keeps or buys today, sold[d] sells what was held, and can-buy[d] waits through the cooldown after a sale. The answer is the best of can-buy and sold on the last day.",
+  "problem": "Maximize profit trading prices = [1, 2, 3, 0, 2] with a one-day cooldown after each sell. Rows are the three states (can-buy, holding, sold-today); columns are days 0 through 4. holding[d] = max(holding[d-1], canbuy[d-1] - price[d]); sold[d] = holding[d-1] + price[d]; canbuy[d] = max(canbuy[d-1], sold[d-1]).",
+  "example": { "input": "prices = [1, 2, 3, 0, 2]", "output": "3" },
+  "steps": [
+    {
+      "caption": "Rows are can-buy, holding, and sold-today. Columns are the days for prices [1, 2, 3, 0, 2]. The answer is the best of can-buy and sold on the last day.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]
+      }
+    },
+    {
+      "caption": "Day 0 at price 1. We can-buy with profit 0, holding means we bought so profit is -1, and nothing is sold yet so 0.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 0, 0, 0, 0], [-1, 0, 0, 0, 0], [0, 0, 0, 0, 0]],
+        "highlights": [
+          { "row": 0, "col": 0, "state": "active" },
+          { "row": 1, "col": 0, "state": "active" },
+          { "row": 2, "col": 0, "state": "active" }
+        ]
+      }
+    },
+    {
+      "caption": "Fill days 1 and 2. Selling at the rising prices lifts sold to 1 then 2, while can-buy follows the prior sold value.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 0, 1, 0, 0], [-1, -1, -1, 0, 0], [0, 1, 2, 0, 0]],
+        "highlights": [
+          { "row": 0, "col": 2, "state": "match" },
+          { "row": 1, "col": 2, "state": "match" },
+          { "row": 2, "col": 2, "state": "match" }
+        ]
+      }
+    },
+    {
+      "caption": "Fill days 3 and 4. Buying at price 0 then selling at price 2 pushes sold up to 3, and can-buy settles at 2.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 0, 1, 2, 2], [-1, -1, -1, 1, 1], [0, 1, 2, -1, 3]],
+        "highlights": [
+          { "row": 0, "col": 4, "state": "match" },
+          { "row": 2, "col": 4, "state": "match" }
+        ]
+      }
+    },
+    {
+      "caption": "The best of can-buy 2 and sold 3 on the last day is 3, so the maximum profit is 3.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 0, 1, 2, 2], [-1, -1, -1, 1, 1], [0, 1, 2, -1, 3]],
+        "highlights": [{ "row": 2, "col": 4, "state": "done" }]
+      }
+    }
+  ]
+}
