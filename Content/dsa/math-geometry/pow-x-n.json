@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "pow-x-n",
+  "subject": "dsa",
+  "track": "math-geometry",
+  "title": "Pow(x, n)",
+  "difficulty": "medium",
+  "summary": "Instead of multiplying x by itself n times, square repeatedly to build x^1, x^2, x^4, x^8, ... Then read n in binary and multiply together the squared powers whose bits are set.",
+  "problem": "Compute x raised to the power n efficiently, in O(log n) multiplications rather than O(n).",
+  "example": { "input": "x = 2, n = 10", "output": "1024" },
+  "steps": [
+    {
+      "caption": "Computing 2^10 the slow way is ten multiplications. Square repeatedly instead: 2^1, 2^2, 2^4, 2^8 — each cell is the one before it, squared.",
+      "visual": { "type": "array", "cells": [2, 4, 16, 256] }
+    },
+    {
+      "caption": "Each power is the square of the previous: 2 -> 4 -> 16 -> 256. Just four steps reach 2^8.",
+      "visual": { "type": "array", "cells": [2, 4, 16, 256], "highlights": [{ "range": [0, 3], "state": "active" }] }
+    },
+    {
+      "caption": "Write the exponent in binary: 10 = 1010 = 8 + 2. So 2^10 = 2^8 * 2^2.",
+      "visual": { "type": "array", "cells": [2, 4, 16, 256] }
+    },
+    {
+      "caption": "Pick the squared powers for the set bits: 2^2 = 4 and 2^8 = 256.",
+      "visual": { "type": "array", "cells": [2, 4, 16, 256], "highlights": [{ "index": 1, "state": "match" }, { "index": 3, "state": "match" }] }
+    },
+    {
+      "caption": "Multiply them: 256 * 4 = 1024 = 2^10, found in just a handful of multiplications.",
+      "visual": { "type": "array", "cells": [2, 4, 16, 256], "highlights": [{ "index": 1, "state": "done" }, { "index": 3, "state": "done" }] }
+    }
+  ]
+}
