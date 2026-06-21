@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "valid-parenthesis-string",
+  "subject": "dsa",
+  "track": "greedy",
+  "title": "Valid Parenthesis String",
+  "difficulty": "medium",
+  "summary": "Track the range [lo, hi] of how many open parentheses could be outstanding. '(' bumps both up, ')' both down, '*' widens the range. Clamp lo at 0; if hi ever goes negative it's invalid; at the end it's valid if lo reaches 0.",
+  "problem": "A string of '(', ')', and '*' is valid if the '*'s can each act as '(', ')', or empty to balance all parentheses. Decide if it's valid.",
+  "example": { "input": "s = \"(*)\"", "output": "true" },
+  "steps": [
+    {
+      "caption": "A '*' can be '(', ')', or empty. Scan left to right tracking [lo, hi]: the smallest and largest number of open parens still possible.",
+      "visual": { "type": "array", "cells": ["(", "*", ")"] }
+    },
+    {
+      "caption": "'(' always opens one, so both bounds rise: lo = 1, hi = 1.",
+      "visual": { "type": "array", "cells": ["(", "*", ")"], "highlights": [{ "index": 0, "state": "active" }] }
+    },
+    {
+      "caption": "'*' could open, close, or vanish, so it widens the range: lo = 0, hi = 2.",
+      "visual": { "type": "array", "cells": ["(", "*", ")"], "highlights": [{ "index": 1, "state": "active" }] }
+    },
+    {
+      "caption": "')' closes one: lo = 0 (clamped, never below zero) and hi = 1. hi stayed >= 0, so a valid path remains.",
+      "visual": { "type": "array", "cells": ["(", "*", ")"], "highlights": [{ "index": 2, "state": "active" }] }
+    },
+    {
+      "caption": "At the end lo = 0, meaning some choice for the '*' leaves zero unmatched opens. The string is valid.",
+      "visual": { "type": "array", "cells": ["(", "*", ")"], "highlights": [{ "range": [0, 2], "state": "done" }] }
+    }
+  ]
+}
