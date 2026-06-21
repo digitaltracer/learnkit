@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "multiply-strings",
+  "subject": "dsa",
+  "track": "math-geometry",
+  "title": "Multiply Strings",
+  "difficulty": "medium",
+  "summary": "Schoolbook multiplication on digit arrays, no integer conversion. The product of num1[i] and num2[j] lands at result position i+j+1, carrying into i+j.",
+  "problem": "Multiply two non-negative numbers given as strings and return the product as a string.",
+  "example": { "input": "num1 = \"12\", num2 = \"13\"", "output": "\"156\"" },
+  "steps": [
+    {
+      "caption": "Multiply two numbers given as strings, digit by digit, so they never overflow. The product of num1[i] and num2[j] goes to position i+j+1.",
+      "visual": { "type": "array", "cells": [0, 0, 0, 0] }
+    },
+    {
+      "caption": "Start with a result of all zeros, length len1 + len2 = 4.",
+      "visual": { "type": "array", "cells": [0, 0, 0, 0] }
+    },
+    {
+      "caption": "2 (num1[1]) times 3 (num2[1]) = 6, landing at position 1+1+1 = 3.",
+      "visual": { "type": "array", "cells": [0, 0, 0, 6], "pointers": [{ "label": "p", "index": 3 }], "highlights": [{ "index": 3, "state": "active" }] }
+    },
+    {
+      "caption": "2 (num1[1]) times 1 (num2[0]) = 2, landing at position 1+0+1 = 2.",
+      "visual": { "type": "array", "cells": [0, 0, 2, 6], "pointers": [{ "label": "p", "index": 2 }], "highlights": [{ "index": 2, "state": "active" }] }
+    },
+    {
+      "caption": "1 (num1[0]) times 3 (num2[1]) = 3 at position 0+1+1 = 2. Add it to the 2 already there to make 5.",
+      "visual": { "type": "array", "cells": [0, 0, 5, 6], "pointers": [{ "label": "p", "index": 2 }], "highlights": [{ "index": 2, "state": "match" }] }
+    },
+    {
+      "caption": "1 (num1[0]) times 1 (num2[0]) = 1, landing at position 0+0+1 = 1.",
+      "visual": { "type": "array", "cells": [0, 1, 5, 6], "pointers": [{ "label": "p", "index": 1 }], "highlights": [{ "index": 1, "state": "active" }] }
+    },
+    {
+      "caption": "Result digits are [0,1,5,6]. Drop the leading zero, so the product is 156.",
+      "visual": { "type": "array", "cells": [0, 1, 5, 6], "highlights": [{ "range": [1, 3], "state": "done" }] }
+    }
+  ]
+}
