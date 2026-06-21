@@ -96,7 +96,7 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 - [x] House Robber (M) _(2026-06-21)_
 - [ ] House Robber II (M)
 - [ ] Decode Ways (M)
-- [ ] Coin Change (M)
+- [x] Coin Change (M) _(2026-06-21)_
 - [ ] Word Break (M)
 - [ ] Longest Increasing Subsequence (M)
 - [ ] Partition Equal Subset Sum (M) — 1-D boolean dp

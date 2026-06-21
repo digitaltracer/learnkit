@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "coin-change",
+  "subject": "dsa",
+  "track": "1d-dp",
+  "title": "Coin Change",
+  "difficulty": "medium",
+  "summary": "Build the fewest-coins answer for every amount from 0 up. Each amount is one coin more than the best reachable smaller amount (amount minus a coin value).",
+  "problem": "Given coin denominations and a target amount, return the fewest coins that sum to it, or -1 if it can't be made.",
+  "example": { "input": "coins = [1, 2, 5], amount = 11", "output": "3" },
+  "steps": [
+    {
+      "caption": "Make amount 11 from coins {1,2,5} with as few coins as possible. dp[a] = fewest coins for amount a; each answer is 1 + dp[a - coin] for some coin.",
+      "visual": { "type": "array", "cells": ["?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?"] }
+    },
+    {
+      "caption": "dp[0] = 0: making amount 0 needs no coins. That's the base everything builds on.",
+      "visual": { "type": "array", "cells": [0, "?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?"], "pointers": [{ "label": "a", "index": 0 }], "highlights": [{ "index": 0, "state": "active" }] }
+    },
+    {
+      "caption": "Build up the small amounts. For example dp[3] = 1 + min(dp[3-1], dp[3-2]) = 1 + min(dp[2], dp[1]) = 2.",
+      "visual": { "type": "array", "cells": [0, 1, 1, 2, 2, "?", "?", "?", "?", "?", "?", "?"], "pointers": [{ "label": "a", "index": 3 }], "highlights": [{ "range": [0, 4], "state": "done" }] }
+    },
+    {
+      "caption": "dp[5]: try each coin. 1+dp[4]=3, 1+dp[3]=3, or 1+dp[0]=1 using a 5. The 5 wins, so dp[5] = 1.",
+      "visual": { "type": "array", "cells": [0, 1, 1, 2, 2, 1, "?", "?", "?", "?", "?", "?"], "pointers": [{ "label": "a", "index": 5 }], "highlights": [{ "index": 0, "state": "compare" }, { "index": 3, "state": "compare" }, { "index": 4, "state": "compare" }, { "index": 5, "state": "active" }] }
+    },
+    {
+      "caption": "Keep going through dp[10], each time taking 1 + the smallest reachable dp[a - coin].",
+      "visual": { "type": "array", "cells": [0, 1, 1, 2, 2, 1, 2, 2, 3, 3, 2, "?"], "pointers": [{ "label": "a", "index": 10 }], "highlights": [{ "range": [6, 10], "state": "done" }] }
+    },
+    {
+      "caption": "dp[11]: 1+dp[10]=3, 1+dp[9]=4, or 1+dp[6]=3. The minimum is 3.",
+      "visual": { "type": "array", "cells": [0, 1, 1, 2, 2, 1, 2, 2, 3, 3, 2, 3], "pointers": [{ "label": "a", "index": 11 }], "highlights": [{ "index": 6, "state": "compare" }, { "index": 9, "state": "compare" }, { "index": 10, "state": "compare" }, { "index": 11, "state": "active" }] }
+    },
+    {
+      "caption": "dp[11] = 3 coins, for instance 5 + 5 + 1. If a cell had stayed unreachable, the answer would be -1.",
+      "visual": { "type": "array", "cells": [0, 1, 1, 2, 2, 1, 2, 2, 3, 3, 2, 3], "highlights": [{ "range": [0, 11], "state": "done" }] }
+    }
+  ]
+}
