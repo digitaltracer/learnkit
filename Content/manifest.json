@@ -269,7 +269,8 @@
             { "id": "surrounded-regions", "title": "Surrounded Regions", "difficulty": "medium", "file": "dsa/graphs/surrounded-regions.json" },
             { "id": "course-schedule-ii", "title": "Course Schedule II", "difficulty": "medium", "file": "dsa/graphs/course-schedule-ii.json" },
             { "id": "redundant-connection", "title": "Redundant Connection", "difficulty": "medium", "file": "dsa/graphs/redundant-connection.json" },
-            { "id": "network-delay-time", "title": "Network Delay Time", "difficulty": "medium", "file": "dsa/graphs/network-delay-time.json" }
+            { "id": "network-delay-time", "title": "Network Delay Time", "difficulty": "medium", "file": "dsa/graphs/network-delay-time.json" },
+            { "id": "min-cost-to-connect-points", "title": "Min Cost to Connect Points", "difficulty": "medium", "file": "dsa/graphs/min-cost-to-connect-points.json" }
           ]
         },
         {

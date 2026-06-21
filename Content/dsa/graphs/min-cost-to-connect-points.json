@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "id": "min-cost-to-connect-points",
+  "subject": "dsa",
+  "track": "graphs",
+  "title": "Min Cost to Connect Points",
+  "difficulty": "medium",
+  "summary": "Connect every point with the cheapest total edge cost, building a minimum spanning tree.",
+  "problem": "Given points and the cost to connect each pair, connect all points so any point can reach any other, for the minimum total cost. This minimum spanning tree picks the cheapest edges that avoid cycles.",
+  "example": {
+    "input": "4 points with edge costs A-B=1, B-C=2, C-D=1, D-A=2, A-C=4",
+    "output": "4"
+  },
+  "steps": [
+    {
+      "caption": "Goal: connect every point as cheaply as possible. Build a minimum spanning tree from these weighted edges.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "A", "x": 0.2, "y": 0.2},
+          {"id": "B", "x": 0.8, "y": 0.2},
+          {"id": "C", "x": 0.8, "y": 0.8},
+          {"id": "D", "x": 0.2, "y": 0.8}
+        ],
+        "edges": [
+          {"from": "A", "to": "B", "weight": 1},
+          {"from": "B", "to": "C", "weight": 2},
+          {"from": "C", "to": "D", "weight": 1},
+          {"from": "D", "to": "A", "weight": 2},
+          {"from": "A", "to": "C", "weight": 4}
+        ]
+      }
+    },
+    {
+      "caption": "Pick the cheapest edge, A-B at cost 1.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "A", "x": 0.2, "y": 0.2, "state": "active"},
+          {"id": "B", "x": 0.8, "y": 0.2, "state": "active"},
+          {"id": "C", "x": 0.8, "y": 0.8},
+          {"id": "D", "x": 0.2, "y": 0.8}
+        ],
+        "edges": [
+          {"from": "A", "to": "B", "weight": 1, "state": "match"},
+          {"from": "B", "to": "C", "weight": 2},
+          {"from": "C", "to": "D", "weight": 1},
+          {"from": "D", "to": "A", "weight": 2},
+          {"from": "A", "to": "C", "weight": 4}
+        ]
+      }
+    },
+    {
+      "caption": "Pick the next cheapest, C-D at cost 1. It joins a new pair with no cycle.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "A", "x": 0.2, "y": 0.2, "state": "active"},
+          {"id": "B", "x": 0.8, "y": 0.2, "state": "active"},
+          {"id": "C", "x": 0.8, "y": 0.8, "state": "active"},
+          {"id": "D", "x": 0.2, "y": 0.8, "state": "active"}
+        ],
+        "edges": [
+          {"from": "A", "to": "B", "weight": 1, "state": "done"},
+          {"from": "B", "to": "C", "weight": 2},
+          {"from": "C", "to": "D", "weight": 1, "state": "match"},
+          {"from": "D", "to": "A", "weight": 2},
+          {"from": "A", "to": "C", "weight": 4}
+        ]
+      }
+    },
+    {
+      "caption": "Join the two groups with the cheapest crossing edge, B-C at cost 2. The diagonal A-C at 4 is skipped.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "A", "x": 0.2, "y": 0.2, "state": "active"},
+          {"id": "B", "x": 0.8, "y": 0.2, "state": "active"},
+          {"id": "C", "x": 0.8, "y": 0.8, "state": "active"},
+          {"id": "D", "x": 0.2, "y": 0.8, "state": "active"}
+        ],
+        "edges": [
+          {"from": "A", "to": "B", "weight": 1, "state": "done"},
+          {"from": "B", "to": "C", "weight": 2, "state": "match"},
+          {"from": "C", "to": "D", "weight": 1, "state": "done"},
+          {"from": "D", "to": "A", "weight": 2},
+          {"from": "A", "to": "C", "weight": 4}
+        ]
+      }
+    },
+    {
+      "caption": "All points are connected. The minimum spanning tree A-B, B-C, C-D costs 1 plus 2 plus 1, which is 4.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "A", "x": 0.2, "y": 0.2, "state": "done"},
+          {"id": "B", "x": 0.8, "y": 0.2, "state": "done"},
+          {"id": "C", "x": 0.8, "y": 0.8, "state": "done"},
+          {"id": "D", "x": 0.2, "y": 0.8, "state": "done"}
+        ],
+        "edges": [
+          {"from": "A", "to": "B", "weight": 1, "state": "done"},
+          {"from": "B", "to": "C", "weight": 2, "state": "done"},
+          {"from": "C", "to": "D", "weight": 1, "state": "done"},
+          {"from": "D", "to": "A", "weight": 2},
+          {"from": "A", "to": "C", "weight": 4}
+        ]
+      }
+    }
+  ]
+}
