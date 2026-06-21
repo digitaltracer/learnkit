@@ -81,7 +81,7 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 
 **Extend existing track: Binary Search**
 - [x] Koko Eating Bananas (M) — binary search on the answer _(2026-06-21)_
-- [ ] Find Minimum in Rotated Sorted Array (M)
+- [x] Find Minimum in Rotated Sorted Array (M) _(2026-06-21)_
 - [ ] Median of Two Sorted Arrays (H) — two arrays + partition
 
 **New track: Arrays & Hashing** (array-friendly members only)
