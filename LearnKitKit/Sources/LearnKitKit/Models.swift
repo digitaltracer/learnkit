@@ -17,8 +17,21 @@ struct TrackNode: Codable, Equatable, Hashable, Identifiable, Sendable {
     let id: String
     let title: String
     let icon: String?              // optional SF Symbol name
+    let format: LessonFormat       // "steps" (default, animated player) or "article" (scrollable reader)
     let overview: TrackOverview?   // the pattern intro, shown as the first page of the Track feed
     let lessons: [LessonRef]
+
+    enum CodingKeys: String, CodingKey { case id, title, icon, format, overview, lessons }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decode(String.self, forKey: .id)
+        title = try c.decode(String.self, forKey: .title)
+        icon = try c.decodeIfPresent(String.self, forKey: .icon)
+        format = try c.decodeIfPresent(LessonFormat.self, forKey: .format) ?? .steps
+        overview = try c.decodeIfPresent(TrackOverview.self, forKey: .overview)
+        lessons = try c.decode([LessonRef].self, forKey: .lessons)
+    }
 }
 
 /// A Track's intro page: what the pattern is, when to reach for it, the key idea.
@@ -27,6 +40,13 @@ struct TrackOverview: Codable, Equatable, Hashable, Sendable {
     let whenToUse: [String]
     let keyIdea: String
     let complexity: String?
+}
+
+/// How a Track's lessons are presented. `steps` is the animated snapshot player
+/// (the default, and every DSA lesson); `article` is a scrollable long-form reader
+/// for System Design content. See ADR 0009.
+enum LessonFormat: String, Codable, Equatable, Hashable, Sendable {
+    case steps, article
 }
 
 /// A pointer to a Lesson file, as listed in the manifest.
@@ -45,11 +65,34 @@ struct Lesson: Codable, Equatable, Identifiable, Sendable {
     let subject: String
     let track: String
     let title: String
+    let format: LessonFormat       // "steps" (default) or "article"; see ADR 0009
     let difficulty: Difficulty?
     let summary: String?
     let problem: String?
     let example: ProblemExample?
-    let steps: [Step]
+    let steps: [Step]              // populated for `steps` lessons
+    let blocks: [Block]            // populated for `article` lessons
+
+    enum CodingKeys: String, CodingKey {
+        case schemaVersion, id, subject, track, title, format
+        case difficulty, summary, problem, example, steps, blocks
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        schemaVersion = try c.decode(Int.self, forKey: .schemaVersion)
+        id = try c.decode(String.self, forKey: .id)
+        subject = try c.decode(String.self, forKey: .subject)
+        track = try c.decode(String.self, forKey: .track)
+        title = try c.decode(String.self, forKey: .title)
+        format = try c.decodeIfPresent(LessonFormat.self, forKey: .format) ?? .steps
+        difficulty = try c.decodeIfPresent(Difficulty.self, forKey: .difficulty)
+        summary = try c.decodeIfPresent(String.self, forKey: .summary)
+        problem = try c.decodeIfPresent(String.self, forKey: .problem)
+        example = try c.decodeIfPresent(ProblemExample.self, forKey: .example)
+        steps = try c.decodeIfPresent([Step].self, forKey: .steps) ?? []
+        blocks = try c.decodeIfPresent([Block].self, forKey: .blocks) ?? []
+    }
 }
 
 /// A short problem statement and one concrete example, shown atop a Lesson.
@@ -67,6 +110,76 @@ struct Step: Codable, Equatable, Sendable {
 
 enum Difficulty: String, Codable, Equatable, Hashable, Sendable {
     case easy, medium, hard
+}
+
+// MARK: - Block: one unit of an `article` Lesson, chosen by its `type`
+
+/// A block in an article-format Lesson. Like `Visual`, decoding dispatches on the
+/// `type` field, so an article is an ordered list of mixed blocks and new block
+/// kinds are added by extending this enum. v1 covers prose; `diagram` (embeds a
+/// `Visual`), `table`, and `code` arrive in later phases. See ADR 0009.
+enum Block: Codable, Equatable, Sendable {
+    case heading(HeadingBlock)
+    case paragraph(ParagraphBlock)
+    case bullets(BulletsBlock)
+    case callout(CalloutBlock)
+
+    private enum TypeKey: String, CodingKey { case type }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: TypeKey.self)
+        let type = try c.decode(String.self, forKey: .type)
+        switch type {
+        case "heading":   self = .heading(try HeadingBlock(from: decoder))
+        case "paragraph": self = .paragraph(try ParagraphBlock(from: decoder))
+        case "bullets":   self = .bullets(try BulletsBlock(from: decoder))
+        case "callout":   self = .callout(try CalloutBlock(from: decoder))
+        default:
+            throw DecodingError.dataCorruptedError(
+                forKey: .type, in: c,
+                debugDescription: "Unknown block type '\(type)'. Known types: heading, paragraph, bullets, callout.")
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        switch self {
+        case .heading(let b):   try b.encode(to: encoder)
+        case .paragraph(let b): try b.encode(to: encoder)
+        case .bullets(let b):   try b.encode(to: encoder)
+        case .callout(let b):   try b.encode(to: encoder)
+        }
+    }
+}
+
+/// A section heading. `level` is 1 (page section) or 2 (subsection); defaults to 2.
+struct HeadingBlock: Codable, Equatable, Sendable {
+    let type: String
+    let text: String
+    let level: Int?
+}
+
+struct ParagraphBlock: Codable, Equatable, Sendable {
+    let type: String
+    let text: String
+}
+
+/// A bullet (or, when `ordered`, numbered) list.
+struct BulletsBlock: Codable, Equatable, Sendable {
+    let type: String
+    let items: [String]
+    let ordered: Bool?
+}
+
+/// A tinted aside — a note, a tip, or a warning — with an optional bold title.
+struct CalloutBlock: Codable, Equatable, Sendable {
+    let type: String
+    let kind: CalloutKind
+    let title: String?
+    let text: String
+}
+
+enum CalloutKind: String, Codable, Equatable, Sendable {
+    case note, tip, warning
 }
 
 // MARK: - Visual: one Primitive per Step, chosen by its `type`

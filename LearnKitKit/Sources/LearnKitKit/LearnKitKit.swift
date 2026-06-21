@@ -28,9 +28,18 @@ public struct LearnKitRootView: View {
             }
             .navigationTitle("LearnKit")
             .navigationDestination(for: TrackRoute.self) { route in
-                TrackFeedView(track: route.track,
-                              bundle: bundle,
-                              initialLessonID: route.initialLessonID)
+                if route.track.format == .article {
+                    ArticleTrackView(track: route.track, bundle: bundle)
+                } else {
+                    TrackFeedView(track: route.track,
+                                  bundle: bundle,
+                                  initialLessonID: route.initialLessonID)
+                }
+            }
+            .navigationDestination(for: ArticleRoute.self) { route in
+                ArticleLessonView(track: route.track,
+                                  lessonID: route.lessonID,
+                                  bundle: bundle)
             }
         }
         .environment(progressStore)
@@ -67,7 +76,7 @@ struct CatalogView: View {
         List {
             if let item = continueItem {
                 Section("Continue") {
-                    NavigationLink(value: TrackRoute(track: item.track, initialLessonID: item.ref.id)) {
+                    lessonLink(item) {
                         ContinueRow(item: item,
                                     progress: progressStore.record(for: item.ref.id))
                     }
@@ -111,7 +120,7 @@ struct CatalogView: View {
             if !matchingLessons.isEmpty {
                 Section("Lessons") {
                     ForEach(matchingLessons) { item in
-                        NavigationLink(value: TrackRoute(track: item.track, initialLessonID: item.ref.id)) {
+                        lessonLink(item) {
                             LessonSearchRow(item: item,
                                             progress: progressStore.record(for: item.ref.id))
                         }
@@ -124,6 +133,19 @@ struct CatalogView: View {
             if filteredSubjects.isEmpty && matchingLessons.isEmpty {
                 ContentUnavailableView.search(text: searchText)
             }
+        }
+    }
+
+    /// A navigation link to a single lesson, routed by the owning track's format:
+    /// `article` lessons push the scrollable reader directly; `steps` lessons open
+    /// their track feed at that lesson.
+    @ViewBuilder
+    private func lessonLink<Label: View>(_ item: CatalogLessonItem,
+                                         @ViewBuilder label: () -> Label) -> some View {
+        if item.track.format == .article {
+            NavigationLink(value: ArticleRoute(track: item.track, lessonID: item.ref.id)) { label() }
+        } else {
+            NavigationLink(value: TrackRoute(track: item.track, initialLessonID: item.ref.id)) { label() }
         }
     }
 

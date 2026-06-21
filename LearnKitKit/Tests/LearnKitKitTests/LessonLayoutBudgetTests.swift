@@ -55,6 +55,8 @@ final class LessonLayoutBudgetTests: XCTestCase {
     }
 
     private func budgetIssues(in lesson: Lesson) -> [String] {
+        // Articles scroll (ADR 0009), so the one-screen caps don't apply to them.
+        guard lesson.format == .steps else { return [] }
         var issues: [String] = []
         for (i, step) in lesson.steps.enumerated() {
             let at = "\(lesson.id) step \(i + 1)"

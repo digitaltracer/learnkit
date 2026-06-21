@@ -97,8 +97,26 @@ enum ContentValidator {
             }
         }
 
-        if lesson.steps.isEmpty {
-            issues.append("\(lesson.id): has no steps")
+        switch lesson.format {
+        case .steps:
+            issues += stepsIssues(lesson)
+        case .article:
+            if !lesson.steps.isEmpty {
+                issues.append("\(lesson.id): an article lesson must not set steps")
+            }
+            issues += articleIssues(lesson)
+        }
+
+        return issues
+    }
+
+    /// Validates a `steps`-format lesson: the 3...12 step count, per-caption length,
+    /// and each step's visual. (An article must not carry steps.)
+    private static func stepsIssues(_ lesson: Lesson) -> [String] {
+        var issues: [String] = []
+
+        if !lesson.blocks.isEmpty {
+            issues.append("\(lesson.id): a steps lesson must not set blocks")
         }
         if !(3...12).contains(lesson.steps.count) {
             issues.append("\(lesson.id): has \(lesson.steps.count) steps; expected 3...12")
@@ -122,6 +140,44 @@ enum ContentValidator {
         }
 
         return issues
+    }
+
+    /// Validates an `article`-format lesson: non-empty blocks and non-empty block
+    /// content. Articles scroll, so there is no step-count or one-screen budget.
+    private static func articleIssues(_ lesson: Lesson) -> [String] {
+        var issues: [String] = []
+
+        if lesson.blocks.isEmpty {
+            issues.append("\(lesson.id): article has no blocks")
+        }
+
+        for (i, block) in lesson.blocks.enumerated() {
+            let where_ = "\(lesson.id) block \(i + 1)"
+            switch block {
+            case .heading(let b):
+                if isBlank(b.text) { issues.append("\(where_): heading text is empty") }
+                if let level = b.level, !(1...2).contains(level) {
+                    issues.append("\(where_): heading level \(level) must be 1 or 2")
+                }
+            case .paragraph(let b):
+                if isBlank(b.text) { issues.append("\(where_): paragraph text is empty") }
+            case .bullets(let b):
+                if b.items.isEmpty {
+                    issues.append("\(where_): bullets has no items")
+                }
+                if b.items.contains(where: isBlank) {
+                    issues.append("\(where_): a bullet item is empty")
+                }
+            case .callout(let b):
+                if isBlank(b.text) { issues.append("\(where_): callout text is empty") }
+            }
+        }
+
+        return issues
+    }
+
+    private static func isBlank(_ s: String) -> Bool {
+        s.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     private static func arrayIssues(_ visual: ArrayVisual, at where_: String) -> [String] {

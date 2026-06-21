@@ -206,4 +206,59 @@ final class LessonDecodingTests: XCTestCase {
         XCTAssertEqual(visual.highlightState(for: 1), .active)
         XCTAssertNil(visual.highlightState(for: 2))
     }
+
+    func testDecodesArticleFormatWithProseBlocks() throws {
+        let json = """
+        {
+          "schemaVersion": 1,
+          "id": "scaling-basics",
+          "subject": "system-design",
+          "track": "fundamentals",
+          "title": "Scaling",
+          "format": "article",
+          "summary": "Two ways to add capacity.",
+          "blocks": [
+            { "type": "paragraph", "text": "Intro." },
+            { "type": "heading", "text": "Scaling up", "level": 2 },
+            { "type": "bullets", "items": ["a", "b"], "ordered": true },
+            { "type": "callout", "kind": "warning", "title": "Ceiling", "text": "Costs climb." }
+          ]
+        }
+        """
+        let lesson = try JSONDecoder().decode(Lesson.self, from: Data(json.utf8))
+
+        XCTAssertEqual(lesson.format, .article)
+        XCTAssertTrue(lesson.steps.isEmpty)            // an article carries no steps
+        XCTAssertEqual(lesson.blocks.count, 4)
+
+        guard case .paragraph(let p) = lesson.blocks[0] else { return XCTFail("block 0 should be a paragraph") }
+        XCTAssertEqual(p.text, "Intro.")
+        guard case .heading(let h) = lesson.blocks[1] else { return XCTFail("block 1 should be a heading") }
+        XCTAssertEqual(h.level, 2)
+        guard case .bullets(let b) = lesson.blocks[2] else { return XCTFail("block 2 should be bullets") }
+        XCTAssertEqual(b.items, ["a", "b"])
+        XCTAssertEqual(b.ordered, true)
+        guard case .callout(let c) = lesson.blocks[3] else { return XCTFail("block 3 should be a callout") }
+        XCTAssertEqual(c.kind, .warning)
+        XCTAssertEqual(c.title, "Ceiling")
+    }
+
+    func testStepsFormatDefaultsWhenOmitted() throws {
+        let json = """
+        {
+          "schemaVersion": 1, "id": "x", "subject": "dsa", "track": "two-pointers", "title": "X",
+          "steps": [ { "caption": "a", "visual": { "type": "array", "cells": [1] } } ]
+        }
+        """
+        let lesson = try JSONDecoder().decode(Lesson.self, from: Data(json.utf8))
+
+        XCTAssertEqual(lesson.format, .steps)          // absent format defaults to steps
+        XCTAssertTrue(lesson.blocks.isEmpty)           // absent blocks default to []
+        XCTAssertEqual(lesson.steps.count, 1)
+    }
+
+    func testRejectsUnknownBlockType() {
+        let json = #"{ "type": "video", "src": "x" }"#
+        XCTAssertThrowsError(try JSONDecoder().decode(Block.self, from: Data(json.utf8)))
+    }
 }
