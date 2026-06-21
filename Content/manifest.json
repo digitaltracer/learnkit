@@ -328,7 +328,8 @@
             { "id": "combination-sum", "title": "Combination Sum", "difficulty": "medium", "file": "dsa/backtracking/combination-sum.json" },
             { "id": "combination-sum-ii", "title": "Combination Sum II", "difficulty": "medium", "file": "dsa/backtracking/combination-sum-ii.json" },
             { "id": "subsets-ii", "title": "Subsets II", "difficulty": "medium", "file": "dsa/backtracking/subsets-ii.json" },
-            { "id": "palindrome-partitioning", "title": "Palindrome Partitioning", "difficulty": "medium", "file": "dsa/backtracking/palindrome-partitioning.json" }
+            { "id": "palindrome-partitioning", "title": "Palindrome Partitioning", "difficulty": "medium", "file": "dsa/backtracking/palindrome-partitioning.json" },
+            { "id": "letter-combinations-of-a-phone-number", "title": "Letter Combinations of a Phone Number", "difficulty": "medium", "file": "dsa/backtracking/letter-combinations-of-a-phone-number.json" }
           ]
         },
         {

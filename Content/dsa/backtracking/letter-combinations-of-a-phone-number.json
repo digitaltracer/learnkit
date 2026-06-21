@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "id": "letter-combinations-of-a-phone-number",
+  "subject": "dsa",
+  "track": "backtracking",
+  "title": "Letter Combinations of a Phone Number",
+  "difficulty": "medium",
+  "summary": "Each digit maps to a set of letters. For every letter of the first digit, branch into every letter of the next, so each root-to-leaf path spells one combination.",
+  "problem": "Return all letter combinations the digit string \"23\" can spell on a phone keypad.",
+  "example": { "input": "\"23\"", "output": "[\"ad\",\"ae\",\"af\",\"bd\",\"be\",\"bf\",\"cd\",\"ce\",\"cf\"]" },
+  "steps": [
+    {
+      "caption": "Digit 2 maps to a, b, c and digit 3 maps to d, e, f. For each letter of 2, branch into each letter of 3. Only the 'a' branch is expanded here.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "start", "state": "active", "pointer": "go",
+          "children": [
+            { "value": "a", "edge": "a", "children": [
+              { "value": "ad", "edge": "d" },
+              { "value": "ae", "edge": "e" },
+              { "value": "af", "edge": "f" }
+            ] },
+            { "value": "b", "edge": "b" },
+            { "value": "c", "edge": "c" }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Pick 'a' for digit 2, then fan out across d, e, f for digit 3. That spells ad, ae, and af.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "start", "state": "active",
+          "children": [
+            { "value": "a", "edge": "a", "state": "active", "children": [
+              { "value": "ad", "edge": "d", "state": "done" },
+              { "value": "ae", "edge": "e", "state": "done" },
+              { "value": "af", "edge": "f", "state": "done" }
+            ] },
+            { "value": "b", "edge": "b" },
+            { "value": "c", "edge": "c" }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "The 'a' branch gives 3 leaves. Each of a, b, c branches the same way, so 3 x 3 = 9 combinations in all.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "start", "state": "done",
+          "children": [
+            { "value": "a", "edge": "a", "state": "done", "children": [
+              { "value": "ad", "edge": "d", "state": "done" },
+              { "value": "ae", "edge": "e", "state": "done" },
+              { "value": "af", "edge": "f", "state": "done" }
+            ] },
+            { "value": "b", "edge": "b", "state": "done" },
+            { "value": "c", "edge": "c", "state": "done" }
+          ]
+        }
+      }
+    }
+  ]
+}
