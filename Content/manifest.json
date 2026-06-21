@@ -248,7 +248,8 @@
             { "id": "find-the-duplicate-number", "title": "Find the Duplicate Number", "difficulty": "medium", "file": "dsa/linked-list/find-the-duplicate-number.json" },
             { "id": "add-two-numbers", "title": "Add Two Numbers", "difficulty": "medium", "file": "dsa/linked-list/add-two-numbers.json" },
             { "id": "reverse-nodes-in-k-group", "title": "Reverse Nodes in K-Group", "difficulty": "hard", "file": "dsa/linked-list/reverse-nodes-in-k-group.json" },
-            { "id": "copy-list-with-random-pointer", "title": "Copy List With Random Pointer", "difficulty": "medium", "file": "dsa/linked-list/copy-list-with-random-pointer.json" }
+            { "id": "copy-list-with-random-pointer", "title": "Copy List With Random Pointer", "difficulty": "medium", "file": "dsa/linked-list/copy-list-with-random-pointer.json" },
+            { "id": "merge-k-sorted-lists", "title": "Merge K Sorted Lists", "difficulty": "hard", "file": "dsa/linked-list/merge-k-sorted-lists.json" }
           ]
         },
         {

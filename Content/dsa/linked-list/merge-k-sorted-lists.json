@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "id": "merge-k-sorted-lists",
+  "subject": "dsa",
+  "track": "linked-list",
+  "title": "Merge K Sorted Lists",
+  "difficulty": "hard",
+  "summary": "Merge k sorted lists by repeatedly taking the smallest head.",
+  "problem": "Merge k sorted linked lists into one sorted list. Repeatedly take the smallest current head, using a min-heap of the k heads to pick it in log k time. Here the lists are [1,4], [2,6], and [3,5].",
+  "example": {
+    "input": "[[1,4],[2,6],[3,5]]",
+    "output": "[1,2,3,4,5,6]"
+  },
+  "steps": [
+    {
+      "caption": "Merge 3 sorted lists [1,4], [2,6], [3,5]. Repeatedly take the smallest head using a min-heap.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3]
+      }
+    },
+    {
+      "caption": "The three heads are 1, 2, 3. The smallest is 1, so output it first.",
+      "visual": {
+        "type": "list",
+        "nodes": [1],
+        "highlights": [
+          { "index": 0, "state": "active" }
+        ]
+      }
+    },
+    {
+      "caption": "Heads advance. The next smallest heads are 2 then 3, so they come out next.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3],
+        "highlights": [
+          { "index": 2, "state": "active" }
+        ]
+      }
+    },
+    {
+      "caption": "The remaining heads 4, 5, 6 follow in order.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4, 5, 6],
+        "highlights": [
+          { "index": 5, "state": "active" }
+        ]
+      }
+    },
+    {
+      "caption": "The merged sorted list is [1,2,3,4,5,6].",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4, 5, 6],
+        "highlights": [
+          { "range": [0, 5], "state": "done" }
+        ]
+      }
+    }
+  ]
+}
