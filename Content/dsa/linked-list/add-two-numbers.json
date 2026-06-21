@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "id": "add-two-numbers",
+  "subject": "dsa",
+  "track": "linked-list",
+  "title": "Add Two Numbers",
+  "difficulty": "medium",
+  "summary": "Add two numbers stored as reversed-digit linked lists.",
+  "problem": "Two numbers are stored as linked lists, each node holding one digit in reverse order. Add them and return the sum as a list. Here l1 = 2 -> 4 -> 3 is 342 and l2 = 5 -> 6 -> 4 is 465.",
+  "example": {
+    "input": "l1 = 2 -> 4 -> 3 (342), l2 = 5 -> 6 -> 4 (465)",
+    "output": "7 -> 0 -> 8 (807)"
+  },
+  "steps": [
+    {
+      "caption": "Add 342 (2->4->3) and 465 (5->6->4). Digits are reversed, so add from the head with carry.",
+      "visual": {
+        "type": "list",
+        "nodes": [2, 4, 3]
+      }
+    },
+    {
+      "caption": "Ones place. 2 plus 5 is 7 with carry 0, so the first result digit is 7.",
+      "visual": {
+        "type": "list",
+        "nodes": [7],
+        "highlights": [ { "index": 0, "state": "active" } ]
+      }
+    },
+    {
+      "caption": "Tens place. 4 plus 6 is 10, so write 0 and carry 1.",
+      "visual": {
+        "type": "list",
+        "nodes": [7, 0],
+        "pointers": [ { "label": "cy", "index": 1 } ],
+        "highlights": [ { "index": 1, "state": "active" } ]
+      }
+    },
+    {
+      "caption": "Hundreds place. 3 plus 4 plus carry 1 is 8, with no carry left.",
+      "visual": {
+        "type": "list",
+        "nodes": [7, 0, 8],
+        "highlights": [ { "index": 2, "state": "active" } ]
+      }
+    },
+    {
+      "caption": "Sum is 807, returned as 7 -> 0 -> 8.",
+      "visual": {
+        "type": "list",
+        "nodes": [7, 0, 8],
+        "highlights": [ { "range": [0, 2], "state": "done" } ]
+      }
+    }
+  ]
+}
