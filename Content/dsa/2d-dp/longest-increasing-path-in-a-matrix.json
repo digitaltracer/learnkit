@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "id": "longest-increasing-path-in-a-matrix",
+  "subject": "dsa",
+  "track": "2d-dp",
+  "title": "Longest Increasing Path in a Matrix",
+  "difficulty": "hard",
+  "summary": "From each cell you may step to a 4-directional neighbour only if it holds a strictly larger value. Each cell caches its own best path length, so it is computed once; the answer is the longest of these cached lengths.",
+  "problem": "Find the length of the longest strictly increasing path in the matrix [[9,9,4],[6,6,8],[2,1,1]], moving up, down, left, or right. The grid shows the actual matrix values; the longest path runs 1, 2, 6, 9.",
+  "example": { "input": "[[9,9,4],[6,6,8],[2,1,1]]", "output": "4" },
+  "steps": [
+    {
+      "caption": "Goal: the longest strictly increasing path moving 4-directionally. Each cell caches its best length, so it is computed only once.",
+      "visual": {
+        "type": "grid",
+        "rows": [[9, 9, 4], [6, 6, 8], [2, 1, 1]]
+      }
+    },
+    {
+      "caption": "Start at the smallest value, the 1 at the bottom middle. On its own it is a path of length 1.",
+      "visual": {
+        "type": "grid",
+        "rows": [[9, 9, 4], [6, 6, 8], [2, 1, 1]],
+        "highlights": [{ "row": 2, "col": 1, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Step left to the 2 since 1 < 2. The path is now 1, 2 with length 2.",
+      "visual": {
+        "type": "grid",
+        "rows": [[9, 9, 4], [6, 6, 8], [2, 1, 1]],
+        "highlights": [{ "row": 2, "col": 1, "state": "done" }, { "row": 2, "col": 0, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Step up to the 6 since 2 < 6. The path is now 1, 2, 6 with length 3.",
+      "visual": {
+        "type": "grid",
+        "rows": [[9, 9, 4], [6, 6, 8], [2, 1, 1]],
+        "highlights": [{ "row": 2, "col": 1, "state": "done" }, { "row": 2, "col": 0, "state": "done" }, { "row": 1, "col": 0, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Step up to the 9 since 6 < 9. 9 is a local max with no larger neighbour, so the path 1, 2, 6, 9 stops here.",
+      "visual": {
+        "type": "grid",
+        "rows": [[9, 9, 4], [6, 6, 8], [2, 1, 1]],
+        "highlights": [{ "row": 2, "col": 1, "state": "done" }, { "row": 2, "col": 0, "state": "done" }, { "row": 1, "col": 0, "state": "done" }, { "row": 0, "col": 0, "state": "match" }]
+      }
+    },
+    {
+      "caption": "The longest increasing path is 1, 2, 6, 9, so the answer is length 4.",
+      "visual": {
+        "type": "grid",
+        "rows": [[9, 9, 4], [6, 6, 8], [2, 1, 1]],
+        "highlights": [{ "row": 2, "col": 1, "state": "done" }, { "row": 2, "col": 0, "state": "done" }, { "row": 1, "col": 0, "state": "done" }, { "row": 0, "col": 0, "state": "done" }]
+      }
+    }
+  ]
+}
