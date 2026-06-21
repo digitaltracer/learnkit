@@ -69,7 +69,7 @@ phase, every line is independently pick-up-able.
 Swift, pure authoring on the established pipeline. Grouped by destination track.
 
 **Extend existing track: Sliding Window**
-- [ ] Longest Repeating Character Replacement (M)
+- [x] Longest Repeating Character Replacement (M) _(2026-06-21)_
 - [ ] Permutation in String (M)
 - [ ] Minimum Window Substring (H)
 - [ ] Sliding Window Maximum (H)

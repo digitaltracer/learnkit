@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "longest-repeating-character-replacement",
+  "subject": "dsa",
+  "track": "sliding-window",
+  "title": "Longest Repeating Character Replacement",
+  "difficulty": "medium",
+  "summary": "Grow a window while it stays fixable: window length minus the count of its most common letter must be at most k, so the rest can be replaced. Shrink when it isn't.",
+  "problem": "Return the length of the longest substring you can make all-identical by replacing at most k characters.",
+  "example": { "input": "s = \"AABABBA\", k = 1", "output": "4" },
+  "steps": [
+    {
+      "caption": "Find the longest substring you can make all-identical by replacing at most k = 1 characters. s = AABABBA.",
+      "visual": { "type": "array", "cells": ["A", "A", "B", "A", "B", "B", "A"] }
+    },
+    {
+      "caption": "Slide a window [L, R]. It's valid when (window length minus the count of its most common letter) <= k: the rest can be replaced.",
+      "visual": { "type": "array", "cells": ["A", "A", "B", "A", "B", "B", "A"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 0 }], "highlights": [{ "index": 0, "state": "active" }] }
+    },
+    {
+      "caption": "[0..1] = AA: already uniform, 0 replacements needed. Valid. Best length so far: 2.",
+      "visual": { "type": "array", "cells": ["A", "A", "B", "A", "B", "B", "A"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 1 }], "highlights": [{ "range": [0, 1], "state": "active" }] }
+    },
+    {
+      "caption": "[0..2] = AAB: most common is A (x2); replace the 1 B. 3 - 2 = 1 <= 1. Valid. Best: 3.",
+      "visual": { "type": "array", "cells": ["A", "A", "B", "A", "B", "B", "A"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 2 }], "highlights": [{ "range": [0, 2], "state": "active" }] }
+    },
+    {
+      "caption": "[0..3] = AABA: A appears 3 times; replace the 1 B. 4 - 3 = 1 <= 1. Valid. Best: 4.",
+      "visual": { "type": "array", "cells": ["A", "A", "B", "A", "B", "B", "A"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 3 }], "highlights": [{ "range": [0, 3], "state": "match" }] }
+    },
+    {
+      "caption": "[0..4] = AABAB: A appears 3 times, length 5, needing 5 - 3 = 2 replacements > 1. Invalid — shrink L.",
+      "visual": { "type": "array", "cells": ["A", "A", "B", "A", "B", "B", "A"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 4 }], "highlights": [{ "range": [0, 4], "state": "mismatch" }] }
+    },
+    {
+      "caption": "No valid window beats length 4 (e.g. AABA -> AAAA with one change). Answer: 4.",
+      "visual": { "type": "array", "cells": ["A", "A", "B", "A", "B", "B", "A"], "highlights": [{ "range": [0, 3], "state": "done" }] }
+    }
+  ]
+}

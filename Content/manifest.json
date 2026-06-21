@@ -48,7 +48,8 @@
           "lessons": [
             { "id": "maximum-average-subarray", "title": "Maximum Average Subarray", "difficulty": "easy", "file": "dsa/sliding-window/maximum-average-subarray.json" },
             { "id": "best-time-to-buy-and-sell-stock", "title": "Best Time to Buy and Sell Stock", "difficulty": "easy", "file": "dsa/sliding-window/best-time-to-buy-and-sell-stock.json" },
-            { "id": "longest-substring-without-repeating-characters", "title": "Longest Substring Without Repeating Characters", "difficulty": "medium", "file": "dsa/sliding-window/longest-substring-without-repeating-characters.json" }
+            { "id": "longest-substring-without-repeating-characters", "title": "Longest Substring Without Repeating Characters", "difficulty": "medium", "file": "dsa/sliding-window/longest-substring-without-repeating-characters.json" },
+            { "id": "longest-repeating-character-replacement", "title": "Longest Repeating Character Replacement", "difficulty": "medium", "file": "dsa/sliding-window/longest-repeating-character-replacement.json" }
           ]
         },
         {
