@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "id": "course-schedule",
+  "subject": "dsa",
+  "track": "graphs",
+  "title": "Course Schedule",
+  "difficulty": "medium",
+  "summary": "Treat each prerequisite as a directed edge and DFS the graph; you can finish every course only if there is no cycle, meaning no edge ever points back into the path you are currently on.",
+  "problem": "Given numCourses and prerequisite pairs, decide whether you can finish all courses.",
+  "example": { "input": "numCourses = 4, prerequisites = [[1,0],[2,0],[3,1],[3,2]]", "output": "true" },
+  "steps": [
+    {
+      "caption": "Each prerequisite is a directed edge. You can finish all courses only if the graph has no cycle, so DFS it watching for an edge back into the current path.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.5, "y": 0.12 },
+          { "id": "1", "x": 0.22, "y": 0.45 },
+          { "id": "2", "x": 0.78, "y": 0.45 },
+          { "id": "3", "x": 0.5, "y": 0.85 }
+        ],
+        "edges": [
+          { "from": "0", "to": "1", "directed": true },
+          { "from": "0", "to": "2", "directed": true },
+          { "from": "1", "to": "3", "directed": true },
+          { "from": "2", "to": "3", "directed": true }
+        ]
+      }
+    },
+    {
+      "caption": "Start a DFS at course 0.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.5, "y": 0.12, "state": "active", "pointer": "cur" },
+          { "id": "1", "x": 0.22, "y": 0.45 },
+          { "id": "2", "x": 0.78, "y": 0.45 },
+          { "id": "3", "x": 0.5, "y": 0.85 }
+        ],
+        "edges": [
+          { "from": "0", "to": "1", "directed": true },
+          { "from": "0", "to": "2", "directed": true },
+          { "from": "1", "to": "3", "directed": true },
+          { "from": "2", "to": "3", "directed": true }
+        ]
+      }
+    },
+    {
+      "caption": "Follow edge 0 to 1 and visit course 1.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.5, "y": 0.12, "state": "done" },
+          { "id": "1", "x": 0.22, "y": 0.45, "state": "active", "pointer": "cur" },
+          { "id": "2", "x": 0.78, "y": 0.45 },
+          { "id": "3", "x": 0.5, "y": 0.85 }
+        ],
+        "edges": [
+          { "from": "0", "to": "1", "directed": true, "state": "match" },
+          { "from": "0", "to": "2", "directed": true },
+          { "from": "1", "to": "3", "directed": true },
+          { "from": "2", "to": "3", "directed": true }
+        ]
+      }
+    },
+    {
+      "caption": "Follow edge 1 to 3 and visit course 3. It has no outgoing edges.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.5, "y": 0.12, "state": "done" },
+          { "id": "1", "x": 0.22, "y": 0.45, "state": "done" },
+          { "id": "2", "x": 0.78, "y": 0.45 },
+          { "id": "3", "x": 0.5, "y": 0.85, "state": "active", "pointer": "cur" }
+        ],
+        "edges": [
+          { "from": "0", "to": "1", "directed": true, "state": "done" },
+          { "from": "0", "to": "2", "directed": true },
+          { "from": "1", "to": "3", "directed": true, "state": "match" },
+          { "from": "2", "to": "3", "directed": true }
+        ]
+      }
+    },
+    {
+      "caption": "Course 3 is a dead end with no back-edge, so back up.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.5, "y": 0.12, "state": "done" },
+          { "id": "1", "x": 0.22, "y": 0.45, "state": "done" },
+          { "id": "2", "x": 0.78, "y": 0.45 },
+          { "id": "3", "x": 0.5, "y": 0.85, "state": "done" }
+        ],
+        "edges": [
+          { "from": "0", "to": "1", "directed": true, "state": "done" },
+          { "from": "0", "to": "2", "directed": true },
+          { "from": "1", "to": "3", "directed": true, "state": "done" },
+          { "from": "2", "to": "3", "directed": true }
+        ]
+      }
+    },
+    {
+      "caption": "Explore the other branch 0 to 2 to 3. Course 3 is already finished, and still no cycle.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.5, "y": 0.12, "state": "done" },
+          { "id": "1", "x": 0.22, "y": 0.45, "state": "done" },
+          { "id": "2", "x": 0.78, "y": 0.45, "state": "done" },
+          { "id": "3", "x": 0.5, "y": 0.85, "state": "done" }
+        ],
+        "edges": [
+          { "from": "0", "to": "1", "directed": true, "state": "done" },
+          { "from": "0", "to": "2", "directed": true, "state": "match" },
+          { "from": "1", "to": "3", "directed": true, "state": "done" },
+          { "from": "2", "to": "3", "directed": true, "state": "match" }
+        ]
+      }
+    },
+    {
+      "caption": "No edge ever pointed back into the active path, so there is no cycle. All 4 courses can be finished. Answer: true.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.5, "y": 0.12, "state": "done" },
+          { "id": "1", "x": 0.22, "y": 0.45, "state": "done" },
+          { "id": "2", "x": 0.78, "y": 0.45, "state": "done" },
+          { "id": "3", "x": 0.5, "y": 0.85, "state": "done" }
+        ],
+        "edges": [
+          { "from": "0", "to": "1", "directed": true, "state": "done" },
+          { "from": "0", "to": "2", "directed": true, "state": "done" },
+          { "from": "1", "to": "3", "directed": true, "state": "done" },
+          { "from": "2", "to": "3", "directed": true, "state": "done" }
+        ]
+      }
+    }
+  ]
+}
