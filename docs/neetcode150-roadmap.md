@@ -246,7 +246,7 @@ _Advanced Graphs (weighted / topological)_
       `probe` with hit/miss, ADR 0008. _(2026-06-17)_
 
 - [x] Two Sum (E) — first hashmap lesson; complement lookup _(2026-06-17)_
-- [ ] Group Anagrams (M)
+- [x] Group Anagrams (M) _(2026-06-21)_
 - [ ] Top K Frequent Elements (M) — pairs with bucket/`heap`
 - [ ] Longest Consecutive Sequence (M)
 - [ ] Time Based Key-Value Store (M)

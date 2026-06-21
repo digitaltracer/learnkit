@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "id": "group-anagrams",
+  "subject": "dsa",
+  "track": "arrays-hashing",
+  "title": "Group Anagrams",
+  "difficulty": "medium",
+  "summary": "Anagrams share the same letters, so their sorted form is identical. Use that sorted string as a map key and bucket every word under it.",
+  "problem": "Group the strings so that all anagrams of each other land in the same group.",
+  "example": { "input": "[\"eat\", \"tea\", \"tan\", \"ate\", \"nat\", \"bat\"]", "output": "[[\"eat\", \"tea\", \"ate\"], [\"tan\", \"nat\"], [\"bat\"]]" },
+  "steps": [
+    {
+      "caption": "Two words are anagrams exactly when their letters sorted are equal. So the sorted word is a perfect group key — map each key to its bucket of words.",
+      "visual": { "type": "hashmap" }
+    },
+    {
+      "caption": "\"eat\" sorts to \"aet\". No bucket yet, so start one.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": "aet", "value": "eat", "state": "active" } ],
+        "probe": { "key": "aet", "found": false }
+      }
+    },
+    {
+      "caption": "\"tea\" also sorts to \"aet\" — bucket exists, drop it in next to \"eat\".",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": "aet", "value": "eat, tea", "state": "active" } ],
+        "probe": { "key": "aet", "found": true }
+      }
+    },
+    {
+      "caption": "\"tan\" sorts to \"ant\" — a new key, so open a second bucket.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": "aet", "value": "eat, tea" }, { "key": "ant", "value": "tan", "state": "active" } ],
+        "probe": { "key": "ant", "found": false }
+      }
+    },
+    {
+      "caption": "\"ate\" sorts to \"aet\" again — append to the first bucket.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": "aet", "value": "eat, tea, ate", "state": "active" }, { "key": "ant", "value": "tan" } ],
+        "probe": { "key": "aet", "found": true }
+      }
+    },
+    {
+      "caption": "\"nat\" sorts to \"ant\" — join \"tan\".",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": "aet", "value": "eat, tea, ate" }, { "key": "ant", "value": "tan, nat", "state": "active" } ],
+        "probe": { "key": "ant", "found": true }
+      }
+    },
+    {
+      "caption": "\"bat\" sorts to \"abt\" — new key, third bucket.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": "aet", "value": "eat, tea, ate" }, { "key": "ant", "value": "tan, nat" }, { "key": "abt", "value": "bat", "state": "active" } ],
+        "probe": { "key": "abt", "found": false }
+      }
+    },
+    {
+      "caption": "Every word is filed. The map's three buckets are the answer: [eat, tea, ate], [tan, nat], and [bat].",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": "aet", "value": "eat, tea, ate", "state": "done" }, { "key": "ant", "value": "tan, nat", "state": "done" }, { "key": "abt", "value": "bat", "state": "done" } ]
+      }
+    }
+  ]
+}
