@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "id": "interleaving-string",
+  "subject": "dsa",
+  "track": "2d-dp",
+  "title": "Interleaving String",
+  "difficulty": "medium",
+  "summary": "dp[i][j] is true when s3's first i+j characters can be formed by interleaving s1's first i and s2's first j. A cell is true when the matching neighbour above or to the left is true and its source character equals the next character of s3.",
+  "problem": "Decide whether s3 = \"acbd\" is an interleaving of s1 = \"ab\" and s2 = \"cd\". Rows are prefixes of s1 (\"\", a, ab); columns are prefixes of s2 (\"\", c, cd). dp[i][j] = true if (s1[i-1] equals s3[i+j-1] and dp[i-1][j]) or (s2[j-1] equals s3[i+j-1] and dp[i][j-1]).",
+  "example": { "input": "s1 = \"ab\", s2 = \"cd\", s3 = \"acbd\"", "output": "true" },
+  "steps": [
+    {
+      "caption": "Rows are prefixes of s1 \"ab\", columns are prefixes of s2 \"cd\", and the target is s3 \"acbd\". Empty plus empty makes the empty string, so the top-left is true.",
+      "visual": {
+        "type": "grid",
+        "rows": [["T", "F", "F"], ["F", "F", "F"], ["F", "F", "F"]]
+      }
+    },
+    {
+      "caption": "Fill the base row and column. \"ac\" is built down column 0 by taking only from s1, but \"c\" then \"cd\" cannot start \"acbd\" from s2 alone.",
+      "visual": {
+        "type": "grid",
+        "rows": [["T", "F", "F"], ["T", "F", "F"], ["F", "F", "F"]],
+        "highlights": [
+          { "rows": [0, 0], "cols": [0, 2], "state": "active" },
+          { "rows": [0, 2], "cols": [0, 0], "state": "active" }
+        ]
+      }
+    },
+    {
+      "caption": "Cell (a, c) is true because the left neighbour is true and s2's c matches s3's second character. Cell (a, cd) stays false.",
+      "visual": {
+        "type": "grid",
+        "rows": [["T", "F", "F"], ["T", "T", "F"], ["F", "F", "F"]],
+        "highlights": [{ "row": 1, "col": 1, "state": "match" }]
+      }
+    },
+    {
+      "caption": "Fill the bottom row. (ab, c) is true from the cell above, and (ab, cd) becomes true because d matches s3's last character with a true left neighbour.",
+      "visual": {
+        "type": "grid",
+        "rows": [["T", "F", "F"], ["T", "T", "F"], ["F", "T", "T"]],
+        "highlights": [{ "row": 2, "col": 2, "state": "match" }]
+      }
+    },
+    {
+      "caption": "The bottom-right cell is true, so \"acbd\" interleaves \"ab\" and \"cd\".",
+      "visual": {
+        "type": "grid",
+        "rows": [["T", "F", "F"], ["T", "T", "F"], ["F", "T", "T"]],
+        "highlights": [{ "row": 2, "col": 2, "state": "done" }]
+      }
+    }
+  ]
+}
