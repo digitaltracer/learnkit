@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "id": "set-matrix-zeroes",
+  "subject": "dsa",
+  "track": "math-geometry",
+  "title": "Set Matrix Zeroes",
+  "difficulty": "medium",
+  "summary": "If any cell in the matrix is 0, set that cell's entire row and column to 0.",
+  "problem": "Given an m by n matrix, if an element is 0 set its entire row and column to 0. Modify the matrix in place.",
+  "example": {
+    "input": "[[1,1,1],[1,0,1],[1,1,1]]",
+    "output": "[[1,0,1],[0,0,0],[1,0,1]]"
+  },
+  "steps": [
+    {
+      "caption": "Goal: wherever a 0 appears, zero out its whole row and column.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 1, 1], [1, 0, 1], [1, 1, 1]]
+      }
+    },
+    {
+      "caption": "Find the zero at row 1, column 1. A 0 means its whole row and column become 0.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 1, 1], [1, 0, 1], [1, 1, 1]],
+        "highlights": [
+          {"row": 1, "col": 1, "state": "active"}
+        ]
+      }
+    },
+    {
+      "caption": "Zero out row 1.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 1, 1], [0, 0, 0], [1, 1, 1]],
+        "highlights": [
+          {"rows": [1, 1], "cols": [0, 2], "state": "match"}
+        ]
+      }
+    },
+    {
+      "caption": "Zero out column 1.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 0, 1], [0, 0, 0], [1, 0, 1]],
+        "highlights": [
+          {"rows": [0, 2], "cols": [1, 1], "state": "match"}
+        ]
+      }
+    },
+    {
+      "caption": "Done. Both the row and column of the zero are now all zeroes.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 0, 1], [0, 0, 0], [1, 0, 1]],
+        "highlights": [
+          {"rows": [0, 2], "cols": [0, 2], "state": "done"}
+        ]
+      }
+    }
+  ]
+}

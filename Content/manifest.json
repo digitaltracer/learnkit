@@ -185,7 +185,8 @@
             { "id": "happy-number", "title": "Happy Number", "difficulty": "easy", "file": "dsa/math-geometry/happy-number.json" },
             { "id": "pow-x-n", "title": "Pow(x, n)", "difficulty": "medium", "file": "dsa/math-geometry/pow-x-n.json" },
             { "id": "multiply-strings", "title": "Multiply Strings", "difficulty": "medium", "file": "dsa/math-geometry/multiply-strings.json" },
-            { "id": "rotate-image", "title": "Rotate Image", "difficulty": "medium", "file": "dsa/math-geometry/rotate-image.json" }
+            { "id": "rotate-image", "title": "Rotate Image", "difficulty": "medium", "file": "dsa/math-geometry/rotate-image.json" },
+            { "id": "set-matrix-zeroes", "title": "Set Matrix Zeroes", "difficulty": "medium", "file": "dsa/math-geometry/set-matrix-zeroes.json" }
           ]
         },
         {
