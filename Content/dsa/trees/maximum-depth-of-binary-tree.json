@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "id": "maximum-depth-of-binary-tree",
+  "subject": "dsa",
+  "track": "trees",
+  "title": "Maximum Depth of Binary Tree",
+  "difficulty": "easy",
+  "summary": "A node's depth is 1 plus the deeper of its two children. Solve the leaves first, then let each result bubble up to the root.",
+  "problem": "Return the maximum depth — the number of nodes along the longest path from the root down to a leaf.",
+  "example": { "input": "[3, 9, 20, null, null, 15, 7]", "output": "3" },
+  "steps": [
+    {
+      "caption": "Depth is the node count on the longest root-to-leaf path. Solve it bottom-up: a node's depth is 1 + the deeper of its two children.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "left": { "value": 9 },
+          "right": { "value": 20, "left": { "value": 15 }, "right": { "value": 7 } }
+        }
+      }
+    },
+    {
+      "caption": "Recurse to the bottom first. Leaf 9 has no children, so its subtree depth is 1.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "left": { "value": 9, "state": "active", "pointer": "1" },
+          "right": { "value": 20, "left": { "value": 15 }, "right": { "value": 7 } }
+        }
+      }
+    },
+    {
+      "caption": "Leaves 15 and 7 are depth 1 each as well.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "left": { "value": 9, "state": "done", "pointer": "1" },
+          "right": { "value": 20, "left": { "value": 15, "state": "active", "pointer": "1" }, "right": { "value": 7, "state": "active", "pointer": "1" } }
+        }
+      }
+    },
+    {
+      "caption": "Back at 20: depth = 1 + max(child depths) = 1 + max(1, 1) = 2.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "left": { "value": 9, "state": "done", "pointer": "1" },
+          "right": { "value": 20, "state": "active", "pointer": "2", "left": { "value": 15, "state": "done", "pointer": "1" }, "right": { "value": 7, "state": "done", "pointer": "1" } }
+        }
+      }
+    },
+    {
+      "caption": "Back at the root 3: depth = 1 + max(9 gives 1, 20 gives 2) = 1 + 2 = 3.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3, "state": "active", "pointer": "3",
+          "left": { "value": 9, "state": "done", "pointer": "1" },
+          "right": { "value": 20, "state": "done", "pointer": "2", "left": { "value": 15, "state": "done", "pointer": "1" }, "right": { "value": 7, "state": "done", "pointer": "1" } }
+        }
+      }
+    },
+    {
+      "caption": "The deepest path is 3 to 20 to 15 (or 7): three nodes. Maximum depth = 3.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3, "state": "done",
+          "left": { "value": 9 },
+          "right": { "value": 20, "state": "done", "left": { "value": 15, "state": "done" }, "right": { "value": 7 } }
+        }
+      }
+    }
+  ]
+}

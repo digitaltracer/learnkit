@@ -190,7 +190,8 @@
             "complexity": "Typically O(n) time, O(h) space for recursion (h = height)"
           },
           "lessons": [
-            { "id": "invert-binary-tree", "title": "Invert Binary Tree", "difficulty": "easy", "file": "dsa/trees/invert-binary-tree.json" }
+            { "id": "invert-binary-tree", "title": "Invert Binary Tree", "difficulty": "easy", "file": "dsa/trees/invert-binary-tree.json" },
+            { "id": "maximum-depth-of-binary-tree", "title": "Maximum Depth of Binary Tree", "difficulty": "easy", "file": "dsa/trees/maximum-depth-of-binary-tree.json" }
           ]
         },
         {
