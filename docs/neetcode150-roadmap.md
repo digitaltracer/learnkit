@@ -186,7 +186,7 @@ _New track: 2-D Dynamic Programming (DP table)_
 
 - [x] Invert Binary Tree (E) — first tree lesson; recursive child swap _(2026-06-17)_
 - [x] Maximum Depth of Binary Tree (E) _(2026-06-21)_
-- [ ] Diameter of Binary Tree (E)
+- [x] Diameter of Binary Tree (E) _(2026-06-21)_
 - [ ] Balanced Binary Tree (E)
 - [ ] Same Tree (E)
 - [ ] Subtree of Another Tree (E)
