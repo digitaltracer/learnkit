@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "reverse-integer",
+  "subject": "dsa",
+  "track": "bit-manipulation",
+  "title": "Reverse Integer",
+  "difficulty": "medium",
+  "summary": "Pop the last digit with x % 10 and push it onto result = result * 10 + digit, shrinking x by /10. Check the 32-bit limit before each push and return 0 on overflow.",
+  "problem": "Reverse the digits of a 32-bit signed integer, returning 0 if the reversed value overflows.",
+  "example": { "input": "x = 123", "output": "321" },
+  "steps": [
+    {
+      "caption": "Reverse the digits of 123. Repeatedly pop the last digit and push it onto the result. Here are the input digits.",
+      "visual": { "type": "array", "cells": [1, 2, 3] }
+    },
+    {
+      "caption": "Pop the last digit 3. It becomes the first digit of the result, so result = 3.",
+      "visual": { "type": "array", "cells": [3], "highlights": [{ "index": 0, "state": "active" }] }
+    },
+    {
+      "caption": "Pop 2 and push it: result = 3 * 10 + 2 = 32.",
+      "visual": { "type": "array", "cells": [3, 2], "highlights": [{ "index": 1, "state": "active" }] }
+    },
+    {
+      "caption": "Pop 1 and push it: result = 32 * 10 + 1 = 321.",
+      "visual": { "type": "array", "cells": [3, 2, 1], "highlights": [{ "index": 2, "state": "active" }] }
+    },
+    {
+      "caption": "Each push checks 321 against the 32-bit max of about 2.1 billion. A value that would exceed it returns 0 instead of overflowing.",
+      "visual": { "type": "array", "cells": [3, 2, 1], "highlights": [{ "range": [0, 2], "state": "compare" }] }
+    },
+    {
+      "caption": "No overflow, so the reversed result is 321.",
+      "visual": { "type": "array", "cells": [3, 2, 1], "highlights": [{ "range": [0, 2], "state": "done" }] }
+    }
+  ]
+}

@@ -398,7 +398,8 @@
             { "id": "counting-bits", "title": "Counting Bits", "difficulty": "easy", "file": "dsa/bit-manipulation/counting-bits.json" },
             { "id": "missing-number", "title": "Missing Number", "difficulty": "easy", "file": "dsa/bit-manipulation/missing-number.json" },
             { "id": "reverse-bits", "title": "Reverse Bits", "difficulty": "easy", "file": "dsa/bit-manipulation/reverse-bits.json" },
-            { "id": "sum-of-two-integers", "title": "Sum of Two Integers", "difficulty": "medium", "file": "dsa/bit-manipulation/sum-of-two-integers.json" }
+            { "id": "sum-of-two-integers", "title": "Sum of Two Integers", "difficulty": "medium", "file": "dsa/bit-manipulation/sum-of-two-integers.json" },
+            { "id": "reverse-integer", "title": "Reverse Integer", "difficulty": "medium", "file": "dsa/bit-manipulation/reverse-integer.json" }
           ]
         }
       ]
