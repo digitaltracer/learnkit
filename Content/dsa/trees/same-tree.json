@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "id": "same-tree",
+  "subject": "dsa",
+  "track": "trees",
+  "title": "Same Tree",
+  "difficulty": "easy",
+  "summary": "Walk both trees in lockstep. Each comparison-node pairs p with q and turns match or mismatch. Any single mismatch means the trees differ.",
+  "problem": "Are two binary trees identical in shape and values? Compare them node by node in lockstep; each comparison-node shows the pair p, q and turns match or mismatch.",
+  "example": { "input": "p = [1,2,3], q = [1,2,4]", "output": "false" },
+  "steps": [
+    {
+      "caption": "Compare the trees node by node in lockstep. Here p = [1, 2, 3] and q = [1, 2, 4].",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "1,1",
+          "children": [
+            { "value": "2,2", "edge": "L" },
+            { "value": "3,4", "edge": "R" }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Compare the roots: both are 1, so this pair is a match.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "1,1", "state": "match",
+          "children": [
+            { "value": "2,2", "edge": "L" },
+            { "value": "3,4", "edge": "R" }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Compare the left pair: both are 2, so this pair is a match too.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "1,1", "state": "match",
+          "children": [
+            { "value": "2,2", "edge": "L", "state": "match" },
+            { "value": "3,4", "edge": "R" }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Compare the right pair: 3 versus 4. The values differ, so this pair is a mismatch.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "1,1", "state": "match",
+          "children": [
+            { "value": "2,2", "edge": "L", "state": "match" },
+            { "value": "3,4", "edge": "R", "state": "mismatch" }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Done. One mismatch means the trees are not the same, so the answer is false.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "1,1", "state": "match",
+          "children": [
+            { "value": "2,2", "edge": "L", "state": "match" },
+            { "value": "3,4", "edge": "R", "state": "mismatch" }
+          ]
+        }
+      }
+    }
+  ]
+}
