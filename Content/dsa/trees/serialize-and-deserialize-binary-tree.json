@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "id": "serialize-and-deserialize-binary-tree",
+  "subject": "dsa",
+  "track": "trees",
+  "title": "Serialize and Deserialize Binary Tree",
+  "difficulty": "hard",
+  "summary": "Encode the tree with a preorder walk, writing # for each null child. Decoding reads that string left to right and rebuilds the identical tree.",
+  "problem": "Encode a binary tree to a string and decode it back. Use preorder, writing # for a null child.",
+  "example": { "input": "[1,2,3,null,null,4,5]", "output": "serialized \"1,2,#,#,3,4,#,#,5,#,#\", then decoded back to the same tree" },
+  "steps": [
+    {
+      "caption": "Encode the tree to a string and decode it back. Use preorder and write # for nulls.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 1,
+          "left": { "value": 2 },
+          "right": { "value": 3, "left": { "value": 4 }, "right": { "value": 5 } }
+        }
+      }
+    },
+    {
+      "caption": "Serialize in preorder, visiting root then left then right. The string starts \"1,2,...\".",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 1, "state": "active",
+          "left": { "value": 2 },
+          "right": { "value": 3, "left": { "value": 4 }, "right": { "value": 5 } }
+        }
+      }
+    },
+    {
+      "caption": "Finish the preorder walk. The full string is \"1,2,#,#,3,4,#,#,5,#,#\".",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 1, "state": "done",
+          "left": { "value": 2, "state": "done" },
+          "right": { "value": 3, "state": "done", "left": { "value": 4, "state": "done" }, "right": { "value": 5, "state": "done" } }
+        }
+      }
+    },
+    {
+      "caption": "Deserialize: read the string left to right and rebuild 1, then 2, then 3 with children 4 and 5.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 1, "state": "match",
+          "left": { "value": 2, "state": "match" },
+          "right": { "value": 3, "state": "match", "left": { "value": 4, "state": "match" }, "right": { "value": 5, "state": "match" } }
+        }
+      }
+    },
+    {
+      "caption": "Done. The decoded tree matches the original exactly.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 1, "state": "done",
+          "left": { "value": 2, "state": "done" },
+          "right": { "value": 3, "state": "done", "left": { "value": 4, "state": "done" }, "right": { "value": 5, "state": "done" } }
+        }
+      }
+    }
+  ]
+}
