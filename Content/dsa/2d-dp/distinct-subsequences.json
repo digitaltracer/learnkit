@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "id": "distinct-subsequences",
+  "subject": "dsa",
+  "track": "2d-dp",
+  "title": "Distinct Subsequences",
+  "difficulty": "hard",
+  "summary": "dp[i][j] is the number of distinct ways to form t's first j chars as a subsequence of s's first i chars. Always carry dp[i-1][j], and when the current chars match also add dp[i-1][j-1].",
+  "problem": "Count the distinct subsequences of s = \"bbb\" that equal t = \"bb\". Rows are prefixes of s (\"\", b, bb, bbb); columns are prefixes of t (\"\", b, bb). dp[i][j] is the number of ways to form t's first j chars from s's first i chars.",
+  "example": { "input": "s = \"bbb\", t = \"bb\"", "output": "3" },
+  "steps": [
+    {
+      "caption": "Rows are s \"bbb\", columns are t \"bb\". An empty t has exactly 1 way to form: take nothing from s.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
+      }
+    },
+    {
+      "caption": "Column 0 is all 1: any prefix of s forms the empty t one way. The empty s forms a nonempty t in 0 ways.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 0, 0], [1, 0, 0], [1, 0, 0], [1, 0, 0]],
+        "highlights": [{ "rows": [0, 3], "cols": [0, 0], "state": "active" }]
+      }
+    },
+    {
+      "caption": "Row b: dp[1][1] = dp[0][1] + dp[0][0] = 0 + 1 = 1 since b equals b. So row b is [1,1,0].",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 0, 0], [1, 1, 0], [1, 0, 0], [1, 0, 0]],
+        "highlights": [{ "row": 1, "col": 1, "state": "match" }]
+      }
+    },
+    {
+      "caption": "Row bb gives [1,2,1] and row bbb gives [1,3,3]; each matching cell adds the value above and the value above-left.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 0, 0], [1, 1, 0], [1, 2, 1], [1, 3, 3]],
+        "highlights": [{ "row": 2, "col": 1, "state": "match" }, { "row": 2, "col": 2, "state": "match" }, { "row": 3, "col": 1, "state": "match" }, { "row": 3, "col": 2, "state": "match" }]
+      }
+    },
+    {
+      "caption": "The bottom-right cell is dp[3][2] = 3, so \"bbb\" has 3 distinct subsequences equal to \"bb\".",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 0, 0], [1, 1, 0], [1, 2, 1], [1, 3, 3]],
+        "highlights": [{ "row": 3, "col": 2, "state": "done" }]
+      }
+    }
+  ]
+}
