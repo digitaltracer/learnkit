@@ -280,7 +280,8 @@
             { "id": "pacific-atlantic-water-flow", "title": "Pacific Atlantic Water Flow", "difficulty": "medium", "file": "dsa/graphs/pacific-atlantic-water-flow.json" },
             { "id": "walls-and-gates", "title": "Walls and Gates", "difficulty": "medium", "file": "dsa/graphs/walls-and-gates.json" },
             { "id": "swim-in-rising-water", "title": "Swim in Rising Water", "difficulty": "hard", "file": "dsa/graphs/swim-in-rising-water.json" },
-            { "id": "reconstruct-itinerary", "title": "Reconstruct Itinerary", "difficulty": "hard", "file": "dsa/graphs/reconstruct-itinerary.json" }
+            { "id": "reconstruct-itinerary", "title": "Reconstruct Itinerary", "difficulty": "hard", "file": "dsa/graphs/reconstruct-itinerary.json" },
+            { "id": "alien-dictionary", "title": "Alien Dictionary", "difficulty": "hard", "file": "dsa/graphs/alien-dictionary.json" }
           ]
         },
         {

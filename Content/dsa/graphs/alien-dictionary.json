@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "id": "alien-dictionary",
+  "subject": "dsa",
+  "track": "graphs",
+  "title": "Alien Dictionary",
+  "difficulty": "hard",
+  "summary": "Infer the alien letter order from sorted words by comparing adjacent words, then topologically sort.",
+  "problem": "Given a list of words sorted in an alien alphabet, infer the order of its letters. Compare each pair of adjacent words; the first position where they differ gives one order edge. Build a directed graph from those edges and return a topological sort.",
+  "example": {
+    "input": "[\"wrt\",\"wrf\",\"er\",\"ett\",\"rftt\"]",
+    "output": "\"wertf\""
+  },
+  "steps": [
+    {
+      "caption": "Derive the order from adjacent words. The first differing letter gives an order edge, then topologically sort.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "w", "x": 0.1, "y": 0.5},
+          {"id": "e", "x": 0.3, "y": 0.5},
+          {"id": "r", "x": 0.5, "y": 0.5},
+          {"id": "t", "x": 0.7, "y": 0.5},
+          {"id": "f", "x": 0.9, "y": 0.5}
+        ],
+        "edges": [
+          {"from": "w", "to": "e", "directed": true},
+          {"from": "e", "to": "r", "directed": true},
+          {"from": "r", "to": "t", "directed": true},
+          {"from": "t", "to": "f", "directed": true}
+        ]
+      }
+    },
+    {
+      "caption": "Words wrt and wrf first differ at t versus f, so t comes before f.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "w", "x": 0.1, "y": 0.5},
+          {"id": "e", "x": 0.3, "y": 0.5},
+          {"id": "r", "x": 0.5, "y": 0.5},
+          {"id": "t", "x": 0.7, "y": 0.5},
+          {"id": "f", "x": 0.9, "y": 0.5}
+        ],
+        "edges": [
+          {"from": "w", "to": "e", "directed": true},
+          {"from": "e", "to": "r", "directed": true},
+          {"from": "r", "to": "t", "directed": true},
+          {"from": "t", "to": "f", "directed": true, "state": "match"}
+        ]
+      }
+    },
+    {
+      "caption": "The other pairs give w before e, r before t, and e before r.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "w", "x": 0.1, "y": 0.5},
+          {"id": "e", "x": 0.3, "y": 0.5},
+          {"id": "r", "x": 0.5, "y": 0.5},
+          {"id": "t", "x": 0.7, "y": 0.5},
+          {"id": "f", "x": 0.9, "y": 0.5}
+        ],
+        "edges": [
+          {"from": "w", "to": "e", "directed": true, "state": "match"},
+          {"from": "e", "to": "r", "directed": true, "state": "match"},
+          {"from": "r", "to": "t", "directed": true, "state": "match"},
+          {"from": "t", "to": "f", "directed": true, "state": "match"}
+        ]
+      }
+    },
+    {
+      "caption": "These edges chain together: w to e to r to t to f.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "w", "x": 0.1, "y": 0.5, "state": "active"},
+          {"id": "e", "x": 0.3, "y": 0.5, "state": "active"},
+          {"id": "r", "x": 0.5, "y": 0.5, "state": "active"},
+          {"id": "t", "x": 0.7, "y": 0.5, "state": "active"},
+          {"id": "f", "x": 0.9, "y": 0.5, "state": "active"}
+        ],
+        "edges": [
+          {"from": "w", "to": "e", "directed": true, "state": "match"},
+          {"from": "e", "to": "r", "directed": true, "state": "match"},
+          {"from": "r", "to": "t", "directed": true, "state": "match"},
+          {"from": "t", "to": "f", "directed": true, "state": "match"}
+        ]
+      }
+    },
+    {
+      "caption": "Done. The alien letter order is wertf.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "w", "x": 0.1, "y": 0.5, "state": "done"},
+          {"id": "e", "x": 0.3, "y": 0.5, "state": "done"},
+          {"id": "r", "x": 0.5, "y": 0.5, "state": "done"},
+          {"id": "t", "x": 0.7, "y": 0.5, "state": "done"},
+          {"id": "f", "x": 0.9, "y": 0.5, "state": "done"}
+        ],
+        "edges": [
+          {"from": "w", "to": "e", "directed": true, "state": "done"},
+          {"from": "e", "to": "r", "directed": true, "state": "done"},
+          {"from": "r", "to": "t", "directed": true, "state": "done"},
+          {"from": "t", "to": "f", "directed": true, "state": "done"}
+        ]
+      }
+    }
+  ]
+}
