@@ -474,7 +474,8 @@
             { "id": "best-time-to-buy-and-sell-stock-with-cooldown", "title": "Best Time to Buy and Sell Stock with Cooldown", "difficulty": "medium", "file": "dsa/2d-dp/best-time-to-buy-and-sell-stock-with-cooldown.json" },
             { "id": "interleaving-string", "title": "Interleaving String", "difficulty": "medium", "file": "dsa/2d-dp/interleaving-string.json" },
             { "id": "target-sum", "title": "Target Sum", "difficulty": "medium", "file": "dsa/2d-dp/target-sum.json" },
-            { "id": "distinct-subsequences", "title": "Distinct Subsequences", "difficulty": "hard", "file": "dsa/2d-dp/distinct-subsequences.json" }
+            { "id": "distinct-subsequences", "title": "Distinct Subsequences", "difficulty": "hard", "file": "dsa/2d-dp/distinct-subsequences.json" },
+            { "id": "burst-balloons", "title": "Burst Balloons", "difficulty": "hard", "file": "dsa/2d-dp/burst-balloons.json" }
           ]
         }
       ]

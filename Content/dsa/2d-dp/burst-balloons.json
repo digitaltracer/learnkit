@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "id": "burst-balloons",
+  "subject": "dsa",
+  "track": "2d-dp",
+  "title": "Burst Balloons",
+  "difficulty": "hard",
+  "summary": "Pad both ends with 1, then let dp[i][j] be the best coins from bursting every balloon strictly between padded indices i and j. For each range, try every balloon as the LAST one burst, so its neighbours are the borders i and j.",
+  "problem": "Burst all balloons for maximum coins; bursting balloon k earns left*k*right of its current neighbours. Pad both ends with 1 to get the padded array [1,3,5,1] at indices 0,1,2,3. dp[i][j] is the best coins from bursting every balloon strictly between padded indices i and j.",
+  "example": { "input": "nums = [3,5]", "output": "20" },
+  "steps": [
+    {
+      "caption": "Pad the ends with 1 to get [1,3,5,1]. dp[i][j] is the best coins from bursting everything between padded indices i and j.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+      }
+    },
+    {
+      "caption": "The trick is to pick the LAST balloon burst in a range, so its neighbours are the borders i and j. Solve the smallest ranges first.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+      }
+    },
+    {
+      "caption": "One-balloon ranges: dp[0][2] bursts 3 last for 1*3*5 = 15, and dp[1][3] bursts 5 last for 3*5*1 = 15.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 0, 15, 0], [0, 0, 0, 15], [0, 0, 0, 0], [0, 0, 0, 0]],
+        "highlights": [{ "row": 0, "col": 2, "state": "match" }, { "row": 1, "col": 3, "state": "match" }]
+      }
+    },
+    {
+      "caption": "Full range dp[0][3]: bursting 3 last gives 1*3*1 + dp[1][3] = 18; bursting 5 last gives 1*5*1 + dp[0][2] = 20. Keep 20.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 0, 15, 20], [0, 0, 0, 15], [0, 0, 0, 0], [0, 0, 0, 0]],
+        "highlights": [{ "row": 0, "col": 3, "state": "active" }]
+      }
+    },
+    {
+      "caption": "dp[0][3] = 20, so bursting [3,5] in the best order earns 20 coins.",
+      "visual": {
+        "type": "grid",
+        "rows": [[0, 0, 15, 20], [0, 0, 0, 15], [0, 0, 0, 0], [0, 0, 0, 0]],
+        "highlights": [{ "row": 0, "col": 3, "state": "done" }]
+      }
+    }
+  ]
+}
