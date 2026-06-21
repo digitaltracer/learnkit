@@ -58,6 +58,10 @@ struct CatalogView: View {
     @Environment(LessonProgressStore.self) private var progressStore
     @State private var searchText = ""
     @State private var difficultyFilter: DifficultyFilter = .all
+    /// Comma-joined ids of subjects the user has collapsed. Persisted so a
+    /// collapsed subject stays collapsed across launches as more subjects (e.g.
+    /// System Design) are added.
+    @AppStorage("learnkit.collapsedSubjects") private var collapsedSubjectsRaw = ""
 
     var body: some View {
         List {
@@ -80,12 +84,26 @@ struct CatalogView: View {
             }
 
             ForEach(filteredSubjects) { subject in
-                Section(subject.title) {
-                    ForEach(subject.tracks) { track in
-                        NavigationLink(value: TrackRoute(track: track, initialLessonID: nil)) {
-                            TrackRow(track: track,
-                                     completedCount: progressStore.completedCount(in: track.lessons))
+                let expanded = effectiveExpanded(subject.id)
+                Section {
+                    if expanded {
+                        ForEach(subject.tracks) { track in
+                            NavigationLink(value: TrackRoute(track: track, initialLessonID: nil)) {
+                                TrackRow(track: track,
+                                         completedCount: progressStore.completedCount(in: track.lessons))
+                            }
                         }
+                    }
+                } header: {
+                    SubjectHeader(
+                        title: subject.title,
+                        completed: progressStore.completedCount(in: subject.tracks.flatMap(\.lessons)),
+                        total: subject.tracks.reduce(0) { $0 + $1.lessons.count },
+                        isExpanded: expanded,
+                        collapsible: !isFiltering
+                    ) {
+                        guard !isFiltering else { return }
+                        withAnimation(.snappy) { toggleCollapse(subject.id) }
                     }
                 }
             }
@@ -111,6 +129,30 @@ struct CatalogView: View {
 
     private var normalizedSearch: String {
         searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    }
+
+    /// While searching or filtering by difficulty, subjects are always expanded
+    /// so matches can't hide inside a collapsed subject.
+    private var isFiltering: Bool {
+        !normalizedSearch.isEmpty || difficultyFilter != .all
+    }
+
+    private var collapsedSubjects: Set<String> {
+        Set(collapsedSubjectsRaw.split(separator: ",").map(String.init))
+    }
+
+    private func effectiveExpanded(_ subjectID: String) -> Bool {
+        isFiltering || !collapsedSubjects.contains(subjectID)
+    }
+
+    private func toggleCollapse(_ subjectID: String) {
+        var collapsed = collapsedSubjects
+        if collapsed.contains(subjectID) {
+            collapsed.remove(subjectID)
+        } else {
+            collapsed.insert(subjectID)
+        }
+        collapsedSubjectsRaw = collapsed.sorted().joined(separator: ",")
     }
 
     private var continueItem: CatalogLessonItem? {
@@ -222,6 +264,47 @@ private struct ContinueRow: View {
         guard let progress else { return "Not started" }
         if progress.completed { return "Complete" }
         return "Step \(progress.stepIndex + 1) of \(max(progress.stepCount, 1))"
+    }
+}
+
+/// A collapsible subject section header: a leading disclosure chevron, the
+/// subject title, and an at-a-glance completed/total count that stays visible
+/// even when the subject is collapsed. The whole row is one tap target.
+private struct SubjectHeader: View {
+    let title: String
+    let completed: Int
+    let total: Int
+    let isExpanded: Bool
+    let collapsible: Bool
+    let onToggle: () -> Void
+
+    var body: some View {
+        Button(action: onToggle) {
+            HStack(spacing: 10) {
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.bold))
+                    .foregroundStyle(.secondary)
+                    .rotationEffect(.degrees(isExpanded ? 90 : 0))
+                    .opacity(collapsible ? 1 : 0)
+                    .accessibilityHidden(true)
+                Text(title)
+                    .font(.headline)
+                    .textCase(nil)
+                Spacer(minLength: 8)
+                Text("\(completed)/\(total)")
+                    .font(.subheadline.monospacedDigit())
+                    .foregroundStyle(.secondary)
+                    .textCase(nil)
+            }
+            .padding(.vertical, 2)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(title), \(completed) of \(total) lessons complete")
+        .accessibilityValue(isExpanded ? "Expanded" : "Collapsed")
+        .accessibilityHint(collapsible ? "Double tap to \(isExpanded ? "collapse" : "expand")" : "")
+        .accessibilityAddTraits(.isButton)
     }
 }
 
