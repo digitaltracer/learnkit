@@ -271,7 +271,8 @@
             { "id": "redundant-connection", "title": "Redundant Connection", "difficulty": "medium", "file": "dsa/graphs/redundant-connection.json" },
             { "id": "network-delay-time", "title": "Network Delay Time", "difficulty": "medium", "file": "dsa/graphs/network-delay-time.json" },
             { "id": "min-cost-to-connect-points", "title": "Min Cost to Connect Points", "difficulty": "medium", "file": "dsa/graphs/min-cost-to-connect-points.json" },
-            { "id": "cheapest-flights-within-k-stops", "title": "Cheapest Flights Within K Stops", "difficulty": "medium", "file": "dsa/graphs/cheapest-flights-within-k-stops.json" }
+            { "id": "cheapest-flights-within-k-stops", "title": "Cheapest Flights Within K Stops", "difficulty": "medium", "file": "dsa/graphs/cheapest-flights-within-k-stops.json" },
+            { "id": "word-ladder", "title": "Word Ladder", "difficulty": "hard", "file": "dsa/graphs/word-ladder.json" }
           ]
         },
         {

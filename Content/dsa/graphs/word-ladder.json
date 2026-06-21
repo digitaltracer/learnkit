@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "id": "word-ladder",
+  "subject": "dsa",
+  "track": "graphs",
+  "title": "Word Ladder",
+  "difficulty": "hard",
+  "summary": "Find the shortest chain of words from begin to end, changing one letter at a time.",
+  "problem": "Transform beginWord into endWord by changing one letter per step, where every intermediate word is in the word list. Model words as nodes joined when they differ by one letter, then BFS for the shortest chain. Return the number of words in that sequence.",
+  "example": {
+    "input": "beginWord=\"hit\", endWord=\"cog\", wordList=[\"hot\",\"dot\",\"dog\",\"lot\",\"log\",\"cog\"]",
+    "output": "5"
+  },
+  "steps": [
+    {
+      "caption": "Goal: shortest chain from hit to cog, one letter per step. Words are nodes, edges join one-letter-apart words. Use BFS.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "hit", "x": 0.08, "y": 0.5},
+          {"id": "hot", "x": 0.28, "y": 0.5},
+          {"id": "dot", "x": 0.5, "y": 0.28},
+          {"id": "lot", "x": 0.5, "y": 0.72},
+          {"id": "dog", "x": 0.72, "y": 0.28},
+          {"id": "log", "x": 0.72, "y": 0.72},
+          {"id": "cog", "x": 0.92, "y": 0.5}
+        ],
+        "edges": [
+          {"from": "hit", "to": "hot"},
+          {"from": "hot", "to": "dot"},
+          {"from": "hot", "to": "lot"},
+          {"from": "dot", "to": "dog"},
+          {"from": "dot", "to": "lot"},
+          {"from": "lot", "to": "log"},
+          {"from": "dog", "to": "log"},
+          {"from": "dog", "to": "cog"},
+          {"from": "log", "to": "cog"}
+        ]
+      }
+    },
+    {
+      "caption": "Level 0: start at hit.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "hit", "x": 0.08, "y": 0.5, "state": "active"},
+          {"id": "hot", "x": 0.28, "y": 0.5},
+          {"id": "dot", "x": 0.5, "y": 0.28},
+          {"id": "lot", "x": 0.5, "y": 0.72},
+          {"id": "dog", "x": 0.72, "y": 0.28},
+          {"id": "log", "x": 0.72, "y": 0.72},
+          {"id": "cog", "x": 0.92, "y": 0.5}
+        ],
+        "edges": [
+          {"from": "hit", "to": "hot"},
+          {"from": "hot", "to": "dot"},
+          {"from": "hot", "to": "lot"},
+          {"from": "dot", "to": "dog"},
+          {"from": "dot", "to": "lot"},
+          {"from": "lot", "to": "log"},
+          {"from": "dog", "to": "log"},
+          {"from": "dog", "to": "cog"},
+          {"from": "log", "to": "cog"}
+        ]
+      }
+    },
+    {
+      "caption": "Level 1: the only neighbor of hit is hot.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "hit", "x": 0.08, "y": 0.5, "state": "done"},
+          {"id": "hot", "x": 0.28, "y": 0.5, "state": "active"},
+          {"id": "dot", "x": 0.5, "y": 0.28},
+          {"id": "lot", "x": 0.5, "y": 0.72},
+          {"id": "dog", "x": 0.72, "y": 0.28},
+          {"id": "log", "x": 0.72, "y": 0.72},
+          {"id": "cog", "x": 0.92, "y": 0.5}
+        ],
+        "edges": [
+          {"from": "hit", "to": "hot", "state": "done"},
+          {"from": "hot", "to": "dot"},
+          {"from": "hot", "to": "lot"},
+          {"from": "dot", "to": "dog"},
+          {"from": "dot", "to": "lot"},
+          {"from": "lot", "to": "log"},
+          {"from": "dog", "to": "log"},
+          {"from": "dog", "to": "cog"},
+          {"from": "log", "to": "cog"}
+        ]
+      }
+    },
+    {
+      "caption": "Level 2: from hot reach dot and lot.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "hit", "x": 0.08, "y": 0.5, "state": "done"},
+          {"id": "hot", "x": 0.28, "y": 0.5, "state": "done"},
+          {"id": "dot", "x": 0.5, "y": 0.28, "state": "match"},
+          {"id": "lot", "x": 0.5, "y": 0.72, "state": "match"},
+          {"id": "dog", "x": 0.72, "y": 0.28},
+          {"id": "log", "x": 0.72, "y": 0.72},
+          {"id": "cog", "x": 0.92, "y": 0.5}
+        ],
+        "edges": [
+          {"from": "hit", "to": "hot", "state": "done"},
+          {"from": "hot", "to": "dot", "state": "done"},
+          {"from": "hot", "to": "lot", "state": "done"},
+          {"from": "dot", "to": "dog"},
+          {"from": "dot", "to": "lot"},
+          {"from": "lot", "to": "log"},
+          {"from": "dog", "to": "log"},
+          {"from": "dog", "to": "cog"},
+          {"from": "log", "to": "cog"}
+        ]
+      }
+    },
+    {
+      "caption": "Level 3: from dot and lot reach dog and log.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "hit", "x": 0.08, "y": 0.5, "state": "done"},
+          {"id": "hot", "x": 0.28, "y": 0.5, "state": "done"},
+          {"id": "dot", "x": 0.5, "y": 0.28, "state": "done"},
+          {"id": "lot", "x": 0.5, "y": 0.72, "state": "done"},
+          {"id": "dog", "x": 0.72, "y": 0.28, "state": "match"},
+          {"id": "log", "x": 0.72, "y": 0.72, "state": "match"},
+          {"id": "cog", "x": 0.92, "y": 0.5}
+        ],
+        "edges": [
+          {"from": "hit", "to": "hot", "state": "done"},
+          {"from": "hot", "to": "dot", "state": "done"},
+          {"from": "hot", "to": "lot", "state": "done"},
+          {"from": "dot", "to": "dog", "state": "done"},
+          {"from": "dot", "to": "lot"},
+          {"from": "lot", "to": "log", "state": "done"},
+          {"from": "dog", "to": "log"},
+          {"from": "dog", "to": "cog"},
+          {"from": "log", "to": "cog"}
+        ]
+      }
+    },
+    {
+      "caption": "Level 4: reach cog at distance 4 from hit.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "hit", "x": 0.08, "y": 0.5, "state": "done"},
+          {"id": "hot", "x": 0.28, "y": 0.5, "state": "done"},
+          {"id": "dot", "x": 0.5, "y": 0.28, "state": "done"},
+          {"id": "lot", "x": 0.5, "y": 0.72, "state": "done"},
+          {"id": "dog", "x": 0.72, "y": 0.28, "state": "done"},
+          {"id": "log", "x": 0.72, "y": 0.72, "state": "done"},
+          {"id": "cog", "x": 0.92, "y": 0.5, "state": "active", "pointer": "end"}
+        ],
+        "edges": [
+          {"from": "hit", "to": "hot", "state": "done"},
+          {"from": "hot", "to": "dot", "state": "done"},
+          {"from": "hot", "to": "lot", "state": "done"},
+          {"from": "dot", "to": "dog", "state": "done"},
+          {"from": "dot", "to": "lot"},
+          {"from": "lot", "to": "log", "state": "done"},
+          {"from": "dog", "to": "log"},
+          {"from": "dog", "to": "cog", "state": "done"},
+          {"from": "log", "to": "cog"}
+        ]
+      }
+    },
+    {
+      "caption": "The shortest path is hit, hot, dot, dog, cog. That is 5 words.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "hit", "x": 0.08, "y": 0.5, "state": "done"},
+          {"id": "hot", "x": 0.28, "y": 0.5, "state": "done"},
+          {"id": "dot", "x": 0.5, "y": 0.28, "state": "done"},
+          {"id": "lot", "x": 0.5, "y": 0.72},
+          {"id": "dog", "x": 0.72, "y": 0.28, "state": "done"},
+          {"id": "log", "x": 0.72, "y": 0.72},
+          {"id": "cog", "x": 0.92, "y": 0.5, "state": "done"}
+        ],
+        "edges": [
+          {"from": "hit", "to": "hot", "state": "done"},
+          {"from": "hot", "to": "dot", "state": "done"},
+          {"from": "hot", "to": "lot"},
+          {"from": "dot", "to": "dog", "state": "done"},
+          {"from": "dot", "to": "lot"},
+          {"from": "lot", "to": "log"},
+          {"from": "dog", "to": "log"},
+          {"from": "dog", "to": "cog", "state": "done"},
+          {"from": "log", "to": "cog"}
+        ]
+      }
+    }
+  ]
+}
