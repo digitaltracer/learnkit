@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "id": "graph-valid-tree",
+  "subject": "dsa",
+  "track": "graphs",
+  "title": "Graph Valid Tree",
+  "difficulty": "medium",
+  "summary": "A graph is a tree exactly when it is connected and has no cycle, which is the same as having n-1 edges with every node reachable from one start. DFS from a single node and confirm both conditions.",
+  "problem": "Given n nodes and an edge list, decide whether the undirected graph forms a valid tree.",
+  "example": { "input": "n = 5, edges = [[0,1],[0,2],[0,3],[1,4]]", "output": "true" },
+  "steps": [
+    {
+      "caption": "A graph is a tree exactly when it is connected with no cycle. Quick test: n-1 edges, and every node reachable from one start.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.5, "y": 0.15 },
+          { "id": "1", "x": 0.28, "y": 0.5 },
+          { "id": "2", "x": 0.5, "y": 0.5 },
+          { "id": "3", "x": 0.72, "y": 0.5 },
+          { "id": "4", "x": 0.28, "y": 0.85 }
+        ],
+        "edges": [
+          { "from": "0", "to": "1" },
+          { "from": "0", "to": "2" },
+          { "from": "0", "to": "3" },
+          { "from": "1", "to": "4" }
+        ]
+      }
+    },
+    {
+      "caption": "Count: 5 nodes and 4 edges, and 4 = 5 - 1. The edge count checks out.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.5, "y": 0.15 },
+          { "id": "1", "x": 0.28, "y": 0.5 },
+          { "id": "2", "x": 0.5, "y": 0.5 },
+          { "id": "3", "x": 0.72, "y": 0.5 },
+          { "id": "4", "x": 0.28, "y": 0.85 }
+        ],
+        "edges": [
+          { "from": "0", "to": "1", "state": "compare" },
+          { "from": "0", "to": "2", "state": "compare" },
+          { "from": "0", "to": "3", "state": "compare" },
+          { "from": "1", "to": "4", "state": "compare" }
+        ]
+      }
+    },
+    {
+      "caption": "Now check connectivity. Start a DFS at node 0 with no parent yet.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.5, "y": 0.15, "state": "active", "pointer": "cur" },
+          { "id": "1", "x": 0.28, "y": 0.5 },
+          { "id": "2", "x": 0.5, "y": 0.5 },
+          { "id": "3", "x": 0.72, "y": 0.5 },
+          { "id": "4", "x": 0.28, "y": 0.85 }
+        ],
+        "edges": [
+          { "from": "0", "to": "1" },
+          { "from": "0", "to": "2" },
+          { "from": "0", "to": "3" },
+          { "from": "1", "to": "4" }
+        ]
+      }
+    },
+    {
+      "caption": "Visit 0's neighbors 1, 2, and 3, marking each reached. No edge leads back to an already-visited node, so no cycle so far.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.5, "y": 0.15, "state": "done" },
+          { "id": "1", "x": 0.28, "y": 0.5, "state": "active", "pointer": "cur" },
+          { "id": "2", "x": 0.5, "y": 0.5, "state": "done" },
+          { "id": "3", "x": 0.72, "y": 0.5, "state": "done" },
+          { "id": "4", "x": 0.28, "y": 0.85 }
+        ],
+        "edges": [
+          { "from": "0", "to": "1", "state": "match" },
+          { "from": "0", "to": "2", "state": "match" },
+          { "from": "0", "to": "3", "state": "match" },
+          { "from": "1", "to": "4" }
+        ]
+      }
+    },
+    {
+      "caption": "From 1, visit 4 and mark it reached. Still no back-edge.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.5, "y": 0.15, "state": "done" },
+          { "id": "1", "x": 0.28, "y": 0.5, "state": "done" },
+          { "id": "2", "x": 0.5, "y": 0.5, "state": "done" },
+          { "id": "3", "x": 0.72, "y": 0.5, "state": "done" },
+          { "id": "4", "x": 0.28, "y": 0.85, "state": "active", "pointer": "cur" }
+        ],
+        "edges": [
+          { "from": "0", "to": "1", "state": "done" },
+          { "from": "0", "to": "2", "state": "done" },
+          { "from": "0", "to": "3", "state": "done" },
+          { "from": "1", "to": "4", "state": "match" }
+        ]
+      }
+    },
+    {
+      "caption": "All 5 nodes were reached from node 0, so the graph is connected.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.5, "y": 0.15, "state": "done" },
+          { "id": "1", "x": 0.28, "y": 0.5, "state": "done" },
+          { "id": "2", "x": 0.5, "y": 0.5, "state": "done" },
+          { "id": "3", "x": 0.72, "y": 0.5, "state": "done" },
+          { "id": "4", "x": 0.28, "y": 0.85, "state": "done" }
+        ],
+        "edges": [
+          { "from": "0", "to": "1", "state": "done" },
+          { "from": "0", "to": "2", "state": "done" },
+          { "from": "0", "to": "3", "state": "done" },
+          { "from": "1", "to": "4", "state": "done" }
+        ]
+      }
+    },
+    {
+      "caption": "Connected, no cycle, and n-1 edges, so it is a valid tree. Answer: true.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          { "id": "0", "x": 0.5, "y": 0.15, "state": "done" },
+          { "id": "1", "x": 0.28, "y": 0.5, "state": "done" },
+          { "id": "2", "x": 0.5, "y": 0.5, "state": "done" },
+          { "id": "3", "x": 0.72, "y": 0.5, "state": "done" },
+          { "id": "4", "x": 0.28, "y": 0.85, "state": "done" }
+        ],
+        "edges": [
+          { "from": "0", "to": "1", "state": "done" },
+          { "from": "0", "to": "2", "state": "done" },
+          { "from": "0", "to": "3", "state": "done" },
+          { "from": "1", "to": "4", "state": "done" }
+        ]
+      }
+    }
+  ]
+}
