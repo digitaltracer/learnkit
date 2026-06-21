@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "id": "binary-tree-right-side-view",
+  "subject": "dsa",
+  "track": "trees",
+  "title": "Binary Tree Right Side View",
+  "difficulty": "medium",
+  "summary": "Standing to the right, you see only the last node of each level. Do a level-order traversal and record the rightmost node encountered at every depth.",
+  "problem": "Return the values of the nodes you can see ordered top to bottom when looking at a binary tree from the right side.",
+  "example": { "input": "[1, 2, 3, null, 5, null, 4]", "output": "[1, 3, 4]" },
+  "steps": [
+    {
+      "caption": "From the right side, you see the last node of each level. Traverse level by level and keep the rightmost node at each depth.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 1,
+          "left": { "value": 2, "right": { "value": 5 } },
+          "right": { "value": 3, "right": { "value": 4 } }
+        }
+      }
+    },
+    {
+      "caption": "Level 0 is just the root, 1, so it is visible.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 1, "state": "done",
+          "left": { "value": 2, "right": { "value": 5 } },
+          "right": { "value": 3, "right": { "value": 4 } }
+        }
+      }
+    },
+    {
+      "caption": "Level 1 holds 2 and 3. From the right, 3 sits in front, so 3 is the visible one.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 1, "state": "done",
+          "left": { "value": 2, "state": "compare", "right": { "value": 5 } },
+          "right": { "value": 3, "state": "done", "right": { "value": 4 } }
+        }
+      }
+    },
+    {
+      "caption": "Level 2 holds 5 (under 2) and 4 (under 3). The rightmost is 4.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 1, "state": "done",
+          "left": { "value": 2, "right": { "value": 5, "state": "compare" } },
+          "right": { "value": 3, "state": "done", "right": { "value": 4, "state": "done" } }
+        }
+      }
+    },
+    {
+      "caption": "Taking the rightmost at each level top to bottom gives the right side view: [1, 3, 4].",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 1, "state": "done",
+          "left": { "value": 2, "right": { "value": 5 } },
+          "right": { "value": 3, "state": "done", "right": { "value": 4, "state": "done" } }
+        }
+      }
+    }
+  ]
+}

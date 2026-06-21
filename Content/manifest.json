@@ -203,7 +203,8 @@
             { "id": "binary-tree-level-order-traversal", "title": "Binary Tree Level Order Traversal", "difficulty": "medium", "file": "dsa/trees/binary-tree-level-order-traversal.json" },
             { "id": "diameter-of-binary-tree", "title": "Diameter of Binary Tree", "difficulty": "easy", "file": "dsa/trees/diameter-of-binary-tree.json" },
             { "id": "balanced-binary-tree", "title": "Balanced Binary Tree", "difficulty": "easy", "file": "dsa/trees/balanced-binary-tree.json" },
-            { "id": "lowest-common-ancestor-of-a-bst", "title": "Lowest Common Ancestor of a BST", "difficulty": "medium", "file": "dsa/trees/lowest-common-ancestor-of-a-bst.json" }
+            { "id": "lowest-common-ancestor-of-a-bst", "title": "Lowest Common Ancestor of a BST", "difficulty": "medium", "file": "dsa/trees/lowest-common-ancestor-of-a-bst.json" },
+            { "id": "binary-tree-right-side-view", "title": "Binary Tree Right Side View", "difficulty": "medium", "file": "dsa/trees/binary-tree-right-side-view.json" }
           ]
         },
         {
