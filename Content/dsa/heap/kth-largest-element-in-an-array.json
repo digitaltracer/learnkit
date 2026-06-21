@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "id": "kth-largest-element-in-an-array",
+  "subject": "dsa",
+  "track": "heap",
+  "title": "Kth Largest Element in an Array",
+  "difficulty": "medium",
+  "summary": "Keep a min-heap of size k holding the k largest values seen. Anything smaller than the root cannot be in the top k, so the root settles on the kth largest.",
+  "problem": "Find the kth largest value (k = 2) using a min-heap of size k that holds the k largest values seen. Its root is the answer.",
+  "example": { "input": "nums = [3,2,1,5,6,4], k = 2", "output": "5" },
+  "steps": [
+    {
+      "caption": "Keep the k = 2 largest in a min-heap. Its root is the kth largest. The array is 3, 2, 1, 5, 6, 4.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 2,
+          "left": { "value": 3 }
+        }
+      }
+    },
+    {
+      "caption": "Fill with 3 and 2 to get root 2. Then 1 is smaller than the root, so skip it.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 2, "state": "active",
+          "left": { "value": 3 }
+        }
+      }
+    },
+    {
+      "caption": "5 beats the root 2, so replace it for root 3. Then 6 beats root 3, so replace it for root 5.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 5, "state": "active",
+          "left": { "value": 6 }
+        }
+      }
+    },
+    {
+      "caption": "4 is smaller than the root 5, so skip it.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 5, "state": "compare",
+          "left": { "value": 6 }
+        }
+      }
+    },
+    {
+      "caption": "The root is 5, the 2nd largest.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 5, "state": "done",
+          "left": { "value": 6, "state": "done" }
+        }
+      }
+    }
+  ]
+}
