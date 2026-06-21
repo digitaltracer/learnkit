@@ -34,7 +34,7 @@ struct TrackFeedView: View {
         .navigationBarTitleDisplayMode(.inline)
         #endif
         .toolbar {
-            if !lessons.isEmpty || !loadFailures.isEmpty {
+            if showTopJumpButton {
                 ToolbarItem(placement: .primaryAction) {
                     Button { showJumpSheet = true } label: {
                         Label("Jump to lesson", systemImage: "list.bullet")
@@ -131,6 +131,15 @@ struct TrackFeedView: View {
         if track.overview != nil { return Self.overviewID }
         if !loadFailures.isEmpty { return Self.failuresID }
         return lessons.first?.id ?? Self.overviewID
+    }
+
+    /// The jump button appears in the top bar only on pages that lack the bottom
+    /// step controls — the Overview and content-issues pages. On a lesson it would
+    /// duplicate the prominent control in the controls row, so it's hidden there.
+    private var showTopJumpButton: Bool {
+        guard !lessons.isEmpty || !loadFailures.isEmpty else { return false }
+        let current = visibleID ?? defaultID
+        return current == Self.overviewID || current == Self.failuresID
     }
 
     /// One feed page sized to exactly the ScrollView's paging stride: the content

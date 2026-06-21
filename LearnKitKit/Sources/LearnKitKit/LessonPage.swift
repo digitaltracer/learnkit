@@ -185,21 +185,26 @@ struct LessonPage: View {
     /// doubles as a bottom-reachable button that opens the jump-to-lesson sheet (a
     /// small list glyph signals it's tappable); standalone it's just the count.
     @ViewBuilder private var stepIndicator: some View {
-        let label = HStack(spacing: 5) {
-            if onShowJumpMenu != nil {
-                Image(systemName: "list.bullet").font(.caption2)
-            }
-            Text("\(stepIndex + 1) / \(steps.count)").font(.footnote.monospacedDigit())
-        }
-        .foregroundStyle(.secondary)
-
         if let onShowJumpMenu {
-            Button { onShowJumpMenu() } label: { label.contentShape(Rectangle()) }
-                .buttonStyle(.plain)
-                .accessibilityLabel("Lesson \(stepIndex + 1) of \(steps.count). Jump to lesson")
-                .accessibilityHint("Shows all lessons in this topic.")
+            Button { onShowJumpMenu() } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "list.bullet")
+                    Text("\(stepIndex + 1) / \(steps.count)").monospacedDigit()
+                }
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(Color.accentColor)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 7)
+                .background(Capsule().fill(Color.accentColor.opacity(0.14)))
+                .contentShape(Capsule())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Lesson \(stepIndex + 1) of \(steps.count). Jump to lesson")
+            .accessibilityHint("Shows all lessons in this topic.")
         } else {
-            label
+            Text("\(stepIndex + 1) / \(steps.count)")
+                .font(.footnote.monospacedDigit())
+                .foregroundStyle(.secondary)
         }
     }
 
