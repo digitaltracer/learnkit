@@ -14,8 +14,10 @@ struct TrackFeedView: View {
     @State private var loadFailures: [LessonLoadFailure] = []
     @State private var loadError: String?
     /// The page currently snapped into view. Two-way bound to the scroll position:
-    /// it tracks swipes and, when the jump menu writes it, scrolls straight there.
+    /// it tracks swipes and, when the jump sheet writes it, scrolls straight there.
     @State private var visibleID: String?
+    /// Whether the compact jump-to-lesson sheet is presented.
+    @State private var showJumpSheet = false
 
     var body: some View {
         Group {
@@ -34,9 +36,25 @@ struct TrackFeedView: View {
         .toolbar {
             if !lessons.isEmpty || !loadFailures.isEmpty {
                 ToolbarItem(placement: .primaryAction) {
-                    jumpMenu
+                    Button { showJumpSheet = true } label: {
+                        Label("Jump to lesson", systemImage: "list.bullet")
+                    }
                 }
             }
+        }
+        .sheet(isPresented: $showJumpSheet) {
+            JumpToLessonSheet(
+                lessons: lessons,
+                showOverview: track.overview != nil,
+                overviewID: Self.overviewID,
+                showFailures: !loadFailures.isEmpty,
+                failuresID: Self.failuresID,
+                currentID: visibleID ?? defaultID
+            ) { id in
+                showJumpSheet = false
+                withAnimation(.easeInOut(duration: 0.35)) { visibleID = id }
+            }
+            .environment(progressStore)
         }
         .task {
             guard lessons.isEmpty, loadError == nil else { return }
@@ -103,27 +121,6 @@ struct TrackFeedView: View {
         }
     }
 
-    /// Dropdown that jumps the feed straight to any lesson (or back to the
-    /// Overview), so reaching a later lesson doesn't mean swiping past every one
-    /// before it. Built as a Picker so the current page shows a checkmark.
-    private var jumpMenu: some View {
-        Menu {
-            Picker("Jump to lesson", selection: jumpSelection) {
-                if track.overview != nil {
-                    Label("Overview", systemImage: "doc.text").tag(Self.overviewID)
-                }
-                if !loadFailures.isEmpty {
-                    Label("Content issues", systemImage: "exclamationmark.triangle").tag(Self.failuresID)
-                }
-                ForEach(lessons, id: \.id) { lesson in
-                    Text(lesson.title).tag(lesson.id)
-                }
-            }
-        } label: {
-            Label("Jump to lesson", systemImage: "list.bullet")
-        }
-    }
-
     private static let overviewID = "overview"
     private static let failuresID = "content-issues"
 
@@ -133,15 +130,6 @@ struct TrackFeedView: View {
         if track.overview != nil { return Self.overviewID }
         if !loadFailures.isEmpty { return Self.failuresID }
         return lessons.first?.id ?? Self.overviewID
-    }
-
-    /// Non-optional view over `visibleID` for the Picker: reading gives the current
-    /// page; writing scrolls there via `.scrollPosition`. The write is animated so
-    /// the paging behavior settles the jump exactly on the target page — without a
-    /// transaction the programmatic scroll can come to rest between two pages.
-    private var jumpSelection: Binding<String> {
-        Binding(get: { visibleID ?? defaultID },
-                set: { newValue in withAnimation(.easeInOut(duration: 0.35)) { visibleID = newValue } })
     }
 
     /// One feed page sized to exactly the ScrollView's paging stride: the content
@@ -273,5 +261,171 @@ private struct LoadFailuresPage: View {
         }
         .padding(28)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    }
+}
+
+/// A compact sheet listing the track's pages — Overview, any content issues, then
+/// every lesson with its difficulty dot and progress — so you can jump straight to
+/// one. Replaces the system Menu, which couldn't be made compact, small-font, or
+/// smoothly animated. Presented as a content-sized sheet for a clean slide-in.
+private struct JumpToLessonSheet: View {
+    let lessons: [Lesson]
+    let showOverview: Bool
+    let overviewID: String
+    let showFailures: Bool
+    let failuresID: String
+    let currentID: String
+    let onSelect: (String) -> Void
+
+    @Environment(LessonProgressStore.self) private var progressStore
+
+    var body: some View {
+        VStack(spacing: 0) {
+            Text("Jump to lesson")
+                .font(.headline)
+                .frame(maxWidth: .infinity)
+                .padding(.top, 18)
+                .padding(.bottom, 12)
+
+            Divider()
+
+            ScrollViewReader { proxy in
+                ScrollView {
+                    LazyVStack(spacing: 0) {
+                        if showOverview {
+                            JumpRow(title: "Overview",
+                                    leading: .symbol("doc.text"),
+                                    trailing: .none,
+                                    isCurrent: currentID == overviewID) { onSelect(overviewID) }
+                                .id(overviewID)
+                            rowDivider
+                        }
+                        if showFailures {
+                            JumpRow(title: "Content issues",
+                                    leading: .symbol("exclamationmark.triangle", tint: .orange),
+                                    trailing: .none,
+                                    isCurrent: currentID == failuresID) { onSelect(failuresID) }
+                                .id(failuresID)
+                            rowDivider
+                        }
+                        ForEach(Array(lessons.enumerated()), id: \.element.id) { index, lesson in
+                            JumpRow(title: lesson.title,
+                                    leading: .difficulty(lesson.difficulty),
+                                    trailing: marker(for: lesson),
+                                    isCurrent: currentID == lesson.id) { onSelect(lesson.id) }
+                                .id(lesson.id)
+                            if index < lessons.count - 1 { rowDivider }
+                        }
+                    }
+                }
+                .onAppear { proxy.scrollTo(currentID, anchor: .center) }
+            }
+        }
+        #if os(iOS)
+        .presentationDetents([.medium, .large])
+        .presentationDragIndicator(.visible)
+        .presentationBackground(.regularMaterial)
+        .presentationCornerRadius(28)
+        #endif
+    }
+
+    private var rowDivider: some View {
+        Divider().padding(.leading, 46)
+    }
+
+    private func marker(for lesson: Lesson) -> JumpRow.Trailing {
+        guard let record = progressStore.record(for: lesson.id) else { return .none }
+        if record.completed { return .completed }
+        let fraction = progressStore.progressFraction(for: lesson.id, stepCount: lesson.steps.count)
+        return fraction > 0 ? .progress(fraction) : .none
+    }
+}
+
+/// One row in the jump sheet: a leading marker (difficulty dot or symbol), the
+/// title at a compact size, and a trailing state (the current page, a completion
+/// check, or a progress ring).
+private struct JumpRow: View {
+    enum Leading { case symbol(String, tint: Color = .secondary); case difficulty(Difficulty?) }
+    enum Trailing { case none, completed, progress(Double) }
+
+    let title: String
+    let leading: Leading
+    let trailing: Trailing
+    let isCurrent: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 14) {
+                leadingView.frame(width: 18)
+                Text(title)
+                    .font(.subheadline.weight(isCurrent ? .semibold : .regular))
+                    .foregroundStyle(isCurrent ? Color.accentColor : .primary)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+                Spacer(minLength: 8)
+                trailingView
+            }
+            .padding(.vertical, 11)
+            .padding(.horizontal, 16)
+            .background(isCurrent ? Color.accentColor.opacity(0.12) : .clear)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+
+    @ViewBuilder private var leadingView: some View {
+        switch leading {
+        case let .symbol(name, tint):
+            Image(systemName: name).font(.system(size: 15)).foregroundStyle(tint)
+        case let .difficulty(difficulty):
+            Circle().fill(color(for: difficulty)).frame(width: 9, height: 9)
+        }
+    }
+
+    @ViewBuilder private var trailingView: some View {
+        if isCurrent {
+            Text("now")
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(Color.accentColor)
+                .padding(.horizontal, 7)
+                .padding(.vertical, 2)
+                .background(Capsule().fill(Color.accentColor.opacity(0.15)))
+        } else {
+            switch trailing {
+            case .none:
+                EmptyView()
+            case .completed:
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 16))
+                    .foregroundStyle(.green)
+            case let .progress(fraction):
+                ProgressRing(fraction: fraction).frame(width: 15, height: 15)
+            }
+        }
+    }
+
+    private func color(for difficulty: Difficulty?) -> Color {
+        switch difficulty {
+        case .easy:   return .green
+        case .medium: return .orange
+        case .hard:   return .red
+        case nil:     return .secondary
+        }
+    }
+}
+
+/// A small ring filled to `fraction` — the in-progress marker in the jump sheet.
+private struct ProgressRing: View {
+    let fraction: Double
+
+    var body: some View {
+        ZStack {
+            Circle().stroke(Color.secondary.opacity(0.25), lineWidth: 2)
+            Circle()
+                .trim(from: 0, to: max(0, min(fraction, 1)))
+                .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 2, lineCap: .round))
+                .rotationEffect(.degrees(-90))
+        }
     }
 }
