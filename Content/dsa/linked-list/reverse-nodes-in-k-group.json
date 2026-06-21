@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "id": "reverse-nodes-in-k-group",
+  "subject": "dsa",
+  "track": "linked-list",
+  "title": "Reverse Nodes in K-Group",
+  "difficulty": "hard",
+  "summary": "Reverse a linked list in groups of k nodes.",
+  "problem": "Reverse the nodes of a linked list k at a time and return the modified list. If the number of nodes is not a multiple of k, the leftover tail shorter than k is left as is. Here the list is 1 -> 2 -> 3 -> 4 -> 5 with k = 2.",
+  "example": {
+    "input": "1 -> 2 -> 3 -> 4 -> 5, k = 2",
+    "output": "2 -> 1 -> 4 -> 3 -> 5"
+  },
+  "steps": [
+    {
+      "caption": "Reverse every k=2 nodes. A leftover tail shorter than k is left alone.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4, 5]
+      }
+    },
+    {
+      "caption": "Reverse the first group of 2 to get 2 -> 1, then link 1 to the next group's head 3.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4, 5],
+        "links": [ [1, 0], [0, 2], [2, 3], [3, 4] ],
+        "pointers": [ { "label": "hd", "index": 1 } ],
+        "highlights": [ { "range": [0, 1], "state": "active" } ]
+      }
+    },
+    {
+      "caption": "Reverse the second group of 2 to get 4 -> 3, then link it into place. Order is now 2 -> 1 -> 4 -> 3 -> 5.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4, 5],
+        "links": [ [1, 0], [0, 3], [3, 2], [2, 4] ],
+        "highlights": [ { "range": [2, 3], "state": "active" } ]
+      }
+    },
+    {
+      "caption": "The last node 5 is a group of 1, which is shorter than k, so it stays in place.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4, 5],
+        "links": [ [1, 0], [0, 3], [3, 2], [2, 4] ],
+        "highlights": [ { "index": 4, "state": "match" } ]
+      }
+    },
+    {
+      "caption": "Result is 2 -> 1 -> 4 -> 3 -> 5.",
+      "visual": {
+        "type": "list",
+        "nodes": [1, 2, 3, 4, 5],
+        "links": [ [1, 0], [0, 3], [3, 2], [2, 4] ],
+        "highlights": [ { "range": [0, 4], "state": "done" } ]
+      }
+    }
+  ]
+}
