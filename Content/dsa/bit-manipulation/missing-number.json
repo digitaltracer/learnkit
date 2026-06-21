@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "missing-number",
+  "subject": "dsa",
+  "track": "bit-manipulation",
+  "title": "Missing Number",
+  "difficulty": "easy",
+  "summary": "The array should hold every value from 0 to n. Compare the full expected sum, 0 + 1 + ... + n, with the actual sum of the array; the difference is the one value left out.",
+  "problem": "An array contains n distinct numbers drawn from the range 0 to n. Find the single number in that range that is missing.",
+  "example": { "input": "[3, 0, 1]", "output": "2" },
+  "steps": [
+    {
+      "caption": "This array holds n = 3 numbers, so it should contain every value from 0 to 3. Exactly one of them is missing.",
+      "visual": { "type": "array", "cells": [3, 0, 1] }
+    },
+    {
+      "caption": "Numbers 0 through 3 should each appear once. Their full sum is 0 + 1 + 2 + 3 = 6.",
+      "visual": { "type": "array", "cells": [3, 0, 1] }
+    },
+    {
+      "caption": "Now sum the array we actually have: 3 + 0 + 1 = 4.",
+      "visual": { "type": "array", "cells": [3, 0, 1], "highlights": [{ "range": [0, 2], "state": "active" }] }
+    },
+    {
+      "caption": "Whatever is missing accounts for the entire gap between the two sums.",
+      "visual": { "type": "array", "cells": [3, 0, 1], "highlights": [{ "range": [0, 2], "state": "compare" }] }
+    },
+    {
+      "caption": "6 - 4 = 2, so 2 is the missing number.",
+      "visual": { "type": "array", "cells": [3, 0, 1], "highlights": [{ "range": [0, 2], "state": "done" }] }
+    }
+  ]
+}
