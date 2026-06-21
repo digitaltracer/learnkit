@@ -184,7 +184,8 @@
             { "id": "plus-one", "title": "Plus One", "difficulty": "easy", "file": "dsa/math-geometry/plus-one.json" },
             { "id": "happy-number", "title": "Happy Number", "difficulty": "easy", "file": "dsa/math-geometry/happy-number.json" },
             { "id": "pow-x-n", "title": "Pow(x, n)", "difficulty": "medium", "file": "dsa/math-geometry/pow-x-n.json" },
-            { "id": "multiply-strings", "title": "Multiply Strings", "difficulty": "medium", "file": "dsa/math-geometry/multiply-strings.json" }
+            { "id": "multiply-strings", "title": "Multiply Strings", "difficulty": "medium", "file": "dsa/math-geometry/multiply-strings.json" },
+            { "id": "rotate-image", "title": "Rotate Image", "difficulty": "medium", "file": "dsa/math-geometry/rotate-image.json" }
           ]
         },
         {

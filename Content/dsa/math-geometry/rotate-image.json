@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "id": "rotate-image",
+  "subject": "dsa",
+  "track": "math-geometry",
+  "title": "Rotate Image",
+  "difficulty": "medium",
+  "summary": "Rotate an n by n matrix 90 degrees clockwise in place by transposing it and then reversing each row.",
+  "problem": "Given an n by n matrix, rotate it 90 degrees clockwise in place. Do not allocate a second matrix.",
+  "example": {
+    "input": "[[1,2,3],[4,5,6],[7,8,9]]",
+    "output": "[[7,4,1],[8,5,2],[9,6,3]]"
+  },
+  "steps": [
+    {
+      "caption": "Goal: rotate this matrix 90 degrees clockwise in place. Trick: transpose it, then reverse each row.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      }
+    },
+    {
+      "caption": "Transpose: swap cell (i,j) with (j,i). The diagonal stays put.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 4, 7], [2, 5, 8], [3, 6, 9]],
+        "highlights": [
+          {"row": 0, "col": 0, "state": "active"},
+          {"row": 1, "col": 1, "state": "active"},
+          {"row": 2, "col": 2, "state": "active"}
+        ]
+      }
+    },
+    {
+      "caption": "Now reverse each row left to right. That completes the clockwise turn.",
+      "visual": {
+        "type": "grid",
+        "rows": [[7, 4, 1], [8, 5, 2], [9, 6, 3]],
+        "highlights": [
+          {"rows": [0, 2], "cols": [0, 2], "state": "match"}
+        ]
+      }
+    },
+    {
+      "caption": "Done. The matrix is rotated 90 degrees clockwise.",
+      "visual": {
+        "type": "grid",
+        "rows": [[7, 4, 1], [8, 5, 2], [9, 6, 3]],
+        "highlights": [
+          {"rows": [0, 2], "cols": [0, 2], "state": "done"}
+        ]
+      }
+    }
+  ]
+}
