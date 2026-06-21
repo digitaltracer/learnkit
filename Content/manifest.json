@@ -348,7 +348,8 @@
             { "id": "subsets-ii", "title": "Subsets II", "difficulty": "medium", "file": "dsa/backtracking/subsets-ii.json" },
             { "id": "palindrome-partitioning", "title": "Palindrome Partitioning", "difficulty": "medium", "file": "dsa/backtracking/palindrome-partitioning.json" },
             { "id": "letter-combinations-of-a-phone-number", "title": "Letter Combinations of a Phone Number", "difficulty": "medium", "file": "dsa/backtracking/letter-combinations-of-a-phone-number.json" },
-            { "id": "word-search", "title": "Word Search", "difficulty": "medium", "file": "dsa/backtracking/word-search.json" }
+            { "id": "word-search", "title": "Word Search", "difficulty": "medium", "file": "dsa/backtracking/word-search.json" },
+            { "id": "n-queens", "title": "N-Queens", "difficulty": "hard", "file": "dsa/backtracking/n-queens.json" }
           ]
         },
         {

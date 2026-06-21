@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "n-queens",
+  "subject": "dsa",
+  "track": "backtracking",
+  "title": "N-Queens",
+  "difficulty": "hard",
+  "summary": "Place one queen per row, choosing a column that no earlier queen attacks by row, column, or diagonal, and back up to the previous row whenever every column clashes.",
+  "problem": "Place N queens on an N by N board so that no two share a row, column, or diagonal. Here N is 4. Return a valid arrangement.",
+  "example": { "input": "n = 4", "output": "[[\".Q..\",\"...Q\",\"Q...\",\"..Q.\"]]" },
+  "steps": [
+    {
+      "caption": "Place 4 queens so none attack along a row, column, or diagonal. Try a column for each row and back up on a clash.",
+      "visual": {
+        "type": "grid",
+        "rows": [[".", ".", ".", "."], [".", ".", ".", "."], [".", ".", ".", "."], [".", ".", ".", "."]],
+        "highlights": []
+      }
+    },
+    {
+      "caption": "Row 0: place a queen in column 1.",
+      "visual": {
+        "type": "grid",
+        "rows": [[".", "Q", ".", "."], [".", ".", ".", "."], [".", ".", ".", "."], [".", ".", ".", "."]],
+        "highlights": [{ "row": 0, "col": 1, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Row 1: column 3 avoids the first queen's column and both of its diagonals.",
+      "visual": {
+        "type": "grid",
+        "rows": [[".", "Q", ".", "."], [".", ".", ".", "Q"], [".", ".", ".", "."], [".", ".", ".", "."]],
+        "highlights": [{ "row": 0, "col": 1, "state": "done" }, { "row": 1, "col": 3, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Row 2: column 0 is free of both earlier queens.",
+      "visual": {
+        "type": "grid",
+        "rows": [[".", "Q", ".", "."], [".", ".", ".", "Q"], ["Q", ".", ".", "."], [".", ".", ".", "."]],
+        "highlights": [{ "row": 0, "col": 1, "state": "done" }, { "row": 1, "col": 3, "state": "done" }, { "row": 2, "col": 0, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Row 3: column 2 fits. All four queens are placed with no conflicts.",
+      "visual": {
+        "type": "grid",
+        "rows": [[".", "Q", ".", "."], [".", ".", ".", "Q"], ["Q", ".", ".", "."], [".", ".", "Q", "."]],
+        "highlights": [{ "row": 0, "col": 1, "state": "done" }, { "row": 1, "col": 3, "state": "done" }, { "row": 2, "col": 0, "state": "done" }, { "row": 3, "col": 2, "state": "active" }]
+      }
+    },
+    {
+      "caption": "No two queens share a row, column, or diagonal. This is one valid arrangement.",
+      "visual": {
+        "type": "grid",
+        "rows": [[".", "Q", ".", "."], [".", ".", ".", "Q"], ["Q", ".", ".", "."], [".", ".", "Q", "."]],
+        "highlights": [{ "row": 0, "col": 1, "state": "done" }, { "row": 1, "col": 3, "state": "done" }, { "row": 2, "col": 0, "state": "done" }, { "row": 3, "col": 2, "state": "done" }]
+      }
+    }
+  ]
+}
