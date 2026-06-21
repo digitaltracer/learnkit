@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "id": "reconstruct-itinerary",
+  "subject": "dsa",
+  "track": "graphs",
+  "title": "Reconstruct Itinerary",
+  "difficulty": "hard",
+  "summary": "Use every flight ticket exactly once from JFK, building one itinerary with Hierholzer's algorithm.",
+  "problem": "Given a list of airline tickets where each ticket is [from, to], reconstruct an itinerary that uses every ticket exactly once and starts at JFK. When there is more than one valid choice, take the airport that is alphabetically smaller first. The itinerary is an Eulerian path found with Hierholzer's algorithm.",
+  "example": {
+    "input": "[[\"JFK\",\"SFO\"],[\"JFK\",\"ATL\"],[\"SFO\",\"ATL\"],[\"ATL\",\"JFK\"],[\"ATL\",\"SFO\"]]",
+    "output": "[\"JFK\",\"ATL\",\"JFK\",\"SFO\",\"ATL\",\"SFO\"]"
+  },
+  "steps": [
+    {
+      "caption": "Use every ticket once from JFK, choosing the alphabetically smaller airport at each choice.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "JFK", "x": 0.5, "y": 0.12},
+          {"id": "ATL", "x": 0.2, "y": 0.82},
+          {"id": "SFO", "x": 0.8, "y": 0.82}
+        ],
+        "edges": [
+          {"from": "JFK", "to": "ATL", "directed": true},
+          {"from": "JFK", "to": "SFO", "directed": true},
+          {"from": "ATL", "to": "JFK", "directed": true},
+          {"from": "ATL", "to": "SFO", "directed": true},
+          {"from": "SFO", "to": "ATL", "directed": true}
+        ]
+      }
+    },
+    {
+      "caption": "From JFK, ATL is smaller than SFO, so fly to ATL first.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "JFK", "x": 0.5, "y": 0.12, "state": "done"},
+          {"id": "ATL", "x": 0.2, "y": 0.82, "state": "active", "pointer": "at"},
+          {"id": "SFO", "x": 0.8, "y": 0.82}
+        ],
+        "edges": [
+          {"from": "JFK", "to": "ATL", "directed": true, "state": "done"},
+          {"from": "JFK", "to": "SFO", "directed": true},
+          {"from": "ATL", "to": "JFK", "directed": true},
+          {"from": "ATL", "to": "SFO", "directed": true},
+          {"from": "SFO", "to": "ATL", "directed": true}
+        ]
+      }
+    },
+    {
+      "caption": "From ATL, JFK is smaller than SFO, so fly back to JFK.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "JFK", "x": 0.5, "y": 0.12, "state": "active", "pointer": "at"},
+          {"id": "ATL", "x": 0.2, "y": 0.82, "state": "done"},
+          {"id": "SFO", "x": 0.8, "y": 0.82}
+        ],
+        "edges": [
+          {"from": "JFK", "to": "ATL", "directed": true, "state": "done"},
+          {"from": "JFK", "to": "SFO", "directed": true},
+          {"from": "ATL", "to": "JFK", "directed": true, "state": "done"},
+          {"from": "ATL", "to": "SFO", "directed": true},
+          {"from": "SFO", "to": "ATL", "directed": true}
+        ]
+      }
+    },
+    {
+      "caption": "From JFK, only the ticket to SFO is left, so fly to SFO.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "JFK", "x": 0.5, "y": 0.12, "state": "done"},
+          {"id": "ATL", "x": 0.2, "y": 0.82, "state": "done"},
+          {"id": "SFO", "x": 0.8, "y": 0.82, "state": "active", "pointer": "at"}
+        ],
+        "edges": [
+          {"from": "JFK", "to": "ATL", "directed": true, "state": "done"},
+          {"from": "JFK", "to": "SFO", "directed": true, "state": "done"},
+          {"from": "ATL", "to": "JFK", "directed": true, "state": "done"},
+          {"from": "ATL", "to": "SFO", "directed": true},
+          {"from": "SFO", "to": "ATL", "directed": true}
+        ]
+      }
+    },
+    {
+      "caption": "From SFO, the only ticket goes to ATL, so fly to ATL.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "JFK", "x": 0.5, "y": 0.12, "state": "done"},
+          {"id": "ATL", "x": 0.2, "y": 0.82, "state": "active", "pointer": "at"},
+          {"id": "SFO", "x": 0.8, "y": 0.82, "state": "done"}
+        ],
+        "edges": [
+          {"from": "JFK", "to": "ATL", "directed": true, "state": "done"},
+          {"from": "JFK", "to": "SFO", "directed": true, "state": "done"},
+          {"from": "ATL", "to": "JFK", "directed": true, "state": "done"},
+          {"from": "ATL", "to": "SFO", "directed": true},
+          {"from": "SFO", "to": "ATL", "directed": true, "state": "done"}
+        ]
+      }
+    },
+    {
+      "caption": "From ATL, the last ticket goes to SFO, so fly to SFO.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "JFK", "x": 0.5, "y": 0.12, "state": "done"},
+          {"id": "ATL", "x": 0.2, "y": 0.82, "state": "done"},
+          {"id": "SFO", "x": 0.8, "y": 0.82, "state": "active", "pointer": "at"}
+        ],
+        "edges": [
+          {"from": "JFK", "to": "ATL", "directed": true, "state": "done"},
+          {"from": "JFK", "to": "SFO", "directed": true, "state": "done"},
+          {"from": "ATL", "to": "JFK", "directed": true, "state": "done"},
+          {"from": "ATL", "to": "SFO", "directed": true, "state": "done"},
+          {"from": "SFO", "to": "ATL", "directed": true, "state": "done"}
+        ]
+      }
+    },
+    {
+      "caption": "Done. The itinerary JFK to ATL to JFK to SFO to ATL to SFO uses all 5 flights.",
+      "visual": {
+        "type": "graph",
+        "nodes": [
+          {"id": "JFK", "x": 0.5, "y": 0.12, "state": "done"},
+          {"id": "ATL", "x": 0.2, "y": 0.82, "state": "done"},
+          {"id": "SFO", "x": 0.8, "y": 0.82, "state": "done"}
+        ],
+        "edges": [
+          {"from": "JFK", "to": "ATL", "directed": true, "state": "done"},
+          {"from": "JFK", "to": "SFO", "directed": true, "state": "done"},
+          {"from": "ATL", "to": "JFK", "directed": true, "state": "done"},
+          {"from": "ATL", "to": "SFO", "directed": true, "state": "done"},
+          {"from": "SFO", "to": "ATL", "directed": true, "state": "done"}
+        ]
+      }
+    }
+  ]
+}
