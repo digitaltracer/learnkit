@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "id": "median-of-two-sorted-arrays",
+  "subject": "dsa",
+  "track": "binary-search",
+  "title": "Median of Two Sorted Arrays",
+  "difficulty": "hard",
+  "summary": "Partition both arrays so the left half holds half the elements and every left value is at most every right value. The boundary values give the median in log time.",
+  "problem": "Find the median of two sorted arrays in log time by partitioning both so the left half holds half the elements and every left value is at most every right value.",
+  "example": { "input": "nums1 = [1,4,7], nums2 = [2,5,6]", "output": "4.5" },
+  "steps": [
+    {
+      "caption": "Goal: find the median of two sorted arrays. Total is 6, so the left half needs 3 elements.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 4, 7], [2, 5, 6]]
+      }
+    },
+    {
+      "caption": "Put 2 from nums1 and 1 from nums2 into the left half. Left holds 1, 4 from row 0 and 2 from row 1.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 4, 7], [2, 5, 6]],
+        "highlights": [
+          {"row": 0, "col": 0, "state": "active"},
+          {"row": 0, "col": 1, "state": "active"},
+          {"row": 1, "col": 0, "state": "active"}
+        ]
+      }
+    },
+    {
+      "caption": "Check the boundary: max of left is 4, min of right is 5. Since 4 is at most 5, the partition is correct.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 4, 7], [2, 5, 6]],
+        "highlights": [
+          {"row": 0, "col": 1, "state": "match"},
+          {"row": 1, "col": 1, "state": "match"}
+        ]
+      }
+    },
+    {
+      "caption": "Done. The total is even, so the median is the average of the boundary values: (4 + 5) / 2 = 4.5.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 4, 7], [2, 5, 6]],
+        "highlights": [
+          {"row": 0, "col": 1, "state": "done"},
+          {"row": 1, "col": 1, "state": "done"}
+        ]
+      }
+    }
+  ]
+}

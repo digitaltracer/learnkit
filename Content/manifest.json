@@ -76,7 +76,8 @@
             { "id": "search-in-rotated-sorted-array", "title": "Search in Rotated Sorted Array", "difficulty": "medium", "file": "dsa/binary-search/search-in-rotated-sorted-array.json" },
             { "id": "koko-eating-bananas", "title": "Koko Eating Bananas", "difficulty": "medium", "file": "dsa/binary-search/koko-eating-bananas.json" },
             { "id": "find-minimum-in-rotated-sorted-array", "title": "Find Minimum in Rotated Sorted Array", "difficulty": "medium", "file": "dsa/binary-search/find-minimum-in-rotated-sorted-array.json" },
-            { "id": "search-a-2d-matrix", "title": "Search a 2D Matrix", "difficulty": "medium", "file": "dsa/binary-search/search-a-2d-matrix.json" }
+            { "id": "search-a-2d-matrix", "title": "Search a 2D Matrix", "difficulty": "medium", "file": "dsa/binary-search/search-a-2d-matrix.json" },
+            { "id": "median-of-two-sorted-arrays", "title": "Median of Two Sorted Arrays", "difficulty": "hard", "file": "dsa/binary-search/median-of-two-sorted-arrays.json" }
           ]
         },
         {
