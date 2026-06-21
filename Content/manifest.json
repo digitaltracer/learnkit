@@ -51,7 +51,8 @@
             { "id": "longest-substring-without-repeating-characters", "title": "Longest Substring Without Repeating Characters", "difficulty": "medium", "file": "dsa/sliding-window/longest-substring-without-repeating-characters.json" },
             { "id": "longest-repeating-character-replacement", "title": "Longest Repeating Character Replacement", "difficulty": "medium", "file": "dsa/sliding-window/longest-repeating-character-replacement.json" },
             { "id": "permutation-in-string", "title": "Permutation in String", "difficulty": "medium", "file": "dsa/sliding-window/permutation-in-string.json" },
-            { "id": "minimum-window-substring", "title": "Minimum Window Substring", "difficulty": "hard", "file": "dsa/sliding-window/minimum-window-substring.json" }
+            { "id": "minimum-window-substring", "title": "Minimum Window Substring", "difficulty": "hard", "file": "dsa/sliding-window/minimum-window-substring.json" },
+            { "id": "sliding-window-maximum", "title": "Sliding Window Maximum", "difficulty": "hard", "file": "dsa/sliding-window/sliding-window-maximum.json" }
           ]
         },
         {

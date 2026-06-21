@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "sliding-window-maximum",
+  "subject": "dsa",
+  "track": "sliding-window",
+  "title": "Sliding Window Maximum",
+  "difficulty": "hard",
+  "summary": "Keep a deque of indices whose values decrease front-to-back, so the front is always the window's max. As the window slides, drop indices that fell out of range and pop smaller values off the back before pushing the new one.",
+  "problem": "Given an array and a window size k, report the maximum of every contiguous window of size k.",
+  "example": { "input": "nums = [1, 3, -1, -3, 5], k = 3", "output": "[3, 3, 5]" },
+  "steps": [
+    {
+      "caption": "Report the max of every size-3 window of nums. A deque keeps useful indices in decreasing value, so its front is always the current max.",
+      "visual": { "type": "array", "cells": [1, 3, -1, -3, 5] }
+    },
+    {
+      "caption": "First window [1, 3, -1] covers indices 0 to 2. The deque front points at 3, so the window max is 3.",
+      "visual": { "type": "array", "cells": [1, 3, -1, -3, 5], "pointers": [{ "label": "max", "index": 1 }], "highlights": [{ "range": [0, 2], "state": "active" }] }
+    },
+    {
+      "caption": "Slide right to [3, -1, -3], indices 1 to 3. The 1 at index 0 left the window, but 3 still leads, so the max is still 3.",
+      "visual": { "type": "array", "cells": [1, 3, -1, -3, 5], "pointers": [{ "label": "max", "index": 1 }], "highlights": [{ "range": [1, 3], "state": "active" }] }
+    },
+    {
+      "caption": "Slide to [-1, -3, 5], indices 2 to 4. 5 is bigger than every earlier candidate, so they pop off the back and 5 becomes the new max.",
+      "visual": { "type": "array", "cells": [1, 3, -1, -3, 5], "pointers": [{ "label": "max", "index": 4 }], "highlights": [{ "range": [2, 4], "state": "active" }] }
+    },
+    {
+      "caption": "Each index is pushed and popped at most once, so the whole sweep is O(n). The window maxima are [3, 3, 5].",
+      "visual": { "type": "array", "cells": [1, 3, -1, -3, 5], "highlights": [{ "index": 1, "state": "done" }, { "index": 4, "state": "done" }] }
+    }
+  ]
+}
