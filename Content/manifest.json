@@ -374,7 +374,8 @@
             { "id": "jump-game-ii", "title": "Jump Game II", "difficulty": "medium", "file": "dsa/greedy/jump-game-ii.json" },
             { "id": "gas-station", "title": "Gas Station", "difficulty": "medium", "file": "dsa/greedy/gas-station.json" },
             { "id": "partition-labels", "title": "Partition Labels", "difficulty": "medium", "file": "dsa/greedy/partition-labels.json" },
-            { "id": "valid-parenthesis-string", "title": "Valid Parenthesis String", "difficulty": "medium", "file": "dsa/greedy/valid-parenthesis-string.json" }
+            { "id": "valid-parenthesis-string", "title": "Valid Parenthesis String", "difficulty": "medium", "file": "dsa/greedy/valid-parenthesis-string.json" },
+            { "id": "hand-of-straights", "title": "Hand of Straights", "difficulty": "medium", "file": "dsa/greedy/hand-of-straights.json" }
           ]
         },
         {

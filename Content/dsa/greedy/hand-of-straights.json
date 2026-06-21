@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "hand-of-straights",
+  "subject": "dsa",
+  "track": "greedy",
+  "title": "Hand of Straights",
+  "difficulty": "medium",
+  "summary": "Sort the cards, then greedily build a run starting from the smallest card left. The smallest card must anchor some group, so its run is forced; if a needed card is missing, the split is impossible.",
+  "problem": "Given a hand of cards and a groupSize, decide if the cards can be split into groups of that many consecutive numbers.",
+  "example": { "input": "hand = [1,2,3,2,3,4], groupSize = 3", "output": "true" },
+  "steps": [
+    {
+      "caption": "Can these cards split into groups of 3 consecutive numbers? Sort first, then greedily build a run starting from the smallest card left.",
+      "visual": { "type": "array", "cells": [1, 2, 2, 3, 3, 4] }
+    },
+    {
+      "caption": "The smallest card is 1. To use it we need 1, 2, 3 for a run of three.",
+      "visual": { "type": "array", "cells": [1, 2, 2, 3, 3, 4], "pointers": [{ "label": "lo", "index": 0 }], "highlights": [{ "index": 0, "state": "active" }] }
+    },
+    {
+      "caption": "Found a 2 and a 3, so the first group {1, 2, 3} is complete.",
+      "visual": { "type": "array", "cells": [1, 2, 2, 3, 3, 4], "highlights": [{ "index": 0, "state": "match" }, { "index": 1, "state": "match" }, { "index": 3, "state": "match" }] }
+    },
+    {
+      "caption": "The smallest card left is the other 2. Build a run 2, 3, 4 starting from it.",
+      "visual": { "type": "array", "cells": [1, 2, 2, 3, 3, 4], "pointers": [{ "label": "lo", "index": 2 }], "highlights": [{ "index": 0, "state": "done" }, { "index": 1, "state": "done" }, { "index": 3, "state": "done" }, { "index": 2, "state": "active" }] }
+    },
+    {
+      "caption": "Found a 3 and a 4, so the second group {2, 3, 4} is complete.",
+      "visual": { "type": "array", "cells": [1, 2, 2, 3, 3, 4], "highlights": [{ "index": 0, "state": "done" }, { "index": 1, "state": "done" }, { "index": 3, "state": "done" }, { "index": 2, "state": "match" }, { "index": 4, "state": "match" }, { "index": 5, "state": "match" }] }
+    },
+    {
+      "caption": "Every card landed in a run of 3 consecutive numbers, so the split works. Answer: true.",
+      "visual": { "type": "array", "cells": [1, 2, 2, 3, 3, 4], "highlights": [{ "range": [0, 5], "state": "done" }] }
+    }
+  ]
+}
