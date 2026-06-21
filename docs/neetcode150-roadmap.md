@@ -85,7 +85,7 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 - [ ] Median of Two Sorted Arrays (H) — two arrays + partition
 
 **New track: Arrays & Hashing** (array-friendly members only)
-- [ ] Contains Duplicate (E)
+- [x] Contains Duplicate (E) _(2026-06-21)_
 - [ ] Valid Anagram (E) — sort-and-compare framing
 - [ ] Encode and Decode Strings (M) — length-prefix
 - [ ] Product of Array Except Self (M) — prefix/suffix passes

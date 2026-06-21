@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "id": "contains-duplicate",
+  "subject": "dsa",
+  "track": "arrays-hashing",
+  "title": "Contains Duplicate",
+  "difficulty": "easy",
+  "summary": "Keep a set of the values seen so far. For each number, a hit means a repeat; otherwise add it and move on.",
+  "problem": "Return true if any value appears at least twice in nums, and false if every value is distinct.",
+  "example": { "input": "nums = [1, 2, 3, 1]", "output": "true" },
+  "steps": [
+    {
+      "caption": "Walk through nums once, remembering every value in a set. The first value we meet that's already in the set is a duplicate.",
+      "visual": { "type": "hashmap" }
+    },
+    {
+      "caption": "First is 1 (index 0). The set is empty, so 1 is a miss. Add it, recording where we first saw it.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": 1, "value": 0, "state": "active" } ],
+        "probe": { "key": 1, "found": false }
+      }
+    },
+    {
+      "caption": "Next is 2 (index 1). Not in the set yet — a miss. Add 2.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": 1, "value": 0 }, { "key": 2, "value": 1, "state": "active" } ],
+        "probe": { "key": 2, "found": false }
+      }
+    },
+    {
+      "caption": "Then 3 (index 2). Still new — a miss. Add 3.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": 1, "value": 0 }, { "key": 2, "value": 1 }, { "key": 3, "value": 2, "state": "active" } ],
+        "probe": { "key": 3, "found": false }
+      }
+    },
+    {
+      "caption": "Now 1 again (index 3). Look it up — hit! 1 is already in the set, first seen at index 0.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": 1, "value": 0, "state": "match" }, { "key": 2, "value": 1 }, { "key": 3, "value": 2 } ],
+        "probe": { "key": 1, "found": true }
+      }
+    },
+    {
+      "caption": "A value repeated, so we stop and return true. Reaching the end with no hit would mean every value is distinct — false.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": 1, "value": 0, "state": "done" }, { "key": 2, "value": 1 }, { "key": 3, "value": 2 } ]
+      }
+    }
+  ]
+}
