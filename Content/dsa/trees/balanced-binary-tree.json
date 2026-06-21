@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "id": "balanced-binary-tree",
+  "subject": "dsa",
+  "track": "trees",
+  "title": "Balanced Binary Tree",
+  "difficulty": "easy",
+  "summary": "Compute heights bottom-up, and at each node check that the two subtree heights differ by at most 1. One failing node makes the whole tree unbalanced.",
+  "problem": "Return true if the tree is height-balanced: for every node, the left and right subtree heights differ by no more than 1.",
+  "example": { "input": "[3, 9, 20, null, null, 15, 7]", "output": "true" },
+  "steps": [
+    {
+      "caption": "Balanced means at every node the two subtree heights differ by at most 1. Check this while computing heights bottom-up.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "left": { "value": 9 },
+          "right": { "value": 20, "left": { "value": 15 }, "right": { "value": 7 } }
+        }
+      }
+    },
+    {
+      "caption": "Leaf 9 has height 1 and no children to compare, so it is trivially balanced.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "left": { "value": 9, "state": "active", "pointer": "1" },
+          "right": { "value": 20, "left": { "value": 15 }, "right": { "value": 7 } }
+        }
+      }
+    },
+    {
+      "caption": "Leaves 15 and 7 are height 1 each, also balanced.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "left": { "value": 9, "state": "done", "pointer": "1" },
+          "right": { "value": 20, "left": { "value": 15, "state": "active", "pointer": "1" }, "right": { "value": 7, "state": "active", "pointer": "1" } }
+        }
+      }
+    },
+    {
+      "caption": "Node 20: left height 1, right height 1, difference 0 — OK. Its height is 1 + max(1, 1) = 2.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "left": { "value": 9, "state": "done", "pointer": "1" },
+          "right": { "value": 20, "state": "active", "pointer": "2", "left": { "value": 15, "state": "compare", "pointer": "1" }, "right": { "value": 7, "state": "compare", "pointer": "1" } }
+        }
+      }
+    },
+    {
+      "caption": "Root 3: left height 1 (from 9), right height 2 (from 20). They differ by 1 — within the limit, so OK. Height = 3.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3, "state": "active", "pointer": "3",
+          "left": { "value": 9, "state": "compare", "pointer": "1" },
+          "right": { "value": 20, "state": "compare", "pointer": "2", "left": { "value": 15, "pointer": "1" }, "right": { "value": 7, "pointer": "1" } }
+        }
+      }
+    },
+    {
+      "caption": "Every node's two subtrees differed by at most 1, so the tree is height-balanced — return true.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3, "state": "done",
+          "left": { "value": 9, "state": "done" },
+          "right": { "value": 20, "state": "done", "left": { "value": 15, "state": "done" }, "right": { "value": 7, "state": "done" } }
+        }
+      }
+    }
+  ]
+}
