@@ -136,9 +136,12 @@ struct TrackFeedView: View {
     }
 
     /// Non-optional view over `visibleID` for the Picker: reading gives the current
-    /// page; writing scrolls there via `.scrollPosition`.
+    /// page; writing scrolls there via `.scrollPosition`. The write is animated so
+    /// the paging behavior settles the jump exactly on the target page — without a
+    /// transaction the programmatic scroll can come to rest between two pages.
     private var jumpSelection: Binding<String> {
-        Binding(get: { visibleID ?? defaultID }, set: { visibleID = $0 })
+        Binding(get: { visibleID ?? defaultID },
+                set: { newValue in withAnimation(.easeInOut(duration: 0.35)) { visibleID = newValue } })
     }
 
     /// One feed page sized to exactly the ScrollView's paging stride: the content
@@ -149,6 +152,10 @@ struct TrackFeedView: View {
         content
             .frame(width: proxy.size.width, height: proxy.size.height)
             .padding(.bottom, proxy.safeAreaInsets.bottom)
+            // Opaque, so a page can never bleed into a neighbour: while a jump
+            // scroll settles, or when content slides under the translucent nav
+            // bar, you see this page's background — never the lesson behind it.
+            .background(.background)
             .clipped()
     }
 }
