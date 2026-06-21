@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "gas-station",
+  "subject": "dsa",
+  "track": "greedy",
+  "title": "Gas Station",
+  "difficulty": "medium",
+  "summary": "Look at net = gas - cost. A loop is possible only if the total net is non-negative, and then the unique start is just after the last point where the running tank dipped below zero.",
+  "problem": "At each station you gain gas[i] and spend cost[i] to reach the next. Find the starting station from which you can complete the loop, or -1.",
+  "example": { "input": "gas = [1,2,3,4,5], cost = [3,4,5,1,2]", "output": "3" },
+  "steps": [
+    {
+      "caption": "At station i you gain gas[i] and pay cost[i] to move on. Work with net = gas - cost: [-2, -2, -2, 3, 3]. A full loop needs the total net to be >= 0.",
+      "visual": { "type": "array", "cells": [-2, -2, -2, 3, 3] }
+    },
+    {
+      "caption": "The total net here is 0, so a solution exists and is unique. Now find it by tracking the tank, resetting the start whenever it goes negative.",
+      "visual": { "type": "array", "cells": [-2, -2, -2, 3, 3] }
+    },
+    {
+      "caption": "Begin at index 0. Across stations 0, 1, 2 the running tank keeps falling below zero, so none of them can be the start.",
+      "visual": { "type": "array", "cells": [-2, -2, -2, 3, 3], "highlights": [{ "range": [0, 2], "state": "mismatch" }] }
+    },
+    {
+      "caption": "Each time the tank dips below 0, the start must be the very next station. That moves the candidate start to index 3.",
+      "visual": { "type": "array", "cells": [-2, -2, -2, 3, 3], "pointers": [{ "label": "st", "index": 3 }], "highlights": [{ "index": 3, "state": "active" }] }
+    },
+    {
+      "caption": "From index 3 onward the tank only rises: 3, then 6. It never goes negative.",
+      "visual": { "type": "array", "cells": [-2, -2, -2, 3, 3], "highlights": [{ "range": [3, 4], "state": "match" }] }
+    },
+    {
+      "caption": "Since the total net is non-negative, station 3 completes the loop. The answer is to start at index 3.",
+      "visual": { "type": "array", "cells": [-2, -2, -2, 3, 3], "highlights": [{ "index": 3, "state": "done" }] }
+    }
+  ]
+}
