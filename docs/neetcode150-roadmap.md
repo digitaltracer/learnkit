@@ -1,6 +1,6 @@
 # NeetCode 150 — LearnKit Content Roadmap
 
-_Status snapshot: 2026-06-21. Source list: https://neetcode.io/practice/practice/neetcode150_
+_Status snapshot: 2026-06-22 — **COMPLETE, 150 / 150**. Source list: https://neetcode.io/practice/practice/neetcode150_
 
 This is the master backlog for covering the NeetCode 150 as LearnKit Lessons.
 Pick up **one checkbox at a time**; each is sized to be a single, self-contained
@@ -30,17 +30,18 @@ So each problem is tagged by what it needs before it can be authored:
 
 | Bucket | Count |
 |---|---|
-| ✅ Done | 121 / 150 |
-| 🟡 Remaining (heap + trie need engine; rest is authoring) | 29 |
+| ✅ Done | 150 / 150 |
+| 🎉 Remaining | 0 |
 | **Total** | **150** |
 
 _Primitives shipped: `array`, `grid`, `tree`, `list`, `graph`, `hashmap`, `intervals`, `rtree`._
-_All renderers the NeetCode 150 needs now exist — Heap and Tries reuse `tree`. The
-rest is largely authoring (chore-work), one representative already proven per primitive._
+_No new primitives were needed for the final set: **heaps reuse `tree`** (a heap is a
+complete binary tree) and **tries reuse `rtree`** (n-ary, each edge a letter)._
 
-Reaching **59 / 150 with zero engine work** is possible — that's Phase 1.
+**All 150 are now shipped as Lessons in `Content/`.** The tables below are kept for
+historical context — they describe the original build order, not remaining work.
 
-Blocked work, by primitive that unlocks it:
+Blocked work, by primitive that unlocked it (historical):
 
 | Primitive | Unlocks |
 |---|---|
@@ -81,7 +82,7 @@ Swift, pure authoring on the established pipeline. Grouped by destination track.
 **Extend existing track: Binary Search**
 - [x] Koko Eating Bananas (M) — binary search on the answer _(2026-06-21)_
 - [x] Find Minimum in Rotated Sorted Array (M) _(2026-06-21)_
-- [ ] Median of Two Sorted Arrays (H) — two arrays + partition
+- [x] Median of Two Sorted Arrays (H) — two arrays + partition _(2026-06-22)_
 
 **New track: Arrays & Hashing** (array-friendly members only)
 - [x] Contains Duplicate (E) _(2026-06-21)_
@@ -146,35 +147,35 @@ _Math & Geometry (matrices)_
 
 _Binary Search / Arrays & Hashing on a grid_
 - [x] Search a 2D Matrix (M) _(2026-06-21)_
-- [ ] Valid Sudoku (M)
+- [x] Valid Sudoku (M) _(2026-06-22)_
 
 _Graphs on a grid (BFS/DFS flood fill)_
 - [x] Number of Islands (M) _(2026-06-21)_
 - [x] Max Area of Island (M) _(2026-06-21)_
-- [ ] Pacific Atlantic Water Flow (M)
+- [x] Pacific Atlantic Water Flow (M) _(2026-06-22)_
 - [x] Surrounded Regions (M) _(2026-06-21)_
 - [x] Rotting Oranges (M) _(2026-06-21)_
-- [ ] Walls and Gates (M)
+- [x] Walls and Gates (M) _(2026-06-22)_
 
 _Backtracking on a grid_
 - [x] Word Search (M) _(2026-06-21)_
 - [x] N-Queens (H) _(2026-06-21)_
 
 _Advanced graph on a grid_
-- [ ] Swim in Rising Water (H)
+- [x] Swim in Rising Water (H) _(2026-06-22)_
 
 _New track: 2-D Dynamic Programming (DP table)_
 - [x] Unique Paths (M) _(2026-06-21)_
 - [x] Longest Common Subsequence (M) _(2026-06-21)_
-- [ ] Best Time to Buy and Sell Stock with Cooldown (M)
+- [x] Best Time to Buy and Sell Stock with Cooldown (M) _(2026-06-22)_
 - [x] Coin Change II (M) _(2026-06-21)_
-- [ ] Target Sum (M)
-- [ ] Interleaving String (M)
+- [x] Target Sum (M) _(2026-06-22)_
+- [x] Interleaving String (M) _(2026-06-22)_
 - [x] Longest Increasing Path in a Matrix (H) _(2026-06-21)_
-- [ ] Distinct Subsequences (H)
+- [x] Distinct Subsequences (H) _(2026-06-22)_
 - [x] Edit Distance (M) _(2026-06-21)_
-- [ ] Burst Balloons (H)
-- [ ] Regular Expression Matching (H)
+- [x] Burst Balloons (H) _(2026-06-22)_
+- [x] Regular Expression Matching (H) _(2026-06-22)_
 
 ## Phase 3 — `tree` primitive (Trees: 15)
 
@@ -187,8 +188,8 @@ _New track: 2-D Dynamic Programming (DP table)_
 - [x] Maximum Depth of Binary Tree (E) _(2026-06-21)_
 - [x] Diameter of Binary Tree (E) _(2026-06-21)_
 - [x] Balanced Binary Tree (E) _(2026-06-21)_
-- [ ] Same Tree (E)
-- [ ] Subtree of Another Tree (E)
+- [x] Same Tree (E) _(2026-06-22)_
+- [x] Subtree of Another Tree (E) _(2026-06-22)_
 - [x] Lowest Common Ancestor of a BST (M) _(2026-06-21)_
 - [x] Binary Tree Level Order Traversal (M) _(2026-06-21)_
 - [x] Binary Tree Right Side View (M) _(2026-06-21)_
@@ -197,7 +198,7 @@ _New track: 2-D Dynamic Programming (DP table)_
 - [x] Kth Smallest Element in a BST (M) _(2026-06-21)_
 - [x] Construct Binary Tree from Preorder and Inorder Traversal (M) _(2026-06-21)_
 - [x] Binary Tree Maximum Path Sum (H) _(2026-06-21)_
-- [ ] Serialize and Deserialize Binary Tree (H)
+- [x] Serialize and Deserialize Binary Tree (H) _(2026-06-22)_
 
 ## Phase 4 — `list` primitive (Linked List: 10)
 
@@ -211,11 +212,11 @@ _New track: 2-D Dynamic Programming (DP table)_
 - [x] Linked List Cycle (E) _(2026-06-21)_
 - [x] Reorder List (M) _(2026-06-21)_
 - [x] Remove Nth Node From End of List (M) _(2026-06-21)_
-- [ ] Copy List With Random Pointer (M)
+- [x] Copy List With Random Pointer (M) _(2026-06-22)_
 - [x] Add Two Numbers (M) _(2026-06-21)_
 - [x] Reverse Nodes in K-Group (H) _(2026-06-21)_
-- [ ] Merge K Sorted Lists (H) — pairs with `heap`
-- [ ] LRU Cache (M) — pairs with `hashmap` (do after Phase 6)
+- [x] Merge K Sorted Lists (H) — pairs with `heap` _(2026-06-22)_
+- [x] LRU Cache (M) — pairs with `hashmap` (do after Phase 6) _(2026-06-22)_
 
 ## Phase 5 — `graph` primitive (Graphs + Advanced Graphs: 12)
 
@@ -234,9 +235,9 @@ _Graphs_
 
 _Advanced Graphs (weighted / topological)_
 - [x] Network Delay Time (M) _(2026-06-21)_
-- [ ] Reconstruct Itinerary (H)
+- [x] Reconstruct Itinerary (H) _(2026-06-22)_
 - [x] Min Cost to Connect Points (M) _(2026-06-21)_
-- [ ] Alien Dictionary (H)
+- [x] Alien Dictionary (H) _(2026-06-22)_
 - [x] Cheapest Flights Within K Stops (M) _(2026-06-21)_
 
 ## Phase 6 — `hashmap` primitive (Arrays & Hashing remainder: 6)
@@ -250,7 +251,7 @@ _Advanced Graphs (weighted / topological)_
 - [x] Longest Consecutive Sequence (M) _(2026-06-21)_
 - [x] Time Based Key-Value Store (M) _(2026-06-21)_
 - [x] Detect Squares (M) _(2026-06-21)_
-- [ ] _(then revisit LRU Cache from Phase 4)_
+- [x] _(LRU Cache shipped in the linked-list track)_ _(2026-06-22)_
 
 ## Phase 7 — Specialty primitives
 
@@ -259,14 +260,14 @@ Each sub-primitive is independent; do in any order.
 **`heap` primitive (Heap / Priority Queue: 7)** — array-backed; could be
 approximated with the `array` primitive (parent/child by index) if a full tree
 view is too much.
-- [ ] **Engine:** `heap` primitive (or array-as-heap convention)
-- [ ] Kth Largest Element in a Stream (E)
-- [ ] Last Stone Weight (E)
-- [ ] K Closest Points to Origin (M)
-- [ ] Kth Largest Element in an Array (M)
-- [ ] Task Scheduler (M)
-- [ ] Design Twitter (M)
-- [ ] Find Median from Data Stream (H) — two heaps
+- [x] **Engine:** `heap` primitive — reused the `tree` primitive (a heap is a complete binary tree); no new renderer _(2026-06-22)_
+- [x] Kth Largest Element in a Stream (E) _(2026-06-22)_
+- [x] Last Stone Weight (E) _(2026-06-22)_
+- [x] K Closest Points to Origin (M) _(2026-06-22)_
+- [x] Kth Largest Element in an Array (M) _(2026-06-22)_
+- [x] Task Scheduler (M) _(2026-06-22)_
+- [x] Design Twitter (M) _(2026-06-22)_
+- [x] Find Median from Data Stream (H) — two heaps _(2026-06-22)_
 
 **`rtree` primitive (Backtracking: 7)** — decision tree with prune highlights.
 - [x] **Engine:** `rtree` primitive — n-ary decision tree, post-order layout,
@@ -290,10 +291,10 @@ view is too much.
 - [x] Minimum Interval to Include Each Query (H) _(2026-06-21)_
 
 **`trie` (extends `tree`) (Tries: 3)**
-- [ ] **Engine:** trie rendering (reuse `tree`)
-- [ ] Implement Trie (Prefix Tree) (M)
-- [ ] Design Add and Search Words Data Structure (M)
-- [ ] Word Search II (H) — needs `trie` + `grid`
+- [x] **Engine:** trie rendering — reused the `rtree` primitive (n-ary, edge = letter); no new renderer _(2026-06-22)_
+- [x] Implement Trie (Prefix Tree) (M) _(2026-06-22)_
+- [x] Design Add and Search Words Data Structure (M) _(2026-06-22)_
+- [x] Word Search II (H) — needs `trie` + `grid` _(2026-06-22)_
 
 ---
 
