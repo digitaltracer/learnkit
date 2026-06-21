@@ -265,7 +265,8 @@
             { "id": "number-of-connected-components-in-an-undirected-graph", "title": "Number of Connected Components in an Undirected Graph", "difficulty": "medium", "file": "dsa/graphs/number-of-connected-components-in-an-undirected-graph.json" },
             { "id": "graph-valid-tree", "title": "Graph Valid Tree", "difficulty": "medium", "file": "dsa/graphs/graph-valid-tree.json" },
             { "id": "max-area-of-island", "title": "Max Area of Island", "difficulty": "medium", "file": "dsa/graphs/max-area-of-island.json" },
-            { "id": "rotting-oranges", "title": "Rotting Oranges", "difficulty": "medium", "file": "dsa/graphs/rotting-oranges.json" }
+            { "id": "rotting-oranges", "title": "Rotting Oranges", "difficulty": "medium", "file": "dsa/graphs/rotting-oranges.json" },
+            { "id": "surrounded-regions", "title": "Surrounded Regions", "difficulty": "medium", "file": "dsa/graphs/surrounded-regions.json" }
           ]
         },
         {

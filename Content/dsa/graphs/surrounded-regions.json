@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "surrounded-regions",
+  "subject": "dsa",
+  "track": "graphs",
+  "title": "Surrounded Regions",
+  "difficulty": "medium",
+  "summary": "Mark every O reachable from the border as safe, then flip the remaining enclosed O cells to X.",
+  "problem": "Flip every region of O not connected to the border into X. Border-connected O cells survive.",
+  "example": { "input": "[[\"X\",\"X\",\"X\",\"X\"],[\"X\",\"O\",\"O\",\"X\"],[\"X\",\"X\",\"O\",\"X\"],[\"X\",\"O\",\"X\",\"X\"]]", "output": "[[\"X\",\"X\",\"X\",\"X\"],[\"X\",\"X\",\"X\",\"X\"],[\"X\",\"X\",\"X\",\"X\"],[\"X\",\"O\",\"X\",\"X\"]]" },
+  "steps": [
+    {
+      "caption": "Capture every O region fully surrounded by X. Any O touching the border survives.",
+      "visual": { "type": "grid", "rows": [["X", "X", "X", "X"], ["X", "O", "O", "X"], ["X", "X", "O", "X"], ["X", "O", "X", "X"]] }
+    },
+    {
+      "caption": "Mark border-safe O first. This O sits on the border, so it and anything joined to it is safe.",
+      "visual": { "type": "grid", "rows": [["X", "X", "X", "X"], ["X", "O", "O", "X"], ["X", "X", "O", "X"], ["X", "O", "X", "X"]], "highlights": [{ "row": 3, "col": 1, "state": "match" }] }
+    },
+    {
+      "caption": "The other O cells cannot be reached from the border. These O are enclosed, so they will be captured.",
+      "visual": { "type": "grid", "rows": [["X", "X", "X", "X"], ["X", "O", "O", "X"], ["X", "X", "O", "X"], ["X", "O", "X", "X"]], "highlights": [{ "row": 3, "col": 1, "state": "match" }, { "row": 1, "col": 1, "state": "mismatch" }, { "row": 1, "col": 2, "state": "mismatch" }, { "row": 2, "col": 2, "state": "mismatch" }] }
+    },
+    {
+      "caption": "Flip the captured cells. The enclosed O become X, and the border O stays.",
+      "visual": { "type": "grid", "rows": [["X", "X", "X", "X"], ["X", "X", "X", "X"], ["X", "X", "X", "X"], ["X", "O", "X", "X"]], "highlights": [{ "row": 3, "col": 1, "state": "done" }] }
+    },
+    {
+      "caption": "Done. Every surrounded region is captured and only the border O survives.",
+      "visual": { "type": "grid", "rows": [["X", "X", "X", "X"], ["X", "X", "X", "X"], ["X", "X", "X", "X"], ["X", "O", "X", "X"]], "highlights": [{ "rows": [0, 3], "cols": [0, 3], "state": "done" }] }
+    }
+  ]
+}
