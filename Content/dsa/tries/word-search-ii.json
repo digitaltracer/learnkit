@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "id": "word-search-ii",
+  "subject": "dsa",
+  "track": "tries",
+  "title": "Word Search II",
+  "difficulty": "hard",
+  "summary": "Build a trie of all the words, then DFS the board once. Following trie edges as you move lets every word be searched at the same time instead of scanning the board per word.",
+  "problem": "Find which of several words appear in a letter board (4-directional moves, no cell reused). Build a trie of the words, then DFS the board following trie edges so all words are searched at once.",
+  "example": { "input": "board = [[\"c\",\"a\",\"t\"],[\"x\",\"r\",\"x\"],[\"x\",\"x\",\"x\"]], words = [\"cat\",\"car\"]", "output": "[\"cat\",\"car\"]" },
+  "steps": [
+    {
+      "caption": "Build a trie of cat and car, then DFS the board following trie edges.",
+      "visual": {
+        "type": "rtree",
+        "root": {
+          "value": "•",
+          "children": [
+            { "value": "c", "edge": "c", "children": [
+              { "value": "a", "edge": "a", "children": [
+                { "value": "t", "edge": "t", "state": "match" },
+                { "value": "r", "edge": "r", "state": "match" }
+              ] }
+            ] }
+          ]
+        }
+      }
+    },
+    {
+      "caption": "Scan the board for a cell matching the root child 'c'. Start the DFS at (0,0).",
+      "visual": {
+        "type": "grid",
+        "rows": [["c", "a", "t"], ["x", "r", "x"], ["x", "x", "x"]],
+        "highlights": [{ "row": 0, "col": 0, "state": "active" }]
+      }
+    },
+    {
+      "caption": "Follow 'a' at (0,1), then 't' at (0,2). The path spells \"cat\".",
+      "visual": {
+        "type": "grid",
+        "rows": [["c", "a", "t"], ["x", "r", "x"], ["x", "x", "x"]],
+        "highlights": [
+          { "row": 0, "col": 0, "state": "match" },
+          { "row": 0, "col": 1, "state": "match" },
+          { "row": 0, "col": 2, "state": "match" }
+        ]
+      }
+    },
+    {
+      "caption": "Backtrack to 'a', then follow 'r' at (1,1). The path spells \"car\".",
+      "visual": {
+        "type": "grid",
+        "rows": [["c", "a", "t"], ["x", "r", "x"], ["x", "x", "x"]],
+        "highlights": [
+          { "row": 0, "col": 0, "state": "match" },
+          { "row": 0, "col": 1, "state": "match" },
+          { "row": 1, "col": 1, "state": "match" }
+        ]
+      }
+    },
+    {
+      "caption": "Done. Both \"cat\" and \"car\" are found.",
+      "visual": {
+        "type": "grid",
+        "rows": [["c", "a", "t"], ["x", "r", "x"], ["x", "x", "x"]],
+        "highlights": [
+          { "row": 0, "col": 0, "state": "done" },
+          { "row": 0, "col": 1, "state": "done" },
+          { "row": 0, "col": 2, "state": "done" },
+          { "row": 1, "col": 1, "state": "done" }
+        ]
+      }
+    }
+  ]
+}
