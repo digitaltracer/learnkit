@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "id": "binary-tree-level-order-traversal",
+  "subject": "dsa",
+  "track": "trees",
+  "title": "Binary Tree Level Order Traversal",
+  "difficulty": "medium",
+  "summary": "Breadth-first search with a queue. Process the whole current level at once, recording its values and enqueuing the next level's children.",
+  "problem": "Return the node values level by level, top to bottom, grouped into one list per level.",
+  "example": { "input": "[3, 9, 20, null, null, 15, 7]", "output": "[[3], [9, 20], [15, 7]]" },
+  "steps": [
+    {
+      "caption": "We want the values grouped by depth. Depth-first recursion mixes levels, so use breadth-first search with a queue instead.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3,
+          "left": { "value": 9 },
+          "right": { "value": 20, "left": { "value": 15 }, "right": { "value": 7 } }
+        }
+      }
+    },
+    {
+      "caption": "Seed the queue with the root. Whatever the queue holds right now is one full level — the first level is just [3].",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3, "state": "active", "pointer": "L0",
+          "left": { "value": 9 },
+          "right": { "value": 20, "left": { "value": 15 }, "right": { "value": 7 } }
+        }
+      }
+    },
+    {
+      "caption": "Record [3], then enqueue its children. The queue now holds the next whole level: [9, 20].",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3, "state": "done",
+          "left": { "value": 9, "state": "active", "pointer": "L1" },
+          "right": { "value": 20, "state": "active", "pointer": "L1", "left": { "value": 15 }, "right": { "value": 7 } }
+        }
+      }
+    },
+    {
+      "caption": "Record [9, 20] and enqueue their children. 9 has none; 20 adds 15 and 7. Next level: [15, 7].",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3, "state": "done",
+          "left": { "value": 9, "state": "done" },
+          "right": { "value": 20, "state": "done", "left": { "value": 15, "state": "active", "pointer": "L2" }, "right": { "value": 7, "state": "active", "pointer": "L2" } }
+        }
+      }
+    },
+    {
+      "caption": "Record [15, 7] — both are leaves, so nothing new is enqueued and the queue empties. Levels top to bottom: [[3], [9, 20], [15, 7]].",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": 3, "state": "done",
+          "left": { "value": 9, "state": "done" },
+          "right": { "value": 20, "state": "done", "left": { "value": 15, "state": "done" }, "right": { "value": 7, "state": "done" } }
+        }
+      }
+    }
+  ]
+}
