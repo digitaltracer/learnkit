@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "id": "target-sum",
+  "subject": "dsa",
+  "track": "2d-dp",
+  "title": "Target Sum",
+  "difficulty": "medium",
+  "summary": "Choosing plus or minus signs to hit a target becomes a subset-sum count. The subset of numbers marked plus must sum to (total + target) / 2, so dp counts subsets reaching that value: keep the count without the number, then add the count that uses it.",
+  "problem": "Count the sign assignments to nums = [1, 1, 2] that sum to target = 0. With total 4 this needs a plus-subset summing to (4 + 0) / 2 = 2. Rows are the numbers added so far (none, +1, +1, +2); columns are sums 0 through 2. dp[i][s] = dp[i-1][s] + dp[i-1][s - num].",
+  "example": { "input": "nums = [1, 1, 2], target = 0", "output": "2" },
+  "steps": [
+    {
+      "caption": "Count subsets summing to 2, which is (total 4 plus target 0) / 2. Columns are sums 0 through 2, and with no numbers there is one way to make 0.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
+      }
+    },
+    {
+      "caption": "Add the first 1. Sum 0 keeps its one way, and sum 1 now has one way by taking this number.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 0, 0], [1, 1, 0], [0, 0, 0], [0, 0, 0]],
+        "highlights": [{ "rows": [1, 1], "cols": [0, 2], "state": "active" }]
+      }
+    },
+    {
+      "caption": "Add the second 1. Sum 1 reaches two ways and sum 2 reaches one way by combining both 1s.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 0, 0], [1, 1, 0], [1, 2, 1], [0, 0, 0]],
+        "highlights": [{ "rows": [2, 2], "cols": [0, 2], "state": "match" }]
+      }
+    },
+    {
+      "caption": "Add the 2. Sum 2 now also counts the lone 2, lifting it to two ways.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 0, 0], [1, 1, 0], [1, 2, 1], [1, 2, 2]],
+        "highlights": [{ "rows": [3, 3], "cols": [0, 2], "state": "match" }]
+      }
+    },
+    {
+      "caption": "The cell at sum 2 is 2, so there are 2 valid sign assignments.",
+      "visual": {
+        "type": "grid",
+        "rows": [[1, 0, 0], [1, 1, 0], [1, 2, 1], [1, 2, 2]],
+        "highlights": [{ "row": 3, "col": 2, "state": "done" }]
+      }
+    }
+  ]
+}
