@@ -348,7 +348,8 @@
             { "id": "house-robber-ii", "title": "House Robber II", "difficulty": "medium", "file": "dsa/1d-dp/house-robber-ii.json" },
             { "id": "longest-increasing-subsequence", "title": "Longest Increasing Subsequence", "difficulty": "medium", "file": "dsa/1d-dp/longest-increasing-subsequence.json" },
             { "id": "word-break", "title": "Word Break", "difficulty": "medium", "file": "dsa/1d-dp/word-break.json" },
-            { "id": "decode-ways", "title": "Decode Ways", "difficulty": "medium", "file": "dsa/1d-dp/decode-ways.json" }
+            { "id": "decode-ways", "title": "Decode Ways", "difficulty": "medium", "file": "dsa/1d-dp/decode-ways.json" },
+            { "id": "partition-equal-subset-sum", "title": "Partition Equal Subset Sum", "difficulty": "medium", "file": "dsa/1d-dp/partition-equal-subset-sum.json" }
           ]
         },
         {
