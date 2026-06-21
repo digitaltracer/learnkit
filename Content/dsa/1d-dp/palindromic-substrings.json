@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "palindromic-substrings",
+  "subject": "dsa",
+  "track": "1d-dp",
+  "title": "Palindromic Substrings",
+  "difficulty": "medium",
+  "summary": "Count palindromic substrings by expanding around every center. Each index is an odd center, each gap an even center; every successful expansion is one more palindrome.",
+  "problem": "Given a string, count how many of its contiguous substrings are palindromes.",
+  "example": { "input": "\"aaa\"", "output": "6" },
+  "steps": [
+    {
+      "caption": "Count all substrings that are palindromes. Expand around every center, and each time both sides match, that is one more palindrome.",
+      "visual": { "type": "array", "cells": ["a", "a", "a"] }
+    },
+    {
+      "caption": "Single characters are always palindromes, so \"a\", \"a\", \"a\" give us 3 to start.",
+      "visual": { "type": "array", "cells": ["a", "a", "a"], "highlights": [{ "range": [0, 2], "state": "match" }] }
+    },
+    {
+      "caption": "Even center between index 0 and 1: \"aa\" matches, bringing the count to 4.",
+      "visual": { "type": "array", "cells": ["a", "a", "a"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 1 }], "highlights": [{ "range": [0, 1], "state": "active" }] }
+    },
+    {
+      "caption": "Even center between index 1 and 2: \"aa\" matches, count 5.",
+      "visual": { "type": "array", "cells": ["a", "a", "a"], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 2 }], "highlights": [{ "range": [1, 2], "state": "active" }] }
+    },
+    {
+      "caption": "Odd center at index 1: expand to index 0 vs index 2, both 'a'. \"aaa\" matches, count 6.",
+      "visual": { "type": "array", "cells": ["a", "a", "a"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 2 }], "highlights": [{ "range": [0, 2], "state": "match" }] }
+    },
+    {
+      "caption": "No center can expand further. The total palindromic substring count is 6.",
+      "visual": { "type": "array", "cells": ["a", "a", "a"], "highlights": [{ "range": [0, 2], "state": "done" }] }
+    }
+  ]
+}
