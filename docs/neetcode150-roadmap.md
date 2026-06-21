@@ -247,7 +247,7 @@ _Advanced Graphs (weighted / topological)_
 
 - [x] Two Sum (E) — first hashmap lesson; complement lookup _(2026-06-17)_
 - [x] Group Anagrams (M) _(2026-06-21)_
-- [ ] Top K Frequent Elements (M) — pairs with bucket/`heap`
+- [x] Top K Frequent Elements (M) — count + bucket sort _(2026-06-21)_
 - [ ] Longest Consecutive Sequence (M)
 - [ ] Time Based Key-Value Store (M)
 - [ ] Detect Squares (M)

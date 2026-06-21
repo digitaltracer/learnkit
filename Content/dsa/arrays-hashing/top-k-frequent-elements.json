@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "id": "top-k-frequent-elements",
+  "subject": "dsa",
+  "track": "arrays-hashing",
+  "title": "Top K Frequent Elements",
+  "difficulty": "medium",
+  "summary": "Count each value, then bucket the values by how often they occur. Scanning buckets from the highest frequency down gives the top k without ever sorting.",
+  "problem": "Return the k values that appear most often in nums.",
+  "example": { "input": "nums = [1, 1, 1, 2, 2, 3], k = 2", "output": "[1, 2]" },
+  "steps": [
+    {
+      "caption": "We want the k = 2 most frequent values in [1,1,1,2,2,3]. First, count how often each value appears.",
+      "visual": { "type": "hashmap" }
+    },
+    {
+      "caption": "One pass builds the counts: 1 appears 3 times, 2 appears twice, 3 once.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": 1, "value": 3, "state": "active" }, { "key": 2, "value": 2, "state": "active" }, { "key": 3, "value": 1, "state": "active" } ]
+      }
+    },
+    {
+      "caption": "Sorting by count is O(n log n). Instead bucket by frequency: position f holds the values seen f times. With n=6 elements, frequencies run 0 to 6.",
+      "visual": { "type": "array", "cells": ["-", "-", "-", "-", "-", "-", "-"] }
+    },
+    {
+      "caption": "Drop each value into its frequency bucket: 3 occurs once goes to bucket 1, 2 occurs twice goes to bucket 2, 1 occurs 3 times goes to bucket 3.",
+      "visual": { "type": "array", "cells": ["-", "3", "2", "1", "-", "-", "-"], "highlights": [{ "index": 1, "state": "active" }, { "index": 2, "state": "active" }, { "index": 3, "state": "active" }] }
+    },
+    {
+      "caption": "Now scan buckets from the highest frequency down, collecting values until we have k=2. Buckets 6, 5, 4 are empty.",
+      "visual": { "type": "array", "cells": ["-", "3", "2", "1", "-", "-", "-"], "pointers": [{ "label": "f", "index": 6 }] }
+    },
+    {
+      "caption": "Bucket 3 holds value 1 — the most frequent. Take it. Collected so far: [1].",
+      "visual": { "type": "array", "cells": ["-", "3", "2", "1", "-", "-", "-"], "pointers": [{ "label": "f", "index": 3 }], "highlights": [{ "index": 3, "state": "match" }] }
+    },
+    {
+      "caption": "Bucket 2 holds value 2. Take it. Collected: [1, 2] — that's k=2, so we can stop.",
+      "visual": { "type": "array", "cells": ["-", "3", "2", "1", "-", "-", "-"], "pointers": [{ "label": "f", "index": 2 }], "highlights": [{ "index": 3, "state": "done" }, { "index": 2, "state": "match" }] }
+    },
+    {
+      "caption": "The two most frequent elements are [1, 2] — found in O(n) with counting and buckets, no sort.",
+      "visual": { "type": "array", "cells": ["-", "3", "2", "1", "-", "-", "-"], "highlights": [{ "index": 2, "state": "done" }, { "index": 3, "state": "done" }] }
+    }
+  ]
+}
