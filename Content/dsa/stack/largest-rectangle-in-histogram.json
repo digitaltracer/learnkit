@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "largest-rectangle-in-histogram",
+  "subject": "dsa",
+  "track": "stack",
+  "title": "Largest Rectangle in Histogram",
+  "difficulty": "hard",
+  "summary": "Keep a stack of bars in increasing height. When a shorter bar arrives, pop the taller ones; each popped bar is the limiting height of a rectangle that stretches across everything still taller than it. Track the largest area seen.",
+  "problem": "Each value is a bar's height in a histogram. Find the area of the largest rectangle that fits entirely under the bars.",
+  "example": { "input": "[2, 1, 5, 6, 2, 3]", "output": "10" },
+  "steps": [
+    {
+      "caption": "Each bar has width 1. Find the largest rectangle under the skyline. A rectangle's height is capped by its shortest bar, so width is the prize.",
+      "visual": { "type": "array", "style": "bars", "cells": [2, 1, 5, 6, 2, 3] }
+    },
+    {
+      "caption": "Scan left to right, keeping a stack of bars in increasing height. While the new bar is shorter than the stack top, pop and measure.",
+      "visual": { "type": "array", "style": "bars", "cells": [2, 1, 5, 6, 2, 3], "pointers": [{ "label": "cur", "index": 4 }], "highlights": [{ "range": [2, 3], "state": "compare" }] }
+    },
+    {
+      "caption": "At index 4 (height 2), bars 6 and 5 are taller and get popped. Bar 6 spans just itself: width 1, area 6.",
+      "visual": { "type": "array", "style": "bars", "cells": [2, 1, 5, 6, 2, 3], "highlights": [{ "index": 3, "state": "compare" }] }
+    },
+    {
+      "caption": "Bar 5 now spans where 6 stood too: height 5 across width 2, area 5 x 2 = 10 — the best so far.",
+      "visual": { "type": "array", "style": "bars", "cells": [2, 1, 5, 6, 2, 3], "highlights": [{ "index": 2, "state": "match" }, { "index": 3, "state": "match" }] }
+    },
+    {
+      "caption": "No later bar forms a bigger rectangle. The largest area is 10: height 5 across the two middle bars.",
+      "visual": { "type": "array", "style": "bars", "cells": [2, 1, 5, 6, 2, 3], "highlights": [{ "index": 2, "state": "done" }, { "index": 3, "state": "done" }] }
+    }
+  ]
+}
