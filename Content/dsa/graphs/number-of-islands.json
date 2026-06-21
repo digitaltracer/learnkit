@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "number-of-islands",
+  "subject": "dsa",
+  "track": "graphs",
+  "title": "Number of Islands",
+  "difficulty": "medium",
+  "summary": "Scan the grid; each time you hit unvisited land, flood-fill its whole connected island and count it once. A grid is just a graph whose neighbors are adjacent cells.",
+  "problem": "Count the islands in a grid of 1s (land) and 0s (water), where an island is land connected horizontally or vertically.",
+  "example": { "input": "[[1,1,0],[0,1,0],[0,0,1]]", "output": "2" },
+  "steps": [
+    {
+      "caption": "Count islands: groups of 1s (land) joined up, down, left, or right. 0s are water. Scan the grid and flood-fill each new island.",
+      "visual": { "type": "grid", "rows": [[1, 1, 0], [0, 1, 0], [0, 0, 1]] }
+    },
+    {
+      "caption": "Scan row by row. The first land we hit, (0,0), starts island #1. Flood-fill outward to all connected land.",
+      "visual": { "type": "grid", "rows": [[1, 1, 0], [0, 1, 0], [0, 0, 1]], "highlights": [{ "row": 0, "col": 0, "state": "active" }] }
+    },
+    {
+      "caption": "The fill spreads right to (0,1) and down to (1,1) — three connected cells. Mark them visited. Islands so far: 1.",
+      "visual": { "type": "grid", "rows": [[1, 1, 0], [0, 1, 0], [0, 0, 1]], "highlights": [{ "row": 0, "col": 0, "state": "match" }, { "row": 0, "col": 1, "state": "match" }, { "row": 1, "col": 1, "state": "match" }] }
+    },
+    {
+      "caption": "Keep scanning past visited land and water. At (2,2) we find unvisited land — island #2. Flood-fill it.",
+      "visual": { "type": "grid", "rows": [[1, 1, 0], [0, 1, 0], [0, 0, 1]], "highlights": [{ "row": 0, "col": 0, "state": "done" }, { "row": 0, "col": 1, "state": "done" }, { "row": 1, "col": 1, "state": "done" }, { "row": 2, "col": 2, "state": "active" }] }
+    },
+    {
+      "caption": "(2,2) has no land neighbors, so island #2 is a single cell. Islands so far: 2.",
+      "visual": { "type": "grid", "rows": [[1, 1, 0], [0, 1, 0], [0, 0, 1]], "highlights": [{ "row": 0, "col": 0, "state": "done" }, { "row": 0, "col": 1, "state": "done" }, { "row": 1, "col": 1, "state": "done" }, { "row": 2, "col": 2, "state": "match" }] }
+    },
+    {
+      "caption": "Every cell has been scanned. Total islands = 2.",
+      "visual": { "type": "grid", "rows": [[1, 1, 0], [0, 1, 0], [0, 0, 1]], "highlights": [{ "row": 0, "col": 0, "state": "done" }, { "row": 0, "col": 1, "state": "done" }, { "row": 1, "col": 1, "state": "done" }, { "row": 2, "col": 2, "state": "done" }] }
+    }
+  ]
+}

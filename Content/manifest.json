@@ -242,7 +242,8 @@
             "complexity": "Typically O(V + E) time and space"
           },
           "lessons": [
-            { "id": "clone-graph", "title": "Clone Graph", "difficulty": "medium", "file": "dsa/graphs/clone-graph.json" }
+            { "id": "clone-graph", "title": "Clone Graph", "difficulty": "medium", "file": "dsa/graphs/clone-graph.json" },
+            { "id": "number-of-islands", "title": "Number of Islands", "difficulty": "medium", "file": "dsa/graphs/number-of-islands.json" }
           ]
         },
         {

@@ -150,7 +150,7 @@ _Binary Search / Arrays & Hashing on a grid_
 - [ ] Valid Sudoku (M)
 
 _Graphs on a grid (BFS/DFS flood fill)_
-- [ ] Number of Islands (M)
+- [x] Number of Islands (M) _(2026-06-21)_
 - [ ] Max Area of Island (M)
 - [ ] Pacific Atlantic Water Flow (M)
 - [ ] Surrounded Regions (M)
