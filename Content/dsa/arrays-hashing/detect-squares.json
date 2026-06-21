@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "id": "detect-squares",
+  "subject": "dsa",
+  "track": "arrays-hashing",
+  "title": "Detect Squares",
+  "difficulty": "medium",
+  "summary": "Keep a map of point to count. For a query corner, try each point as the diagonal partner needing equal x and y distance, then check that the two remaining corners are present.",
+  "problem": "Support add(point) and count(query): the number of axis-aligned squares with positive area that have query as a corner, using the added points.",
+  "example": { "input": "add (3,10),(11,2),(3,2); count (11,10)", "output": "1" },
+  "steps": [
+    {
+      "caption": "Count axis-aligned squares having the query point as a corner. Keep a map of point to count for fast lookups.",
+      "visual": { "type": "hashmap" }
+    },
+    {
+      "caption": "add (3,10), (11,2), (3,2). Each point's count becomes 1 in the map.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": "3,10", "value": 1 }, { "key": "11,2", "value": 1 }, { "key": "3,2", "value": 1 } ]
+      }
+    },
+    {
+      "caption": "Query (11,10). Pick the diagonal corner (3,2): the x and y distances both equal 8, so it forms a square.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": "3,10", "value": 1 }, { "key": "11,2", "value": 1 }, { "key": "3,2", "value": 1, "state": "match" } ],
+        "probe": { "key": "3,2", "found": true }
+      }
+    },
+    {
+      "caption": "Check the other two corners (3,10) and (11,2). Both are in the map, so all four corners are present. That is one square.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": "3,10", "value": 1, "state": "match" }, { "key": "11,2", "value": 1, "state": "match" }, { "key": "3,2", "value": 1, "state": "match" } ]
+      }
+    },
+    {
+      "caption": "All four corners exist, giving one valid square. Answer: 1.",
+      "visual": {
+        "type": "hashmap",
+        "entries": [ { "key": "3,10", "value": 1, "state": "done" }, { "key": "11,2", "value": 1, "state": "done" }, { "key": "3,2", "value": 1, "state": "done" } ]
+      }
+    }
+  ]
+}
