@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "id": "binary-tree-maximum-path-sum",
+  "subject": "dsa",
+  "track": "trees",
+  "title": "Binary Tree Maximum Path Sum",
+  "difficulty": "hard",
+  "summary": "A path may bend at one node, using both of its downward branches. The best path through a node adds its value to the positive gains of each side, while the gain it passes up may use only one side.",
+  "problem": "Return the maximum sum of any path in the tree, where a path is a connected sequence of nodes that bends at most once.",
+  "example": { "input": "[-10, 9, 20, null, null, 15, 7]", "output": "42" },
+  "steps": [
+    {
+      "caption": "A path runs up one branch, through a node, and down the other, starting and ending anywhere. Find the largest path sum.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": -10,
+          "left": { "value": 9 },
+          "right": { "value": 20, "left": { "value": 15 }, "right": { "value": 7 } }
+        }
+      }
+    },
+    {
+      "caption": "Start at the leaves. 15 and 7 each contribute their own value upward.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": -10,
+          "left": { "value": 9 },
+          "right": { "value": 20, "left": { "value": 15, "state": "active", "pointer": "15" }, "right": { "value": 7, "state": "active", "pointer": "7" } }
+        }
+      }
+    },
+    {
+      "caption": "Through node 20 we may take both children: 20 + 15 + 7 = 42. Best so far is 42.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": -10,
+          "left": { "value": 9 },
+          "right": { "value": 20, "state": "active", "pointer": "42", "left": { "value": 15, "state": "done" }, "right": { "value": 7, "state": "done" } }
+        }
+      }
+    },
+    {
+      "caption": "But the gain 20 passes up uses only one side: 20 + max(15, 7) = 35.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": -10,
+          "left": { "value": 9 },
+          "right": { "value": 20, "state": "active", "pointer": "35", "left": { "value": 15, "state": "done" }, "right": { "value": 7, "state": "done" } }
+        }
+      }
+    },
+    {
+      "caption": "Node 9 is a leaf, so its gain is just 9.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": -10,
+          "left": { "value": 9, "state": "active", "pointer": "9" },
+          "right": { "value": 20, "state": "done", "pointer": "35", "left": { "value": 15, "state": "done" }, "right": { "value": 7, "state": "done" } }
+        }
+      }
+    },
+    {
+      "caption": "Through the root: -10 + max(0, 9) + max(0, 35) = 34 — worse than 42, so the best stays 42.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": -10, "state": "active", "pointer": "34",
+          "left": { "value": 9, "state": "done", "pointer": "9" },
+          "right": { "value": 20, "state": "done", "pointer": "35", "left": { "value": 15, "state": "done" }, "right": { "value": 7, "state": "done" } }
+        }
+      }
+    },
+    {
+      "caption": "The maximum path sum is 42, along 15 to 20 to 7.",
+      "visual": {
+        "type": "tree",
+        "root": {
+          "value": -10,
+          "left": { "value": 9 },
+          "right": { "value": 20, "state": "done", "left": { "value": 15, "state": "done" }, "right": { "value": 7, "state": "done" } }
+        }
+      }
+    }
+  ]
+}
