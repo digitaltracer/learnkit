@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "happy-number",
+  "subject": "dsa",
+  "track": "math-geometry",
+  "title": "Happy Number",
+  "difficulty": "easy",
+  "summary": "Repeatedly replace the number with the sum of the squares of its digits. If the chain reaches 1 the number is happy; if it ever revisits a value it has entered a cycle and never will.",
+  "problem": "Determine whether a number is happy: repeatedly summing the squares of its digits eventually reaches 1.",
+  "example": { "input": "19", "output": "true" },
+  "steps": [
+    {
+      "caption": "Replace the number with the sum of the squares of its digits, over and over. Reaching 1 means happy; revisiting a number means a loop.",
+      "visual": { "type": "array", "cells": [19] }
+    },
+    {
+      "caption": "19: square the digits and add. 1^2 + 9^2 = 1 + 81 = 82.",
+      "visual": { "type": "array", "cells": [19, 82], "highlights": [{ "index": 1, "state": "active" }] }
+    },
+    {
+      "caption": "82: 8^2 + 2^2 = 64 + 4 = 68.",
+      "visual": { "type": "array", "cells": [19, 82, 68], "highlights": [{ "index": 2, "state": "active" }] }
+    },
+    {
+      "caption": "68: 6^2 + 8^2 = 36 + 64 = 100.",
+      "visual": { "type": "array", "cells": [19, 82, 68, 100], "highlights": [{ "index": 3, "state": "active" }] }
+    },
+    {
+      "caption": "100: 1^2 + 0^2 + 0^2 = 1.",
+      "visual": { "type": "array", "cells": [19, 82, 68, 100, 1], "highlights": [{ "index": 4, "state": "active" }] }
+    },
+    {
+      "caption": "The chain reached 1, so 19 is a happy number. (A non-happy number would instead cycle without ever hitting 1.)",
+      "visual": { "type": "array", "cells": [19, 82, 68, 100, 1], "highlights": [{ "index": 4, "state": "done" }] }
+    }
+  ]
+}
