@@ -13,7 +13,7 @@ You are generating ONE Lesson for **LearnKit**, a micro-learning iPhone app. A L
 - Title:   `{{TITLE}}`
 - Difficulty: `{{DIFFICULTY}}`      (easy | medium | hard)
 - Problem:  {{PROBLEM_STATEMENT}}
-- Walkthrough example: {{EXAMPLE_INPUT}}   (pick/keep it SMALL — 5–9 array cells — so it fits a phone screen)
+- Walkthrough example: {{EXAMPLE_INPUT}}   (pick/keep it SMALL so it fits a phone screen)
 
 ## Output schema (schemaVersion 1)
 ```json
@@ -27,11 +27,22 @@ You are generating ONE Lesson for **LearnKit**, a micro-learning iPhone app. A L
   "summary": "<one sentence framing the approach>",
   "problem": "<one or two sentences: what the problem asks>",
   "example": { "input": "<small concrete input>", "output": "<expected output>" },
-  "steps": [ { "caption": "<=160 chars", "visual": { ...array visual... } } ]
+  "steps": [ { "caption": "<=160 chars", "visual": { ...one primitive visual... } } ]
 }
 ```
 
-The ONLY visual type is `array`:
+Pick the smallest Primitive that makes the algorithm legible:
+
+- `array`: one-dimensional arrays, strings, pointer scans, stacks, and numeric bars.
+- `grid`: matrices, board traversal, 2-D dynamic programming tables.
+- `tree`: binary trees, binary search trees, heaps, and tries when binary layout is enough.
+- `list`: linked lists with re-pointable `next` links.
+- `graph`: nodes and edges with explicit positions.
+- `hashmap`: key-value lookups, sets, counts, and seen-index maps.
+- `intervals`: ranges on a shared timeline.
+- `rtree`: recursive/backtracking decision trees.
+
+All primitives and fields are defined in `Content/_schema/lesson.schema.json`. A common `array` visual looks like:
 ```json
 {
   "type": "array",
@@ -48,10 +59,11 @@ Allowed highlight `state` values: `compare`, `match`, `mismatch`, `done`, `activ
 
 ## Hard rules
 1. Output a single valid JSON object. No trailing commas, no comments, no prose around it.
-2. **6–10 steps.** Each step = one `caption` (≤160 chars, plain teaching English, no code) + one `array` visual.
-3. **Snapshots, not deltas.** Each step's `visual` is the COMPLETE state at that moment (full `cells`, all `pointers`, all `highlights`). The app animates by diffing consecutive steps, so keep `cells` identical between steps unless the data itself changes, and move pointer `index` values realistically (usually by 1).
+2. **6–10 steps for most lessons.** Each step = one `caption` (≤160 chars, plain teaching English, no code) + one complete visual snapshot. The schema allows 3–12 steps for unusually short or complex lessons.
+3. **Snapshots, not deltas.** Each step's `visual` is the COMPLETE state at that moment. The app animates by diffing consecutive steps, so keep stable data identical between steps unless the data itself changes, and move pointers/active state realistically.
 4. **Actually execute the algorithm** on the example and emit one curated snapshot per meaningful moment: introduce → place pointers → compare/act → move → … → conclude. Every pointer index and cell value must be correct at every step.
-5. Step 1 introduces the example (array only, usually no pointers). The final step states the conclusion/answer.
+5. Step 1 introduces the example, usually with no pointer or only the starting active state. The final step states the conclusion/answer.
 6. `id`, `subject`, `track`, `title`, `difficulty` must match the values given above. `id` must match the intended filename.
+7. Validate against `Content/_schema/lesson.schema.json`, then run `swift test` in `LearnKitKit`.
 
 Output the JSON object only.

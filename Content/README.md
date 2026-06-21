@@ -23,5 +23,16 @@ Content/
 
 - A Lesson's `id` is kebab-case and **matches its filename** (`valid-palindrome` → `valid-palindrome.json`).
 - A Lesson only appears in the app if it's listed in `manifest.json` **and** its file exists. Add new content by writing the file and adding a manifest entry.
-- Every Step is a **complete snapshot** (full `cells` + all `pointers` + all `highlights`), never a delta. See ADR-0002 and `valid-palindrome.json` as the reference example.
-- v1 supports exactly one Primitive: `array`. Adding a new Primitive (e.g. `tree`, `flow`) means extending the schema *and* writing a SwiftUI renderer for it — it is not just a content change.
+- Every Step is a **complete snapshot**, never a delta. The exact fields depend on the Visual Primitive, but the Step must include the complete state needed to draw that moment. See ADR-0002 and the representative lesson files for examples.
+- v1 supports these Primitives: `array`, `grid`, `tree`, `list`, `graph`, `hashmap`, `intervals`, and `rtree`. Adding another Primitive means extending the schema, models, validator, and SwiftUI renderer — it is not just a content change.
+
+## Representative lessons
+
+- `array`: `dsa/two-pointers/valid-palindrome.json`
+- `grid`: `dsa/math-geometry/spiral-matrix.json`
+- `tree`: `dsa/trees/invert-binary-tree.json`
+- `list`: `dsa/linked-list/reverse-linked-list.json`
+- `graph`: `dsa/graphs/clone-graph.json`
+- `hashmap`: `dsa/arrays-hashing/two-sum.json`
+- `intervals`: `dsa/intervals/merge-intervals.json`
+- `rtree`: `dsa/backtracking/subsets.json`
