@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "rotting-oranges",
+  "subject": "dsa",
+  "track": "graphs",
+  "title": "Rotting Oranges",
+  "difficulty": "medium",
+  "summary": "Run a BFS from every rotten orange at once. Each minute the rot spreads to fresh neighbors, and the answer is the last minute any orange rots.",
+  "problem": "In a grid, 2 is rotten, 1 is fresh, 0 is empty. Each minute, fresh oranges 4-directionally adjacent to a rotten one rot. Return the minutes until none are fresh, or -1.",
+  "example": { "input": "[[2,1,1],[1,1,0],[0,1,1]]", "output": "4" },
+  "steps": [
+    {
+      "caption": "Rot spreads to 4-directional neighbors each minute. Count the minutes until no fresh orange remains.",
+      "visual": { "type": "grid", "rows": [[2, 1, 1], [1, 1, 0], [0, 1, 1]] }
+    },
+    {
+      "caption": "Minute 0. Only (0,0) starts rotten, so the BFS begins there.",
+      "visual": { "type": "grid", "rows": [[2, 1, 1], [1, 1, 0], [0, 1, 1]], "highlights": [{ "row": 0, "col": 0, "state": "active" }] }
+    },
+    {
+      "caption": "Minute 1. The rot spreads to neighbors (0,1) and (1,0).",
+      "visual": { "type": "grid", "rows": [[2, 1, 1], [1, 1, 0], [0, 1, 1]], "highlights": [{ "row": 0, "col": 0, "state": "done" }, { "row": 0, "col": 1, "state": "active" }, { "row": 1, "col": 0, "state": "active" }] }
+    },
+    {
+      "caption": "Minute 2. Next to rot are (0,2) and (1,1).",
+      "visual": { "type": "grid", "rows": [[2, 1, 1], [1, 1, 0], [0, 1, 1]], "highlights": [{ "row": 0, "col": 0, "state": "done" }, { "row": 0, "col": 1, "state": "done" }, { "row": 1, "col": 0, "state": "done" }, { "row": 0, "col": 2, "state": "active" }, { "row": 1, "col": 1, "state": "active" }] }
+    },
+    {
+      "caption": "Minute 3. The rot reaches (2,1).",
+      "visual": { "type": "grid", "rows": [[2, 1, 1], [1, 1, 0], [0, 1, 1]], "highlights": [{ "row": 0, "col": 0, "state": "done" }, { "row": 0, "col": 1, "state": "done" }, { "row": 1, "col": 0, "state": "done" }, { "row": 0, "col": 2, "state": "done" }, { "row": 1, "col": 1, "state": "done" }, { "row": 2, "col": 1, "state": "active" }] }
+    },
+    {
+      "caption": "Minute 4. The last fresh orange (2,2) rots. The answer is 4.",
+      "visual": { "type": "grid", "rows": [[2, 1, 1], [1, 1, 0], [0, 1, 1]], "highlights": [{ "row": 0, "col": 0, "state": "done" }, { "row": 0, "col": 1, "state": "done" }, { "row": 1, "col": 0, "state": "done" }, { "row": 0, "col": 2, "state": "done" }, { "row": 1, "col": 1, "state": "done" }, { "row": 2, "col": 1, "state": "done" }, { "row": 2, "col": 2, "state": "active" }] }
+    }
+  ]
+}
