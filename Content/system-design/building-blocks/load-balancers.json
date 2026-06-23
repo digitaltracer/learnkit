@@ -12,6 +12,29 @@
       "text": "A load balancer sits in front of a pool of servers and distributes incoming requests across them. To the client it looks like a single endpoint; behind it, the work is shared by many machines. This one component is what lets you scale out instead of up."
     },
     {
+      "type": "diagram",
+      "caption": "One endpoint to the client; the load balancer fans requests out across the server pool.",
+      "visual": {
+        "type": "architecture",
+        "nodes": [
+          { "id": "client", "title": "Client", "kind": "client", "x": 0.1, "y": 0.5 },
+          { "id": "lb", "title": "Load Balancer", "kind": "lb", "x": 0.5, "y": 0.5 },
+          { "id": "s1", "title": "Server", "kind": "service", "x": 0.9, "y": 0.16 },
+          { "id": "s2", "title": "Server", "kind": "service", "x": 0.9, "y": 0.5 },
+          { "id": "s3", "title": "Server", "kind": "service", "x": 0.9, "y": 0.84 }
+        ],
+        "connectors": [
+          { "from": "client", "to": "lb" },
+          { "from": "lb", "to": "s1" },
+          { "from": "lb", "to": "s2" },
+          { "from": "lb", "to": "s3" }
+        ],
+        "groups": [
+          { "label": "Server pool", "nodes": ["s1", "s2", "s3"] }
+        ]
+      }
+    },
+    {
       "type": "heading",
       "text": "L4 vs L7"
     },
