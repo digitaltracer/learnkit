@@ -123,6 +123,7 @@ enum Block: Codable, Equatable, Sendable {
     case paragraph(ParagraphBlock)
     case bullets(BulletsBlock)
     case callout(CalloutBlock)
+    case diagram(DiagramBlock)
 
     private enum TypeKey: String, CodingKey { case type }
 
@@ -134,10 +135,11 @@ enum Block: Codable, Equatable, Sendable {
         case "paragraph": self = .paragraph(try ParagraphBlock(from: decoder))
         case "bullets":   self = .bullets(try BulletsBlock(from: decoder))
         case "callout":   self = .callout(try CalloutBlock(from: decoder))
+        case "diagram":   self = .diagram(try DiagramBlock(from: decoder))
         default:
             throw DecodingError.dataCorruptedError(
                 forKey: .type, in: c,
-                debugDescription: "Unknown block type '\(type)'. Known types: heading, paragraph, bullets, callout.")
+                debugDescription: "Unknown block type '\(type)'. Known types: heading, paragraph, bullets, callout, diagram.")
         }
     }
 
@@ -147,6 +149,7 @@ enum Block: Codable, Equatable, Sendable {
         case .paragraph(let b): try b.encode(to: encoder)
         case .bullets(let b):   try b.encode(to: encoder)
         case .callout(let b):   try b.encode(to: encoder)
+        case .diagram(let b):   try b.encode(to: encoder)
         }
     }
 }
@@ -182,6 +185,15 @@ enum CalloutKind: String, Codable, Equatable, Sendable {
     case note, tip, warning
 }
 
+/// An article block that embeds a `Visual` — the vehicle for an `architecture`
+/// diagram inside an article, with an optional caption beneath it. In principle it
+/// can embed any primitive, but `architecture` is its purpose. See ADR 0010.
+struct DiagramBlock: Codable, Equatable, Sendable {
+    let type: String
+    let visual: Visual
+    let caption: String?
+}
+
 // MARK: - Visual: one Primitive per Step, chosen by its `type`
 
 /// A Step's diagram. Each case wraps one Primitive's spec; decoding dispatches on
@@ -196,6 +208,7 @@ enum Visual: Codable, Equatable, Sendable {
     case hashmap(HashMapVisual)
     case intervals(IntervalsVisual)
     case rtree(RTreeVisual)
+    case architecture(ArchitectureVisual)
 
     private enum TypeKey: String, CodingKey { case type }
 
@@ -203,31 +216,33 @@ enum Visual: Codable, Equatable, Sendable {
         let c = try decoder.container(keyedBy: TypeKey.self)
         let type = try c.decode(String.self, forKey: .type)
         switch type {
-        case "array":     self = .array(try ArrayVisual(from: decoder))
-        case "grid":      self = .grid(try GridVisual(from: decoder))
-        case "tree":      self = .tree(try TreeVisual(from: decoder))
-        case "list":      self = .list(try ListVisual(from: decoder))
-        case "graph":     self = .graph(try GraphVisual(from: decoder))
-        case "hashmap":   self = .hashmap(try HashMapVisual(from: decoder))
-        case "intervals": self = .intervals(try IntervalsVisual(from: decoder))
-        case "rtree":     self = .rtree(try RTreeVisual(from: decoder))
+        case "array":        self = .array(try ArrayVisual(from: decoder))
+        case "grid":         self = .grid(try GridVisual(from: decoder))
+        case "tree":         self = .tree(try TreeVisual(from: decoder))
+        case "list":         self = .list(try ListVisual(from: decoder))
+        case "graph":        self = .graph(try GraphVisual(from: decoder))
+        case "hashmap":      self = .hashmap(try HashMapVisual(from: decoder))
+        case "intervals":    self = .intervals(try IntervalsVisual(from: decoder))
+        case "rtree":        self = .rtree(try RTreeVisual(from: decoder))
+        case "architecture": self = .architecture(try ArchitectureVisual(from: decoder))
         default:
             throw DecodingError.dataCorruptedError(
                 forKey: .type, in: c,
-                debugDescription: "Unknown visual type '\(type)'. Known types: array, grid, tree, list, graph, hashmap, intervals, rtree.")
+                debugDescription: "Unknown visual type '\(type)'. Known types: array, grid, tree, list, graph, hashmap, intervals, rtree, architecture.")
         }
     }
 
     func encode(to encoder: Encoder) throws {
         switch self {
-        case .array(let v):     try v.encode(to: encoder)
-        case .grid(let v):      try v.encode(to: encoder)
-        case .tree(let v):      try v.encode(to: encoder)
-        case .list(let v):      try v.encode(to: encoder)
-        case .graph(let v):     try v.encode(to: encoder)
-        case .hashmap(let v):   try v.encode(to: encoder)
-        case .intervals(let v): try v.encode(to: encoder)
-        case .rtree(let v):     try v.encode(to: encoder)
+        case .array(let v):        try v.encode(to: encoder)
+        case .grid(let v):         try v.encode(to: encoder)
+        case .tree(let v):         try v.encode(to: encoder)
+        case .list(let v):         try v.encode(to: encoder)
+        case .graph(let v):        try v.encode(to: encoder)
+        case .hashmap(let v):      try v.encode(to: encoder)
+        case .intervals(let v):    try v.encode(to: encoder)
+        case .rtree(let v):        try v.encode(to: encoder)
+        case .architecture(let v): try v.encode(to: encoder)
         }
     }
 }
@@ -657,6 +672,108 @@ final class RNode: Codable, Equatable, Sendable {
         lhs.value == rhs.value && lhs.edge == rhs.edge && lhs.state == rhs.state
             && lhs.pointer == rhs.pointer && lhs.children == rhs.children
     }
+}
+
+// MARK: - Visual: the `architecture` Primitive (system-design diagrams)
+
+/// A system-design architecture diagram: labeled component boxes joined by
+/// directed, labeled connectors, optionally grouped into tiers or regions. Like
+/// `graph`, nodes carry explicit normalized positions (x,y in 0...1) — deterministic
+/// placement, no auto-layout. This is the marquee System Design visual. See ADR 0010.
+struct ArchitectureVisual: Codable, Equatable, Sendable {
+    let type: String
+    let nodes: [ArchNode]
+    let connectors: [ArchConnector]
+    let groups: [ArchGroup]
+
+    enum CodingKeys: String, CodingKey { case type, nodes, connectors, groups }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        type = try c.decode(String.self, forKey: .type)
+        nodes = try c.decode([ArchNode].self, forKey: .nodes)
+        connectors = try c.decodeIfPresent([ArchConnector].self, forKey: .connectors) ?? []
+        groups = try c.decodeIfPresent([ArchGroup].self, forKey: .groups) ?? []
+    }
+
+    init(type: String = "architecture",
+         nodes: [ArchNode],
+         connectors: [ArchConnector] = [],
+         groups: [ArchGroup] = []) {
+        self.type = type
+        self.nodes = nodes
+        self.connectors = connectors
+        self.groups = groups
+    }
+
+    func node(id: String) -> ArchNode? { nodes.first { $0.id == id } }
+}
+
+/// One component box. `kind` drives its tint and SF Symbol; `x,y` are normalized
+/// 0...1. `title` is the component name, `subtitle` an optional qualifier.
+struct ArchNode: Codable, Equatable, Sendable {
+    let id: String
+    let title: String
+    let subtitle: String?
+    let kind: ArchKind
+    let x: Double
+    let y: Double
+    let state: HighlightState?
+
+    enum CodingKeys: String, CodingKey { case id, title, subtitle, kind, x, y, state }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decode(String.self, forKey: .id)
+        title = try c.decode(String.self, forKey: .title)
+        subtitle = try c.decodeIfPresent(String.self, forKey: .subtitle)
+        kind = try c.decodeIfPresent(ArchKind.self, forKey: .kind) ?? .service
+        x = try c.decode(Double.self, forKey: .x)
+        y = try c.decode(Double.self, forKey: .y)
+        state = try c.decodeIfPresent(HighlightState.self, forKey: .state)
+    }
+
+    init(id: String,
+         title: String,
+         subtitle: String? = nil,
+         kind: ArchKind = .service,
+         x: Double,
+         y: Double,
+         state: HighlightState? = nil) {
+        self.id = id
+        self.title = title
+        self.subtitle = subtitle
+        self.kind = kind
+        self.x = x
+        self.y = y
+        self.state = state
+    }
+}
+
+/// The role of a component box, which the renderer maps to a tint and SF Symbol.
+enum ArchKind: String, Codable, Equatable, Sendable {
+    case client, service, database, cache, queue, cdn, storage, lb, external
+}
+
+/// A connector between two component boxes. Directed by default; `sync` draws a
+/// solid line, `async` a dashed one.
+struct ArchConnector: Codable, Equatable, Sendable {
+    let from: String
+    let to: String
+    let label: String?
+    let directed: Bool?
+    let style: ArchConnectorStyle?
+    let state: HighlightState?
+}
+
+enum ArchConnectorStyle: String, Codable, Equatable, Sendable {
+    case sync, async
+}
+
+/// A labeled rounded-rectangle backing a set of node `id`s — a tier or a region.
+struct ArchGroup: Codable, Equatable, Sendable {
+    let label: String?
+    let nodes: [String]
 }
 
 // MARK: - CellValue (a cell is either a string or a number)

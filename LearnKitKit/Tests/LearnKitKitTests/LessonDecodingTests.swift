@@ -261,4 +261,48 @@ final class LessonDecodingTests: XCTestCase {
         let json = #"{ "type": "video", "src": "x" }"#
         XCTAssertThrowsError(try JSONDecoder().decode(Block.self, from: Data(json.utf8)))
     }
+
+    func testDecodesArchitectureVisual() throws {
+        let json = """
+        {
+          "type": "architecture",
+          "nodes": [
+            { "id": "client", "title": "Client", "kind": "client", "x": 0.1, "y": 0.5 },
+            { "id": "svc", "title": "Service", "x": 0.9, "y": 0.5, "state": "active" }
+          ],
+          "connectors": [
+            { "from": "client", "to": "svc", "label": "REST", "style": "async" }
+          ],
+          "groups": [ { "label": "Backend", "nodes": ["svc"] } ]
+        }
+        """
+        let visual = try JSONDecoder().decode(ArchitectureVisual.self, from: Data(json.utf8))
+
+        XCTAssertEqual(visual.nodes.count, 2)
+        XCTAssertEqual(visual.node(id: "client")?.kind, .client)
+        XCTAssertEqual(visual.node(id: "svc")?.kind, .service)   // omitted kind defaults to service
+        XCTAssertEqual(visual.node(id: "svc")?.state, .active)
+        XCTAssertNil(visual.connectors[0].directed)              // default (true) is applied by the renderer
+        XCTAssertEqual(visual.connectors[0].style, .async)
+        XCTAssertEqual(visual.groups.first?.nodes, ["svc"])
+    }
+
+    func testDecodesDiagramBlockEmbeddingArchitecture() throws {
+        let json = """
+        {
+          "type": "diagram",
+          "caption": "Request path.",
+          "visual": {
+            "type": "architecture",
+            "nodes": [ { "id": "a", "title": "A", "x": 0.2, "y": 0.5 } ]
+          }
+        }
+        """
+        let block = try JSONDecoder().decode(Block.self, from: Data(json.utf8))
+
+        guard case .diagram(let d) = block else { return XCTFail("should decode as a diagram block") }
+        XCTAssertEqual(d.caption, "Request path.")
+        guard case .architecture(let v) = d.visual else { return XCTFail("diagram should embed an architecture visual") }
+        XCTAssertEqual(v.nodes.first?.title, "A")
+    }
 }

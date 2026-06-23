@@ -17,6 +17,7 @@ struct VisualView: View {
         case .hashmap(let v):   HashMapVisualView(visual: v, palette: palette)
         case .intervals(let v): IntervalsVisualView(visual: v, palette: palette)
         case .rtree(let v):     RTreeVisualView(visual: v, palette: palette)
+        case .architecture(let v): ArchitectureVisualView(visual: v, palette: palette)
         }
     }
 }

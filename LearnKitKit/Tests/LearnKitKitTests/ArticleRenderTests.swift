@@ -27,7 +27,23 @@ final class ArticleRenderTests: XCTestCase {
             { "type": "paragraph", "text": "When a system runs out of capacity, you scale up or scale out." },
             { "type": "heading", "text": "Scaling up" },
             { "type": "bullets", "items": ["Simplest path", "One source of truth"] },
-            { "type": "callout", "kind": "warning", "title": "The ceiling", "text": "There is a largest machine money can buy." }
+            { "type": "callout", "kind": "warning", "title": "The ceiling", "text": "There is a largest machine money can buy." },
+            {
+              "type": "diagram",
+              "caption": "Requests fan out across stateless nodes behind a load balancer.",
+              "visual": {
+                "type": "architecture",
+                "nodes": [
+                  { "id": "client", "title": "Client", "kind": "client", "x": 0.15, "y": 0.5 },
+                  { "id": "lb", "title": "Load Balancer", "kind": "lb", "x": 0.5, "y": 0.5 },
+                  { "id": "svc", "title": "Service", "subtitle": "stateless", "kind": "service", "x": 0.85, "y": 0.5 }
+                ],
+                "connectors": [
+                  { "from": "client", "to": "lb", "label": "HTTPS" },
+                  { "from": "lb", "to": "svc", "style": "async" }
+                ]
+              }
+            }
           ]
         }
         """

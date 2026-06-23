@@ -196,6 +196,30 @@ private struct BlockView: View {
             }
         case .callout(let b):
             CalloutView(block: b)
+        case .diagram(let b):
+            DiagramView(block: b)
+        }
+    }
+}
+
+/// Renders a `diagram` block: an embedded `Visual` (typically an `architecture`
+/// diagram) at a fixed height, with an optional caption beneath. Articles scroll,
+/// so a fixed band here is safe — the one-screen budget doesn't apply (ADR 0009).
+private struct DiagramView: View {
+    let block: DiagramBlock
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            VisualView(visual: block.visual)
+                .frame(maxWidth: .infinity)
+                .frame(height: 240)
+                .padding(.vertical, 4)
+            if let caption = block.caption {
+                Text(caption)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
     }
 }

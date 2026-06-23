@@ -45,6 +45,18 @@ final class VisualRenderTests: XCTestCase {
                                                              RNode(value: .string("{1}"), edge: "+1", state: .done),
                                                              RNode(value: .string("{}"), edge: "-1")
                                                          ])))
+        let architecture = Visual.architecture(ArchitectureVisual(nodes: [
+            ArchNode(id: "client", title: "Client", kind: .client, x: 0.12, y: 0.2),
+            ArchNode(id: "lb", title: "Load Balancer", kind: .lb, x: 0.5, y: 0.2),
+            ArchNode(id: "svc", title: "Service", subtitle: "stateless", kind: .service, x: 0.5, y: 0.7, state: .active),
+            ArchNode(id: "db", title: "Database", subtitle: "primary", kind: .database, x: 0.88, y: 0.7)
+        ], connectors: [
+            ArchConnector(from: "client", to: "lb", label: "HTTPS", directed: true, style: .sync, state: nil),
+            ArchConnector(from: "lb", to: "svc", label: nil, directed: true, style: .sync, state: nil),
+            ArchConnector(from: "svc", to: "db", label: "read", directed: true, style: .async, state: .compare)
+        ], groups: [
+            ArchGroup(label: "App tier", nodes: ["svc", "db"])
+        ]))
 
         let visuals: [(String, Visual)] = [
             ("array", array),
@@ -54,7 +66,8 @@ final class VisualRenderTests: XCTestCase {
             ("graph", graph),
             ("hashmap", hashmap),
             ("intervals", intervals),
-            ("rtree", rtree)
+            ("rtree", rtree),
+            ("architecture", architecture)
         ]
 
         for (name, visual) in visuals {

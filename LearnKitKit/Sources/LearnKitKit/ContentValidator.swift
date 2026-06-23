@@ -127,19 +127,26 @@ enum ContentValidator {
             if step.caption.count > 160 {
                 issues.append("\(where_): caption is \(step.caption.count) characters; expected <=160")
             }
-            switch step.visual {
-            case .array(let v):     issues += arrayIssues(v, at: where_)
-            case .grid(let v):      issues += gridIssues(v, at: where_)
-            case .tree(let v):      issues += treeIssues(v, at: where_)
-            case .list(let v):      issues += listIssues(v, at: where_)
-            case .graph(let v):     issues += graphIssues(v, at: where_)
-            case .hashmap:          break   // no index/reference constraints to check
-            case .intervals(let v): issues += intervalIssues(v, at: where_)
-            case .rtree(let v):     issues += rtreeIssues(v, at: where_)
-            }
+            issues += visualIssues(step.visual, at: where_)
         }
 
         return issues
+    }
+
+    /// Validates one `Visual`, dispatching to the per-primitive checker. Shared by
+    /// `steps` lessons and the article `diagram` block, which embeds a Visual.
+    private static func visualIssues(_ visual: Visual, at where_: String) -> [String] {
+        switch visual {
+        case .array(let v):        return arrayIssues(v, at: where_)
+        case .grid(let v):         return gridIssues(v, at: where_)
+        case .tree(let v):         return treeIssues(v, at: where_)
+        case .list(let v):         return listIssues(v, at: where_)
+        case .graph(let v):        return graphIssues(v, at: where_)
+        case .hashmap:             return []   // no index/reference constraints to check
+        case .intervals(let v):    return intervalIssues(v, at: where_)
+        case .rtree(let v):        return rtreeIssues(v, at: where_)
+        case .architecture(let v): return architectureIssues(v, at: where_)
+        }
     }
 
     /// Validates an `article`-format lesson: non-empty blocks and non-empty block
@@ -170,6 +177,8 @@ enum ContentValidator {
                 }
             case .callout(let b):
                 if isBlank(b.text) { issues.append("\(where_): callout text is empty") }
+            case .diagram(let b):
+                issues += visualIssues(b.visual, at: "\(where_) diagram")
             }
         }
 
@@ -340,6 +349,41 @@ enum ContentValidator {
         for edge in visual.edges {
             if !ids.contains(edge.from) { issues.append("\(where_): edge from unknown node '\(edge.from)'") }
             if !ids.contains(edge.to) { issues.append("\(where_): edge to unknown node '\(edge.to)'") }
+        }
+
+        return issues
+    }
+
+    /// Structural checks for the `architecture` Primitive (like `graph`): unique
+    /// non-empty node ids, normalized positions, non-empty titles, and connectors
+    /// and group members that reference real nodes. No index bounds — it is not
+    /// index-addressed. See ADR 0010.
+    private static func architectureIssues(_ visual: ArchitectureVisual, at where_: String) -> [String] {
+        var issues: [String] = []
+
+        if visual.nodes.isEmpty {
+            issues.append("\(where_): architecture has no nodes")
+        }
+
+        var ids = Set<String>()
+        for node in visual.nodes {
+            if node.id.isEmpty { issues.append("\(where_): a node has an empty id") }
+            if !ids.insert(node.id).inserted { issues.append("\(where_): duplicate node id '\(node.id)'") }
+            if isBlank(node.title) { issues.append("\(where_): node '\(node.id)' has an empty title") }
+            if node.x < 0 || node.x > 1 || node.y < 0 || node.y > 1 {
+                issues.append("\(where_): node '\(node.id)' position (\(node.x),\(node.y)) must be in 0...1")
+            }
+        }
+
+        for c in visual.connectors {
+            if !ids.contains(c.from) { issues.append("\(where_): connector from unknown node '\(c.from)'") }
+            if !ids.contains(c.to) { issues.append("\(where_): connector to unknown node '\(c.to)'") }
+        }
+
+        for (i, group) in visual.groups.enumerated() {
+            for member in group.nodes where !ids.contains(member) {
+                issues.append("\(where_): group \(i + 1) references unknown node '\(member)'")
+            }
         }
 
         return issues

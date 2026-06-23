@@ -95,7 +95,7 @@ final class LessonLayoutBudgetTests: XCTestCase {
                 if v.rows.count > maxIntervalRows {
                     issues.append("\(at): intervals has \(v.rows.count) rows (max \(maxIntervalRows))")
                 }
-            case .graph, .hashmap:
+            case .graph, .hashmap, .architecture:
                 break
             }
         }
