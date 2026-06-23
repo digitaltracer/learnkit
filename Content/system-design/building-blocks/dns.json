@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "id": "dns",
+  "subject": "system-design",
+  "track": "building-blocks",
+  "title": "Domain Name System (DNS)",
+  "format": "article",
+  "summary": "How the internet turns a human-friendly name into a machine address — using a hierarchical, heavily cached lookup that doubles as a load-balancing layer.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Computers route traffic by IP address, but people remember names. DNS is the phone book of the internet: it maps a human-friendly name like example.com to the IP address a client actually connects to. Every request to a website starts with this lookup."
+    },
+    {
+      "type": "heading",
+      "text": "A hierarchy of servers"
+    },
+    {
+      "type": "paragraph",
+      "text": "DNS isn't one server; it's a tree of authority. A lookup walks down the hierarchy until it finds the server that holds the answer."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Root servers — the top of the tree; they point to the right TLD servers.",
+        "TLD servers — one tier per top-level domain (.com, .org, .net), pointing to the authoritative server.",
+        "Authoritative servers — the source of truth for a specific domain, holding its actual records."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Recursive resolver vs iterative lookup"
+    },
+    {
+      "type": "paragraph",
+      "text": "A client usually asks a recursive resolver — often run by the ISP — to do all the work and return a final answer. The resolver then does the iterative part: it queries the root, then the TLD, then the authoritative server in turn, following each referral until it has the IP. The client sees one question and one answer; the chasing happens behind the resolver."
+    },
+    {
+      "type": "heading",
+      "text": "Caching and TTL at every layer"
+    },
+    {
+      "type": "paragraph",
+      "text": "Walking the whole hierarchy for every request would be slow, so answers are cached everywhere — in the browser, the operating system, and the resolver. Each record carries a TTL (time to live) that says how long it may be cached before it must be looked up again. Short TTLs make changes propagate faster; long TTLs cut latency and load."
+    },
+    {
+      "type": "heading",
+      "text": "DNS as a load balancer"
+    },
+    {
+      "type": "paragraph",
+      "text": "DNS does more than map names — it's a first, coarse layer of traffic steering. A name can resolve to several IPs, and the response can vary by who's asking, which spreads users across servers and regions."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Multiple A records let the resolver hand out different IPs to spread load.",
+        "Geo or latency routing returns the address of the nearest or fastest data center.",
+        "Failover drops an unhealthy address so new lookups avoid a downed site."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "warning",
+      "title": "The cold-lookup cost",
+      "text": "A cache miss can mean several round trips up the hierarchy before the first byte of your page even loads. That latency is exactly why caching and TTLs matter so much."
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "text": "DNS is itself a globally distributed, cached, hierarchical system — a working example of the same patterns you'll apply to your own designs."
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "id": "messaging-queue",
+  "subject": "system-design",
+  "track": "building-blocks",
+  "title": "Distributed Messaging Queue",
+  "format": "article",
+  "summary": "An asynchronous buffer that decouples producers from consumers, smooths traffic spikes, and lets work survive a slow or crashed worker.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "A message queue sits between a producer that creates work and a consumer that does it. Instead of calling the consumer directly, the producer drops a message on the queue and moves on; the consumer pulls messages and processes them at its own pace. That asynchronous buffer is what decouples the two sides."
+    },
+    {
+      "type": "heading",
+      "text": "Why decouple"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Absorbs spikes: a burst of work queues up instead of overwhelming the consumer (backpressure).",
+        "Resilience: if a consumer crashes, messages wait in the queue rather than being lost.",
+        "Independence: producers and consumers can scale, deploy, and fail separately."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Point-to-point delivery"
+    },
+    {
+      "type": "paragraph",
+      "text": "A classic queue is point-to-point: each message is delivered to exactly one consumer. The queue is a unit of work to be done once — process a payment, resize an image — not a broadcast, which is the distinction from pub-sub, where every subscriber gets a copy. But delivery across a network is never free, so queues offer different guarantees:"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "At-most-once: a message may be lost but never processed twice.",
+        "At-least-once: never lost, but may be delivered more than once.",
+        "Exactly-once: processed once and only once — the ideal, and the hardest."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "The practical choice",
+      "text": "Exactly-once is hard because the network fails at the worst moment — a consumer may finish the work but crash before acknowledging, so the queue redelivers. Most systems instead pick at-least-once and make consumers idempotent: processing the same message twice has the same effect as once."
+    },
+    {
+      "type": "heading",
+      "text": "Ordering, acks, and consumer groups"
+    },
+    {
+      "type": "paragraph",
+      "text": "Strict global ordering is expensive, so many queues guarantee order only within a partition or key, not across the whole queue. Delivery works on acks and a visibility timeout: a pulled message is hidden from other consumers for a window, and if it isn't acknowledged in time it reappears and is redelivered — exactly why consumers must be idempotent."
+    },
+    {
+      "type": "paragraph",
+      "text": "To go faster, run many consumers as a group and split the messages among them, so throughput scales with the number of workers. Each message still goes to only one consumer in the group, preserving point-to-point delivery while parallelizing the work."
+    },
+    {
+      "type": "heading",
+      "text": "In the wild"
+    },
+    {
+      "type": "paragraph",
+      "text": "Kafka is a partitioned, high-throughput log that keeps messages so consumers can replay them; SQS is a managed cloud queue that hides the operational work; RabbitMQ is a flexible broker with rich routing. They differ in throughput, ordering, and retention, but all give you the same core decoupling."
+    }
+  ]
+}

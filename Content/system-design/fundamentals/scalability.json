@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "id": "scalability",
+  "subject": "system-design",
+  "track": "fundamentals",
+  "title": "Scalability",
+  "format": "article",
+  "summary": "A system is scalable when it can absorb growing load without falling apart — but first you have to say exactly what 'load' means.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Scalability is the ability to handle growing load without degrading. It isn't a property a system simply has or lacks; it's a question — 'if load grows in this particular way, how does the system cope?' Answering it well starts with naming the load you actually face."
+    },
+    {
+      "type": "heading",
+      "text": "Describe the load first"
+    },
+    {
+      "type": "paragraph",
+      "text": "Load is captured by a few numbers called load parameters, and the right ones depend on the system. Picking the parameter that actually stresses your design is the whole game — for a feed it might be fan-out per write, for a search box it might be queries per second."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Requests per second — the rate hitting your service.",
+        "Concurrent users — how many sessions are live at once.",
+        "Data volume — total rows or bytes stored, which only grows.",
+        "Read/write ratio — read-heavy and write-heavy systems scale differently."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "No load parameter, no scalability",
+      "text": "You cannot improve scalability without first defining the load parameter. 'Make it scale' is meaningless until you say what grows and by how much."
+    },
+    {
+      "type": "heading",
+      "text": "Latency and throughput under load"
+    },
+    {
+      "type": "paragraph",
+      "text": "With the load described, you watch two performance numbers as it rises. Throughput is how much work the system completes per unit time; latency is how long one request takes. As load approaches capacity, throughput flattens while latency climbs sharply — and the tail (p99) blows up long before the average does."
+    },
+    {
+      "type": "heading",
+      "text": "The stateful layer is the bottleneck"
+    },
+    {
+      "type": "paragraph",
+      "text": "Stateless services are easy: copies are interchangeable, so you just run more of them. The pressure lands on the layer that holds state — the database and the cache — where every copy must agree on the same data. That's almost always where a system first runs out of room."
+    },
+    {
+      "type": "heading",
+      "text": "Two ways to respond"
+    },
+    {
+      "type": "paragraph",
+      "text": "Once you know the load parameter that's pinching, you have the two classic moves from the scaling lesson: scale vertically (a bigger machine) or scale horizontally (more machines). The numbers tell you which lever to pull and when — vertical buys time cheaply, horizontal removes the ceiling but forces you to share or partition state."
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "text": "Measure before you scale. Find which load parameter is saturating which resource, then apply the smallest change that relieves it."
+    }
+  ]
+}

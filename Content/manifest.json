@@ -548,7 +548,63 @@
           },
           "lessons": [
             { "id": "scaling-basics", "title": "Scaling: Vertical vs Horizontal", "file": "system-design/fundamentals/scaling-basics.json" },
-            { "id": "abstractions", "title": "Abstractions in System Design", "file": "system-design/fundamentals/abstractions.json" }
+            { "id": "abstractions", "title": "Abstractions in System Design", "file": "system-design/fundamentals/abstractions.json" },
+            { "id": "rpc", "title": "Remote Procedure Calls (RPC)", "file": "system-design/fundamentals/rpc.json" },
+            { "id": "consistency-models", "title": "Consistency Models", "file": "system-design/fundamentals/consistency-models.json" },
+            { "id": "cap-theorem", "title": "CAP and PACELC", "file": "system-design/fundamentals/cap-theorem.json" },
+            { "id": "failure-models", "title": "Failure Models", "file": "system-design/fundamentals/failure-models.json" },
+            { "id": "availability", "title": "Availability", "file": "system-design/fundamentals/availability.json" },
+            { "id": "reliability", "title": "Reliability", "file": "system-design/fundamentals/reliability.json" },
+            { "id": "fault-tolerance", "title": "Fault Tolerance", "file": "system-design/fundamentals/fault-tolerance.json" },
+            { "id": "scalability", "title": "Scalability", "file": "system-design/fundamentals/scalability.json" },
+            { "id": "maintainability", "title": "Maintainability", "file": "system-design/fundamentals/maintainability.json" },
+            { "id": "back-of-the-envelope", "title": "Back-of-the-Envelope Estimation", "file": "system-design/fundamentals/back-of-the-envelope.json" }
+          ]
+        },
+        {
+          "id": "building-blocks",
+          "title": "Building Blocks",
+          "icon": "square.stack.3d.up",
+          "format": "article",
+          "overview": {
+            "tagline": "The reusable components every large system is assembled from — and the tradeoffs baked into each.",
+            "whenToUse": [
+              "You're choosing the pieces for a design — what stores data, spreads load, or moves messages.",
+              "You need a component's contract and failure modes, not just its name.",
+              "You're deciding between SQL and NoSQL, sync vs async, or a queue vs pub-sub.",
+              "You want to recognize the same blocks reused across every system."
+            ],
+            "keyIdea": "Most designs are a fresh arrangement of a small set of well-understood blocks — load balancers, databases, caches, queues. Learn each one's contract and tradeoffs once, and a design becomes a question of which blocks to combine and how to wire them."
+          },
+          "lessons": [
+            { "id": "dns", "title": "Domain Name System (DNS)", "file": "system-design/building-blocks/dns.json" },
+            { "id": "load-balancers", "title": "Load Balancers", "file": "system-design/building-blocks/load-balancers.json" },
+            { "id": "sql-vs-nosql", "title": "Databases: SQL vs NoSQL", "file": "system-design/building-blocks/sql-vs-nosql.json" },
+            { "id": "replication", "title": "Database Replication", "file": "system-design/building-blocks/replication.json" },
+            { "id": "sharding", "title": "Database Partitioning and Sharding", "file": "system-design/building-blocks/sharding.json" },
+            { "id": "caching", "title": "Distributed Cache", "file": "system-design/building-blocks/caching.json" },
+            { "id": "messaging-queue", "title": "Distributed Messaging Queue", "file": "system-design/building-blocks/messaging-queue.json" },
+            { "id": "pub-sub", "title": "Publish-Subscribe", "file": "system-design/building-blocks/pub-sub.json" }
+          ]
+        },
+        {
+          "id": "interview-method",
+          "title": "Interview Method",
+          "icon": "checklist",
+          "format": "article",
+          "overview": {
+            "tagline": "A repeatable way to drive a system-design interview from a blank page to a defended design.",
+            "whenToUse": [
+              "You freeze at the start of a design question and don't know where to begin.",
+              "You jump to drawing boxes before pinning down requirements and scale.",
+              "You want a checklist that keeps availability, consistency, and scale from slipping.",
+              "You're structuring an answer under time pressure."
+            ],
+            "keyIdea": "Drive every design the same way: nail the requirements and the scale first, sketch a high-level design, then go deep where it matters and check it against the non-functional needs. Structure beats improvisation."
+          },
+          "lessons": [
+            { "id": "reshaded-framework", "title": "The RESHADED Framework", "file": "system-design/interview-method/reshaded-framework.json" },
+            { "id": "nfr-checklist", "title": "Non-Functional Requirements Checklist", "file": "system-design/interview-method/nfr-checklist.json" }
           ]
         }
       ]

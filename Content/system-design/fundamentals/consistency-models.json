@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "id": "consistency-models",
+  "subject": "system-design",
+  "track": "fundamentals",
+  "title": "Consistency Models",
+  "format": "article",
+  "summary": "The contract a storage system makes about what a read can return after writes — and what you trade to get a stronger one.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "A consistency model is the contract for what a read is allowed to return once writes have happened. When data lives on many replicas, a write doesn't reach all of them at once, so the model tells you whether you'll always see the latest value, an older one, or something in between. Picking a model is picking how much surprise you'll tolerate."
+    },
+    {
+      "type": "heading",
+      "text": "The spectrum"
+    },
+    {
+      "type": "paragraph",
+      "text": "Models range from strict to relaxed, and the stricter ones are easier to reason about but harder to provide at scale."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Strong: every read returns the most recent write, as if there were one copy.",
+        "Sequential: all clients see operations in the same order, though not necessarily in real time.",
+        "Causal: operations that depend on each other are seen in order; unrelated ones may differ.",
+        "Eventual: replicas converge to the same value if writes stop, but a read may be stale meanwhile."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Client-centric guarantees"
+    },
+    {
+      "type": "paragraph",
+      "text": "Even under a relaxed model, you can promise sensible behavior to a single user. Read-your-writes means after you post a comment, you see it; monotonic reads means once you've seen a value, you never see an older one on a later read. These guarantees smooth over the rough edges of eventual consistency without paying for full strong consistency."
+    },
+    {
+      "type": "heading",
+      "text": "The cost of stronger"
+    },
+    {
+      "type": "paragraph",
+      "text": "Stronger consistency means replicas must coordinate before answering, which adds latency and limits how the system behaves when nodes can't reach each other. Weaker models let any replica answer immediately, so they stay fast and available — at the price of occasionally serving stale data. This is the tradeoff at the heart of distributed storage."
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "text": "Stronger consistency is not free: it costs latency and availability, because replicas have to agree before a read or write can complete."
+    },
+    {
+      "type": "heading",
+      "text": "Where each fits"
+    },
+    {
+      "type": "paragraph",
+      "text": "Match the model to the cost of being wrong. A bank balance or inventory count wants strong consistency — a stale read here moves money or oversells stock. A social feed or like count is happy with eventual consistency, where a few seconds of staleness is invisible and the speed is worth far more than perfect freshness."
+    },
+    {
+      "type": "paragraph",
+      "text": "So ask what a stale read actually costs before reaching for the strongest model — most of a real system lives comfortably in the relaxed middle."
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 # System Design — LearnKit Content Roadmap
 
-_Status snapshot: 2026-06-24 — **1 / ~55 lessons shipped**. Source syllabus:
+_Status snapshot: 2026-06-24 — **22 / ~48 lessons shipped** (Fundamentals + Interview
+Method complete; Building Blocks shipped prose-first, diagrams pending). Source syllabus:
 https://www.educative.io/courses/grokking-the-system-design-interview (Grokking
 Modern System Design Interview — 48 chapters / 212 platform lessons, curated below)._
 
@@ -58,17 +59,19 @@ already exists.
 
 | Track | Shipped | Planned | Format |
 |---|---|---|---|
-| Fundamentals | 1 | ~11 | article (mostly 🟢) |
-| Building Blocks | 0 | ~18 | article (mostly 🟡 — diagram) |
+| Fundamentals | 12 | 0 | article (🟢, complete) |
+| Building Blocks | 8 | ~10 | article (prose v1 shipped; diagram pending) |
 | Designing Systems | 0 | ~16 | article (🟡 — diagram) |
-| Interview Method | 0 | ~2 | article (🟢) |
-| **Total** | **1** | **~47** | |
+| Interview Method | 2 | 0 | article (🟢, complete) |
+| **Total** | **22** | **~26** | |
 
-New tracks (Building Blocks, Designing Systems, Interview Method) each need an
-`overview` block (tagline, whenToUse[], keyIdea) and an SF Symbol `icon` in the
-manifest before their first lesson — see the System Design subject entry in
-`Content/manifest.json` for the shape (note: System Design `overview` has no
-`complexity` field).
+The Designing Systems track still needs an `overview` block (tagline, whenToUse[],
+keyIdea) and an SF Symbol `icon` in the manifest before its first lesson — see the
+shipped System Design tracks in `Content/manifest.json` for the shape (note:
+System Design `overview` has no `complexity` field). The 8 Building Blocks lessons
+shipped as **prose v1**: their content is complete, but the marquee architecture
+**diagram** is still pending the `architecture` primitive (ADR 0010) and should be
+added to each in a later pass.
 
 ---
 
@@ -81,34 +84,35 @@ gain a small diagram later but read fine without one.
 
 - [x] **Scaling: Vertical vs Horizontal** — `scaling-basics` _(shipped)_
 - [x] **Abstractions in System Design** — what we hide and why; the building-block mindset _(shipped)_
-- [ ] 🟢 **Remote Procedure Calls (RPC)** — network abstraction; call-a-function-on-another-machine, and where the abstraction leaks
-- [ ] 🟢 **Consistency Models** — strong → eventual spectrum; what each guarantees and costs
-- [ ] 🟢 **Failure Models** — fail-stop, crash, omission, Byzantine; what you design against
-- [ ] 🟢 **Availability** — nines, MTBF/MTTR, why 99.9 vs 99.99 changes the design
-- [ ] 🟢 **Reliability** — correctness over time; how it differs from availability
-- [ ] 🟢 **Scalability** — load dimensions; the NFR view (broader than vertical/horizontal)
-- [ ] 🟢 **Maintainability** — operability, simplicity, evolvability
-- [ ] 🟢 **Fault Tolerance** — replication, checkpointing, failover; redundancy as the lever
-- [ ] 🟢 **Back-of-the-Envelope Estimation** — QPS, storage, bandwidth math _(wants a `table` block; works as `bullets` until then)_
-- [ ] 🟢 **CAP / PACELC Theorem** _(recommended addition — not its own chapter in the source, but the canonical framing the consistency content implies)_
+- [x] **Remote Procedure Calls (RPC)** — network abstraction; call-a-function-on-another-machine, and where the abstraction leaks _(shipped)_
+- [x] **Consistency Models** — strong → eventual spectrum; what each guarantees and costs _(shipped)_
+- [x] **Failure Models** — fail-stop, crash, omission, Byzantine; what you design against _(shipped)_
+- [x] **Availability** — nines, MTBF/MTTR, why 99.9 vs 99.99 changes the design _(shipped)_
+- [x] **Reliability** — correctness over time; how it differs from availability _(shipped)_
+- [x] **Scalability** — load dimensions; the NFR view (broader than vertical/horizontal) _(shipped)_
+- [x] **Maintainability** — operability, simplicity, evolvability _(shipped)_
+- [x] **Fault Tolerance** — replication, checkpointing, failover; redundancy as the lever _(shipped)_
+- [x] **Back-of-the-Envelope Estimation** — QPS, storage, bandwidth math _(shipped; uses `bullets` for the number anchors — a `table` block is a later polish)_
+- [x] **CAP and PACELC** — the consistency-vs-availability choice during a partition, and the latency tradeoff otherwise _(shipped)_
 
 ## 2. Building Blocks  ·  `system-design/building-blocks`  ·  article
 
 The reusable components every design composes. Each is the marquee
-**architecture-diagram** lesson type → most are 🟡 (gated on ADR 0010), but each
-can ship prose-first.
+**architecture-diagram** lesson type → still gated on ADR 0010 for the diagram,
+but all shipped here as **prose v1** (content complete; diagram to be added once
+the `architecture` primitive lands). The remaining unbuilt ones stay 🟡.
 
-- [ ] 🟡 **DNS** — how a name resolves to an IP; hierarchy and caching
-- [ ] 🟡 **Load Balancers** — L4 vs L7, global vs local, algorithms, health checks
-- [ ] 🟡 **Databases: SQL vs NoSQL** — types and when each fits
-- [ ] 🟡 **Database Replication** — leader/follower, sync vs async, read scaling
-- [ ] 🟡 **Database Partitioning / Sharding** — horizontal/vertical, key choice, hotspots
+- [x] **DNS** — how a name resolves to an IP; hierarchy and caching _(prose v1; diagram pending)_
+- [x] **Load Balancers** — L4 vs L7, global vs local, algorithms, health checks _(prose v1; diagram pending)_
+- [x] **Databases: SQL vs NoSQL** — types and when each fits _(prose v1; diagram pending)_
+- [x] **Database Replication** — leader/follower, sync vs async, read scaling _(prose v1; diagram pending)_
+- [x] **Database Partitioning and Sharding** — horizontal/vertical, key choice, hotspots _(prose v1; diagram pending)_
+- [x] **Distributed Cache** — cache-aside vs write-through, eviction, Redis vs Memcached _(prose v1; diagram pending)_
+- [x] **Distributed Messaging Queue** — at-least-once, ordering, consumer groups _(prose v1; diagram pending)_
+- [x] **Publish-Subscribe** — topics, fan-out, decoupling producers from consumers _(prose v1; diagram pending)_
 - [ ] 🟡 **Key-Value Store** — consistent hashing, replication, versioning, fault detection
 - [ ] 🟡 **Content Delivery Network (CDN)** — edge caching, push vs pull, invalidation
 - [ ] 🟡 **Unique ID Generator (Sequencer)** — Snowflake-style IDs, causality, monotonicity
-- [ ] 🟡 **Distributed Cache** — cache-aside vs write-through, eviction, Redis vs Memcached
-- [ ] 🟡 **Distributed Messaging Queue** — at-least-once, ordering, consumer groups
-- [ ] 🟡 **Publish-Subscribe** — topics, fan-out, decoupling producers from consumers
 - [ ] 🟡 **Rate Limiter** — token bucket, leaky bucket, fixed/sliding window
 - [ ] 🟡 **Blob / Object Store** — buckets, metadata, large-object handling
 - [ ] 🟡 **Distributed Search** — inverted index, sharded index, scaling queries
@@ -145,8 +149,8 @@ Ordered roughly easy → hard, so author top-down.
 
 The *how* of answering — the framework, not logistics. Pure prose.
 
-- [ ] 🟢 **The RESHADED Framework** — Requirements → Estimation → Storage → High-level → API → Detailed → Evaluate → Distinctive-features; the spine of every case study
-- [ ] 🟢 **Non-Functional Requirements Checklist** — the questions to ask before designing (availability, consistency, latency, scale)
+- [x] **The RESHADED Framework** — Requirements → Estimation → Storage → High-level → API → Detailed → Evaluate → Distinctive-features; the spine of every case study _(shipped)_
+- [x] **Non-Functional Requirements Checklist** — the questions to ask before designing (availability, consistency, latency, scale) _(shipped)_
 
 ---
 

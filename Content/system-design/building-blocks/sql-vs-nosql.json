@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "id": "sql-vs-nosql",
+  "subject": "system-design",
+  "track": "building-blocks",
+  "title": "Databases: SQL vs NoSQL",
+  "format": "article",
+  "summary": "The two broad families of databases, what each is built to do well, and how to choose between them based on your access patterns rather than the trend.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Almost every system needs to store data, and the first big choice is which kind of database. The split is usually framed as SQL versus NoSQL — relational databases on one side, a family of non-relational stores on the other. They make opposite tradeoffs, so the right pick depends on what your system actually does."
+    },
+    {
+      "type": "heading",
+      "text": "Relational (SQL)"
+    },
+    {
+      "type": "paragraph",
+      "text": "SQL databases store data in tables with a fixed schema and relationships between them. They're built around correctness: ACID transactions, joins across tables, and strong consistency by default. That structure is ideal when data is highly related and integrity matters — orders, payments, inventory."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Fixed schema enforces structure and catches bad data early.",
+        "ACID transactions keep multi-step operations all-or-nothing.",
+        "Joins answer rich queries across related tables.",
+        "Scales vertically and with read replicas; sharding for writes is harder."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Non-relational (NoSQL)"
+    },
+    {
+      "type": "paragraph",
+      "text": "NoSQL trades some of that rigor for flexibility and horizontal scale. Schemas are loose, data is often denormalized so a read hits one place, and many systems offer eventual rather than strong consistency. This shines for huge scale and access patterns that don't need joins."
+    },
+    {
+      "type": "callout",
+      "kind": "warning",
+      "title": "\"NoSQL\" is not one thing",
+      "text": "It's several different tools with different shapes — say which one you mean. Key-value for simple lookups, document for nested records, wide-column for massive write-heavy tables, graph for richly connected data."
+    },
+    {
+      "type": "heading",
+      "text": "How to choose"
+    },
+    {
+      "type": "paragraph",
+      "text": "Don't start from SQL-or-NoSQL — start from your queries. Map the access patterns: what you read, how you read it, and how often. Then weigh scale and consistency. If you need transactions and complex queries over related data, reach for relational; if you need to scale writes massively and your reads follow a known key, a NoSQL store often fits better."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Access patterns — do you join across entities, or fetch by a single key?",
+        "Scale — does write volume exceed what one primary can handle?",
+        "Consistency — do reads need the latest write, or is eventual fine?"
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "text": "Pick the model that matches your queries and consistency needs, not the one that's trending. The boring relational choice is right far more often than hype suggests."
+    }
+  ]
+}

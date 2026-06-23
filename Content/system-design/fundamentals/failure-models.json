@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "id": "failure-models",
+  "subject": "system-design",
+  "track": "fundamentals",
+  "title": "Failure Models",
+  "format": "article",
+  "summary": "Defining the kinds of faults a system is built to survive — because you can only tolerate the failures you've planned for.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "A failure model states which kinds of faults a system is designed to tolerate. It's a deliberate scoping decision: you can't defend against everything, so you name the misbehavior you'll handle and accept that anything outside that set may break you. The model shapes every protocol and recovery path you build on top."
+    },
+    {
+      "type": "heading",
+      "text": "The kinds of faults"
+    },
+    {
+      "type": "paragraph",
+      "text": "Faults are usually ranked by how badly a component can misbehave, from politely dead to actively lying."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Fail-stop: the node halts and others can reliably tell it stopped.",
+        "Crash: the node halts but its death isn't cleanly announced.",
+        "Omission: it drops some messages — requests or replies go missing.",
+        "Timing: it responds, but too late to be useful.",
+        "Byzantine: it behaves arbitrarily, even sending wrong or malicious data."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "Fault vs failure",
+      "text": "A fault is the underlying defect — a crashed process, a corrupted packet. A failure is when that fault becomes visible as the system deviating from its spec. Fault tolerance is stopping faults before they turn into failures."
+    },
+    {
+      "type": "heading",
+      "text": "Detecting failure"
+    },
+    {
+      "type": "paragraph",
+      "text": "You can't react to a fault you can't see, so distributed systems lean on heartbeats and timeouts. A node periodically signals 'I'm alive', and if the signal stops arriving within a window, peers presume it's down. The catch is that a slow network is indistinguishable from a dead node — so detection is always a guess with a tunable threshold."
+    },
+    {
+      "type": "heading",
+      "text": "Why most systems stop at crash faults"
+    },
+    {
+      "type": "paragraph",
+      "text": "Tolerating Byzantine faults — nodes that lie — requires expensive agreement protocols and extra replicas, since you must outvote the liars. Most systems run inside a trusted datacenter where nodes crash but don't deceive, so they assume crash or fail-stop and skip the cost. Byzantine tolerance is reserved for adversarial settings like blockchains, where you genuinely can't trust the participants."
+    },
+    {
+      "type": "callout",
+      "kind": "warning",
+      "title": "Know your assumptions",
+      "text": "A system only survives the faults its model anticipates. If reality hands you a fault you didn't plan for, the guarantees quietly stop applying."
+    },
+    {
+      "type": "paragraph",
+      "text": "So choose the weakest model that still covers your real risks: enough to survive what actually happens, without paying for threats you'll never face."
+    }
+  ]
+}

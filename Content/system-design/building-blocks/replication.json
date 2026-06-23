@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "id": "replication",
+  "subject": "system-design",
+  "track": "building-blocks",
+  "title": "Database Replication",
+  "format": "article",
+  "summary": "Keeping copies of your data on multiple nodes so the system survives failures, serves more reads, and never loses a write.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Replication means keeping the same data on more than one node. A single database is a single point of failure and a single point of load. Copying the data across several machines buys you three things at once: availability if a node dies, more capacity to serve reads, and durability because a write survives on more than one disk."
+    },
+    {
+      "type": "heading",
+      "text": "Single-leader replication"
+    },
+    {
+      "type": "paragraph",
+      "text": "The most common setup is single-leader, also called primary/replica. One node accepts all writes and streams its changes to the replicas, which serve reads. It is simple to reason about because every write has one ordering, set by the leader."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Reads scale out: add replicas to spread the read load.",
+        "Writes do not scale this way — they still funnel through one leader.",
+        "Good fit for read-heavy workloads, which most applications are."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Multi-leader and leaderless"
+    },
+    {
+      "type": "paragraph",
+      "text": "Multi-leader replication accepts writes on several nodes — useful across regions — but two leaders can accept conflicting writes, so you must resolve conflicts. Leaderless replication drops the leader entirely: a client writes to many nodes and reads from many, using a quorum (enough nodes must agree) to decide the current value. More availability, more complexity."
+    },
+    {
+      "type": "heading",
+      "text": "Synchronous vs asynchronous"
+    },
+    {
+      "type": "paragraph",
+      "text": "When the leader takes a write, does it wait for replicas to confirm? Synchronous replication waits, so a confirmed write is guaranteed to exist on a replica — safer, but the client pays for the slowest replica on every write. Asynchronous replication confirms immediately and ships changes in the background — fast, but the replicas trail behind."
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "Async failovers can lose writes",
+      "text": "With asynchronous replication, a write confirmed by the leader may not have reached any replica yet. If the leader crashes and you promote a replica, those last un-replicated writes are simply gone."
+    },
+    {
+      "type": "heading",
+      "text": "Replication lag and failover"
+    },
+    {
+      "type": "paragraph",
+      "text": "Because async replicas trail the leader, a read from a replica can return stale data — a user updates their profile, reloads, and sees the old value. This is replication lag; you fix it by reading your own writes from the leader or routing to a replica known to be caught up."
+    },
+    {
+      "type": "paragraph",
+      "text": "If the leader itself fails, the system promotes a replica to take over and redirects writes to it. Done badly this causes split-brain (two nodes both think they are leader); done well, failover is the payoff for keeping copies — the system keeps serving while you replace the dead node."
+    }
+  ]
+}

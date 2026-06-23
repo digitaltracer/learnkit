@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "id": "pub-sub",
+  "subject": "system-design",
+  "track": "building-blocks",
+  "title": "Publish-Subscribe",
+  "format": "article",
+  "summary": "A one-to-many fan-out pattern where publishers send to a topic and every interested subscriber gets its own copy — broadcast, not work distribution.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "In publish-subscribe, a publisher sends a message to a named topic, and every subscriber to that topic receives its own copy. The publisher never names the recipients and doesn't know how many there are. This is one-to-many fan-out: one event, delivered to everyone who cares."
+    },
+    {
+      "type": "heading",
+      "text": "Fan-out vs a queue"
+    },
+    {
+      "type": "paragraph",
+      "text": "A message queue delivers each message to one consumer — work to be done once. Pub-sub delivers each message to all subscribers — an announcement everyone hears. The same 'order placed' event might be consumed once by a queue worker that charges the card, but fanned out by pub-sub to billing, shipping, and analytics, each getting its own copy."
+    },
+    {
+      "type": "heading",
+      "text": "Brokers and topics"
+    },
+    {
+      "type": "paragraph",
+      "text": "A broker sits in the middle and a topic is the channel on it. Publishers write to a topic, subscribers read from it, and neither side knows the other exists. That indirection is the value: you can add a new subscriber to an event stream without touching, or even notifying, the publisher."
+    },
+    {
+      "type": "heading",
+      "text": "Push vs pull"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Push: the broker actively delivers messages to subscribers as they arrive — low latency, but it can overwhelm a slow subscriber.",
+        "Pull: subscribers fetch on their own schedule — they control the pace, at the cost of some delay.",
+        "Pull also makes it natural to replay or catch up after a subscriber has been offline."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Where it fits"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Event-driven systems: services react to events instead of calling each other directly.",
+        "Notifications: one action fans out to email, push, and in-app channels.",
+        "Fan-out to many services: a single event feeds search indexing, caches, and audit logs at once."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Delivery and slow subscribers"
+    },
+    {
+      "type": "paragraph",
+      "text": "Pub-sub carries the same delivery semantics as queues — at-most-once, at-least-once, exactly-once — and at-least-once with idempotent subscribers is again the common choice. But subscribers can be slow or absent, so the broker must decide what to do: buffer messages for later, expire them after a retention window, or drop them for a subscriber that has fallen too far behind."
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "Pub-sub vs a message queue",
+      "text": "Reach for pub-sub when many independent consumers each need the same event (broadcast). Reach for a queue when one piece of work should be done once by whichever worker is free (point-to-point work distribution)."
+    }
+  ]
+}

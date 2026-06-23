@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "id": "availability",
+  "subject": "system-design",
+  "track": "fundamentals",
+  "title": "Availability",
+  "format": "article",
+  "summary": "The fraction of time a system is up and serving — measured in nines, and improved by killing single points of failure.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Availability is the fraction of time a system is operational and able to serve requests. It's the headline number behind every uptime promise, and it's usually written as a percentage. The closer that percentage creeps to 100%, the more engineering — and money — each step costs."
+    },
+    {
+      "type": "heading",
+      "text": "The nines"
+    },
+    {
+      "type": "paragraph",
+      "text": "Availability is quoted in 'nines', and each extra nine shrinks the allowed downtime by roughly a factor of ten."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "99% (two nines) ≈ 3.65 days of downtime per year.",
+        "99.9% (three nines) ≈ 8.7 hours per year.",
+        "99.99% (four nines) ≈ 52 minutes per year.",
+        "99.999% (five nines) ≈ 5 minutes per year."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "How it's calculated"
+    },
+    {
+      "type": "paragraph",
+      "text": "Availability is MTBF / (MTBF + MTTR): mean time between failures over the total of uptime plus mean time to recover. Two levers move the number — fail less often (raise MTBF) or recover faster (lower MTTR). The formula makes the tradeoff concrete: time spent broken is the only thing dragging the percentage down."
+    },
+    {
+      "type": "heading",
+      "text": "The levers: redundancy and SPOFs"
+    },
+    {
+      "type": "paragraph",
+      "text": "The main way to raise availability is redundancy — run multiple instances so one failure doesn't take the service down. That means hunting for single points of failure: any one component whose death stops the whole system. A lone database, one load balancer, a single availability zone — each is a SPOF until you give it a standby."
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "title": "Recover faster, cheaper",
+      "text": "Lowering MTTR is often cheaper than raising MTBF. Fast detection, automated failover, and quick rollbacks shrink each outage — and shaving minutes off recovery moves the nines without making components themselves more reliable."
+    },
+    {
+      "type": "heading",
+      "text": "Planned vs unplanned"
+    },
+    {
+      "type": "paragraph",
+      "text": "Downtime comes in two flavors. Unplanned downtime is the crash, the failed deploy, the cut cable. Planned downtime is the maintenance window you schedule — and with rolling deploys and redundancy, most planned work can happen with zero user-visible downtime, so it shouldn't count against you at all."
+    },
+    {
+      "type": "paragraph",
+      "text": "So treat availability as a budget: decide how many nines the product actually needs, then spend on redundancy and fast recovery to buy them — not one more."
+    }
+  ]
+}

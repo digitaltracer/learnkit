@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "id": "load-balancers",
+  "subject": "system-design",
+  "track": "building-blocks",
+  "title": "Load Balancers",
+  "format": "article",
+  "summary": "The component that spreads incoming requests across a pool of servers — the thing that actually makes horizontal scaling and zero-downtime deploys possible.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "A load balancer sits in front of a pool of servers and distributes incoming requests across them. To the client it looks like a single endpoint; behind it, the work is shared by many machines. This one component is what lets you scale out instead of up."
+    },
+    {
+      "type": "heading",
+      "text": "L4 vs L7"
+    },
+    {
+      "type": "paragraph",
+      "text": "Load balancers operate at one of two layers. An L4 (transport) balancer routes on IP and port without looking inside the request — fast and protocol-agnostic. An L7 (application) balancer reads the HTTP request, so it can route by path, header, or cookie, terminate TLS, and make smarter decisions at the cost of a little more work."
+    },
+    {
+      "type": "heading",
+      "text": "How it picks a server"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Round robin — hand each request to the next server in turn.",
+        "Weighted — send more traffic to bigger or healthier nodes.",
+        "Least connections — pick the server with the fewest active requests.",
+        "IP or consistent hashing — map a key to a server so the same client lands on the same node."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Health checks"
+    },
+    {
+      "type": "paragraph",
+      "text": "The balancer continually probes each server and routes only to the ones that pass. When a node stops responding it's pulled from the pool, and traffic shifts to the survivors automatically. This is also what makes rolling deploys safe: drain a node, update it, return it to rotation, repeat."
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "text": "Health checks plus a server pool are what enable horizontal scaling and zero-downtime rolling deploys — add capacity or swap versions without the client ever noticing."
+    },
+    {
+      "type": "heading",
+      "text": "Global vs local"
+    },
+    {
+      "type": "paragraph",
+      "text": "Local load balancing spreads traffic within a single data center. Global load balancing (GSLB, often via DNS) steers users to the right region first — nearest, fastest, or healthiest — and then a local balancer takes over inside that region. Real systems usually run both layers together."
+    },
+    {
+      "type": "heading",
+      "text": "Sticky sessions and statelessness"
+    },
+    {
+      "type": "paragraph",
+      "text": "Sticky sessions pin a user to one server so that server's in-memory state stays valid. It works, but it unbalances the pool and breaks when that node dies. The cleaner answer is stateless servers: keep session state in a shared store so any server can handle any request, and the balancer is free to send traffic anywhere."
+    },
+    {
+      "type": "callout",
+      "kind": "warning",
+      "title": "Don't make the balancer the single point of failure",
+      "text": "If everything flows through one load balancer, the balancer itself is now the weak link. Run a redundant pair — active-passive or active-active — so losing one doesn't take the whole system down."
+    }
+  ]
+}

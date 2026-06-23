@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "id": "cap-theorem",
+  "subject": "system-design",
+  "track": "fundamentals",
+  "title": "CAP and PACELC",
+  "format": "article",
+  "summary": "When the network splits, a distributed store must choose between staying consistent and staying available — and even when it doesn't split, it's still trading latency for consistency.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "The CAP theorem describes a tension in any distributed data store across three properties: Consistency (every read sees the latest write), Availability (every request gets a non-error response), and Partition tolerance (the system keeps working when the network drops messages between nodes)."
+    },
+    {
+      "type": "heading",
+      "text": "The real choice is C vs A"
+    },
+    {
+      "type": "paragraph",
+      "text": "In a distributed system, network partitions are not optional — links fail, so partition tolerance is a given, not a choice. That means when a partition happens, you must decide between two responses: refuse to answer until you can be consistent, or answer anyway and risk being stale."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "CP — during a partition, sacrifice availability to stay consistent (reject or block requests). HBase and ZooKeeper-style systems lean this way.",
+        "AP — during a partition, sacrifice consistency to stay available (serve possibly stale data). Cassandra and Dynamo-style systems lean this way.",
+        "The choice can be per-operation: the same store may answer one query CP and another AP."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "warning",
+      "title": "'Pick 2 of 3' is wrong",
+      "text": "CAP is often taught as choosing two of three properties, as if you could drop partition tolerance. You can't — partitions happen to you. The genuine choice is only between C and A, and only while a partition is in effect."
+    },
+    {
+      "type": "heading",
+      "text": "Most of the time there's no partition"
+    },
+    {
+      "type": "paragraph",
+      "text": "Partitions are rare. CAP says nothing about the normal case, which is when your system actually spends almost all its life. That gap is what PACELC fills in."
+    },
+    {
+      "type": "heading",
+      "text": "PACELC: the Else clause"
+    },
+    {
+      "type": "paragraph",
+      "text": "PACELC reads: if there's a Partition, trade Availability vs Consistency (the CAP case); Else, trade Latency vs Consistency. Strong consistency requires coordinating replicas on every read or write, and that coordination costs latency — so even on a healthy network you're choosing how fresh data must be versus how fast you answer."
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "text": "Classify a store by both clauses: a Dynamo-style system is PA/EL (available under partition, low-latency otherwise), while a strongly consistent store is PC/EC (consistent in both cases, paying latency for it)."
+    }
+  ]
+}

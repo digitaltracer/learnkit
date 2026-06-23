@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "id": "back-of-the-envelope",
+  "subject": "system-design",
+  "track": "fundamentals",
+  "title": "Back-of-the-Envelope Estimation",
+  "format": "article",
+  "summary": "Quick order-of-magnitude math that sizes a system in your head — enough to justify a design choice without a spreadsheet.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Back-of-the-envelope estimation is rough arithmetic to size a system before you build it. The aim isn't a precise number — it's the order of magnitude, enough to know whether you need one server or a thousand, gigabytes or petabytes."
+    },
+    {
+      "type": "heading",
+      "text": "What to estimate"
+    },
+    {
+      "type": "paragraph",
+      "text": "A handful of quantities tell you most of what a design must handle. Each follows from a daily action count and a per-item size."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "QPS — derive from daily actions divided by seconds in a day.",
+        "Storage — object size multiplied by volume multiplied by retention.",
+        "Bandwidth — QPS multiplied by payload size.",
+        "Memory — what a cache must hold, often the hot fraction of total data."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Anchors worth memorizing"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "1 day is about 86,400 seconds — round to 100k to keep the math easy.",
+        "Read/write ratios are often 10:1 or higher; design for reads first.",
+        "Latency: memory ~100 ns, SSD read ~100 us, disk seek ~10 ms.",
+        "A round trip within the same datacenter is ~0.5 ms."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "A worked example"
+    },
+    {
+      "type": "paragraph",
+      "text": "Say a service takes 100M writes per day. Divide by ~100k seconds and you get roughly 1,150 writes per second on average. Traffic is never flat, so multiply by 2-3 for the peak — call it ~3,000 writes per second to provision for. From there, multiply by payload size for bandwidth and by retention for storage."
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "title": "Round numbers, stated assumptions",
+      "text": "Precision is a trap. Round aggressively and say your assumptions out loud — '100M writes a day, 1KB each, kept a year' — so the math is checkable and the conclusion is what matters."
+    },
+    {
+      "type": "heading",
+      "text": "Why it earns its keep"
+    },
+    {
+      "type": "paragraph",
+      "text": "These numbers justify design choices on the spot. If storage lands in the petabytes you reach for object storage and partitioning; if it's a few gigabytes a single node is fine. The estimate turns a vague 'it should scale' into a concrete decision."
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "id": "fault-tolerance",
+  "subject": "system-design",
+  "track": "fundamentals",
+  "title": "Fault Tolerance",
+  "format": "article",
+  "summary": "Faults are inevitable; the goal is to keep the system working correctly anyway — so a fault never becomes a failure the user sees.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "In a large system, something is always broken: a disk dies, a process hangs, a network link drops. Fault tolerance is the design discipline of continuing to operate correctly despite these faults, rather than assuming they won't happen."
+    },
+    {
+      "type": "heading",
+      "text": "Fault is not failure"
+    },
+    {
+      "type": "paragraph",
+      "text": "A fault is one component deviating from spec; a failure is the system as a whole stopping its service to the user. The point of fault tolerance is to break the chain between them — a fault should be absorbed quietly, never escalating into a failure the user notices."
+    },
+    {
+      "type": "heading",
+      "text": "Redundancy is the core lever"
+    },
+    {
+      "type": "paragraph",
+      "text": "You tolerate a component dying by having another ready to take its place. Redundancy comes in two flavors that trade cost against recovery time."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Active-active — all replicas serve traffic; losing one just sheds a fraction of capacity.",
+        "Active-passive (failover) — a standby waits idle and is promoted when the primary fails.",
+        "Active-active hides faults seamlessly but costs more; failover is cheaper but adds a detect-and-promote gap."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "No single point of failure",
+      "text": "Trace every request path and ask: what one component, if it died, takes the whole system down? Each such single point of failure must be made redundant or it defines your ceiling on reliability."
+    },
+    {
+      "type": "heading",
+      "text": "Keeping replicas usable"
+    },
+    {
+      "type": "paragraph",
+      "text": "A backup is only useful if it has the data. Replication keeps copies in sync so a standby can take over without losing state, and checkpointing periodically saves progress so a recovered component can resume rather than restart from scratch."
+    },
+    {
+      "type": "heading",
+      "text": "Graceful degradation"
+    },
+    {
+      "type": "paragraph",
+      "text": "When you can't fully tolerate a fault, degrade instead of collapsing. Shed the non-essential — serve stale cache data, disable a recommendation panel, queue writes for later — so the core service survives. A reduced experience beats an error page."
+    },
+    {
+      "type": "paragraph",
+      "text": "Put together, fault tolerance is layered: eliminate single points of failure, replicate state, fail over fast, and degrade gracefully when all else strains. The user should never learn which part broke."
+    }
+  ]
+}

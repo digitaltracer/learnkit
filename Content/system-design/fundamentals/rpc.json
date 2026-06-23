@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "id": "rpc",
+  "subject": "system-design",
+  "track": "fundamentals",
+  "title": "Remote Procedure Calls (RPC)",
+  "format": "article",
+  "summary": "Calling a function that runs on another machine as if it were local — and why that 'as if' is the dangerous part.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "An RPC lets one program invoke a function that actually runs on another machine. You write `getUser(id)` and call it like any other function, but the work happens on a remote server across the network. The goal is location transparency — the caller shouldn't need to know or care where the code runs."
+    },
+    {
+      "type": "heading",
+      "text": "How the call travels"
+    },
+    {
+      "type": "paragraph",
+      "text": "The magic is in generated glue code called stubs. A client stub stands in for the remote function, and a server stub receives the call on the other side. Between them, arguments are serialized into bytes (marshalling), sent over the network, and deserialized back into values the server can use; the result makes the same trip home."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "The client stub packs the arguments and sends a request.",
+        "The server stub unpacks them, runs the real function, and packs the result.",
+        "The client stub unpacks the result and hands it back to the caller."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "RPC vs REST"
+    },
+    {
+      "type": "paragraph",
+      "text": "REST models the world as resources you act on with HTTP verbs — GET a user, POST an order. RPC models it as actions you call — `createOrder`, `chargeCard`. RPC frameworks like gRPC use a compact binary format and a strict schema, which is fast and tightly typed; REST is more uniform, cacheable, and easy to inspect with ordinary HTTP tools."
+    },
+    {
+      "type": "heading",
+      "text": "A remote call is not a local call"
+    },
+    {
+      "type": "paragraph",
+      "text": "The transparency is a useful illusion, but it leaks. A local call is fast and either succeeds or throws; a remote call adds network latency, can be lost in flight, and can fail partially — the server may have done the work even though you never got the reply. You also have to decide what a timeout means when the answer simply never arrives."
+    },
+    {
+      "type": "callout",
+      "kind": "warning",
+      "title": "Don't treat remote as local",
+      "text": "Assuming an RPC behaves like an in-process call is a classic mistake. Budget for latency, handle timeouts explicitly, and never assume that no response means the work didn't happen."
+    },
+    {
+      "type": "heading",
+      "text": "Idempotency and retries"
+    },
+    {
+      "type": "paragraph",
+      "text": "Because a request can fail after the server acted, clients retry — and a naive retry can charge a card twice. The fix is to make operations idempotent: running them again has the same effect as running them once, often via a client-supplied request id the server deduplicates. With idempotency, retries become safe instead of dangerous."
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "text": "gRPC (Protocol Buffers over HTTP/2) and Apache Thrift are the workhorse RPC frameworks; both generate stubs from a schema so client and server stay in sync. Reach for RPC when you want typed, efficient service-to-service calls — but design as if the network is always between you, because it is."
+    }
+  ]
+}

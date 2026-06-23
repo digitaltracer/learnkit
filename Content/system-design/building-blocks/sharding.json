@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "id": "sharding",
+  "subject": "system-design",
+  "track": "building-blocks",
+  "title": "Database Partitioning and Sharding",
+  "format": "article",
+  "summary": "Splitting one dataset across many nodes when it no longer fits on a single machine — and why the shard key is the decision you can least afford to get wrong.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Replication copies the whole dataset to every node, but eventually the data is too big to fit on one machine, or one node can't handle the write load no matter how big it is. Partitioning splits the dataset into pieces so each node holds only a slice. Sharding is partitioning spread across separate machines, so total capacity grows with the number of nodes."
+    },
+    {
+      "type": "heading",
+      "text": "Horizontal vs vertical"
+    },
+    {
+      "type": "paragraph",
+      "text": "Horizontal partitioning splits by rows: users A–M on one node, N–Z on another, same schema everywhere. This is what people usually mean by sharding. Vertical partitioning splits by columns or tables: put rarely-read columns or a heavy table on its own node. Horizontal is the lever for scale; vertical is more about separating hot and cold data."
+    },
+    {
+      "type": "heading",
+      "text": "Choosing a shard key"
+    },
+    {
+      "type": "paragraph",
+      "text": "The shard key is the column that decides which node a row lives on. A good key spreads data and traffic evenly and lines up with how you query, so most requests hit a single shard. Two schemes turn that key into a placement: range-based and hash-based."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Range-based: assign contiguous ranges of the key to nodes. Range scans are efficient, but recent or sequential keys pile onto one node.",
+        "Hash-based: hash the key and place by the hash. Distribution is even, but range scans now hit every node.",
+        "The choice is a trade between even spread and efficient range queries — you rarely get both."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Hotspots and rebalancing"
+    },
+    {
+      "type": "paragraph",
+      "text": "If one shard receives far more data or traffic than the others, that's a hotspot, and the system is only as fast as its busiest node. A celebrity user, a monotonically increasing timestamp key, or a low-cardinality key all create this skew, and the fix is almost always a better-distributed key."
+    },
+    {
+      "type": "paragraph",
+      "text": "Rebalancing has its own trap. Naive hashing (key mod N) remaps almost every key when you add or remove a node, forcing a massive reshuffle. Consistent hashing places nodes and keys on a ring so adding a node moves only the keys near it — the standard trick for keeping rebalancing cheap as the cluster grows and shrinks."
+    },
+    {
+      "type": "heading",
+      "text": "Cross-shard queries"
+    },
+    {
+      "type": "paragraph",
+      "text": "Sharding makes single-shard reads fast but punishes anything that spans shards. A query without the shard key must scatter to every node and gather the results; a join across shards may be impossible without moving data. Designs lean on the shard key, denormalize, or keep related rows on the same shard to avoid this."
+    },
+    {
+      "type": "callout",
+      "kind": "warning",
+      "title": "The shard key is hard to change",
+      "text": "Re-sharding a live dataset means moving data while serving traffic — slow, risky, and rare. Choose the shard key for even distribution and for your dominant query pattern up front, because changing it later is the most expensive decision here."
+    }
+  ]
+}
