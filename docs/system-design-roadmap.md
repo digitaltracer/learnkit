@@ -1,8 +1,9 @@
 # System Design — LearnKit Content Roadmap
 
-_Status snapshot: 2026-06-24 — **48 / 48 lessons shipped — content-complete**. All four
-tracks authored; Building Blocks and Designing Systems shipped prose-first, with
-architecture diagrams the one remaining enhancement (gated on ADR 0010). Source syllabus:
+_Status snapshot: 2026-06-24 — **48 / 48 lessons shipped — content-complete**; the
+`architecture` primitive + `diagram` block (ADR 0010) are now **built and verified**,
+with the first diagram live in `load-balancers`. Remaining work is retrofitting
+diagrams into the other 33 diagram-bearing lessons. Source syllabus:
 https://www.educative.io/courses/grokking-the-system-design-interview (Grokking
 Modern System Design Interview — 48 chapters / 212 platform lessons, curated below)._
 
@@ -37,24 +38,31 @@ primitive, it's **whether the lesson needs an architecture diagram**.
 > intentionally **omitted** here. What remains is the actual System Design
 > material: concepts, building blocks, and end-to-end designs.
 
-## Engine prerequisites (do before / alongside the 🟡 content)
+## Engine prerequisites
 
 These unblock every diagram-bearing lesson. Each is a normal "new primitive"
-change per CLAUDE.md: schema + renderer + validator branch + tests + the ADR
-already exists.
+change per CLAUDE.md: schema + renderer + validator branch + tests + ADR.
 
-- [ ] **`architecture` primitive** — ninth `Visual` (ADR 0010): component nodes
+- [x] **`architecture` primitive** — ninth `Visual` (ADR 0010): component nodes
       (`client|service|database|cache|queue|cdn|storage|lb|external`) at normalized
       `x,y`, directed/labeled connectors (`sync` solid / `async` dashed), optional
-      tier/region groups. Renderer modeled on `GraphVisualView`. Add a
-      `VisualRenderTests` case at 320×240.
-- [ ] **`diagram` block** — article block that embeds a `Visual` (the delivery
-      vehicle for `architecture` inside an article). Validator: embedded visual
-      must itself validate.
+      tier/region groups. `ArchitectureVisualView` modeled on `GraphVisualView`
+      (rounded-rect icon+label boxes, edge trimming, arrowheads). Covered by a
+      `VisualRenderTests` case at 320×240 and decode tests. _(shipped)_
+- [x] **`diagram` block** — article block embedding a `Visual`, rendered at a fixed
+      band with an optional caption; validator recurses into the embedded visual.
+      `ArticleRenderTests` exercises it. _(shipped)_
 - [ ] **`table` block** — for capacity-estimation numbers and SQL-vs-NoSQL style
-      comparisons (ADR 0010 lists it as a later block).
+      comparisons (ADR 0010 lists it as a later block). Optional polish.
 - [ ] **`code` block** — for API sketches (REST/gRPC signatures). Optional; many
       lessons can use `bullets` instead.
+
+> **Authoring note (architecture diagrams).** Boxes are ~80pt wide; positions are
+> hand-authored normalized `x,y` (no auto-layout). Keep nodes to **≤3 columns** at
+> phone width and space columns ~0.35 apart so boxes don't overlap; put a labeled
+> connector only where there's room between boxes (tight horizontal pairs crowd the
+> label). Stack a tier vertically in one column. First real diagram lives in
+> `building-blocks/load-balancers.json` as the reference.
 
 ## Coverage summary
 
@@ -104,7 +112,7 @@ but all shipped here as **prose v1** (content complete; diagram to be added once
 the `architecture` primitive lands). All 18 are now authored.
 
 - [x] **DNS** — how a name resolves to an IP; hierarchy and caching _(prose v1; diagram pending)_
-- [x] **Load Balancers** — L4 vs L7, global vs local, algorithms, health checks _(prose v1; diagram pending)_
+- [x] **Load Balancers** — L4 vs L7, global vs local, algorithms, health checks _(✅ has architecture diagram — reference lesson)_
 - [x] **Content Delivery Network (CDN)** — edge caching, push vs pull, invalidation _(prose v1; diagram pending)_
 - [x] **Databases: SQL vs NoSQL** — types and when each fits _(prose v1; diagram pending)_
 - [x] **Key-Value Store** — consistent hashing, replication, quorums, versioning, gossip _(prose v1; diagram pending)_
@@ -157,15 +165,15 @@ The *how* of answering — the framework, not logistics. Pure prose.
 
 ## What's left
 
-All 48 lessons are authored and validating. The remaining work is **engine, not
-content**:
+All 48 lessons are authored and validating, and the `architecture` primitive +
+`diagram` block are now built and verified. Remaining work:
 
-1. **Build the `architecture` primitive + `diagram` block (ADR 0010)** — land it
-   with a `VisualRenderTests` case at 320×240 before wiring it into content.
-2. **Retrofit diagrams into the 34 prose-v1 lessons** — add a `diagram` block to
-   each Building Blocks and Designing Systems lesson, easiest shapes first (DNS,
-   Load Balancers) so the renderer is exercised on simple diagrams before the
-   fan-out-heavy ones. This is a per-lesson edit; no new prose needed.
+1. ✅ **Build the `architecture` primitive + `diagram` block (ADR 0010)** — done;
+   `load-balancers` carries the first real diagram as the reference.
+2. **Retrofit diagrams into the remaining 33 prose-v1 lessons** — add a `diagram`
+   block to each Building Blocks and Designing Systems lesson (load-balancers is
+   done). Per-lesson edit, no new prose; easiest shapes first. Follow the authoring
+   note above so boxes don't overlap.
 3. **Optional polish** — `table` block for the capacity-estimation numbers
    (currently rendered as `bullets`), and a `code` block for API sketches.
 
