@@ -80,7 +80,7 @@ The conceptual bedrock — vocabulary and tradeoffs. Mostly prose; a couple coul
 gain a small diagram later but read fine without one.
 
 - [x] **Scaling: Vertical vs Horizontal** — `scaling-basics` _(shipped)_
-- [ ] 🟢 **Abstractions in System Design** — what we hide and why; the building-block mindset
+- [x] **Abstractions in System Design** — what we hide and why; the building-block mindset _(shipped)_
 - [ ] 🟢 **Remote Procedure Calls (RPC)** — network abstraction; call-a-function-on-another-machine, and where the abstraction leaks
 - [ ] 🟢 **Consistency Models** — strong → eventual spectrum; what each guarantees and costs
 - [ ] 🟢 **Failure Models** — fail-stop, crash, omission, Byzantine; what you design against

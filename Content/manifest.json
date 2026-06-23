@@ -547,7 +547,8 @@
             "keyIdea": "Most design decisions trace back to a few fundamentals: scale up versus out, where state lives, and what you trade away — consistency, latency, or availability — when something has to give."
           },
           "lessons": [
-            { "id": "scaling-basics", "title": "Scaling: Vertical vs Horizontal", "file": "system-design/fundamentals/scaling-basics.json" }
+            { "id": "scaling-basics", "title": "Scaling: Vertical vs Horizontal", "file": "system-design/fundamentals/scaling-basics.json" },
+            { "id": "abstractions", "title": "Abstractions in System Design", "file": "system-design/fundamentals/abstractions.json" }
           ]
         }
       ]
