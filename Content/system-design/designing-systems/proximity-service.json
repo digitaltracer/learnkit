@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "id": "proximity-service",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design a Proximity Service (Yelp)",
+  "format": "article",
+  "summary": "Find the businesses near a location within a radius — a read-heavy lookup whose whole difficulty lives in indexing the surface of the earth so a search reads only nearby cells.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "A proximity service answers one question fast: given my location and a radius, which businesses are near me? Yelp, Google Maps, and dating apps all sit on this primitive. The API looks trivial, but the moment you ask \"near me\" of a table with millions of rows, an ordinary index falls apart — the design lives entirely in how you index space."
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Search: return businesses within a radius of a latitude/longitude, or inside a map viewport.",
+        "Return business details — name, category, rating, address — for results and on a profile page.",
+        "Add, update, and delete a business, though this happens rarely.",
+        "Non-functional: extremely read-heavy, very low search latency, high availability."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "paragraph",
+      "text": "Assume on the order of 200M businesses worldwide and hundreds of millions of searches a day, so a few thousand searches per second at peak. Writes are negligible by comparison — a business's location is set once and almost never changes. The index is built rarely and read constantly, which is exactly the shape that lets you precompute aggressively."
+    },
+    {
+      "type": "heading",
+      "text": "High-level design"
+    },
+    {
+      "type": "paragraph",
+      "text": "Split the system into two services behind a load balancer. A location-based search service answers \"what's near here\" against a geospatial index, returning a list of business IDs. A business service holds the full records and serves details. Searches resolve a small set of IDs from the index, then hydrate them from the business store, with both layers cached hard."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Search service: maps a (lat, lng, radius) query to nearby business IDs via the geo-index.",
+        "Business service: stores and serves the canonical business records, keyed by ID.",
+        "Geospatial index: buckets the world into cells so a query touches only nearby buckets.",
+        "Cache: hot regions and popular business records served from memory."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Indexing space: the core problem"
+    },
+    {
+      "type": "paragraph",
+      "text": "A radius search is a 2-D range query, and a normal database index is 1-D — it sorts on one column at a time. The trick is to map two dimensions down to one by bucketing the world into cells, then storing each business under its cell. A search computes the handful of cells covering the radius and reads only those, instead of scanning everything and computing distance to each row."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Geohash: interleave latitude and longitude bits into a single string; a shared prefix means physical proximity, so a prefix match returns a cell.",
+        "Quadtree: recursively split each region into four until a cell holds few enough businesses, adapting cell size to density.",
+        "Google S2: project the sphere onto a cube and number cells along a Hilbert curve, giving uniform cells and clean neighbour math.",
+        "All three turn \"near me\" into \"read these few cell buckets,\" and stitch in neighbouring cells so results near a cell's edge aren't missed."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "Why not just a B-tree?",
+      "text": "A B-tree on latitude and a B-tree on longitude each answer a 1-D range, but combining them still leaves you scanning a wide band and filtering by true distance. There is no single-column order that keeps points close on the map close in the index. Geohash, quadtrees, and S2 exist precisely to linearise 2-D space so one lookup returns a compact neighbourhood."
+    },
+    {
+      "type": "heading",
+      "text": "Ranking and serving results"
+    },
+    {
+      "type": "paragraph",
+      "text": "The index hands back nearby candidates; ranking decides their order by blending distance with rating, popularity, and relevance to the query. Because businesses move so rarely, the geo-index can be precomputed and replicated read-only across regions, and popular cells cached. The write path — adding or relocating a business — simply recomputes that one record's cell and is cheap at this low write rate."
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "title": "Takeaway",
+      "text": "A proximity service is a read-heavy lookup whose difficulty is entirely spatial. Pick a geospatial index — geohash, quadtree, or S2 — so a radius search reads a few cells instead of the whole table, separate the index from the detail store, and lean on the rare-write nature to precompute and cache."
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "id": "twitter",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design Twitter",
+  "format": "article",
+  "summary": "Post short messages and read a home timeline of the people you follow — a system whose entire difficulty lives in how the timeline gets built.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Twitter lets a user post a short message and read a home timeline — a merged, reverse-chronological stream of tweets from everyone they follow. Posting is easy. The hard, defining problem is timeline generation: assembling each user's feed fast, for hundreds of millions of users, when reads vastly outnumber writes."
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Post a tweet; follow and unfollow other users.",
+        "Read a home timeline of tweets from people you follow, newest first.",
+        "View a single user's own profile timeline.",
+        "Non-functional: heavily read-dominated, low timeline latency, high availability."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "paragraph",
+      "text": "Assume hundreds of millions of daily users, with reads outnumbering writes by roughly 100:1 or more — most people scroll far more than they post. Tweets are tiny (a few hundred bytes), so storing them is cheap; the cost is in the fan-out, since one tweet by a popular account may need to reach tens of millions of timelines. Timeline reads must return in tens of milliseconds."
+    },
+    {
+      "type": "heading",
+      "text": "High-level design"
+    },
+    {
+      "type": "paragraph",
+      "text": "Writing a tweet appends it to the tweet store and triggers timeline updates. Reading a timeline serves a precomputed list of tweet IDs from a fast cache, hydrated with tweet contents. The social graph (who follows whom) is its own store, queried during fan-out."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Tweet store: the durable record of every tweet, keyed by tweet ID.",
+        "Social graph store: follower and following edges.",
+        "Timeline cache: per-user precomputed list of recent tweet IDs in Redis.",
+        "Fan-out service: decides how a new tweet reaches its readers' timelines."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Fan-out on write vs on read"
+    },
+    {
+      "type": "paragraph",
+      "text": "Fan-out on write (push) inserts a new tweet's ID into every follower's cached timeline when you post: reads are trivial — just read your own list — but a write costs work proportional to your follower count. Fan-out on read (pull) builds timelines on demand by fetching recent tweets from everyone you follow and merging them: writes are cheap, but every read does the heavy merge. Push precomputes the timeline; pull computes it fresh on every read."
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "The celebrity problem",
+      "text": "Pure fan-out-on-write breaks for users with tens of millions of followers: a single tweet triggers tens of millions of timeline writes, a 'fan-out storm' that floods the system and delays the post. The cost of push scales with follower count, and celebrities make that count enormous — which is exactly what the hybrid fixes."
+    },
+    {
+      "type": "heading",
+      "text": "The hybrid"
+    },
+    {
+      "type": "paragraph",
+      "text": "Real systems mix the two. Push tweets from normal users into followers' timelines as before, but do not fan out tweets from celebrities or other hot accounts. Instead, at read time, pull the latest tweets from the handful of celebrities a user follows and merge them into the mostly-precomputed timeline. You pay push's cost only where it is cheap, and pull's cost only for the few accounts that would have made push explode."
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "title": "Takeaway",
+      "text": "Twitter is a timeline-generation problem dressed as a social app. Push for the many normal accounts, pull for the few hot ones, and let a timeline cache absorb the read-heavy traffic — the hybrid exists to dodge the celebrity fan-out storm."
+    }
+  ]
+}

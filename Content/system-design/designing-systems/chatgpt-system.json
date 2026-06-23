@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "id": "chatgpt-system",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design a ChatGPT-style System",
+  "format": "article",
+  "summary": "Serve a conversational LLM at scale — where GPU inference is the dominant cost and latency, so batching, autoscaling, and token streaming carry the design.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "A ChatGPT-style system takes a user's message plus the conversation so far, runs it through a large language model, and streams back a reply token by token. The novel constraint is the model itself: inference runs on scarce, expensive GPUs and takes seconds per response. So the architecture bends around keeping those GPUs busy, hiding their latency, and keeping the whole thing safe and affordable."
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Chat with conversation context — the model sees the prior turns, not just the latest message.",
+        "Stream the response token by token rather than waiting for the whole answer.",
+        "Low time-to-first-token, even though the full response takes seconds.",
+        "Non-functional: GPU inference is very expensive, plus prompt and output safety filtering."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "paragraph",
+      "text": "Assume millions of users sending tens of millions of messages a day, each generating hundreds of tokens. The binding resource isn't requests per second — it's GPU-seconds: a single response can occupy a costly accelerator for several seconds. GPU capacity is finite and slow to add, so utilization is the metric that matters, and a request may have to wait in line for a free GPU."
+    },
+    {
+      "type": "heading",
+      "text": "High-level design"
+    },
+    {
+      "type": "paragraph",
+      "text": "A request enters through an API gateway that handles auth and rate limiting, then lands in a request queue that feeds an autoscaling cluster of GPU model-serving workers. A worker pulls the conversation context, runs inference, and streams generated tokens back to the client over SSE or a WebSocket. A conversation store holds chat history, and safety filters screen both the incoming prompt and the outgoing text."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "API gateway: authentication, rate limiting, and quota enforcement at the edge.",
+        "Request queue: decouples bursty arrivals from finite GPU capacity and absorbs spikes.",
+        "GPU model-serving cluster: autoscaling inference workers, the expensive heart of the system.",
+        "Conversation/context store: persists chat history and assembles the context window per request.",
+        "Safety filters: screen the prompt before inference and the output before it reaches the user."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "GPU inference is the bottleneck"
+    },
+    {
+      "type": "paragraph",
+      "text": "Because each response ties up a GPU for seconds, the system lives or dies on GPU efficiency. The biggest lever is batching — running several requests through the model together so the GPU's parallelism is fully used, which raises throughput per accelerator dramatically. A queue in front lets workers form those batches and smooths bursts; autoscaling adds and removes GPU workers as the queue depth rises and falls, though scaling up is slow and costly."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Batch concurrent requests so each GPU serves many users at once.",
+        "Queue arrivals so workers can assemble batches and bursts don't drop requests.",
+        "Autoscale GPU workers on queue depth and latency, accepting that capacity is slow to add.",
+        "Cache where you can — identical or prefix-shared prompts, and common system-prompt computation — to skip redundant inference."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "Why stream token by token",
+      "text": "A full answer can take several seconds to generate, and making the user stare at a spinner that whole time feels broken. The model produces tokens one at a time, so you push each to the client as it's generated over SSE or a WebSocket. Time-to-first-token becomes the perceived latency, and the wait for the rest is hidden behind text that's already scrolling."
+    },
+    {
+      "type": "heading",
+      "text": "Context, safety, and cost"
+    },
+    {
+      "type": "paragraph",
+      "text": "Each turn must include enough prior conversation to stay coherent, but the context window is bounded and every extra token costs GPU time — so long chats get truncated or summarized. Safety filtering runs on both ends: screen the prompt for abuse and policy violations before spending a GPU on it, and screen the output before it reaches the user. Every design choice trades against the same scarce, expensive resource: GPU compute."
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "title": "Takeaway",
+      "text": "A ChatGPT-style system is an exercise in rationing GPUs. Queue and batch requests to maximize accelerator utilization, autoscale the GPU fleet, stream tokens to hide multi-second latency, and filter prompts and outputs for safety. The model is the cost center, so almost every decision is about feeding it efficiently."
+    }
+  ]
+}

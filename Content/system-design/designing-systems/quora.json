@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "id": "quora",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design Quora",
+  "format": "article",
+  "summary": "A Q&A site where a few hot questions are read millions of times — the design is dominated by caching the read path and ranking answers, not by the writes.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Quora lets people ask questions, post answers, vote and comment, and read a personalized feed. It is fundamentally a content site with social signals layered on: most of the load is people reading a small set of popular questions over and over. The interesting design choices are how you rank answers and how you serve a hot question to millions without melting the database."
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Post a question and post answers to it; add comments on answers.",
+        "Upvote and downvote answers, and order answers by quality.",
+        "A personalized home feed of questions and answers a user would care about.",
+        "Non-functional: extremely read-heavy, low read latency, high availability."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "paragraph",
+      "text": "Assume hundreds of millions of monthly users and a read-to-write ratio well past 100:1 — billions of views against millions of new posts and votes. View counts are wildly skewed: a handful of evergreen questions accumulate millions of reads while most get a few. That skew is the whole story — it means a tiny cache can absorb the vast majority of traffic."
+    },
+    {
+      "type": "heading",
+      "text": "Data model"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Questions: id, title, body, author, tags, timestamps.",
+        "Answers: id, question_id, author, body, vote tally, timestamps.",
+        "Votes: (user_id, answer_id, direction) — one row per vote, deduplicated per user.",
+        "Users: profile, follows, and topic interests that drive the feed.",
+        "Comments: attached to an answer, threaded lightly."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "High-level design"
+    },
+    {
+      "type": "paragraph",
+      "text": "Stateless app servers sit behind a load balancer in front of a sharded primary store. Writes — a new answer, a vote — go to the database and invalidate or update the relevant cache entries. Reads are served from a cache layer first; only a miss touches the store. A separate ranking pipeline and a feed service precompute the expensive ordering off the hot path."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "App tier: stateless services for questions, answers, votes, and feed.",
+        "Sharded store: partition by question_id so a question and its answers co-locate.",
+        "Cache: rendered hot questions and answer lists in Redis, keyed by question_id.",
+        "Async pipeline: recompute answer ranks and fan out feed updates in the background."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Ranking answers"
+    },
+    {
+      "type": "paragraph",
+      "text": "Sorting answers purely by raw vote count buries good new answers under old ones, and pure recency hides the best answer. So you blend signals — net votes, the asker's and editors' endorsements, author reputation, and a time-decay so fresh answers get a fair shot. The score is recomputed asynchronously as votes arrive rather than on every read, then cached alongside the answer list."
+    },
+    {
+      "type": "heading",
+      "text": "The personalized feed"
+    },
+    {
+      "type": "paragraph",
+      "text": "The feed mixes questions from followed topics and users with trending content. As with most feeds you choose between fan-out-on-write (precompute each user's feed when content is posted) and fan-out-on-read (assemble it at request time). A hybrid is common: precompute for ordinary users, but pull live for users who follow huge topics, where precomputing every update would be wasteful."
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "The read path dominates",
+      "text": "Rendering one hot question — its body, top answers in ranked order, vote tallies, and comments — is expensive, and that same question is requested millions of times. If every view recomputed ranking and hit the database, a single viral question could take the site down. The job is to compute the rendered view once and serve it from cache to everyone, recomputing only when something actually changes."
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "title": "Takeaway",
+      "text": "Quora is a read-heavy content system: shard by question, precompute answer ranking and feeds off the hot path, and cache the rendered hot questions hard. Treat the read path as the thing you optimize and the write path as the thing that invalidates caches."
+    }
+  ]
+}

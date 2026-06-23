@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "id": "youtube",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design YouTube",
+  "format": "article",
+  "summary": "Let users upload video and stream it smoothly to billions of viewers — a read-heavy, storage-and-bandwidth-dominated system built around an asynchronous transcoding pipeline and a CDN.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "YouTube lets anyone upload a video and lets everyone else watch it. The hard part is the asymmetry: a video is uploaded once but streamed millions of times, on every kind of network and device. So the design is dominated by storage, bandwidth, and a pipeline that turns one raw upload into something playable everywhere."
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Functional: upload a video, transcode it, stream it on demand, search by title, view thumbnails.",
+        "Read-heavy: watches vastly outnumber uploads, so optimize for playback.",
+        "Massive storage for raw and transcoded files, and massive egress bandwidth.",
+        "Smooth playback across bitrates and devices; high availability for viewing."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "paragraph",
+      "text": "Think hundreds of hours of video uploaded every minute and billions of watch hours per day. A single source video gets re-encoded into several resolutions, so transcoded output is a multiple of raw bytes — total storage is in the exabytes. Bandwidth, not CPU, is usually the binding constraint at watch time."
+    },
+    {
+      "type": "heading",
+      "text": "High-level design"
+    },
+    {
+      "type": "paragraph",
+      "text": "Uploads and watches travel two different paths. The write path ingests a raw file and feeds it into a transcoding pipeline; the read path serves pre-transcoded segments from a CDN. A metadata database ties them together by holding titles, owners, and the locations of each rendition."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Upload service accepts the raw file and writes it to a blob store (object storage like S3).",
+        "Transcoding pipeline encodes the video into multiple resolutions and formats, then stores each in the blob store.",
+        "Metadata DB stores video info and pointers to every rendition and its thumbnail.",
+        "CDN caches video segments and thumbnails at the edge, close to viewers.",
+        "Search service indexes titles and metadata so videos are discoverable."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "The transcoding pipeline"
+    },
+    {
+      "type": "paragraph",
+      "text": "A raw upload is one big file in one codec — useless for serving directly. Transcoding splits it into chunks and re-encodes each into a ladder of resolutions (144p through 4K) and formats, then packages them as small segments for adaptive streaming. Each rendition lands in the blob store, and its location is recorded in the metadata DB."
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "Why transcoding is asynchronous",
+      "text": "Transcoding is slow and CPU-heavy — minutes to hours for a long video. You can't make the user wait, so the upload returns as soon as the raw file lands, and a job is queued for a fleet of workers to encode in the background. The video becomes watchable rendition by rendition as the pipeline finishes."
+    },
+    {
+      "type": "heading",
+      "text": "Streaming with adaptive bitrate"
+    },
+    {
+      "type": "paragraph",
+      "text": "Playback uses adaptive bitrate streaming (HLS or DASH): the player requests short segments and picks a quality level based on the viewer's current bandwidth, stepping up or down mid-video without interruption. Because each segment is a static file, the CDN caches it once and serves it from the edge — the origin and metadata DB are barely touched on a popular video."
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "title": "Lean on the CDN",
+      "text": "The CDN is what makes a read-heavy video system affordable and fast: it absorbs almost all egress and keeps bytes physically close to viewers. Your origin servers exist mostly to fill cache misses and serve the long tail of unpopular videos."
+    }
+  ]
+}

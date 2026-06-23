@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "id": "blob-store",
+  "subject": "system-design",
+  "track": "building-blocks",
+  "title": "Blob / Object Store",
+  "format": "article",
+  "summary": "A store for large unstructured objects addressed by key in a flat namespace of buckets — durable, massively scalable, and deliberately simple.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "A blob or object store holds large, unstructured objects — images, video, backups, logs, model weights — that don't fit neatly in a database row. You address each object by a key inside a bucket, and the store hands back the bytes. Amazon S3 is the canonical example, and the same design underlies most cloud object storage."
+    },
+    {
+      "type": "heading",
+      "text": "Buckets, keys, and metadata"
+    },
+    {
+      "type": "paragraph",
+      "text": "Objects live in a flat namespace: a bucket is a container, and within it every object has a unique key. There are no real directories — a key like photos/2024/cat.jpg just looks hierarchical; the slashes are part of the name. Alongside the bytes, each object carries metadata (content type, size, custom tags) that the store indexes for listing and lookup."
+    },
+    {
+      "type": "heading",
+      "text": "Durability"
+    },
+    {
+      "type": "paragraph",
+      "text": "Object stores are built to almost never lose data. They achieve this by replicating each object across multiple machines and often multiple data centers, or by using erasure coding — splitting an object into data and parity fragments so it can be rebuilt from a subset. Erasure coding gives the same durability as replication at far lower storage overhead, which matters at petabyte scale."
+    },
+    {
+      "type": "heading",
+      "text": "Massive horizontal scale"
+    },
+    {
+      "type": "paragraph",
+      "text": "Because objects are independent and addressed by key, the store partitions them across a huge fleet and scales by adding machines. There are no joins or cross-object transactions to coordinate, so capacity and throughput grow nearly linearly. This is why object stores comfortably hold trillions of objects and exabytes of data."
+    },
+    {
+      "type": "heading",
+      "text": "How it differs from files and databases"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Unlike a file system: a flat key namespace, no directory tree, and objects written and read whole rather than seeked and edited in place.",
+        "Accessed over HTTP APIs (GET/PUT by key), not mounted as a POSIX volume with locking.",
+        "Unlike a database: no rich queries — you fetch by key, you don't SELECT by attributes.",
+        "No cross-object transactions, and often eventually consistent — a read just after a write may briefly see stale data."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "Blob store or database?",
+      "text": "Reach for a blob store when the payload is large and opaque and you fetch it whole by an id — images, videos, files, backups. Keep it in a database when you need to query, filter, join, or transactionally update the data. A common pattern is both: store the blob in the object store and keep its key plus searchable metadata in the database."
+    },
+    {
+      "type": "paragraph",
+      "text": "The object store earns its place by doing one thing extremely well: storing and serving huge volumes of unstructured data cheaply and durably. Pair it with a CDN to serve those objects fast, and with a database to make them findable, and you have the backbone of most media-heavy systems."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "sharded-counters",
+  "subject": "system-design",
+  "track": "building-blocks",
+  "title": "Sharded Counters",
+  "format": "article",
+  "summary": "Counting at very high write throughput — likes, views, reactions — by splitting one hot logical counter into many physical shards so writes spread out instead of contending on a single row.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Some numbers get incremented constantly: the like count on a viral post, the view count on a popular video, reactions on a live event. The naive design — one row holding the count, bumped by every event — works fine until the traffic concentrates on that single row, and then it falls over."
+    },
+    {
+      "type": "heading",
+      "text": "The hot-key problem"
+    },
+    {
+      "type": "paragraph",
+      "text": "Every increment to one counter touches the same row, so they must be serialized — each writer locks the row, updates it, and releases it before the next can proceed. Under heavy load that single row becomes a hot key: writes queue behind one another, latency climbs, and throughput is capped no matter how big your database is. The bottleneck is contention, not capacity."
+    },
+    {
+      "type": "heading",
+      "text": "The fix: split the counter"
+    },
+    {
+      "type": "paragraph",
+      "text": "Instead of one logical counter, keep N physical shard rows that together represent it. Each increment goes to a randomly chosen shard, so writes spread across N rows and the contention on any one drops by roughly a factor of N. The total is no longer stored anywhere — it is computed when you need it."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Write: pick a random shard 0..N-1 and increment just that row.",
+        "Read: sum all N shard rows to get the true total.",
+        "More shards means less write contention but a wider, costlier read."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "The core tradeoff",
+      "text": "Sharded counters spread writes now and pay a little on read. You trade one cheap-but-contended write for many cheap uncontended writes, accepting that reads must fan in across the shards to add them up. It pays off precisely when writes vastly outnumber reads."
+    },
+    {
+      "type": "heading",
+      "text": "Choosing the shard count"
+    },
+    {
+      "type": "paragraph",
+      "text": "N is a dial between write speed and read cost. Too few shards and contention remains; too many and every read sums a long list of mostly-tiny numbers. Size N to the expected peak write rate on that counter, and remember that cold items don't need the same fan-out as a single runaway hot key — some systems even adapt N to observed load."
+    },
+    {
+      "type": "heading",
+      "text": "Exact vs approximate"
+    },
+    {
+      "type": "paragraph",
+      "text": "If you must show an exact number, sum the shards on every read. But for likes and views, a slightly stale or estimated count is usually fine — so you can cache the sum and refresh it periodically, or sample a few shards and scale up. Relaxing exactness makes the read cheap again, recovering what sharding spent."
+    }
+  ]
+}

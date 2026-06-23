@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "id": "task-scheduler",
+  "subject": "system-design",
+  "track": "building-blocks",
+  "title": "Distributed Task Scheduler",
+  "format": "article",
+  "summary": "Running background and scheduled jobs reliably across a cluster: a durable queue, a scheduler, and a worker pool that survives failures by retrying idempotent tasks.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "A lot of work shouldn't happen inside a user's request — sending email, generating reports, processing video, running a nightly cleanup. A distributed task scheduler runs these background and scheduled jobs across a cluster of workers, so the work gets done reliably even as machines come and go."
+    },
+    {
+      "type": "heading",
+      "text": "The core components"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "A durable task queue that stores submitted jobs so none are lost if a node restarts.",
+        "A scheduler that decides what runs when — immediately, after a delay, or on a cron schedule.",
+        "A worker pool that pulls tasks and executes them, scaling out as the backlog grows."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Retries and failure"
+    },
+    {
+      "type": "paragraph",
+      "text": "Workers crash, networks drop, and tasks time out, so the scheduler retries — usually with exponential backoff and a cap. This gives at-least-once execution: every task runs to completion, but a task may run more than once when a worker finishes the work yet dies before reporting success. Repeatedly failing tasks land in a dead-letter queue for inspection rather than retrying forever."
+    },
+    {
+      "type": "callout",
+      "kind": "warning",
+      "title": "At-least-once means twice is possible",
+      "text": "Because a task can run more than once, handlers must be idempotent — running the same task twice must have the same effect as running it once. Guard side effects with a unique key or a check before write; otherwise a retry sends the email or charges the card a second time."
+    },
+    {
+      "type": "heading",
+      "text": "Dependencies as a DAG"
+    },
+    {
+      "type": "paragraph",
+      "text": "Real workflows have order: build the dataset before training, train before evaluating. Tasks form a directed acyclic graph (DAG) where an edge means 'must finish first', and the scheduler runs each task only once all its dependencies have succeeded. Independent branches of the graph can still run in parallel."
+    },
+    {
+      "type": "heading",
+      "text": "Priorities and timing"
+    },
+    {
+      "type": "paragraph",
+      "text": "Not all work is equal or due now. Priority queues let urgent tasks jump ahead of bulk batch jobs, while delayed and cron jobs let you say 'run this in an hour' or 'run this every night at 2am'. The scheduler holds time-based tasks until they are due, then hands them to the queue."
+    },
+    {
+      "type": "heading",
+      "text": "Avoiding duplicate execution"
+    },
+    {
+      "type": "paragraph",
+      "text": "Many workers polling one queue risk grabbing the same task at once. A lease (or lock) fixes this: a worker claims a task for a bounded time, and others skip it; if the worker dies, the lease expires and the task becomes available again. Leases bound duplicate work but, like retries, never fully eliminate it — which is why idempotency stays the real safety net."
+    }
+  ]
+}

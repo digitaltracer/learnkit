@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "id": "distributed-search",
+  "subject": "system-design",
+  "track": "building-blocks",
+  "title": "Distributed Search",
+  "format": "article",
+  "summary": "How full-text search runs fast over a huge corpus: an inverted index, sharded and replicated across nodes, queried by scatter-gather and ranked for relevance.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Distributed search answers a deceptively simple question — 'which documents contain these words?' — over a corpus far too large for one machine. Scanning every document on each query is hopeless at that scale, so search systems do the expensive work up front: they build an index once, then read it cheaply for every query."
+    },
+    {
+      "type": "heading",
+      "text": "The inverted index"
+    },
+    {
+      "type": "paragraph",
+      "text": "The core data structure is the inverted index: a map from each term to its posting list — the set of documents that contain that term. To answer a query, you look up each term, then intersect or union the posting lists instead of touching the documents themselves. It is 'inverted' because it goes term to document, the reverse of how documents are stored."
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "Why it's fast",
+      "text": "The inverted index is what makes search fast — a query becomes a few lookups and list merges rather than a full scan. You pay for that speed up front, in the work to build the index and keep it current as documents change."
+    },
+    {
+      "type": "heading",
+      "text": "The indexing pipeline"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Crawl or ingest: pull in documents from sources, files, or a stream of updates.",
+        "Tokenize: split text into terms, then normalize — lowercase, strip punctuation, stem words, drop stop words.",
+        "Build the index: append each document to the posting list of every term it contains."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Sharding and replication"
+    },
+    {
+      "type": "paragraph",
+      "text": "One index is still too big for a single node, so it is split into shards, each holding a slice of the documents. Sharding spreads both storage and query load across the cluster. Each shard is also replicated to a few nodes, so a node failure costs neither data nor availability, and reads can be served from any replica."
+    },
+    {
+      "type": "heading",
+      "text": "The query path: scatter-gather"
+    },
+    {
+      "type": "paragraph",
+      "text": "Because the documents are spread across shards, no single node can answer a query alone. A coordinator fans the query out to every shard (scatter), each shard searches its own slice and returns its top matches, and the coordinator merges and re-ranks those partial results into the final list (gather). The query is only as fast as the slowest shard it waits on."
+    },
+    {
+      "type": "heading",
+      "text": "Relevance ranking"
+    },
+    {
+      "type": "paragraph",
+      "text": "Matching is not enough — results must be ordered by how relevant they are. Classic scoring uses TF-IDF: a term matters more when it appears often in a document (term frequency) but less when it appears in many documents (inverse document frequency). BM25 refines this with saturation and length normalization, and is the default in most modern engines."
+    },
+    {
+      "type": "heading",
+      "text": "Near-real-time updates"
+    },
+    {
+      "type": "paragraph",
+      "text": "New and changed documents must become searchable quickly. Rather than rebuild the whole index, engines write small new index segments and merge them in the background, so updates show up in seconds — near-real-time, not strictly instant. Elasticsearch, built on Lucene, packages all of this: inverted indexes, sharding, replication, scatter-gather queries, and BM25 ranking."
+    }
+  ]
+}

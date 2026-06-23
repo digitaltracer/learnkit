@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "id": "instagram",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design Instagram",
+  "format": "article",
+  "summary": "Photo and video sharing with a feed — where the design splits cleanly into a heavy media plane and a light metadata plane.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Instagram lets users upload photos and videos, follow others, and scroll a feed of posts they can like and comment on. The defining tension is that the content is large binary media, but everything around it — captions, follows, likes, feeds — is small structured data. Designing the two planes separately is what keeps the system fast and cheap."
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Upload a photo or video with a caption.",
+        "Follow and unfollow other users.",
+        "View a ranked feed of posts from people you follow.",
+        "Like and comment on posts; non-functional: very read-heavy, low feed latency."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "paragraph",
+      "text": "Assume hundreds of millions of daily users with a heavily read-skewed pattern — far more views than uploads. Photos average a few megabytes and videos far more, so even modest upload rates accumulate to petabytes of media, while the metadata (who posted what, who follows whom, likes) stays in the low terabytes. The bytes live in media; the queries live in metadata."
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "Two planes",
+      "text": "Separate the media plane (blob store plus CDN) from the metadata plane (a database). Media is large, immutable, and served by URL; metadata is small, queried, and frequently updated. Mixing them — storing image bytes in your primary database — bloats the store, slows queries, and wastes the CDN. Keep blobs in object storage and store only their URLs in the DB."
+    },
+    {
+      "type": "heading",
+      "text": "High-level design"
+    },
+    {
+      "type": "paragraph",
+      "text": "On upload, the client sends media to an upload service that writes it to a blob store and enqueues processing; metadata (post ID, author, caption, media URLs) goes to the database. On read, the feed service returns post metadata and CDN URLs, and the client fetches the actual images from the CDN edge, never from your origin."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Blob store: object storage (e.g. S3) holding the raw media.",
+        "CDN: edge caches serving media close to viewers.",
+        "Metadata DB: posts, users, follows, likes, comments.",
+        "Feed service: assembles ranked feeds of post IDs plus their media URLs."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "The media pipeline"
+    },
+    {
+      "type": "paragraph",
+      "text": "A raw upload is not what you serve. An asynchronous pipeline, run off a queue so the upload returns immediately, generates multiple renditions — thumbnails, feed-sized images, and several video resolutions — each written back to the blob store and exposed through the CDN. Each device then pulls the rendition it needs instead of the original, and videos are transcoded into adaptive-bitrate variants for smooth streaming."
+    },
+    {
+      "type": "heading",
+      "text": "Feed generation"
+    },
+    {
+      "type": "paragraph",
+      "text": "The feed reuses the newsfeed design: fan-out to assemble each user's feed, then rank. Push posts into followers' precomputed feeds for ordinary accounts and pull at read time for very-high-follower accounts, exactly the hybrid that avoids a fan-out storm. The feed itself carries only post IDs and CDN URLs — lightweight — so reads stay fast and the heavy bytes flow straight from the edge."
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "title": "Takeaway",
+      "text": "Split the system in two: a media plane of blob store plus CDN with an async rendition pipeline, and a metadata plane in the database that drives feeds. Reuse the newsfeed fan-out for the feed, and keep image bytes out of your database."
+    }
+  ]
+}

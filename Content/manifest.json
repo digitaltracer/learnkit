@@ -579,12 +579,22 @@
           "lessons": [
             { "id": "dns", "title": "Domain Name System (DNS)", "file": "system-design/building-blocks/dns.json" },
             { "id": "load-balancers", "title": "Load Balancers", "file": "system-design/building-blocks/load-balancers.json" },
+            { "id": "cdn", "title": "Content Delivery Network (CDN)", "file": "system-design/building-blocks/cdn.json" },
             { "id": "sql-vs-nosql", "title": "Databases: SQL vs NoSQL", "file": "system-design/building-blocks/sql-vs-nosql.json" },
+            { "id": "key-value-store", "title": "Key-Value Store", "file": "system-design/building-blocks/key-value-store.json" },
+            { "id": "blob-store", "title": "Blob / Object Store", "file": "system-design/building-blocks/blob-store.json" },
             { "id": "replication", "title": "Database Replication", "file": "system-design/building-blocks/replication.json" },
             { "id": "sharding", "title": "Database Partitioning and Sharding", "file": "system-design/building-blocks/sharding.json" },
             { "id": "caching", "title": "Distributed Cache", "file": "system-design/building-blocks/caching.json" },
             { "id": "messaging-queue", "title": "Distributed Messaging Queue", "file": "system-design/building-blocks/messaging-queue.json" },
-            { "id": "pub-sub", "title": "Publish-Subscribe", "file": "system-design/building-blocks/pub-sub.json" }
+            { "id": "pub-sub", "title": "Publish-Subscribe", "file": "system-design/building-blocks/pub-sub.json" },
+            { "id": "rate-limiter", "title": "Rate Limiter", "file": "system-design/building-blocks/rate-limiter.json" },
+            { "id": "unique-id-generator", "title": "Unique ID Generator", "file": "system-design/building-blocks/unique-id-generator.json" },
+            { "id": "sharded-counters", "title": "Sharded Counters", "file": "system-design/building-blocks/sharded-counters.json" },
+            { "id": "distributed-search", "title": "Distributed Search", "file": "system-design/building-blocks/distributed-search.json" },
+            { "id": "distributed-logging", "title": "Distributed Logging", "file": "system-design/building-blocks/distributed-logging.json" },
+            { "id": "distributed-monitoring", "title": "Distributed Monitoring", "file": "system-design/building-blocks/distributed-monitoring.json" },
+            { "id": "task-scheduler", "title": "Distributed Task Scheduler", "file": "system-design/building-blocks/task-scheduler.json" }
           ]
         },
         {
@@ -605,6 +615,40 @@
           "lessons": [
             { "id": "reshaded-framework", "title": "The RESHADED Framework", "file": "system-design/interview-method/reshaded-framework.json" },
             { "id": "nfr-checklist", "title": "Non-Functional Requirements Checklist", "file": "system-design/interview-method/nfr-checklist.json" }
+          ]
+        },
+        {
+          "id": "designing-systems",
+          "title": "Designing Systems",
+          "icon": "square.on.square.dashed",
+          "format": "article",
+          "overview": {
+            "tagline": "End-to-end designs of real products — where the fundamentals and building blocks come together under the RESHADED method.",
+            "whenToUse": [
+              "You want to see the building blocks assembled into a complete system.",
+              "You're practising the classic interview prompts — design Twitter, YouTube, Uber.",
+              "You want to study the one hard tradeoff at the heart of each product.",
+              "You're rehearsing how to drive a design from requirements to evaluation."
+            ],
+            "keyIdea": "Every real system is the same handful of building blocks arranged to fit one dominant constraint — read-heavy fan-out, geospatial lookup, real-time delivery, exactly-once money. Find that constraint, design around it with the RESHADED steps, and the rest follows."
+          },
+          "lessons": [
+            { "id": "tinyurl", "title": "Design TinyURL", "file": "system-design/designing-systems/tinyurl.json" },
+            { "id": "web-crawler", "title": "Design a Web Crawler", "file": "system-design/designing-systems/web-crawler.json" },
+            { "id": "twitter", "title": "Design Twitter", "file": "system-design/designing-systems/twitter.json" },
+            { "id": "newsfeed", "title": "Design a Newsfeed System", "file": "system-design/designing-systems/newsfeed.json" },
+            { "id": "instagram", "title": "Design Instagram", "file": "system-design/designing-systems/instagram.json" },
+            { "id": "youtube", "title": "Design YouTube", "file": "system-design/designing-systems/youtube.json" },
+            { "id": "whatsapp", "title": "Design WhatsApp", "file": "system-design/designing-systems/whatsapp.json" },
+            { "id": "typeahead", "title": "Design Typeahead Suggestion", "file": "system-design/designing-systems/typeahead.json" },
+            { "id": "uber", "title": "Design Uber", "file": "system-design/designing-systems/uber.json" },
+            { "id": "google-maps", "title": "Design Google Maps", "file": "system-design/designing-systems/google-maps.json" },
+            { "id": "proximity-service", "title": "Design a Proximity Service (Yelp)", "file": "system-design/designing-systems/proximity-service.json" },
+            { "id": "quora", "title": "Design Quora", "file": "system-design/designing-systems/quora.json" },
+            { "id": "google-docs", "title": "Design Google Docs", "file": "system-design/designing-systems/google-docs.json" },
+            { "id": "payment-system", "title": "Design a Payment System", "file": "system-design/designing-systems/payment-system.json" },
+            { "id": "code-deployment", "title": "Design a Code Deployment System", "file": "system-design/designing-systems/code-deployment.json" },
+            { "id": "chatgpt-system", "title": "Design a ChatGPT-style System", "file": "system-design/designing-systems/chatgpt-system.json" }
           ]
         }
       ]

@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "id": "web-crawler",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design a Web Crawler",
+  "format": "article",
+  "summary": "A distributed crawler that systematically downloads the web for search and indexing — where the hard parts are politeness, deduplication, and not falling into traps.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "A web crawler starts from a set of seed URLs and follows links outward, downloading pages so they can be indexed for search. Conceptually it is a graph traversal over the web, but at billions of pages the interesting problems are not the traversal — they are staying polite, not re-fetching the same content, and never getting stuck."
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Coverage: discover and download a large fraction of reachable pages.",
+        "Freshness: re-crawl pages so the index reflects what changed.",
+        "Politeness: respect robots.txt and never overwhelm a single site.",
+        "Scalability and robustness: run across many nodes and survive bad pages."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "paragraph",
+      "text": "Crawling a billion pages a month is roughly a few hundred pages per second sustained, and far more in bursts. At an average of tens of kilobytes per page that is tens of terabytes of raw content per month, before parsing. The seen-URL set alone can hold many billions of entries, so it must be compact and shardable — not something one machine holds in memory."
+    },
+    {
+      "type": "heading",
+      "text": "High-level design"
+    },
+    {
+      "type": "paragraph",
+      "text": "A request flows in a loop across many crawler nodes pulling from a shared, partitioned frontier. The components: the URL frontier (queues that pick what to fetch next, by priority and per-domain politeness), fetchers (download pages, honouring robots.txt and timeouts), a parser/link extractor (pull out content and outbound links), dedup (a seen-URL set plus content hashing to skip duplicates), and a content store that hands raw pages to the indexing pipeline."
+    },
+    {
+      "type": "heading",
+      "text": "The URL frontier"
+    },
+    {
+      "type": "paragraph",
+      "text": "The frontier is the heart of the design. It is not one queue but two layers: front queues that encode priority (crawl important or fast-changing pages sooner) and back queues that each map to a single host, so all of one domain's URLs funnel through one queue with its own rate limit. A scheduler picks the next ready back queue, which enforces a polite delay between hits to the same host while keeping the crawler globally busy."
+    },
+    {
+      "type": "callout",
+      "kind": "warning",
+      "title": "Politeness is not optional",
+      "text": "A crawler that ignores robots.txt or hammers a host hundreds of times a second is indistinguishable from a denial-of-service attack. Sites will rate-limit, block, or ban your IP ranges — and a banned crawler stops crawling. Per-domain rate limits and robots.txt compliance protect the open web and your own access to it."
+    },
+    {
+      "type": "heading",
+      "text": "Dedup, traps, and distribution"
+    },
+    {
+      "type": "paragraph",
+      "text": "The web is a graph full of loops, so you must remember what you have seen: a seen-URL set (often a Bloom filter) drops links already queued, while a content hash skips near-duplicates under different URLs — printer versions, session IDs, tracking params. Defend against crawler traps (infinite calendars, generated link mazes, recursive paths) by capping crawl depth and per-domain page counts and normalising URLs."
+    },
+    {
+      "type": "paragraph",
+      "text": "Crawling is embarrassingly parallel if you partition by host: hash each domain to a frontier shard so one host is always handled by one node, which keeps per-domain rate limiting correct and stops two nodes politely racing the same site. The traversal is broadly BFS — explore the current frontier before going deeper — biased by priority so important pages surface first."
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "title": "Takeaway",
+      "text": "The frontier carries the design's intelligence: priority and politeness live there. Get dedup and trap defences right or you waste the whole fleet re-fetching junk, and partition by domain so politeness survives distribution."
+    }
+  ]
+}

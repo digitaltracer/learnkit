@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "id": "whatsapp",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design WhatsApp",
+  "format": "article",
+  "summary": "Deliver 1:1 and group messages in real time, instantly online and reliably offline — built on persistent connections, a message router, and store-and-forward delivery.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "A chat system has to feel instant when both people are online and stay reliable when one isn't. The core job is routing a message from a sender's phone to a recipient's phone in real time — and holding it safely when the recipient is offline. Everything else (receipts, presence, groups, media) hangs off that routing core."
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Functional: send and receive 1:1 and group messages, with media (images, voice).",
+        "Delivery and read receipts (sent, delivered, read) and online presence.",
+        "Offline delivery: a message reaches its recipient even if they were offline when it was sent.",
+        "Low latency for online users; ordered, exactly-once-feeling delivery."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "paragraph",
+      "text": "Billions of users and tens of billions of messages a day, with hundreds of millions of connections open at once. Messages are tiny, so the dominant cost isn't storage — it's holding a vast number of long-lived connections and fanning messages out with low latency. Media is offloaded so the message path stays light."
+    },
+    {
+      "type": "heading",
+      "text": "High-level design"
+    },
+    {
+      "type": "paragraph",
+      "text": "Each client holds a persistent connection — a WebSocket — to a chat server, kept open so the server can push messages down at any moment. A message-routing service maps each user to the server holding their live connection, so it knows where to deliver."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Chat servers terminate WebSocket connections and push messages to connected clients.",
+        "A presence/session registry maps user → which chat server holds their connection.",
+        "The routing service finds the recipient's connection and delivers, or queues if they're offline.",
+        "Media (images, voice notes) uploads to a blob store; only a reference travels through the message path.",
+        "A message store persists in-flight messages until delivery is confirmed."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "Store-and-forward",
+      "text": "When the recipient is offline, the message can't be pushed, so the server stores it in a per-user queue and forwards it on reconnect. Many designs delete the message once delivery is acknowledged — the server is a relay, not the long-term archive, which keeps storage small and aligns with end-to-end encryption."
+    },
+    {
+      "type": "heading",
+      "text": "Groups and presence"
+    },
+    {
+      "type": "paragraph",
+      "text": "A group message is fanned out: the server resolves the group's membership and routes a copy to each member, pushing to those online and queuing for those offline. Presence is tracked via the connection itself plus periodic heartbeats — when a socket drops or heartbeats stop, the user is marked offline, and status changes are pushed only to interested contacts to avoid a fan-out storm."
+    },
+    {
+      "type": "heading",
+      "text": "End-to-end encryption"
+    },
+    {
+      "type": "paragraph",
+      "text": "Messages are encrypted on the sender's device and decrypted only on the recipient's, so the server routes ciphertext it can't read. This shapes the design: the server can't index or search message content, encryption keys are exchanged between devices, and the message store holds only opaque blobs."
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "title": "Receipts ride the same path",
+      "text": "Delivery and read receipts are just small messages flowing back the other way. When a client receives or opens a message, it sends an ack the server routes to the original sender — reuse the routing core rather than building a separate channel."
+    }
+  ]
+}

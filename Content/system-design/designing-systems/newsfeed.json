@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "id": "newsfeed",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design a Newsfeed System",
+  "format": "article",
+  "summary": "The generic feed behind Facebook, Instagram, and LinkedIn — aggregating posts from your connections, ranking them, and paginating the result in near-real-time.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "A newsfeed aggregates posts from a user's connections into a single scrollable stream. It is the general case of Twitter's timeline: where Twitter merges by recency, a newsfeed also ranks — deciding not just which posts to show but in what order. Two separate problems hide here, and conflating them is the classic mistake."
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Generate a feed of posts from a user's friends, follows, or pages.",
+        "Rank the feed by recency or relevance, not just raw time.",
+        "Paginate as the user scrolls, with a stable cursor.",
+        "Non-functional: read-heavy, near-real-time updates, low latency."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "paragraph",
+      "text": "Assume hundreds of millions of daily users each pulling a feed many times a day, so reads dominate writes by a wide margin. A user may follow hundreds of connections, and active users post often, so the candidate set per feed request is large. Feed reads need to return in tens of milliseconds, which forces precomputation and caching rather than computing everything on the fly."
+    },
+    {
+      "type": "heading",
+      "text": "Two problems, not one"
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "Generation vs ranking",
+      "text": "Feed GENERATION is about gathering the candidate posts for a user — a fan-out/distribution problem. Feed RANKING is about ordering those candidates by predicted relevance — a scoring problem. They are independent: you choose a delivery strategy and a ranking strategy separately, and most failures come from treating them as one step."
+    },
+    {
+      "type": "heading",
+      "text": "Feed generation"
+    },
+    {
+      "type": "paragraph",
+      "text": "Generation reuses the timeline strategies. Fan-out on write pushes each new post into the precomputed feeds of all connections (fast reads, costly writes); fan-out on read pulls and merges at request time (cheap writes, costly reads). As with Twitter's celebrity problem, a hybrid pushes for ordinary accounts and pulls for very high-degree ones, so no single post triggers a fan-out storm — this generalizes the Twitter timeline to broader content."
+    },
+    {
+      "type": "heading",
+      "text": "Ranking"
+    },
+    {
+      "type": "paragraph",
+      "text": "Once candidates are gathered, ranking orders them. Chronological is the simplest — newest first, predictable and cheap. Relevance ranking scores each candidate with an ML model over signals like author affinity, post type, recency, and predicted engagement, then sorts by score. Ranking usually runs at read time over the candidate set, so generation can stay recency-ordered and ranking re-sorts the top slice."
+    },
+    {
+      "type": "heading",
+      "text": "Caching, pagination, and edits"
+    },
+    {
+      "type": "paragraph",
+      "text": "A per-user feed cache of recent post IDs absorbs the read load, with post bodies hydrated separately. Pagination uses a cursor over the ranked list rather than an offset, so new posts arriving mid-scroll do not shift or duplicate items, and de-duplication ensures a post reachable via multiple connections still appears once. Edits and deletes are handled by keeping IDs in the feed and resolving content at hydration time, so a deleted post drops out and an edit shows its latest version."
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "title": "Takeaway",
+      "text": "Keep generation and ranking separate: pick a fan-out strategy to gather candidates and a ranking strategy to order them. Cache precomputed feeds, paginate by cursor, and resolve content late so edits and deletes stay correct."
+    }
+  ]
+}

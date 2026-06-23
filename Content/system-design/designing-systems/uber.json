@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "id": "uber",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design Uber",
+  "format": "article",
+  "summary": "Match a rider with a nearby driver in real time — a geospatial problem that has to absorb a flood of driver location updates while answering fast 'who's near me' queries.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Uber's core job is matching: a rider requests a trip and the system must find a suitable driver near them, fast. Underneath it's a geospatial problem with an awkward shape — drivers report their location constantly (a heavy write stream) while riders ask for nearby drivers (a latency-sensitive read). The design lives or dies on indexing locations to serve both."
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Functional: request a ride, find nearby available drivers, match, and track the trip live.",
+        "Real-time location: drivers push location every few seconds; riders see the car move.",
+        "Pricing including surge, and payment captured after the trip ends.",
+        "Low-latency matching; correctness under churn as drivers go on- and off-line."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "paragraph",
+      "text": "Millions of active drivers, each sending a location update every few seconds — that's millions of writes per second, the dominant load. Nearby-search queries are fewer but must return in milliseconds. Trips themselves are comparatively rare events, so the system is shaped by the location firehose, not the ride count."
+    },
+    {
+      "type": "heading",
+      "text": "High-level design"
+    },
+    {
+      "type": "paragraph",
+      "text": "Driver location updates flow into a location service that maintains a geospatial index of where every available driver is right now. When a rider requests a ride, a dispatch service queries that index for nearby drivers, ranks them, and offers the trip. A separate trip service tracks the ride to completion and hands off to pricing and payments."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Location service ingests driver updates and maintains the live geospatial index.",
+        "Dispatch/matching service runs nearby-search and assigns a driver to a request.",
+        "Trip service tracks an in-progress ride and streams the driver's position to the rider.",
+        "Pricing service computes fares and surge multipliers from supply and demand.",
+        "Payment service charges the rider after the trip completes."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "The geospatial index"
+    },
+    {
+      "type": "paragraph",
+      "text": "Raw latitude/longitude is hard to query for 'within this radius', so map the world onto a spatial index. A geohash encodes a location into a short string whose prefix length is a precision level, turning 'nearby' into a prefix match; a QuadTree recursively splits space into cells, so a search visits only the cells overlapping the query area. Either way, finding nearby drivers becomes a bounded lookup instead of a full scan."
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "Write-heavy updates vs read-heavy search",
+      "text": "The location stream is overwhelmingly writes (every driver, every few seconds), while matching is reads. The same index must absorb constant updates and answer nearby-search fast — so keep the hot index in memory, often partitioned by region, and let each shard handle only its area's writes and queries. Don't index on a disk-bound store that can't take the write rate."
+    },
+    {
+      "type": "heading",
+      "text": "Pricing, ETA, and payment"
+    },
+    {
+      "type": "paragraph",
+      "text": "ETA comes from a routing/maps service using the road network, not straight-line distance. Surge pricing is computed per region from the live supply-demand ratio in the location index, raising prices where drivers are scarce. Payment is captured after the trip — the fare may depend on the actual route and time taken, so it can't be finalized up front."
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "title": "Partition by geography",
+      "text": "Sharding the location index by region keeps each shard's write and read load local and bounded, and a rider's matches almost always live in their own or an adjacent region. Geography is the natural partition key for this whole system."
+    }
+  ]
+}

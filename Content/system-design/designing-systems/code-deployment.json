@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "id": "code-deployment",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design a Code Deployment System",
+  "format": "article",
+  "summary": "Build code into artifacts and roll them out to a global fleet of thousands of hosts safely — where the hard parts are distributing big artifacts fast and limiting the blast radius of a bad release.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "A code deployment system takes a commit, builds it into a deployable artifact, and pushes that artifact onto thousands of servers around the world without taking the service down. Two things make it hard: getting large artifacts to many hosts quickly, and rolling out changes so that a bad build hits a few hosts instead of all of them. Safety and speed of distribution are the whole game."
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Build a commit into a versioned, immutable artifact and store it.",
+        "Distribute that artifact to a global fleet of hosts efficiently.",
+        "Deploy with minimal risk — a bad release should affect as few hosts as possible.",
+        "Roll back fast, and manage configuration alongside the code."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "paragraph",
+      "text": "Picture tens of thousands of hosts across many regions and hundreds of deploys a day. Artifacts can be hundreds of megabytes to several gigabytes, so naively pulling from one origin would saturate it and make rollouts crawl. The dominant cost is moving a lot of bytes to a lot of hosts, fast, without a thundering herd hammering a single source."
+    },
+    {
+      "type": "heading",
+      "text": "High-level design"
+    },
+    {
+      "type": "paragraph",
+      "text": "A pipeline runs build → store → distribute → deploy. A build service compiles and tests the commit and produces an immutable, versioned artifact. That artifact lands in an artifact store (blob storage), then fans out through regional caches and a CDN so hosts pull from something nearby. A lightweight deploy agent on each host fetches its assigned version, swaps it in behind a health check, and reports status to a controller that drives the rollout."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Build service: compile and test a commit; emit an immutable, versioned artifact.",
+        "Artifact store: durable blob storage as the single source of truth for every version.",
+        "Distribution: regional caches and a CDN (or peer-to-peer) so hosts pull bytes locally, not from one origin.",
+        "Deploy agent: per-host process that pulls its target version, swaps it, health-checks, and reports back.",
+        "Deploy controller: orchestrates the rollout strategy and triggers rollback on failing health signals."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Safe rollout strategies"
+    },
+    {
+      "type": "paragraph",
+      "text": "You never flip the whole fleet at once. Instead you advance the new version through the hosts in a controlled order, watching health and error metrics at each step, and stop or reverse the moment something looks wrong:"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Rolling: update hosts in batches, draining and replacing a slice at a time so capacity stays up.",
+        "Blue-green: stand up the new version on a parallel fleet, then switch traffic over — instant cutover and instant rollback.",
+        "Canary: release to a tiny slice first, watch real metrics, and only widen if it stays healthy.",
+        "Health checks gate every step, and a regression triggers automatic rollback to the last known-good version."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "Canary first",
+      "text": "A canary deploy sends the new version to a small slice of hosts or users and watches error rates, latency, and key business metrics before going wider. If the canary regresses, you roll back having affected a fraction of traffic instead of everyone. It is the cheapest insurance against a bad build reaching the whole fleet."
+    },
+    {
+      "type": "heading",
+      "text": "Distribution at scale"
+    },
+    {
+      "type": "paragraph",
+      "text": "Pushing a multi-gigabyte artifact to tens of thousands of hosts from one origin is the bottleneck, so you spread the load: cache the artifact in each region, serve it through a CDN, or let hosts share pieces peer-to-peer so the origin is read a handful of times rather than thousands. Configuration is versioned and shipped on the same disciplined path as code, because a bad config can break a fleet just as fast as a bad binary."
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "title": "Takeaway",
+      "text": "A deployment system is a build-and-distribute pipeline wrapped in safety. Produce immutable versioned artifacts, fan them out through regional caches and CDNs so distribution scales, and roll out via canary or blue-green with health checks and automatic rollback so a bad release is contained, not catastrophic."
+    }
+  ]
+}

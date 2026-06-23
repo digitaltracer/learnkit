@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "id": "rate-limiter",
+  "subject": "system-design",
+  "track": "building-blocks",
+  "title": "Rate Limiter",
+  "format": "article",
+  "summary": "A gatekeeper that caps how many requests a client may make in a window, protecting services from overload and abuse.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "A rate limiter caps how many requests a client may make in a given time window — say 100 requests per minute. Beyond protecting a service from being overwhelmed, it defends against abuse, scraping, and runaway clients, and it enforces fair use across tenants. When a client exceeds its limit, requests are rejected rather than served."
+    },
+    {
+      "type": "heading",
+      "text": "Where it sits"
+    },
+    {
+      "type": "paragraph",
+      "text": "A rate limiter usually lives at the edge, in an API gateway or load balancer, so bad traffic is dropped before it reaches application servers. The unit it counts against matters as much as the number: limits can be per user (by API key or account), per IP (to blunt anonymous abuse), or per endpoint (to protect an expensive operation). Many systems apply several layers at once."
+    },
+    {
+      "type": "heading",
+      "text": "Algorithms"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Token bucket: tokens refill at a steady rate; each request spends one — allows short bursts up to the bucket size.",
+        "Leaky bucket: requests queue and drain at a fixed rate — smooths bursts into a steady outflow, but can add latency.",
+        "Fixed window counter: count requests per clock window — cheap, but a burst straddling the boundary can briefly allow double the limit.",
+        "Sliding window log: store a timestamp per request and count those in the trailing window — exact, but memory-heavy.",
+        "Sliding window counter: blend the current and previous window counts — a close approximation of the log at a fraction of the cost."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "title": "Reach for token bucket first",
+      "text": "Token bucket is the common default: it's simple, uses little state (a token count and a timestamp per client), and tolerates natural bursts while still bounding the average rate. Start here unless you have a reason to smooth traffic harder."
+    },
+    {
+      "type": "heading",
+      "text": "Distributed rate limiting"
+    },
+    {
+      "type": "paragraph",
+      "text": "With many gateway nodes, a per-node counter lets a client get its full limit on every node, blowing past the global cap. The fix is a shared counter in a fast central store such as Redis, which all nodes read and update atomically. The cost is a network round-trip per request and a dependency on that store, so it must be highly available and low-latency."
+    },
+    {
+      "type": "callout",
+      "kind": "warning",
+      "title": "Atomic updates matter",
+      "text": "Incrementing a shared counter with a read-then-write race lets concurrent requests overcount or undercount. Use an atomic operation or a Lua script so the check-and-increment happens as one step on the store."
+    },
+    {
+      "type": "heading",
+      "text": "Telling the client"
+    },
+    {
+      "type": "paragraph",
+      "text": "When a request is throttled, return HTTP 429 Too Many Requests rather than failing silently. Include a Retry-After header so the client knows when to try again, and headers like X-RateLimit-Limit and X-RateLimit-Remaining so well-behaved clients can self-pace. Clear signaling turns a blunt block into a contract clients can cooperate with."
+    }
+  ]
+}

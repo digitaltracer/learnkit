@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "id": "google-docs",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design Google Docs",
+  "format": "article",
+  "summary": "Real-time collaborative editing where many people type into one document at once — the whole problem is resolving concurrent edits so nobody's keystrokes get lost.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Google Docs lets many people edit the same document at the same time, see each other's cursors move, and never lose a keystroke. It looks like a text editor, but under the hood it is a distributed-consensus problem on every character: two people typing into the same paragraph at the same instant must converge to one consistent document. That conflict resolution is the entire design."
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Multiple users edit one document concurrently and see changes live, within a second.",
+        "See collaborators' cursors and selections (presence).",
+        "No edit is ever lost or silently overwritten when two people type at once.",
+        "Work offline and sync cleanly on reconnect; persist the document and its version history."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "paragraph",
+      "text": "Any single document has a small number of concurrent editors — a few to a few dozen — but the system holds hundreds of millions of documents and millions of live sessions at once. Each keystroke is a tiny operation, but at scale that is a high rate of small messages needing sub-second round trips. The hard constraint is latency and correctness per document, not raw throughput."
+    },
+    {
+      "type": "heading",
+      "text": "High-level design"
+    },
+    {
+      "type": "paragraph",
+      "text": "Each client opens a persistent WebSocket to a document server that owns the live session for that document. A client sends its local edits as operations; the server orders them, applies them to the authoritative document, and broadcasts the transformed operations to every other client. The document and its history are persisted to durable storage, with periodic snapshots so reopening is fast."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Client: applies edits locally for instant feedback, then streams operations to the server.",
+        "Document server: the single ordering point for one document — serializes and rebroadcasts operations.",
+        "Persistence: append the operation log plus periodic snapshots for fast load and version history.",
+        "Presence channel: low-stakes cursor and selection positions, broadcast but not persisted."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "The hard part: concurrent conflict resolution"
+    },
+    {
+      "type": "paragraph",
+      "text": "When two edits race, you cannot just apply them in arrival order — an insert at position 5 means something different after someone else inserted three characters before it. Two families of algorithms solve this. Operational Transformation (OT) transforms each incoming operation against the operations it didn't yet know about, so positions stay correct. CRDTs (Conflict-free Replicated Data Types) instead give every character a unique, globally ordered identity, so concurrent edits merge commutatively with no central transform."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "OT: compact operations, but needs a central server to order and transform them; the transform logic is famously tricky to get right.",
+        "CRDT: merges peer-to-peer and offline without a coordinator, but carries per-character metadata, so the document is heavier.",
+        "Both guarantee every replica converges to the same final document regardless of operation order.",
+        "Google Docs uses OT; many newer collaborative tools choose CRDTs for their offline-friendly, serverless merging."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "warning",
+      "title": "Last-write-wins loses data",
+      "text": "The naive fix — whoever's edit arrives last overwrites — silently destroys the other person's typing, which in a live document is unacceptable. Concurrent edits are not a conflict to be discarded; they are two intentions that must both survive. OT and CRDTs exist to merge both edits into a consistent result instead of throwing one away."
+    },
+    {
+      "type": "heading",
+      "text": "Presence, offline, and history"
+    },
+    {
+      "type": "paragraph",
+      "text": "Cursor and selection positions ride a separate, lossy channel — they update constantly and a dropped one doesn't matter. Offline edits queue locally and replay through the same transform/merge on reconnect, which is exactly why the conflict-resolution algorithm matters. Persisting the operation log gives you version history and the ability to rebuild any document by replaying from a snapshot."
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "title": "Takeaway",
+      "text": "Google Docs is collaborative editing built on conflict resolution. Stream operations over a WebSocket to a per-document ordering server, merge concurrent edits with OT or CRDTs so nothing is lost, and persist an operation log for history and offline sync. Never let last-write-wins anywhere near the document."
+    }
+  ]
+}
