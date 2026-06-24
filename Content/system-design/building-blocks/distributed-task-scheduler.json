@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "task-scheduler",
+  "id": "distributed-task-scheduler",
   "subject": "system-design",
   "track": "building-blocks",
   "title": "Distributed Task Scheduler",

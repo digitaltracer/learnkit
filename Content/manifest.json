@@ -594,7 +594,7 @@
             { "id": "distributed-search", "title": "Distributed Search", "file": "system-design/building-blocks/distributed-search.json" },
             { "id": "distributed-logging", "title": "Distributed Logging", "file": "system-design/building-blocks/distributed-logging.json" },
             { "id": "distributed-monitoring", "title": "Distributed Monitoring", "file": "system-design/building-blocks/distributed-monitoring.json" },
-            { "id": "task-scheduler", "title": "Distributed Task Scheduler", "file": "system-design/building-blocks/task-scheduler.json" }
+            { "id": "distributed-task-scheduler", "title": "Distributed Task Scheduler", "file": "system-design/building-blocks/distributed-task-scheduler.json" }
           ]
         },
         {
