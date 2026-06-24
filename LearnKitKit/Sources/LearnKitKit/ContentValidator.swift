@@ -14,7 +14,14 @@ enum ContentValidator {
             issues.append("manifest: has no subjects")
         }
 
+        // Bundled content is copied into a flat bundle (the synchronized Content
+        // folder flattens subdirectories), so every lesson file needs a globally
+        // unique basename. Lesson ids must be globally unique too — progress is
+        // keyed by id, so a reused id would conflate two lessons. Both are checked
+        // across the whole manifest, not just within a track.
         var subjectIDs = Set<String>()
+        var allLessonIDs = Set<String>()
+        var allBasenames = Set<String>()
         for subject in manifest.subjects {
             if !isKebabCase(subject.id) {
                 issues.append("manifest: subject id '\(subject.id)' must be kebab-case")
@@ -51,6 +58,13 @@ enum ContentValidator {
                     }
                     if !lessonIDs.insert(ref.id).inserted {
                         issues.append("manifest: duplicate lesson id '\(ref.id)' in track '\(track.id)'")
+                    }
+                    if !allLessonIDs.insert(ref.id).inserted {
+                        issues.append("manifest: lesson id '\(ref.id)' is reused across tracks; ids must be globally unique (progress is keyed by id)")
+                    }
+                    let basename = (ref.file as NSString).lastPathComponent
+                    if !allBasenames.insert(basename).inserted {
+                        issues.append("manifest: duplicate lesson filename '\(basename)'; bundled content is flattened, so each file needs a globally unique name")
                     }
                 }
             }
