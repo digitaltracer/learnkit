@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "id": "dropbox",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design Dropbox",
+  "format": "article",
+  "summary": "Keep a folder of files identical across every device a user owns. The hard parts are moving only the bytes that changed and telling each device when to sync.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Dropbox and Google Drive give you a folder that looks the same on your laptop, your phone and the web. Save a file on one device and it appears on the others a few seconds later. The upload button is the easy part. The design is really about two questions: how do you avoid re-sending a 2 GB file when one paragraph changed, and how does a sleeping laptop find out that something is new?"
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Upload, download, rename, move and delete files and folders.",
+        "Sync changes to every device the user is signed in on, including edits made while offline.",
+        "Share a folder with other users, who see the same contents.",
+        "Keep version history so a user can restore an older copy of a file.",
+        "Non-functional: never lose a file, keep metadata consistent, and use as little bandwidth as possible."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "500M registered users, 100M daily active, each storing about 2 GB. That is around 1 EB of logical data before deduplication.",
+        "Each active user commits about 5 file changes a day: 500M commits a day, roughly 6,000 per second on average and 15,000 at peak.",
+        "If a commit uploads about 1 MB of new data, that is 500 TB a day, around 6 GB/s inbound.",
+        "At about 2,000 files per user, the metadata store holds on the order of a trillion file records.",
+        "Tens of millions of devices hold an open connection waiting for change notifications at any moment."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "The numbers split the system in two. File bytes are huge and write-once, which suits a blob store. Metadata is small per file but enormous in count, and it has to be correct, which suits a sharded relational database."
+    },
+    {
+      "type": "heading",
+      "text": "API"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "POST /blocks/check {hashes[]}: the client lists the block hashes of a file, and the server replies with the ones it does not have yet.",
+        "PUT /blocks/{hash}: upload one missing block.",
+        "POST /files/commit {path, blockHashes[], baseVersion}: record a new version of a file as an ordered list of blocks.",
+        "GET /changes?cursor=...: return every change in the user's folders since the cursor, plus a new cursor.",
+        "GET /files/{id}/versions and POST /files/{id}/restore {version}: version history."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Data model"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Block: hash (SHA-256 of the contents) mapped to its blob store location and a reference count.",
+        "File: fileId, namespaceId, path, latestVersion and a deleted flag. A namespace is a user's root folder or one shared folder.",
+        "FileVersion: fileId, version, the ordered list of block hashes, size, and who changed it when.",
+        "Journal: namespaceId plus a journalId that increases by one on every change. A device's sync cursor is simply the last journalId it has seen in each namespace."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "High-level design"
+    },
+    {
+      "type": "paragraph",
+      "text": "The desktop client watches the local folder, splits changed files into blocks and hashes them. It uploads only the blocks the server lacks, then commits the new block list to the metadata service. The metadata service appends a journal entry and tells the notification service, which wakes up every other device with an open connection on that namespace. Those devices call /changes, see the new block list, and download only the blocks they are missing."
+    },
+    {
+      "type": "diagram",
+      "caption": "Bytes and metadata take separate paths. The notification service only says that something changed; devices pull the details.",
+      "visual": {
+        "type": "architecture",
+        "nodes": [
+          { "id": "client", "title": "Desktop Client", "subtitle": "chunk + hash", "kind": "client", "x": 0.05, "y": 0.5 },
+          { "id": "block", "title": "Block Service", "kind": "service", "x": 0.5, "y": 0.05 },
+          { "id": "blob", "title": "Blob Store", "subtitle": "blocks by hash", "kind": "storage", "x": 0.95, "y": 0.05 },
+          { "id": "meta", "title": "Metadata Service", "kind": "service", "x": 0.5, "y": 0.5 },
+          { "id": "metadb", "title": "Metadata DB", "subtitle": "by namespace", "kind": "database", "x": 0.95, "y": 0.5 },
+          { "id": "notify", "title": "Notification", "subtitle": "long-poll", "kind": "service", "x": 0.5, "y": 0.95 }
+        ],
+        "connectors": [
+          { "from": "client", "to": "block" },
+          { "from": "block", "to": "blob" },
+          { "from": "client", "to": "meta" },
+          { "from": "meta", "to": "metadb" },
+          { "from": "meta", "to": "notify", "style": "async" },
+          { "from": "notify", "to": "client", "style": "async" }
+        ]
+      }
+    },
+    {
+      "type": "heading",
+      "text": "Chunking and deduplication"
+    },
+    {
+      "type": "paragraph",
+      "text": "The client cuts every file into blocks of about 4 MB and names each block by the hash of its contents. Two blocks with the same bytes get the same name, so the server stores them once. Edit one slide in a 200 MB deck and the client uploads one or two blocks, not the whole file. The same trick deduplicates across files: a video copied into three folders costs one set of blocks."
+    },
+    {
+      "type": "paragraph",
+      "text": "Fixed-size blocks have a weakness. Insert one byte at the start of a file and every block boundary shifts, so every hash changes. Content-defined chunking fixes this. A rolling hash slides over the bytes and cuts a block wherever the hash hits a chosen pattern, so the boundaries move with the content and an insert only changes the block it lands in."
+    },
+    {
+      "type": "callout",
+      "kind": "warning",
+      "title": "Global dedup leaks information",
+      "text": "If identical blocks are shared across all users, the upload response reveals whether anyone already has a file. That confirms who holds a leaked document. Many services limit dedup to a single user or a single shared folder for this reason."
+    },
+    {
+      "type": "heading",
+      "text": "Sync and conflicts"
+    },
+    {
+      "type": "paragraph",
+      "text": "Each device keeps a cursor per namespace. It never scans the whole folder to find out what changed. It asks for everything after its cursor, applies it, and saves the new cursor. A device that was offline for a week makes the same call and gets a longer list."
+    },
+    {
+      "type": "paragraph",
+      "text": "Every commit includes the version the client started from. If the server's latest version still matches, the commit wins. If another device got there first, the server rejects the commit, and the client saves its edit as a separate \"conflicted copy\" next to the original. That sounds crude, but a file sync service cannot merge a spreadsheet or a Photoshop file. Keeping both copies and letting the user pick is the only safe choice."
+    },
+    {
+      "type": "heading",
+      "text": "Bottlenecks and tradeoffs"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Shard the metadata database by namespace so one folder's journal stays on one shard and its ordering is easy. A huge company-wide shared folder then becomes a hot shard.",
+        "Notification servers each hold around 100,000 idle connections. After a server restarts, clients must reconnect with random backoff or they all hit the next server at once.",
+        "Old versions and blocks nobody has read in months move to cheaper cold storage. The reference count on each block tells a background job when a block can be deleted.",
+        "Upload the blocks before the commit. A crash in between leaves orphan blocks, which garbage collection cleans up, but never a file that points at missing data."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "text": "Split bytes from metadata. Name blocks by their hash so only new blocks cross the network, keep a per-folder journal so devices sync from a cursor, and push a small \"something changed\" signal instead of the change itself."
+    }
+  ]
+}

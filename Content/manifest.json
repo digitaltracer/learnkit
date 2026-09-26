@@ -648,7 +648,8 @@
             { "id": "google-docs", "title": "Design Google Docs", "file": "system-design/designing-systems/google-docs.json" },
             { "id": "payment-system", "title": "Design a Payment System", "file": "system-design/designing-systems/payment-system.json" },
             { "id": "code-deployment", "title": "Design a Code Deployment System", "file": "system-design/designing-systems/code-deployment.json" },
-            { "id": "chatgpt-system", "title": "Design a ChatGPT-style System", "file": "system-design/designing-systems/chatgpt-system.json" }
+            { "id": "chatgpt-system", "title": "Design a ChatGPT-style System", "file": "system-design/designing-systems/chatgpt-system.json" },
+            { "id": "dropbox", "title": "Design Dropbox", "file": "system-design/designing-systems/dropbox.json" }
           ]
         }
       ]
