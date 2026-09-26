@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "id": "ticketmaster",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design Ticketmaster",
+  "format": "article",
+  "summary": "Sell 50,000 seats to 10 million people who all show up at 10:00. Never sell a seat twice, and keep the site standing while you do it.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "A ticketing site spends most of the year serving event pages to a modest crowd. Then a stadium tour goes on sale, and millions of fans arrive in the same minute for a fixed number of seats. Two things must hold under that spike. No seat is ever sold to two people, and the site stays up long enough to sell every seat. Everything else is a normal read-heavy web app."
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Browse events and view a seat map showing which seats are still available.",
+        "Pick seats and hold them for a few minutes while paying.",
+        "Pay and receive a confirmed ticket, or lose the hold if the timer runs out.",
+        "Non-functional: never double-sell a seat, stay available during on-sale spikes, and treat buyers fairly rather than rewarding whoever has the fastest bot."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "A popular on-sale: 10M users arrive within minutes for a 50,000-seat stadium.",
+        "Event page and seat map reads can top 1M requests per second in the first minute.",
+        "Hold attempts are far fewer but fight over the same rows. Everyone wants the same good seats.",
+        "Confirmed bookings are bounded by the seat count: 50,000 over about 30 minutes averages under 30 per second."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "The shape is unusual. Reads are enormous, writes are tiny in number, but the writes are concentrated on a few thousand rows. You can shard your way out of a large write load. You cannot shard your way out of 100,000 people all wanting seat A12."
+    },
+    {
+      "type": "heading",
+      "text": "API"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "GET /events/{id}: event details. Static enough to serve from a CDN.",
+        "GET /events/{id}/seats: availability per seat, a few seconds stale at worst.",
+        "POST /holds {eventId, seatIds[]}: all-or-nothing. Returns holdId and expiresAt, or a conflict if any seat is taken.",
+        "POST /bookings {holdId, paymentToken, idempotencyKey}: charge the card and turn the hold into a sale.",
+        "DELETE /holds/{id}: release seats early when the user backs out."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Data model"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Event: eventId, venue, time, on-sale time.",
+        "Seat inventory: eventId, seatId, status (available, held, sold), holdId, holdExpiresAt. The primary key is (eventId, seatId). This table is the source of truth.",
+        "Hold: holdId, userId, eventId, seatIds, expiresAt.",
+        "Booking: bookingId, userId, holdId, paymentId, status. The ticket the user keeps."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Seat inventory lives in a relational database with transactions. This is the one place in the system where you want strong consistency and are happy to pay for it."
+    },
+    {
+      "type": "heading",
+      "text": "High-level design"
+    },
+    {
+      "type": "paragraph",
+      "text": "Event pages come from a CDN. When sales open, users enter a virtual waiting room before they can reach the booking service. The booking service places holds and bookings against the seat inventory database, keeps a cached copy of availability for the seat map, and calls the payment provider."
+    },
+    {
+      "type": "diagram",
+      "caption": "The CDN and waiting room soak up the crowd, so only as many users reach booking as the inventory database can serve.",
+      "visual": {
+        "type": "architecture",
+        "nodes": [
+          { "id": "client", "title": "Fan's Browser", "kind": "client", "x": 0.05, "y": 0.5 },
+          { "id": "cdn", "title": "CDN", "subtitle": "event pages", "kind": "cdn", "x": 0.5, "y": 0.05 },
+          { "id": "room", "title": "Waiting Room", "subtitle": "admits N/sec", "kind": "queue", "x": 0.5, "y": 0.5 },
+          { "id": "pay", "title": "Payments", "kind": "external", "x": 0.5, "y": 0.95 },
+          { "id": "seatmap", "title": "Seat Map Cache", "kind": "cache", "x": 0.95, "y": 0.05 },
+          { "id": "booking", "title": "Booking Service", "kind": "service", "x": 0.95, "y": 0.5 },
+          { "id": "inv", "title": "Seat Inventory", "subtitle": "SQL", "kind": "database", "x": 0.95, "y": 0.95 }
+        ],
+        "connectors": [
+          { "from": "client", "to": "cdn" },
+          { "from": "client", "to": "room" },
+          { "from": "room", "to": "booking" },
+          { "from": "booking", "to": "seatmap" },
+          { "from": "booking", "to": "inv" },
+          { "from": "booking", "to": "pay" }
+        ]
+      }
+    },
+    {
+      "type": "heading",
+      "text": "Holding a seat without double-selling"
+    },
+    {
+      "type": "paragraph",
+      "text": "The hold is a single conditional update inside a transaction. Set the requested seats to held, with this holdId and an expiry ten minutes out, but only where each seat is available or its old hold has already expired. Then check how many rows changed. If it equals the number of seats asked for, commit. If not, someone beat you to at least one seat, so roll back and return a conflict."
+    },
+    {
+      "type": "paragraph",
+      "text": "The database does the hard work. Two requests for seat A12 cannot both see it as available, because the row lock makes the second one wait and then fail the condition. No separate lock service is needed, and there is no window where the app thinks a seat is free when it is not."
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "Expiry is part of the condition",
+      "text": "Because the update accepts seats whose hold has expired, an abandoned hold frees itself the moment someone else asks. A background sweeper still resets old holds so the seat map shows them as available, but correctness does not depend on it running on time."
+    },
+    {
+      "type": "paragraph",
+      "text": "Booking follows the same pattern. Charge the card with an idempotency key so a retry cannot charge twice. Then update the seats from held to sold, but only where the holdId matches and the hold has not expired. If the payment succeeded but the hold ran out in the meantime, issue a refund. It is rare, and a refund is far better than two fans in one seat."
+    },
+    {
+      "type": "heading",
+      "text": "The virtual waiting room"
+    },
+    {
+      "type": "paragraph",
+      "text": "Even a perfect hold query falls over if a million users run it at once. The waiting room puts everyone who arrives before the sale into one pool, shuffles them at opening time, and admits them at a fixed rate, say 2,000 per second. Admitted users get a signed token that the booking service checks. Everyone else sees their place in line."
+    },
+    {
+      "type": "paragraph",
+      "text": "The shuffle is what makes it fair. Without it, whoever's request lands first wins, which rewards bots and people close to the data centre. The fixed admission rate is what keeps the site alive. It turns a spike you cannot handle into a steady flow you can."
+    },
+    {
+      "type": "heading",
+      "text": "Bottlenecks and tradeoffs"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "The seat map is served from cache and can be a few seconds stale. That is fine, because the hold query is the real check. A user may click a seat that is already gone and just get an error.",
+        "Sharding by event does nothing for one hot event. If one venue's inventory is too hot for one database, split it by section so different sections lock different rows on different nodes.",
+        "Hold duration is a business dial. Longer holds are kinder to slow buyers but keep seats off the market longer during the rush.",
+        "Bots are the constant background threat. Put rate limits, device checks and a purchase cap per account at the waiting room, before they reach inventory."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "text": "Keep the crowd away from the database. A CDN serves the reads, a waiting room admits users at a rate you can handle, and one conditional update with an expiry decides every seat, so double-selling is impossible by construction."
+    }
+  ]
+}
