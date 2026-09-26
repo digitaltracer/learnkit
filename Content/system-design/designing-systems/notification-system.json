@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "id": "notification-system",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design a Notification System",
+  "format": "article",
+  "summary": "One service that every team calls to send push, SMS and email. It has to deliver the one-time code in seconds, survive flaky providers, and never spam a user twice.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Almost every product sends notifications: a login code by SMS, an order update by push, a weekly digest by email. Instead of each team wiring up Twilio and Apple on its own, one notification service takes a request, checks what the user has agreed to receive, renders the message, and hands it to the right provider. Sending is easy. Sending reliably, in the right order of urgency, without duplicates, is the design."
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Send push (iOS and Android), SMS and email, triggered by other services or scheduled for later.",
+        "Respect user preferences: opt-outs per channel and category, quiet hours, and frequency caps.",
+        "Support templates with per-user parameters and locales.",
+        "Report the status of each notification: queued, sent, delivered, failed.",
+        "Non-functional: at-least-once delivery with duplicates suppressed, seconds of latency for urgent messages, and high availability."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "1B notifications a day is about 12,000 per second on average.",
+        "A marketing campaign to 50M users can push the rate to over 100,000 per second for several minutes.",
+        "Roughly 80% are push, 15% email and 5% SMS. SMS is the smallest share but costs real money per message.",
+        "The delivery log gets a few writes per notification, so several billion rows a day. Keep 30 days of it."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "The external providers are the real limit, not your servers. Apple, Google, Twilio and SES all throttle you, and all of them fail now and then. The design has to absorb bursts and outages that it does not control."
+    },
+    {
+      "type": "heading",
+      "text": "API"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "POST /v1/notifications {userIds[] or segmentId, templateId, params, channels[], priority, sendAt, idempotencyKey}: returns a notificationId right away. Sending happens later.",
+        "GET /v1/notifications/{id}: the status of each delivery.",
+        "PUT /v1/users/{id}/preferences: which channels and categories the user accepts, plus quiet hours.",
+        "POST /v1/devices {userId, platform, token}: register a device's push token after the app starts."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Data model"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Device: userId, platform, push token, last seen. A user often has several devices.",
+        "Preference: userId, channel, category (security, orders, marketing), opted in, quiet hours and time zone.",
+        "Template: templateId, channel, locale and a body with placeholders.",
+        "Delivery log: notificationId, userId, channel, status, attempt count, provider message id. It is write-heavy and append-mostly, so a wide-column store like Cassandra fits."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "High-level design"
+    },
+    {
+      "type": "paragraph",
+      "text": "A calling service posts to the notification API. The API validates the request, drops it if the idempotency key was seen before, checks preferences and caps, renders the template and puts one message per recipient per channel on a queue. Workers read each queue, call the matching provider, and write the result to the delivery log. The API returns as soon as the message is queued, so a slow provider never blocks the caller."
+    },
+    {
+      "type": "diagram",
+      "caption": "The API decides whether and what to send. Queues and workers do the sending, one pool per channel.",
+      "visual": {
+        "type": "architecture",
+        "nodes": [
+          { "id": "svc", "title": "Calling Service", "kind": "client", "x": 0.05, "y": 0.5 },
+          { "id": "api", "title": "Notification API", "kind": "service", "x": 0.5, "y": 0.05 },
+          { "id": "prefs", "title": "Preferences", "subtitle": "cached", "kind": "cache", "x": 0.95, "y": 0.05 },
+          { "id": "queues", "title": "Channel Queues", "subtitle": "push / SMS / email", "kind": "queue", "x": 0.5, "y": 0.5 },
+          { "id": "log", "title": "Delivery Log", "kind": "database", "x": 0.95, "y": 0.5 },
+          { "id": "workers", "title": "Workers", "subtitle": "per channel", "kind": "service", "x": 0.5, "y": 0.95 },
+          { "id": "providers", "title": "Providers", "subtitle": "APNs, FCM, Twilio", "kind": "external", "x": 0.95, "y": 0.95 }
+        ],
+        "connectors": [
+          { "from": "svc", "to": "api" },
+          { "from": "api", "to": "prefs" },
+          { "from": "api", "to": "queues", "style": "async" },
+          { "from": "queues", "to": "workers", "style": "async" },
+          { "from": "workers", "to": "providers" },
+          { "from": "workers", "to": "log" }
+        ]
+      }
+    },
+    {
+      "type": "heading",
+      "text": "Urgent messages must not wait behind a campaign"
+    },
+    {
+      "type": "paragraph",
+      "text": "If a login code and a 50M-user promotion share one queue, the code sits behind millions of promotions and arrives after the user has given up. So give each priority its own queue and its own workers. Security and transactional messages go on the fast lane. Marketing goes on a bulk lane that is allowed to fall behind. Separate queues per channel help too: an email provider outage then backs up email only, not push."
+    },
+    {
+      "type": "paragraph",
+      "text": "Campaigns to a segment are expanded in batches. A job pages through the segment 10,000 users at a time and enqueues each batch, instead of writing 50M messages in one go. That keeps the queue from ballooning and lets you pause a campaign halfway through."
+    },
+    {
+      "type": "heading",
+      "text": "Retries without duplicates"
+    },
+    {
+      "type": "paragraph",
+      "text": "Providers time out, and a timeout does not tell you whether the message went out. Workers retry with exponential backoff and random jitter, and after a handful of attempts they move the message to a dead-letter queue for inspection. For SMS, a second provider is worth paying for, so a Twilio outage fails over instead of dropping codes."
+    },
+    {
+      "type": "paragraph",
+      "text": "Retries mean the queue delivers at least once, so the same message can reach a worker twice. Two defences stop the user seeing it twice. The API rejects a repeated idempotency key from the caller. Each worker records the message id in a short-lived dedup store before calling the provider and skips ids it has already sent. Neither is perfect across a crash at the worst moment, but together they make duplicates rare."
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "Clean up dead tokens",
+      "text": "APNs and FCM tell you when a push token is no longer valid, usually because the app was deleted. Delete those tokens right away. Otherwise every campaign wastes calls on devices that no longer exist, and providers may throttle you for it."
+    },
+    {
+      "type": "heading",
+      "text": "Bottlenecks and tradeoffs"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Preference checks happen on every message, so cache preferences next to the API and accept that an opt-out may take a few seconds to apply.",
+        "A per-user rate limiter enforces frequency caps. Without it, three teams each sending one reasonable message adds up to a user who turns notifications off.",
+        "Quiet hours turn a send into a scheduled send. Store it with a sendAt time and let a scheduler put it on the queue in the morning, in the user's time zone.",
+        "Workers must respect each provider's rate limit. Pull from the queue only as fast as the provider accepts, and let the queue absorb the rest."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "text": "Accept fast, send later. Queue per channel and per priority so urgent messages skip the bulk, retry with backoff and a dead-letter queue, and dedupe by idempotency key because the queue will deliver some messages twice."
+    }
+  ]
+}
