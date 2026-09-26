@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "id": "slack",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design Slack",
+  "format": "article",
+  "summary": "Channels that deliver every message to every online member in under a second, in order, with full history. Group chat where the channel, not the person, is the unit of fan-out.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "WhatsApp is mostly one-to-one chat. Slack is mostly channels: a message goes to everyone in #general, which might be 12 people or 80,000. Users expect it to appear on every open laptop within a fraction of a second, in the same order for everyone, with unread badges that are right and history you can scroll back years. The interesting part is getting one message to many open connections without doing work per member."
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Workspaces with public channels, private channels and direct messages.",
+        "Send a message and deliver it in real time to every member who is online.",
+        "Scroll back through channel history, reply in threads, and edit or delete messages.",
+        "Show unread counts, typing indicators and who is online.",
+        "Non-functional: sub-second delivery, the same order for every reader of a channel, no lost messages, and search over history."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "20M daily active users sending about 50 messages each: 1B messages a day, roughly 12,000 per second and 40,000 at peak.",
+        "Around 10M WebSocket connections open at peak. At about 50,000 per server, that is 200 gateway servers.",
+        "The average message reaches around 20 online members, so a few hundred thousand deliveries per second.",
+        "At about 500 bytes per message, history grows by 500 GB a day, or around 180 TB a year before replication."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "API"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "POST /channels/{id}/messages {clientMsgId, text, threadId}: send. The server returns the stored message with its id and timestamp.",
+        "GET /channels/{id}/messages?before=...&limit=50: page back through history.",
+        "POST /channels/{id}/read {messageId}: move the user's read marker, which drives unread counts.",
+        "WebSocket /connect: after login the client opens one socket and receives events such as message.new, message.edited, typing and presence."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Data model"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Message: channelId, messageId, userId, text, threadId, editedAt. Partitioned by channelId and sorted by messageId, so reading a page of history is one range scan.",
+        "messageId is a time-ordered id, like Snowflake, so sorting by id is sorting by time.",
+        "Membership: channelId, userId, lastReadMessageId. Unread count is the number of messages after lastReadMessageId.",
+        "Channel: channelId, workspaceId, type, name."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "High-level design"
+    },
+    {
+      "type": "paragraph",
+      "text": "The client sends a message over HTTP to the message service, which stores it and publishes it to the channel server that owns that channel. Channel servers are assigned channels by consistent hashing, and each one knows which gateway servers have a member of its channels connected. It sends the message once to each of those gateways. Each gateway pushes it down the WebSocket to its connected members. Search indexing runs off the message store asynchronously."
+    },
+    {
+      "type": "diagram",
+      "caption": "Messages are written once, then fanned out per gateway instead of per member.",
+      "visual": {
+        "type": "architecture",
+        "nodes": [
+          { "id": "client", "title": "Slack Client", "kind": "client", "x": 0.05, "y": 0.5 },
+          { "id": "gateway", "title": "Gateway", "subtitle": "WebSockets", "kind": "service", "x": 0.5, "y": 0.05 },
+          { "id": "msg", "title": "Message Service", "kind": "service", "x": 0.5, "y": 0.5 },
+          { "id": "channel", "title": "Channel Server", "subtitle": "by channel hash", "kind": "service", "x": 0.95, "y": 0.05 },
+          { "id": "db", "title": "Message Store", "subtitle": "by channelId", "kind": "database", "x": 0.95, "y": 0.5 },
+          { "id": "search", "title": "Search Index", "kind": "database", "x": 0.95, "y": 0.95 }
+        ],
+        "connectors": [
+          { "from": "client", "to": "msg" },
+          { "from": "msg", "to": "db" },
+          { "from": "msg", "to": "channel", "style": "async" },
+          { "from": "channel", "to": "gateway", "style": "async" },
+          { "from": "gateway", "to": "client", "style": "async" },
+          { "from": "db", "to": "search", "style": "async" }
+        ]
+      }
+    },
+    {
+      "type": "heading",
+      "text": "Fan-out by gateway, not by member"
+    },
+    {
+      "type": "paragraph",
+      "text": "A naive design looks up every member of the channel and sends each one a copy. For an 80,000-person channel that is 80,000 lookups and sends per message, most of them for people who are offline. Instead, each gateway tells the channel server \"I have members of these channels connected\" when users connect. A new message then goes once to each gateway that asked, which is at most a couple of hundred sends. The gateway already knows which of its sockets belong to which channel."
+    },
+    {
+      "type": "paragraph",
+      "text": "Offline members get nothing pushed. When they come back, the client fetches what it missed from the message store. Storage is the source of truth, and the real-time path is a fast hint on top."
+    },
+    {
+      "type": "heading",
+      "text": "Ordering, retries and reconnects"
+    },
+    {
+      "type": "paragraph",
+      "text": "The server assigns each message its id when it stores it, so every reader sorts the channel the same way, whatever order packets arrive in. The client also sends its own clientMsgId. If the send times out and the client retries, the server sees the same clientMsgId and returns the stored message instead of posting it twice. Meanwhile the client shows the message in grey as pending, so the app feels instant."
+    },
+    {
+      "type": "paragraph",
+      "text": "Sockets drop all the time: laptops sleep, wifi changes. On reconnect the client sends the last messageId it saw in each open channel and asks for anything newer. That one call covers both a two-second blip and a two-week holiday."
+    },
+    {
+      "type": "callout",
+      "kind": "warning",
+      "title": "Presence is the quiet scaling problem",
+      "text": "If every status change went to every member of every shared channel, a 10,000-person workspace would generate millions of presence events just from people opening laptops at 9am. Send presence only for users currently visible on screen, and batch updates every few seconds."
+    },
+    {
+      "type": "heading",
+      "text": "Bottlenecks and tradeoffs"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Gateways are stateful because they hold sockets. When one dies, its 50,000 clients reconnect elsewhere, so clients must back off with random jitter or they flatten the next gateway.",
+        "Partitioning messages by channel keeps history reads cheap, but a very busy channel becomes a hot partition. Bucket it by channel and month.",
+        "Typing indicators are high volume and worthless a second later. Send them best-effort, never store them, and drop them first under load.",
+        "Search is eventually consistent. A message may take a few seconds to become searchable, which users accept."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "text": "Treat the channel as the unit of fan-out. Store each message once, fan it out per gateway rather than per member, let offline users catch up from a cursor, and make sends idempotent with a client id."
+    }
+  ]
+}
