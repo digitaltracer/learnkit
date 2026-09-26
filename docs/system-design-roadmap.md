@@ -1,6 +1,6 @@
 # System Design — LearnKit Content Roadmap
 
-_Status snapshot: 2026-06-24 — **48 / 48 lessons shipped — content-complete**; the
+_Status snapshot: 2026-09-26 — **55 lessons shipped** (the original 48, plus 7 extra case studies that ship with diagrams); the
 `architecture` primitive + `diagram` block (ADR 0010) are now **built and verified**,
 with the first diagram live in `load-balancers`. Remaining work is retrofitting
 diagrams into the other 33 diagram-bearing lessons. Source syllabus:
@@ -70,9 +70,9 @@ change per CLAUDE.md: schema + renderer + validator branch + tests + ADR.
 |---|---|---|---|
 | Fundamentals | 12 | 0 | article (🟢, complete) |
 | Building Blocks | 18 | 0 | article (prose v1 complete; diagrams pending) |
-| Designing Systems | 16 | 0 | article (prose v1 complete; diagrams pending) |
+| Designing Systems | 23 | 0 | article (16 prose v1 with diagrams pending; 7 newer ones with diagrams) |
 | Interview Method | 2 | 0 | article (🟢, complete) |
-| **Total** | **48** | **0** | |
+| **Total** | **55** | **0** | |
 
 All four tracks now exist in `Content/manifest.json` with their `overview` +
 SF Symbol `icon` (System Design `overview` has no `complexity` field). The only
@@ -153,6 +153,18 @@ Limiter rather than authored separately.
 - [x] **Design a Payment System** — idempotency, double-entry ledger, exactly-once _(prose v1; diagram pending)_
 - [x] **Design a Code Deployment System** — artifact distribution, canary, rollback _(prose v1; diagram pending)_
 - [x] **Design a ChatGPT-style System** — GPU serving, token streaming, context _(prose v1; diagram pending; folds in the source's AI-system chapters)_
+
+Additional case studies beyond the source syllabus. Each ships with its diagram and
+the full outline: Requirements, Scale (worked numbers), API, Data model, High-level
+design, deep dives, and Bottlenecks and tradeoffs.
+
+- [x] **Design Dropbox** — content-hashed chunking, dedup, per-folder journal sync, conflicted copies _(with diagram)_
+- [x] **Design a Notification System** — priority and channel queues, retries, idempotent delivery, preferences _(with diagram)_
+- [x] **Design Ticketmaster** — conditional seat holds with expiry, virtual waiting room, no double-selling _(with diagram)_
+- [x] **Design an Ad Click Aggregator** — event-time windows, watermarks, exactly-once counting, batch reconciliation _(with diagram)_
+- [x] **Design Slack** — per-gateway channel fan-out, ordering, reconnect catch-up, presence _(with diagram)_
+- [x] **Design a Real-Time Leaderboard** — sorted sets for rank in O(log n), tie-breaks, sharding options _(with diagram)_
+- [x] **Design a Stock Exchange** — price-time matching, sequencer and journal, deterministic replay, hot standby _(with diagram)_
 
 ## 4. Interview Method  ·  `system-design/interview-method`  ·  article
 
