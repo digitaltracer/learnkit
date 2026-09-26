@@ -654,7 +654,8 @@
             { "id": "ticketmaster", "title": "Design Ticketmaster", "file": "system-design/designing-systems/ticketmaster.json" },
             { "id": "ad-click-aggregation", "title": "Design an Ad Click Aggregator", "file": "system-design/designing-systems/ad-click-aggregation.json" },
             { "id": "slack", "title": "Design Slack", "file": "system-design/designing-systems/slack.json" },
-            { "id": "leaderboard", "title": "Design a Real-Time Leaderboard", "file": "system-design/designing-systems/leaderboard.json" }
+            { "id": "leaderboard", "title": "Design a Real-Time Leaderboard", "file": "system-design/designing-systems/leaderboard.json" },
+            { "id": "stock-exchange", "title": "Design a Stock Exchange", "file": "system-design/designing-systems/stock-exchange.json" }
           ]
         }
       ]

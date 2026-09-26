@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "id": "stock-exchange",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design a Stock Exchange",
+  "format": "article",
+  "summary": "Match buy and sell orders by price and time in microseconds, fairly, without ever losing one. The rare design where you remove network hops and databases from the critical path.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "An exchange takes orders to buy and sell shares and matches them. Most systems in this track get faster by adding caches, replicas and queues. An exchange goes the other way. Its core is one single-threaded program per group of stocks, holding the order book in memory and doing nothing but matching. Everything that can be moved off that path is, because every microsecond is visible to traders and every ordering mistake is a fairness complaint."
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Accept limit orders (buy at this price or better) and market orders (buy at the best price available), and let traders cancel them.",
+        "Match orders by price-time priority: best price first, and at the same price, whoever arrived first.",
+        "Send each trader acknowledgements and fill reports for their orders.",
+        "Publish market data to everyone: every trade, and the order book's best prices and depth.",
+        "Non-functional: microsecond matching, the same result for the same input every time, no lost orders, and every participant treated identically."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "5,000 listed symbols and about 1B orders a day, over a 6.5-hour session: roughly 43,000 orders per second on average.",
+        "The open and close are much busier. Plan for 500,000 orders per second at peak.",
+        "Most orders never trade. Over 90% are cancelled or replaced, so cancels must be as fast as new orders.",
+        "Matching should take microseconds, and a trader's round trip from order to acknowledgement should be tens of microseconds for firms in the same data centre."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "API"
+    },
+    {
+      "type": "paragraph",
+      "text": "Exchanges speak FIX or a binary protocol over long-lived TCP sessions, not REST. The messages are what matter."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "NewOrder {clientOrderId, symbol, side, type, price, quantity}.",
+        "CancelOrder {clientOrderId}.",
+        "Execution reports back to the trader: Accepted, PartiallyFilled {qty, price}, Filled, Cancelled, Rejected {reason}.",
+        "Market data out to everyone: trades, the best bid and ask, and the depth at each price level."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Data model"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Order: orderId, clientOrderId, account, symbol, side, price, quantity, filled quantity, status, sequence number.",
+        "Order book, one per symbol, in memory: a bid side and an ask side. Each side is a sorted map from price to a first-in-first-out queue of orders at that price.",
+        "A hash map from orderId to its place in the queue, so a cancel is O(1) instead of a search.",
+        "Journal: every accepted input message with its sequence number, written in order. This is the source of truth."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "How matching works"
+    },
+    {
+      "type": "paragraph",
+      "text": "Say the book for one stock has bids of 300 shares at 100.10 and 500 at 100.05, and asks of 200 at 100.15 and 400 at 100.20. A limit order arrives to buy 500 at up to 100.20. The engine takes the cheapest ask first and fills 200 at 100.15. It then fills the remaining 300 from the 100.20 level, leaving 100 shares resting there. The incoming order is fully filled, two trades go out on market data, and each trader gets their fill reports. Trades always happen at the resting order's price."
+    },
+    {
+      "type": "paragraph",
+      "text": "The engine for a symbol runs on one thread. There are no locks and no races, and because the input order fixes the output, the same journal replayed gives exactly the same trades. That one property is what the rest of the design relies on. One thread holding everything in CPU cache can match millions of orders per second, which is more than any single stock needs."
+    },
+    {
+      "type": "heading",
+      "text": "High-level design"
+    },
+    {
+      "type": "paragraph",
+      "text": "A broker connects to a gateway, which checks the session, rate-limits and validates each message. Risk checks confirm the account can pay for the order and reserve the funds. The sequencer stamps each order with the next sequence number and writes it to the journal. Only then does the matching engine see it. The engine's output goes to the market data publisher and to a reporter that sends fills back to brokers and writes trades to a database for clearing, off the critical path."
+    },
+    {
+      "type": "diagram",
+      "caption": "Everything before the engine protects it. Everything after it runs off the critical path.",
+      "visual": {
+        "type": "architecture",
+        "nodes": [
+          { "id": "broker", "title": "Broker", "subtitle": "FIX session", "kind": "client", "x": 0.05, "y": 0.5 },
+          { "id": "gateway", "title": "Gateway", "kind": "service", "x": 0.5, "y": 0.05 },
+          { "id": "risk", "title": "Risk Check", "kind": "service", "x": 0.95, "y": 0.05 },
+          { "id": "seq", "title": "Sequencer", "subtitle": "journal", "kind": "queue", "x": 0.95, "y": 0.5 },
+          { "id": "engine", "title": "Matching Engine", "subtitle": "in memory", "kind": "service", "x": 0.5, "y": 0.5 },
+          { "id": "md", "title": "Market Data", "subtitle": "multicast", "kind": "service", "x": 0.5, "y": 0.95 },
+          { "id": "trades", "title": "Trade Store", "subtitle": "clearing", "kind": "database", "x": 0.95, "y": 0.95 }
+        ],
+        "connectors": [
+          { "from": "broker", "to": "gateway" },
+          { "from": "gateway", "to": "risk" },
+          { "from": "risk", "to": "seq" },
+          { "from": "seq", "to": "engine" },
+          { "from": "engine", "to": "md" },
+          { "from": "engine", "to": "trades", "style": "async" },
+          { "from": "md", "to": "broker", "style": "async" }
+        ]
+      }
+    },
+    {
+      "type": "heading",
+      "text": "Surviving a crash without losing an order"
+    },
+    {
+      "type": "paragraph",
+      "text": "The engine keeps its state only in memory, so a crash loses the order book. It does not matter, because the journal has every input in order and the engine is deterministic. A new engine loads the latest snapshot and replays the journal from there, arriving at exactly the book the old one had."
+    },
+    {
+      "type": "paragraph",
+      "text": "Replay takes time, and markets cannot pause for it. So a hot standby engine reads the same sequenced journal and builds the same book in parallel, but its output is ignored. When the primary fails, the standby is already current and takes over within milliseconds. This is state machine replication, the same idea behind consensus logs like Raft, applied to a trading engine."
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "Why a sequencer, not a database",
+      "text": "A database write on every order would cost milliseconds and add lock contention. Appending to a sequenced journal, replicated to a second machine, costs microseconds. The trade database still exists, but it is filled afterwards from the engine's output."
+    },
+    {
+      "type": "heading",
+      "text": "Bottlenecks and tradeoffs"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "One symbol cannot be split across threads without breaking price-time priority. Scale out by assigning groups of symbols to separate engines, and move a very busy symbol onto its own.",
+        "Latency comes from hops and pauses, not algorithms. Keep the critical path short, avoid garbage collection pauses, pre-allocate memory, and use kernel-bypass networking.",
+        "Market data goes out by UDP multicast so every subscriber gets the same packet at the same moment. Sending over separate TCP connections would favour whoever is first in the loop.",
+        "Risk checks sit on the critical path, so they need their own in-memory account state. A slow risk check makes the whole exchange slow."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "text": "Put a single-threaded, in-memory, deterministic matching engine behind a sequencer. The journal gives you recovery and a hot standby for free, and everything slow, like databases and reporting, runs after the match."
+    }
+  ]
+}
