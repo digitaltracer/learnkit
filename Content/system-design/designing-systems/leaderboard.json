@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "id": "leaderboard",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design a Real-Time Leaderboard",
+  "format": "article",
+  "summary": "Show the top 10 players and your own rank out of 25 million, updated seconds after every match. A small system that turns on picking the right data structure.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "A mobile game shows a leaderboard: the top 10 players this season, and \"you are #1,284,112\" with the players just above and below you. Scores change after every match. The top 10 is easy in any database. Your exact rank among 25 million, recomputed on every screen load, is the part that breaks a naive design."
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Add points to a player's score when they win a match.",
+        "Show the top 10 players of the current season.",
+        "Show any player's exact rank, plus the four players above and below them.",
+        "Reset the board each season and keep past seasons readable.",
+        "Non-functional: rank changes visible within seconds, highly available reads, and scores that cannot be forged by the client."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "25M players a month, 5M a day, each playing about 10 matches: 50M score updates a day, around 600 per second and 3,000 at peak.",
+        "Leaderboard views run at a similar rate. Every match ends on a results screen that shows the player's rank.",
+        "One entry is a player id and a score. At about 100 bytes each with overhead, 25M players is roughly 2.5 GB, which fits in memory on one machine."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "These numbers are small. That is the point of doing the estimate: this is not a big-data problem, it is a data-structure problem. Do not reach for sharding before you have shown that one well-chosen structure is not enough."
+    },
+    {
+      "type": "heading",
+      "text": "API"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "POST /v1/scores {userId, matchId, points}: called by the game server when a match ends, never by the player's app.",
+        "GET /v1/leaderboard/top?n=10: the top players with names and scores.",
+        "GET /v1/leaderboard/users/{id}?around=4: the player's rank and score, plus their neighbours."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Data model"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Sorted set per season in Redis, keyed like leaderboard:2026-s3. The member is userId and the score is the player's points. This is what answers every read.",
+        "Score events table in a durable database: matchId (unique), userId, points, timestamp. The audit trail and the way to rebuild the sorted set.",
+        "Player profiles: userId, display name, avatar. Cached, because the board shows names, not ids."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Why a SQL table falls over"
+    },
+    {
+      "type": "paragraph",
+      "text": "Store scores in a table with an index on score and the top 10 is a cheap indexed query. A player's rank is not. It is the count of players with a higher score, and with 25M rows that count walks a large part of the index. Run it thousands of times a second and the database spends all its time counting. Caching ranks does not help much either, because every match changes the ranks of everyone the winner passed."
+    },
+    {
+      "type": "heading",
+      "text": "Sorted sets do the work"
+    },
+    {
+      "type": "paragraph",
+      "text": "A Redis sorted set keeps members ordered by score, using a skip list alongside a hash map. The skip list tracks how many members each of its links skips over, so it can count its way to a position in logarithmic time instead of walking every entry. Every operation the leaderboard needs is fast."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "ZINCRBY adds a match's points to a player: O(log n).",
+        "ZREVRANGE 0 9 returns the top 10: O(log n + 10).",
+        "ZREVRANK returns one player's exact rank: O(log n). At 25M players that is about 25 steps.",
+        "Neighbours are one ZREVRANGE from rank minus 4 to rank plus 4."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "Breaking ties",
+      "text": "Two players on the same points need a fixed order, usually whoever got there first. Pack both into one score: points in the high bits and a reversed timestamp in the low bits. A Redis score is a double, exact up to 2^53, which leaves room for 25 bits of seconds in a season and 28 bits of points."
+    },
+    {
+      "type": "heading",
+      "text": "High-level design"
+    },
+    {
+      "type": "paragraph",
+      "text": "When a match ends, the game server calls the score service. The score service inserts the event into the database first, where the unique matchId rejects a replay. Then it runs ZINCRBY on the season's sorted set. The leaderboard service answers reads straight from Redis and fills in names from the profile cache."
+    },
+    {
+      "type": "diagram",
+      "caption": "Writes land in a durable log and the sorted set. Every read is served from the sorted set.",
+      "visual": {
+        "type": "architecture",
+        "nodes": [
+          { "id": "game", "title": "Game Server", "kind": "external", "x": 0.05, "y": 0.05 },
+          { "id": "app", "title": "Player App", "kind": "client", "x": 0.05, "y": 0.95 },
+          { "id": "score", "title": "Score Service", "kind": "service", "x": 0.5, "y": 0.05 },
+          { "id": "board", "title": "Leaderboard Service", "kind": "service", "x": 0.5, "y": 0.95 },
+          { "id": "events", "title": "Score Events", "subtitle": "matchId unique", "kind": "database", "x": 0.95, "y": 0.05 },
+          { "id": "zset", "title": "Sorted Set", "subtitle": "Redis", "kind": "cache", "x": 0.95, "y": 0.5 },
+          { "id": "profiles", "title": "Profile Cache", "kind": "cache", "x": 0.95, "y": 0.95 }
+        ],
+        "connectors": [
+          { "from": "game", "to": "score" },
+          { "from": "score", "to": "events" },
+          { "from": "score", "to": "zset" },
+          { "from": "app", "to": "board" },
+          { "from": "board", "to": "zset" },
+          { "from": "board", "to": "profiles" }
+        ]
+      }
+    },
+    {
+      "type": "heading",
+      "text": "When one node is not enough"
+    },
+    {
+      "type": "paragraph",
+      "text": "At 500M players the set outgrows one machine, and you have to shard. Both options cost something."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Shard by score range, for example 0 to 999 on one shard and 1,000 to 4,999 on the next. A player's rank is the size of every higher shard plus their rank inside their own. The top shard stays small and hot, and a player moves shards when their score crosses a boundary.",
+        "Shard by hashing userId. Load is even, and the top 10 is a scatter-gather: ask every shard for its top 10 and merge. An exact rank now needs a count from every shard, so one rank read becomes N reads.",
+        "Most games stop caring about exactness in the long tail. \"Top 3%\" from a precomputed histogram of scores is cheap and just as motivating as #14,203,881."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Bottlenecks and tradeoffs"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Only the game server may submit scores. If the app could post its own points, the top 10 would be cheaters within an hour.",
+        "Redis is memory first. Turn on append-only persistence and a replica, and rebuild from the score events table if both are lost.",
+        "Everyone asks for the top 10. Cache that one response for a second and most of the read load disappears.",
+        "Seasons are just new keys. Start a fresh sorted set, and keep old seasons read-only or snapshot them to the database."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "text": "Do the math first. It shows the whole board fits in memory, so use a sorted set that answers top N and exact rank in O(log n), keep a durable score log to rebuild from, and shard only when the numbers force you to."
+    }
+  ]
+}
