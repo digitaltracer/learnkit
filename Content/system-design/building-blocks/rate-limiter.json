@@ -9,7 +9,7 @@
   "blocks": [
     {
       "type": "paragraph",
-      "text": "A rate limiter caps how many requests a client may make in a given time window — say 100 requests per minute. Beyond protecting a service from being overwhelmed, it defends against abuse, scraping, and runaway clients, and it enforces fair use across tenants. When a client exceeds its limit, requests are rejected rather than served."
+      "text": "A rate limiter caps how many requests a client may make in a given time window, say 100 requests per minute. Beyond protecting a service from being overwhelmed, it defends against abuse, scraping, and runaway clients, and it enforces fair use across tenants. When a client exceeds its limit, requests are rejected rather than served."
     },
     {
       "type": "heading",
@@ -26,11 +26,11 @@
     {
       "type": "bullets",
       "items": [
-        "Token bucket: tokens refill at a steady rate; each request spends one — allows short bursts up to the bucket size.",
-        "Leaky bucket: requests queue and drain at a fixed rate — smooths bursts into a steady outflow, but can add latency.",
-        "Fixed window counter: count requests per clock window — cheap, but a burst straddling the boundary can briefly allow double the limit.",
-        "Sliding window log: store a timestamp per request and count those in the trailing window — exact, but memory-heavy.",
-        "Sliding window counter: blend the current and previous window counts — a close approximation of the log at a fraction of the cost."
+        "Token bucket: tokens refill at a steady rate; each request spends one. This allows short bursts up to the bucket size.",
+        "Leaky bucket: requests queue and drain at a fixed rate. This smooths bursts into a steady outflow but can add latency.",
+        "Fixed window counter: count requests per clock window. It is cheap, but a burst straddling the boundary can briefly allow double the limit.",
+        "Sliding window log: store a timestamp per request and count those in the trailing window. It is exact but memory-heavy.",
+        "Sliding window counter: blend the current and previous window counts. This closely approximates the log at a fraction of the cost."
       ]
     },
     {

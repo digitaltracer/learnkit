@@ -5,7 +5,7 @@
   "track": "building-blocks",
   "title": "Database Partitioning and Sharding",
   "format": "article",
-  "summary": "Splitting one dataset across many nodes when it no longer fits on a single machine — and why the shard key is the decision you can least afford to get wrong.",
+  "summary": "Splitting one dataset across many nodes when it no longer fits on a single machine, and why the shard key is the decision you can least afford to get wrong.",
   "blocks": [
     {
       "type": "paragraph",
@@ -32,7 +32,7 @@
       "items": [
         "Range-based: assign contiguous ranges of the key to nodes. Range scans are efficient, but recent or sequential keys pile onto one node.",
         "Hash-based: hash the key and place by the hash. Distribution is even, but range scans now hit every node.",
-        "The choice is a trade between even spread and efficient range queries — you rarely get both."
+        "The choice is a trade between even spread and efficient range queries, and you rarely get both."
       ]
     },
     {
@@ -45,7 +45,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Rebalancing has its own trap. Naive hashing (key mod N) remaps almost every key when you add or remove a node, forcing a massive reshuffle. Consistent hashing places nodes and keys on a ring so adding a node moves only the keys near it — the standard trick for keeping rebalancing cheap as the cluster grows and shrinks."
+      "text": "Rebalancing has its own trap. Naive hashing (key mod N) remaps almost every key when you add or remove a node, forcing a massive reshuffle. Consistent hashing places nodes and keys on a ring so adding a node moves only the keys near it. This is the standard trick for keeping rebalancing cheap as the cluster grows and shrinks."
     },
     {
       "type": "heading",
@@ -59,7 +59,7 @@
       "type": "callout",
       "kind": "warning",
       "title": "The shard key is hard to change",
-      "text": "Re-sharding a live dataset means moving data while serving traffic — slow, risky, and rare. Choose the shard key for even distribution and for your dominant query pattern up front, because changing it later is the most expensive decision here."
+      "text": "Re-sharding a live dataset means moving data while serving traffic, which is slow, risky, and rare. Choose the shard key for even distribution and for your dominant query pattern up front, because changing it later is the most expensive decision here."
     }
   ]
 }

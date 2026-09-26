@@ -5,11 +5,11 @@
   "track": "interview-method",
   "title": "Non-Functional Requirements Checklist",
   "format": "article",
-  "summary": "The qualities to pin down before designing anything — because availability, consistency, latency, and scale pull a design in different directions.",
+  "summary": "The qualities to pin down before designing anything, because availability, consistency, latency, and scale pull a design in different directions.",
   "blocks": [
     {
       "type": "paragraph",
-      "text": "Functional requirements say what a system does — post a tweet, place an order, send a message. Non-functional requirements (NFRs) say how well it has to do it — how fast, how reliable, at what scale. Two systems with identical features but different NFRs are designed completely differently, so you ask about the NFRs up front."
+      "text": "Functional requirements say what a system does: post a tweet, place an order, send a message. Non-functional requirements (NFRs) say how well it has to do it: how fast, how reliable, at what scale. Two systems with identical features but different NFRs are designed completely differently, so you ask about the NFRs up front."
     },
     {
       "type": "heading",
@@ -18,12 +18,12 @@
     {
       "type": "bullets",
       "items": [
-        "Availability — what uptime is required, and what happens during a failure?",
-        "Consistency — must every read see the latest write, or is slightly stale data fine?",
-        "Latency and throughput — what's the target response time, and how many requests per second?",
-        "Scalability — what's the expected scale today, and how fast will it grow?",
-        "Durability — once written, can data ever be lost?",
-        "Security and privacy — who can access what, and what data is sensitive?"
+        "Availability: what uptime is required, and what happens during a failure?",
+        "Consistency: must every read see the latest write, or is slightly stale data fine?",
+        "Latency and throughput: what's the target response time, and how many requests per second?",
+        "Scalability: what's the expected scale today, and how fast will it grow?",
+        "Durability: can data ever be lost once written?",
+        "Security and privacy: who can access what, and what data is sensitive?"
       ]
     },
     {
@@ -32,7 +32,7 @@
     },
     {
       "type": "paragraph",
-      "text": "These aren't a formality — each answer changes concrete choices. A strict latency target might force a cache or a CDN. A high-availability target pushes you toward replication and multiple regions. A durability target dictates how many copies of the data you keep and where."
+      "text": "These aren't a formality. Each answer changes concrete choices. A strict latency target might force a cache or a CDN. A high-availability target pushes you toward replication and multiple regions. A durability target dictates how many copies of the data you keep and where."
     },
     {
       "type": "heading",
@@ -40,7 +40,7 @@
     },
     {
       "type": "paragraph",
-      "text": "The interesting part is that NFRs conflict. Strong consistency and high availability pull in opposite directions during a network partition — you can favor one only by relaxing the other. Tight latency often means serving slightly stale, cached data; strict consistency often means a slower write path. There's no design that maxes out everything."
+      "text": "The interesting part is that NFRs conflict. Strong consistency and high availability pull in opposite directions during a network partition. You can favor one only by relaxing the other. Tight latency often means serving slightly stale, cached data; strict consistency often means a slower write path. There's no design that maxes out everything."
     },
     {
       "type": "callout",
@@ -54,7 +54,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Every later decision — database choice, caching, partitioning, replication — is an answer to an NFR. If you skip this step, you're guessing at the targets, and a design built on guessed targets can't be evaluated. The checklist turns a vague prompt into a concrete spec you can design against."
+      "text": "Every later decision is an answer to an NFR: database choice, caching, partitioning, replication. If you skip this step, you're guessing at the targets, and a design built on guessed targets can't be evaluated. The checklist turns a vague prompt into a concrete spec you can design against."
     },
     {
       "type": "callout",

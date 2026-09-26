@@ -29,21 +29,21 @@
     },
     {
       "type": "paragraph",
-      "text": "A classic queue is point-to-point: each message is delivered to exactly one consumer. The queue is a unit of work to be done once — process a payment, resize an image — not a broadcast, which is the distinction from pub-sub, where every subscriber gets a copy. But delivery across a network is never free, so queues offer different guarantees:"
+      "text": "A classic queue is point-to-point: each message is delivered to exactly one consumer. The queue is a unit of work to be done once, like processing a payment or resizing an image. It is not a broadcast, which is the distinction from pub-sub, where every subscriber gets a copy. But delivery across a network is never free, so queues offer different guarantees:"
     },
     {
       "type": "bullets",
       "items": [
         "At-most-once: a message may be lost but never processed twice.",
         "At-least-once: never lost, but may be delivered more than once.",
-        "Exactly-once: processed once and only once — the ideal, and the hardest."
+        "Exactly-once: processed once and only once. It is the ideal, and the hardest."
       ]
     },
     {
       "type": "callout",
       "kind": "note",
       "title": "The practical choice",
-      "text": "Exactly-once is hard because the network fails at the worst moment — a consumer may finish the work but crash before acknowledging, so the queue redelivers. Most systems instead pick at-least-once and make consumers idempotent: processing the same message twice has the same effect as once."
+      "text": "Exactly-once is hard because the network fails at the worst moment. A consumer may finish the work but crash before acknowledging, so the queue redelivers. Most systems instead pick at-least-once and make consumers idempotent: processing the same message twice has the same effect as once."
     },
     {
       "type": "heading",
@@ -51,7 +51,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Strict global ordering is expensive, so many queues guarantee order only within a partition or key, not across the whole queue. Delivery works on acks and a visibility timeout: a pulled message is hidden from other consumers for a window, and if it isn't acknowledged in time it reappears and is redelivered — exactly why consumers must be idempotent."
+      "text": "Strict global ordering is expensive, so many queues guarantee order only within a partition or key, not across the whole queue. Delivery works on acks and a visibility timeout: a pulled message is hidden from other consumers for a window, and if it isn't acknowledged in time it reappears and is redelivered. That is exactly why consumers must be idempotent."
     },
     {
       "type": "paragraph",

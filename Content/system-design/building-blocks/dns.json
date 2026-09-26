@@ -5,7 +5,7 @@
   "track": "building-blocks",
   "title": "Domain Name System (DNS)",
   "format": "article",
-  "summary": "How the internet turns a human-friendly name into a machine address — using a hierarchical, heavily cached lookup that doubles as a load-balancing layer.",
+  "summary": "How the internet turns a human-friendly name into a machine address, using a hierarchical, heavily cached lookup that doubles as a load-balancing layer.",
   "blocks": [
     {
       "type": "paragraph",
@@ -22,9 +22,9 @@
     {
       "type": "bullets",
       "items": [
-        "Root servers — the top of the tree; they point to the right TLD servers.",
-        "TLD servers — one tier per top-level domain (.com, .org, .net), pointing to the authoritative server.",
-        "Authoritative servers — the source of truth for a specific domain, holding its actual records."
+        "Root servers sit at the top of the tree and point to the right TLD servers.",
+        "TLD servers form one tier per top-level domain (.com, .org, .net) and point to the authoritative server.",
+        "Authoritative servers are the source of truth for a specific domain and hold its actual records."
       ]
     },
     {
@@ -33,7 +33,7 @@
     },
     {
       "type": "paragraph",
-      "text": "A client usually asks a recursive resolver — often run by the ISP — to do all the work and return a final answer. The resolver then does the iterative part: it queries the root, then the TLD, then the authoritative server in turn, following each referral until it has the IP. The client sees one question and one answer; the chasing happens behind the resolver."
+      "text": "A client usually asks a recursive resolver, often run by the ISP, to do all the work and return a final answer. The resolver then does the iterative part: it queries the root, then the TLD, then the authoritative server in turn, following each referral until it has the IP. The client sees one question and one answer; the chasing happens behind the resolver."
     },
     {
       "type": "heading",
@@ -41,7 +41,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Walking the whole hierarchy for every request would be slow, so answers are cached everywhere — in the browser, the operating system, and the resolver. Each record carries a TTL (time to live) that says how long it may be cached before it must be looked up again. Short TTLs make changes propagate faster; long TTLs cut latency and load."
+      "text": "Walking the whole hierarchy for every request would be slow, so answers are cached everywhere: in the browser, the operating system, and the resolver. Each record carries a TTL (time to live) that says how long it may be cached before it must be looked up again. Short TTLs make changes propagate faster; long TTLs cut latency and load."
     },
     {
       "type": "heading",
@@ -49,7 +49,7 @@
     },
     {
       "type": "paragraph",
-      "text": "DNS does more than map names — it's a first, coarse layer of traffic steering. A name can resolve to several IPs, and the response can vary by who's asking, which spreads users across servers and regions."
+      "text": "DNS does more than map names. It's a first, coarse layer of traffic steering. A name can resolve to several IPs, and the response can vary by who's asking, which spreads users across servers and regions."
     },
     {
       "type": "bullets",
@@ -68,7 +68,7 @@
     {
       "type": "callout",
       "kind": "note",
-      "text": "DNS is itself a globally distributed, cached, hierarchical system — a working example of the same patterns you'll apply to your own designs."
+      "text": "DNS is itself a globally distributed, cached, hierarchical system. It is a working example of the same patterns you'll apply to your own designs."
     }
   ]
 }

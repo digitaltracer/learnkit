@@ -23,7 +23,7 @@
       "type": "bullets",
       "items": [
         "Reads scale out: add replicas to spread the read load.",
-        "Writes do not scale this way — they still funnel through one leader.",
+        "Writes do not scale this way, because they still funnel through one leader.",
         "Good fit for read-heavy workloads, which most applications are."
       ]
     },
@@ -33,7 +33,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Multi-leader replication accepts writes on several nodes — useful across regions — but two leaders can accept conflicting writes, so you must resolve conflicts. Leaderless replication drops the leader entirely: a client writes to many nodes and reads from many, using a quorum (enough nodes must agree) to decide the current value. More availability, more complexity."
+      "text": "Multi-leader replication accepts writes on several nodes, which is useful across regions, but two leaders can accept conflicting writes, so you must resolve conflicts. Leaderless replication drops the leader entirely: a client writes to many nodes and reads from many, using a quorum (enough nodes must agree) to decide the current value. More availability, more complexity."
     },
     {
       "type": "heading",
@@ -41,7 +41,7 @@
     },
     {
       "type": "paragraph",
-      "text": "When the leader takes a write, does it wait for replicas to confirm? Synchronous replication waits, so a confirmed write is guaranteed to exist on a replica — safer, but the client pays for the slowest replica on every write. Asynchronous replication confirms immediately and ships changes in the background — fast, but the replicas trail behind."
+      "text": "When the leader takes a write, does it wait for replicas to confirm? Synchronous replication waits, so a confirmed write is guaranteed to exist on a replica. That is safer, but the client pays for the slowest replica on every write. Asynchronous replication confirms immediately and ships changes in the background. That is fast, but the replicas trail behind."
     },
     {
       "type": "callout",
@@ -55,11 +55,11 @@
     },
     {
       "type": "paragraph",
-      "text": "Because async replicas trail the leader, a read from a replica can return stale data — a user updates their profile, reloads, and sees the old value. This is replication lag; you fix it by reading your own writes from the leader or routing to a replica known to be caught up."
+      "text": "Because async replicas trail the leader, a read from a replica can return stale data. A user updates their profile, reloads, and sees the old value. This is replication lag; you fix it by reading your own writes from the leader or routing to a replica known to be caught up."
     },
     {
       "type": "paragraph",
-      "text": "If the leader itself fails, the system promotes a replica to take over and redirects writes to it. Done badly this causes split-brain (two nodes both think they are leader); done well, failover is the payoff for keeping copies — the system keeps serving while you replace the dead node."
+      "text": "If the leader itself fails, the system promotes a replica to take over and redirects writes to it. Done badly this causes split-brain (two nodes both think they are leader); done well, failover is the payoff for keeping copies, because the system keeps serving while you replace the dead node."
     }
   ]
 }

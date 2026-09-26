@@ -5,7 +5,7 @@
   "track": "designing-systems",
   "title": "Design a Code Deployment System",
   "format": "article",
-  "summary": "Build code into artifacts and roll them out to a global fleet of thousands of hosts safely — where the hard parts are distributing big artifacts fast and limiting the blast radius of a bad release.",
+  "summary": "Build code into artifacts and roll them out to a global fleet of thousands of hosts safely. The hard parts are distributing big artifacts fast and limiting the blast radius of a bad release.",
   "blocks": [
     {
       "type": "paragraph",
@@ -20,7 +20,7 @@
       "items": [
         "Build a commit into a versioned, immutable artifact and store it.",
         "Distribute that artifact to a global fleet of hosts efficiently.",
-        "Deploy with minimal risk — a bad release should affect as few hosts as possible.",
+        "Deploy with minimal risk, so a bad release affects as few hosts as possible.",
         "Roll back fast, and manage configuration alongside the code."
       ]
     },
@@ -62,7 +62,7 @@
       "type": "bullets",
       "items": [
         "Rolling: update hosts in batches, draining and replacing a slice at a time so capacity stays up.",
-        "Blue-green: stand up the new version on a parallel fleet, then switch traffic over — instant cutover and instant rollback.",
+        "Blue-green: stand up the new version on a parallel fleet, then switch traffic over for instant cutover and instant rollback.",
         "Canary: release to a tiny slice first, watch real metrics, and only widen if it stays healthy.",
         "Health checks gate every step, and a regression triggers automatic rollback to the last known-good version."
       ]

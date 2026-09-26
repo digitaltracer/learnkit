@@ -5,7 +5,7 @@
   "track": "building-blocks",
   "title": "Key-Value Store",
   "format": "article",
-  "summary": "A distributed hash map you get and put by key — and the partitioning, replication, and quorum machinery that lets it scale across many nodes.",
+  "summary": "A distributed hash map you get and put by key, and the partitioning, replication, and quorum machinery that lets it scale across many nodes.",
   "blocks": [
     {
       "type": "paragraph",
@@ -17,13 +17,13 @@
     },
     {
       "type": "paragraph",
-      "text": "No single node holds every key, so keys must be split across nodes. Naive hashing — node = hash(key) mod N — remaps almost every key when N changes, forcing a huge reshuffle on each add or removal. Consistent hashing instead places nodes and keys on a ring and assigns each key to the next node clockwise."
+      "text": "No single node holds every key, so keys must be split across nodes. Naive hashing with node = hash(key) mod N remaps almost every key when N changes, forcing a huge reshuffle on each add or removal. Consistent hashing instead places nodes and keys on a ring and assigns each key to the next node clockwise."
     },
     {
       "type": "bullets",
       "items": [
         "A key belongs to the first node found walking clockwise from its position on the ring.",
-        "Add or drop a node and only its neighbor's keys move — the rest stay put.",
+        "Add or drop a node and only its neighbor's keys move. The rest stay put.",
         "Virtual nodes (many ring points per physical node) even out the load and hot spots."
       ]
     },
@@ -33,7 +33,7 @@
     },
     {
       "type": "paragraph",
-      "text": "For durability, each key is copied to the next N nodes around the ring — N is the replication factor, typically three, and it sets how many machines must fail before a key is lost. Rather than always waiting for all N, the store lets you tune two numbers: W, the replicas a write must reach before it acks, and R, the replicas a read must consult. When W + R > N the read and write sets overlap, so a read is guaranteed to see the latest write — strong-ish consistency without full synchrony."
+      "text": "For durability, each key is copied to the next N nodes around the ring. N is the replication factor, typically three, and it sets how many machines must fail before a key is lost. Rather than always waiting for all N, the store lets you tune two numbers: W, the replicas a write must reach before it acks, and R, the replicas a read must consult. When W + R > N the read and write sets overlap, so a read is guaranteed to see the latest write. That gives strong-ish consistency without full synchrony."
     },
     {
       "type": "callout",
@@ -49,7 +49,7 @@
       "type": "bullets",
       "items": [
         "Concurrent writes to different replicas can diverge into two versions of a key that must be reconciled.",
-        "Last-write-wins keeps the highest-timestamp version — simple, but silently drops a concurrent update.",
+        "Last-write-wins keeps the highest-timestamp version. It is simple, but silently drops a concurrent update.",
         "Vector clocks track causality, detecting true conflicts so the app or a merge function resolves them without losing data."
       ]
     },
@@ -59,7 +59,7 @@
     },
     {
       "type": "paragraph",
-      "text": "With no central coordinator, nodes learn about each other through gossip: each periodically exchanges its view of the cluster with a few random peers, so membership and failure information spreads epidemically. A node that stops responding is marked down by its peers, and its requests route to the surviving replicas. Put together — consistent hashing, N-way replication, tunable quorums, conflict resolution, and gossip — this is the Dynamo-style key-value store: a simple lookup API that scales horizontally and stays available."
+      "text": "With no central coordinator, nodes learn about each other through gossip: each periodically exchanges its view of the cluster with a few random peers, so membership and failure information spreads epidemically. A node that stops responding is marked down by its peers, and its requests route to the surviving replicas. Consistent hashing, N-way replication, tunable quorums, conflict resolution, and gossip together make up the Dynamo-style key-value store: a simple lookup API that scales horizontally and stays available."
     }
   ]
 }

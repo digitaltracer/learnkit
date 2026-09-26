@@ -5,7 +5,7 @@
   "track": "building-blocks",
   "title": "Load Balancers",
   "format": "article",
-  "summary": "The component that spreads incoming requests across a pool of servers — the thing that actually makes horizontal scaling and zero-downtime deploys possible.",
+  "summary": "The component that spreads incoming requests across a pool of servers. It is what actually makes horizontal scaling and zero-downtime deploys possible.",
   "blocks": [
     {
       "type": "paragraph",
@@ -40,7 +40,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Load balancers operate at one of two layers. An L4 (transport) balancer routes on IP and port without looking inside the request — fast and protocol-agnostic. An L7 (application) balancer reads the HTTP request, so it can route by path, header, or cookie, terminate TLS, and make smarter decisions at the cost of a little more work."
+      "text": "Load balancers operate at one of two layers. An L4 (transport) balancer routes on IP and port without looking inside the request, so it is fast and protocol-agnostic. An L7 (application) balancer reads the HTTP request, so it can route by path, header, or cookie, terminate TLS, and make smarter decisions at the cost of a little more work."
     },
     {
       "type": "heading",
@@ -49,10 +49,10 @@
     {
       "type": "bullets",
       "items": [
-        "Round robin — hand each request to the next server in turn.",
-        "Weighted — send more traffic to bigger or healthier nodes.",
-        "Least connections — pick the server with the fewest active requests.",
-        "IP or consistent hashing — map a key to a server so the same client lands on the same node."
+        "Round robin: hand each request to the next server in turn.",
+        "Weighted: send more traffic to bigger or healthier nodes.",
+        "Least connections: pick the server with the fewest active requests.",
+        "IP or consistent hashing: map a key to a server so the same client lands on the same node."
       ]
     },
     {
@@ -66,7 +66,7 @@
     {
       "type": "callout",
       "kind": "note",
-      "text": "Health checks plus a server pool are what enable horizontal scaling and zero-downtime rolling deploys — add capacity or swap versions without the client ever noticing."
+      "text": "Health checks plus a server pool are what enable horizontal scaling and zero-downtime rolling deploys. You can add capacity or swap versions without the client ever noticing."
     },
     {
       "type": "heading",
@@ -74,7 +74,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Local load balancing spreads traffic within a single data center. Global load balancing (GSLB, often via DNS) steers users to the right region first — nearest, fastest, or healthiest — and then a local balancer takes over inside that region. Real systems usually run both layers together."
+      "text": "Local load balancing spreads traffic within a single data center. Global load balancing (GSLB, often via DNS) steers users to the right region first, whether nearest, fastest, or healthiest. Then a local balancer takes over inside that region. Real systems usually run both layers together."
     },
     {
       "type": "heading",
@@ -88,7 +88,7 @@
       "type": "callout",
       "kind": "warning",
       "title": "Don't make the balancer the single point of failure",
-      "text": "If everything flows through one load balancer, the balancer itself is now the weak link. Run a redundant pair — active-passive or active-active — so losing one doesn't take the whole system down."
+      "text": "If everything flows through one load balancer, the balancer itself is now the weak link. Run a redundant pair, active-passive or active-active, so losing one doesn't take the whole system down."
     }
   ]
 }

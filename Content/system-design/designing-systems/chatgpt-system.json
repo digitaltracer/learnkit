@@ -5,7 +5,7 @@
   "track": "designing-systems",
   "title": "Design a ChatGPT-style System",
   "format": "article",
-  "summary": "Serve a conversational LLM at scale — where GPU inference is the dominant cost and latency, so batching, autoscaling, and token streaming carry the design.",
+  "summary": "Serve a conversational LLM at scale, where GPU inference is the dominant cost and latency, so batching, autoscaling, and token streaming carry the design.",
   "blocks": [
     {
       "type": "paragraph",
@@ -18,7 +18,7 @@
     {
       "type": "bullets",
       "items": [
-        "Chat with conversation context — the model sees the prior turns, not just the latest message.",
+        "Chat with conversation context, so the model sees the prior turns, not just the latest message.",
         "Stream the response token by token rather than waiting for the whole answer.",
         "Low time-to-first-token, even though the full response takes seconds.",
         "Non-functional: GPU inference is very expensive, plus prompt and output safety filtering."
@@ -30,7 +30,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Assume millions of users sending tens of millions of messages a day, each generating hundreds of tokens. The binding resource isn't requests per second — it's GPU-seconds: a single response can occupy a costly accelerator for several seconds. GPU capacity is finite and slow to add, so utilization is the metric that matters, and a request may have to wait in line for a free GPU."
+      "text": "Assume millions of users sending tens of millions of messages a day, each generating hundreds of tokens. The binding resource isn't requests per second. It's GPU-seconds: a single response can occupy a costly accelerator for several seconds. GPU capacity is finite and slow to add, so utilization is the metric that matters, and a request may have to wait in line for a free GPU."
     },
     {
       "type": "heading",
@@ -56,7 +56,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Because each response ties up a GPU for seconds, the system lives or dies on GPU efficiency. The biggest lever is batching — running several requests through the model together so the GPU's parallelism is fully used, which raises throughput per accelerator dramatically. A queue in front lets workers form those batches and smooths bursts; autoscaling adds and removes GPU workers as the queue depth rises and falls, though scaling up is slow and costly."
+      "text": "Because each response ties up a GPU for seconds, the system lives or dies on GPU efficiency. The biggest lever is batching. Running several requests through the model together fully uses the GPU's parallelism, which raises throughput per accelerator dramatically. A queue in front lets workers form those batches and smooths bursts; autoscaling adds and removes GPU workers as the queue depth rises and falls, though scaling up is slow and costly."
     },
     {
       "type": "bullets",
@@ -64,7 +64,7 @@
         "Batch concurrent requests so each GPU serves many users at once.",
         "Queue arrivals so workers can assemble batches and bursts don't drop requests.",
         "Autoscale GPU workers on queue depth and latency, accepting that capacity is slow to add.",
-        "Cache where you can — identical or prefix-shared prompts, and common system-prompt computation — to skip redundant inference."
+        "Cache identical or prefix-shared prompts and common system-prompt computation where you can, to skip redundant inference."
       ]
     },
     {
@@ -79,7 +79,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Each turn must include enough prior conversation to stay coherent, but the context window is bounded and every extra token costs GPU time — so long chats get truncated or summarized. Safety filtering runs on both ends: screen the prompt for abuse and policy violations before spending a GPU on it, and screen the output before it reaches the user. Every design choice trades against the same scarce, expensive resource: GPU compute."
+      "text": "Each turn must include enough prior conversation to stay coherent, but the context window is bounded and every extra token costs GPU time, so long chats get truncated or summarized. Safety filtering runs on both ends: screen the prompt for abuse and policy violations before spending a GPU on it, and screen the output before it reaches the user. Every design choice trades against the same scarce, expensive resource: GPU compute."
     },
     {
       "type": "callout",

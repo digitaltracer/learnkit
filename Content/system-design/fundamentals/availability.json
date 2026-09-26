@@ -5,11 +5,11 @@
   "track": "fundamentals",
   "title": "Availability",
   "format": "article",
-  "summary": "The fraction of time a system is up and serving — measured in nines, and improved by killing single points of failure.",
+  "summary": "The fraction of time a system is up and serving, measured in nines and improved by killing single points of failure.",
   "blocks": [
     {
       "type": "paragraph",
-      "text": "Availability is the fraction of time a system is operational and able to serve requests. It's the headline number behind every uptime promise, and it's usually written as a percentage. The closer that percentage creeps to 100%, the more engineering — and money — each step costs."
+      "text": "Availability is the fraction of time a system is operational and able to serve requests. It's the headline number behind every uptime promise, and it's usually written as a percentage. The closer that percentage creeps to 100%, the more engineering and money each step costs."
     },
     {
       "type": "heading",
@@ -34,7 +34,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Availability is MTBF / (MTBF + MTTR): mean time between failures over the total of uptime plus mean time to recover. Two levers move the number — fail less often (raise MTBF) or recover faster (lower MTTR). The formula makes the tradeoff concrete: time spent broken is the only thing dragging the percentage down."
+      "text": "Availability is MTBF / (MTBF + MTTR): mean time between failures over the total of uptime plus mean time to recover. Two levers move the number: fail less often (raise MTBF) or recover faster (lower MTTR). The formula makes the tradeoff concrete: time spent broken is the only thing dragging the percentage down."
     },
     {
       "type": "heading",
@@ -42,13 +42,13 @@
     },
     {
       "type": "paragraph",
-      "text": "The main way to raise availability is redundancy — run multiple instances so one failure doesn't take the service down. That means hunting for single points of failure: any one component whose death stops the whole system. A lone database, one load balancer, a single availability zone — each is a SPOF until you give it a standby."
+      "text": "The main way to raise availability is redundancy. Run multiple instances so one failure doesn't take the service down. That means hunting for single points of failure: any one component whose death stops the whole system. A lone database, one load balancer, and a single availability zone are each a SPOF until you give them a standby."
     },
     {
       "type": "callout",
       "kind": "tip",
       "title": "Recover faster, cheaper",
-      "text": "Lowering MTTR is often cheaper than raising MTBF. Fast detection, automated failover, and quick rollbacks shrink each outage — and shaving minutes off recovery moves the nines without making components themselves more reliable."
+      "text": "Lowering MTTR is often cheaper than raising MTBF. Fast detection, automated failover, and quick rollbacks shrink each outage, and shaving minutes off recovery moves the nines without making components themselves more reliable."
     },
     {
       "type": "heading",
@@ -56,11 +56,11 @@
     },
     {
       "type": "paragraph",
-      "text": "Downtime comes in two flavors. Unplanned downtime is the crash, the failed deploy, the cut cable. Planned downtime is the maintenance window you schedule — and with rolling deploys and redundancy, most planned work can happen with zero user-visible downtime, so it shouldn't count against you at all."
+      "text": "Downtime comes in two flavors. Unplanned downtime is the crash, the failed deploy, the cut cable. Planned downtime is the maintenance window you schedule. With rolling deploys and redundancy, most planned work can happen with zero user-visible downtime, so it shouldn't count against you at all."
     },
     {
       "type": "paragraph",
-      "text": "So treat availability as a budget: decide how many nines the product actually needs, then spend on redundancy and fast recovery to buy them — not one more."
+      "text": "So treat availability as a budget: decide how many nines the product actually needs, then spend on redundancy and fast recovery to buy them, and not one more."
     }
   ]
 }

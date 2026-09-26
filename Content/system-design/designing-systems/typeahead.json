@@ -5,7 +5,7 @@
   "track": "designing-systems",
   "title": "Design Typeahead Suggestion",
   "format": "article",
-  "summary": "Suggest the top completions for whatever a user has typed so far, in well under 100ms — by precomputing ranked completions into a cached trie instead of ranking live on every keystroke.",
+  "summary": "Suggest the top completions for whatever a user has typed so far, in well under 100ms. Precompute ranked completions into a cached trie instead of ranking live on every keystroke.",
   "blocks": [
     {
       "type": "paragraph",
@@ -21,7 +21,7 @@
         "Functional: given a prefix, return the top-k completions for it.",
         "Suggestions ranked by popularity (how often each completion is queried).",
         "Latency under ~100ms end-to-end, so it keeps up with typing.",
-        "Fresh enough — trending queries should appear within hours, not instantly."
+        "Fresh enough that trending queries appear within hours, not instantly."
       ]
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Every keystroke is a request, so query volume is several times search volume — easily hundreds of thousands of lookups per second. The space of distinct prefixes is large but bounded, and the answer for a given prefix changes slowly. That mismatch — extreme read rate, slow-changing answers — is exactly what makes precomputation and caching pay off."
+      "text": "Every keystroke is a request, so query volume is several times search volume, easily hundreds of thousands of lookups per second. The space of distinct prefixes is large but bounded, and the answer for a given prefix changes slowly. That mismatch between an extreme read rate and slow-changing answers is exactly what makes precomputation and caching pay off."
     },
     {
       "type": "heading",
@@ -38,7 +38,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Store completions in a trie keyed by prefix, where each node caches the top-k completions that pass through it. A lookup walks the trie to the node for the typed prefix and returns its cached list — O(length of the prefix), independent of how many completions exist beneath it."
+      "text": "Store completions in a trie keyed by prefix, where each node caches the top-k completions that pass through it. A lookup walks the trie to the node for the typed prefix and returns its cached list. That costs O(length of the prefix), independent of how many completions exist beneath it."
     },
     {
       "type": "bullets",
@@ -53,7 +53,7 @@
       "type": "callout",
       "kind": "note",
       "title": "Why suggestions are precomputed offline",
-      "text": "Ranking completions live on every keystroke would mean scanning and sorting all matches per request — far too slow at this read rate. Instead, a batch job aggregates query frequencies from logs and bakes the top-k into each trie node ahead of time. The result barely changes minute to minute, so paying once offline and serving a cached answer is the right trade."
+      "text": "Ranking completions live on every keystroke would mean scanning and sorting all matches per request, which is far too slow at this read rate. Instead, a batch job aggregates query frequencies from logs and bakes the top-k into each trie node ahead of time. The result barely changes minute to minute, so paying once offline and serving a cached answer is the right trade."
     },
     {
       "type": "heading",
@@ -61,7 +61,7 @@
     },
     {
       "type": "paragraph",
-      "text": "An offline pipeline reads aggregated query logs, counts how often each query was issued, and walks every completion up its prefixes, keeping the top-k at each node. The freshly built trie is then published to the serving fleet. Updates happen on a schedule — hourly or daily — not on every keystroke, so the serving layer is read-only and fast."
+      "text": "An offline pipeline reads aggregated query logs, counts how often each query was issued, and walks every completion up its prefixes, keeping the top-k at each node. The freshly built trie is then published to the serving fleet. Updates happen hourly or daily on a schedule, not on every keystroke, so the serving layer is read-only and fast."
     },
     {
       "type": "heading",
@@ -69,7 +69,7 @@
     },
     {
       "type": "paragraph",
-      "text": "A global trie is too big for one machine, so shard it by prefix — for example, by the first character or two — and route each lookup to the shard owning that prefix. Layer a cache in front so the hottest prefixes never even reach a shard, and replicate shards to spread the enormous read load and survive node failures."
+      "text": "A global trie is too big for one machine, so shard it by prefix, for example by the first character or two, and route each lookup to the shard owning that prefix. Layer a cache in front so the hottest prefixes never even reach a shard, and replicate shards to spread the enormous read load and survive node failures."
     },
     {
       "type": "callout",

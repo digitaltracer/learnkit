@@ -5,7 +5,7 @@
   "track": "fundamentals",
   "title": "Fault Tolerance",
   "format": "article",
-  "summary": "Faults are inevitable; the goal is to keep the system working correctly anyway — so a fault never becomes a failure the user sees.",
+  "summary": "Faults are inevitable; the goal is to keep the system working correctly anyway, so a fault never becomes a failure the user sees.",
   "blocks": [
     {
       "type": "paragraph",
@@ -17,7 +17,7 @@
     },
     {
       "type": "paragraph",
-      "text": "A fault is one component deviating from spec; a failure is the system as a whole stopping its service to the user. The point of fault tolerance is to break the chain between them — a fault should be absorbed quietly, never escalating into a failure the user notices."
+      "text": "A fault is one component deviating from spec; a failure is the system as a whole stopping its service to the user. The point of fault tolerance is to break the chain between them. A fault should be absorbed quietly, never escalating into a failure the user notices."
     },
     {
       "type": "heading",
@@ -30,8 +30,8 @@
     {
       "type": "bullets",
       "items": [
-        "Active-active — all replicas serve traffic; losing one just sheds a fraction of capacity.",
-        "Active-passive (failover) — a standby waits idle and is promoted when the primary fails.",
+        "In active-active, all replicas serve traffic; losing one just sheds a fraction of capacity.",
+        "In active-passive (failover), a standby waits idle and is promoted when the primary fails.",
         "Active-active hides faults seamlessly but costs more; failover is cheaper but adds a detect-and-promote gap."
       ]
     },
@@ -55,7 +55,7 @@
     },
     {
       "type": "paragraph",
-      "text": "When you can't fully tolerate a fault, degrade instead of collapsing. Shed the non-essential — serve stale cache data, disable a recommendation panel, queue writes for later — so the core service survives. A reduced experience beats an error page."
+      "text": "When you can't fully tolerate a fault, degrade instead of collapsing. Shed the non-essential so the core service survives: serve stale cache data, disable a recommendation panel, queue writes for later. A reduced experience beats an error page."
     },
     {
       "type": "paragraph",

@@ -5,11 +5,11 @@
   "track": "building-blocks",
   "title": "Unique ID Generator",
   "format": "article",
-  "summary": "How to mint globally unique IDs at scale without a single bottleneck — and why rough time-ordering is worth designing for.",
+  "summary": "How to mint globally unique IDs at scale without a single bottleneck, and why rough time-ordering is worth designing for.",
   "blocks": [
     {
       "type": "paragraph",
-      "text": "Many systems need a unique identifier for every new record — a tweet, an order, a message. At a single machine this is trivial, but across a fleet generating thousands of IDs per second it becomes a real design problem: the IDs must never collide, and ideally they should be issued without any one component becoming a chokepoint."
+      "text": "Many systems need a unique identifier for every new record: a tweet, an order, a message. At a single machine this is trivial, but across a fleet generating thousands of IDs per second it becomes a real design problem: the IDs must never collide, and ideally they should be issued without any one component becoming a chokepoint."
     },
     {
       "type": "heading",
@@ -18,10 +18,10 @@
     {
       "type": "bullets",
       "items": [
-        "Globally unique — no two records ever share an ID, even across machines.",
-        "Ideally roughly time-sortable — newer IDs sort after older ones.",
-        "Compact — 64 bits is the common target, so an ID fits a single integer column.",
-        "High throughput and highly available — generation can't stall the write path."
+        "Globally unique: no two records ever share an ID, even across machines.",
+        "Ideally roughly time-sortable: newer IDs sort after older ones.",
+        "Compact: 64 bits is the common target, so an ID fits a single integer column.",
+        "High throughput and highly available: generation can't stall the write path."
       ]
     },
     {
@@ -31,10 +31,10 @@
     {
       "type": "bullets",
       "items": [
-        "UUID: each node generates a 128-bit value independently — no coordination, but large and not time-ordered (UUIDv4 is random).",
-        "Database auto-increment: a single column hands out sequential IDs — simple and ordered, but the database is a single point of contention.",
+        "UUID: each node generates a 128-bit value independently. It needs no coordination, but it is large and not time-ordered (UUIDv4 is random).",
+        "Database auto-increment: a single column hands out sequential IDs. It is simple and ordered, but the database is a single point of contention.",
         "Ticket / range servers: a central service leases blocks of IDs (say 1,000 at a time) to each node, which then assigns from its block locally to cut coordination.",
-        "Twitter Snowflake: a 64-bit ID built from a timestamp, a machine id, and a per-millisecond sequence number — unique, compact, and roughly time-sortable."
+        "Twitter Snowflake: a 64-bit ID built from a timestamp, a machine id, and a per-millisecond sequence number. It is unique, compact, and roughly time-sortable."
       ]
     },
     {
@@ -43,13 +43,13 @@
     },
     {
       "type": "paragraph",
-      "text": "Snowflake packs the bits of a 64-bit integer: a timestamp in the high bits, then a machine id, then a sequence number that increments within the same millisecond. Because the timestamp leads, IDs sort by creation time, and because each machine owns its machine-id slice, no two nodes can collide. No central server sits in the request path — each node mints IDs on its own."
+      "text": "Snowflake packs the bits of a 64-bit integer: a timestamp in the high bits, then a machine id, then a sequence number that increments within the same millisecond. Because the timestamp leads, IDs sort by creation time, and because each machine owns its machine-id slice, no two nodes can collide. No central server sits in the request path. Each node mints IDs on its own."
     },
     {
       "type": "callout",
       "kind": "note",
       "title": "Why auto-increment doesn't scale",
-      "text": "A single database sequence forces every insert through one node holding the counter, which caps write throughput and is a single point of failure. Sharding the counter or pre-leasing ranges helps, but you lose the clean global ordering — which is exactly the gap Snowflake-style IDs fill."
+      "text": "A single database sequence forces every insert through one node holding the counter, which caps write throughput and is a single point of failure. Sharding the counter or pre-leasing ranges helps, but you lose the clean global ordering, which is exactly the gap Snowflake-style IDs fill."
     },
     {
       "type": "heading",
@@ -57,11 +57,11 @@
     },
     {
       "type": "paragraph",
-      "text": "Time-sortable IDs aren't just tidy. When the primary key is roughly monotonic, new rows append to the end of a B-tree index instead of inserting into random spots, which keeps writes sequential and the index compact. Random IDs like UUIDv4 scatter inserts across the index, fragmenting it and hurting write performance — a real cost at scale even though the IDs are still unique."
+      "text": "Time-sortable IDs aren't just tidy. When the primary key is roughly monotonic, new rows append to the end of a B-tree index instead of inserting into random spots, which keeps writes sequential and the index compact. Random IDs like UUIDv4 scatter inserts across the index, fragmenting it and hurting write performance. That is a real cost at scale even though the IDs are still unique."
     },
     {
       "type": "paragraph",
-      "text": "There's no single right answer: UUIDs win when you want zero coordination and don't care about order, ticket servers when a small central dependency is acceptable, and Snowflake-style IDs when you want compact, ordered, decentralized IDs. Knowing the tradeoffs — and naming time-ordering as a goal — is what an interview is really probing."
+      "text": "There's no single right answer: UUIDs win when you want zero coordination and don't care about order, ticket servers when a small central dependency is acceptable, and Snowflake-style IDs when you want compact, ordered, decentralized IDs. Knowing the tradeoffs and naming time-ordering as a goal is what an interview is really probing."
     }
   ]
 }

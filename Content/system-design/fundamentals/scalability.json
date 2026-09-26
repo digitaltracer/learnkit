@@ -5,11 +5,11 @@
   "track": "fundamentals",
   "title": "Scalability",
   "format": "article",
-  "summary": "A system is scalable when it can absorb growing load without falling apart — but first you have to say exactly what 'load' means.",
+  "summary": "A system is scalable when it can absorb growing load without falling apart, but first you have to say exactly what 'load' means.",
   "blocks": [
     {
       "type": "paragraph",
-      "text": "Scalability is the ability to handle growing load without degrading. It isn't a property a system simply has or lacks; it's a question — 'if load grows in this particular way, how does the system cope?' Answering it well starts with naming the load you actually face."
+      "text": "Scalability is the ability to handle growing load without degrading. It isn't a property a system simply has or lacks; it's the question 'if load grows in this particular way, how does the system cope?' Answering it well starts with naming the load you actually face."
     },
     {
       "type": "heading",
@@ -17,15 +17,15 @@
     },
     {
       "type": "paragraph",
-      "text": "Load is captured by a few numbers called load parameters, and the right ones depend on the system. Picking the parameter that actually stresses your design is the whole game — for a feed it might be fan-out per write, for a search box it might be queries per second."
+      "text": "Load is captured by a few numbers called load parameters, and the right ones depend on the system. Picking the parameter that actually stresses your design is the whole game. For a feed it might be fan-out per write, for a search box it might be queries per second."
     },
     {
       "type": "bullets",
       "items": [
-        "Requests per second — the rate hitting your service.",
-        "Concurrent users — how many sessions are live at once.",
-        "Data volume — total rows or bytes stored, which only grows.",
-        "Read/write ratio — read-heavy and write-heavy systems scale differently."
+        "Requests per second is the rate hitting your service.",
+        "Concurrent users counts how many sessions are live at once.",
+        "Data volume is the total rows or bytes stored, which only grows.",
+        "Read/write ratio matters because read-heavy and write-heavy systems scale differently."
       ]
     },
     {
@@ -40,7 +40,7 @@
     },
     {
       "type": "paragraph",
-      "text": "With the load described, you watch two performance numbers as it rises. Throughput is how much work the system completes per unit time; latency is how long one request takes. As load approaches capacity, throughput flattens while latency climbs sharply — and the tail (p99) blows up long before the average does."
+      "text": "With the load described, you watch two performance numbers as it rises. Throughput is how much work the system completes per unit time; latency is how long one request takes. As load approaches capacity, throughput flattens while latency climbs sharply, and the tail (p99) blows up long before the average does."
     },
     {
       "type": "heading",
@@ -48,7 +48,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Stateless services are easy: copies are interchangeable, so you just run more of them. The pressure lands on the layer that holds state — the database and the cache — where every copy must agree on the same data. That's almost always where a system first runs out of room."
+      "text": "Stateless services are easy: copies are interchangeable, so you just run more of them. The pressure lands on the layer that holds state, meaning the database and the cache, where every copy must agree on the same data. That's almost always where a system first runs out of room."
     },
     {
       "type": "heading",
@@ -56,7 +56,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Once you know the load parameter that's pinching, you have the two classic moves from the scaling lesson: scale vertically (a bigger machine) or scale horizontally (more machines). The numbers tell you which lever to pull and when — vertical buys time cheaply, horizontal removes the ceiling but forces you to share or partition state."
+      "text": "Once you know the load parameter that's pinching, you have the two classic moves from the scaling lesson: scale vertically (a bigger machine) or scale horizontally (more machines). The numbers tell you which lever to pull and when. Vertical buys time cheaply, while horizontal removes the ceiling but forces you to share or partition state."
     },
     {
       "type": "callout",

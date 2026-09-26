@@ -9,7 +9,7 @@
   "blocks": [
     {
       "type": "paragraph",
-      "text": "Monitoring is how you know whether a large system is healthy without watching every machine by hand. Each host and service emits metrics — numbers like request rate, error count, and CPU use — and a monitoring system gathers, stores, and surfaces them so you can spot trouble before users do."
+      "text": "Monitoring is how you know whether a large system is healthy without watching every machine by hand. Each host and service emits metrics, which are numbers like request rate, error count, and CPU use. A monitoring system gathers, stores, and surfaces them so you can spot trouble before users do."
     },
     {
       "type": "heading",
@@ -17,7 +17,7 @@
     },
     {
       "type": "paragraph",
-      "text": "There are two ways to gather metrics. In the pull model, the monitoring server scrapes a metrics endpoint each service exposes, on a schedule — this is how Prometheus works, and it makes service discovery and health implicit. In the push model, services send metrics to a collector themselves, which suits short-lived jobs that may be gone before a scrape. Many fleets use both."
+      "text": "There are two ways to gather metrics. In the pull model, the monitoring server scrapes a metrics endpoint each service exposes, on a schedule. This is how Prometheus works, and it makes service discovery and health implicit. In the push model, services send metrics to a collector themselves, which suits short-lived jobs that may be gone before a scrape. Many fleets use both."
     },
     {
       "type": "heading",
@@ -25,7 +25,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Metrics are timestamped numbers, so they live in a time-series database optimized for that shape — heavy append, range queries by time, and aggregation across many series. Dashboards (commonly Grafana) then aggregate and chart those series so a human can read the fleet's state at a glance and zoom into a specific window when something looks off."
+      "text": "Metrics are timestamped numbers, so they live in a time-series database optimized for that shape: heavy append, range queries by time, and aggregation across many series. Dashboards (commonly Grafana) then aggregate and chart those series so a human can read the fleet's state at a glance and zoom into a specific window when something looks off."
     },
     {
       "type": "heading",
@@ -34,10 +34,10 @@
     {
       "type": "bullets",
       "items": [
-        "Latency: how long requests take — and track failed-request latency separately.",
+        "Latency: how long requests take. Track failed-request latency separately.",
         "Traffic: how much demand the system is under, like requests per second.",
         "Errors: the rate of requests that fail, explicitly or implicitly.",
-        "Saturation: how full the system is — the resource closest to its limit."
+        "Saturation: how full the system is, meaning the resource closest to its limit."
       ]
     },
     {
@@ -46,13 +46,13 @@
     },
     {
       "type": "paragraph",
-      "text": "Dashboards need someone watching; alerts come to you. Rules fire when a metric crosses a threshold or deviates from its normal pattern (anomaly detection), routing a notification to whoever is on call. Good alerts are actionable — they point at a problem a human can and should do something about right now."
+      "text": "Dashboards need someone watching; alerts come to you. Rules fire when a metric crosses a threshold or deviates from its normal pattern (anomaly detection), routing a notification to whoever is on call. Good alerts are actionable. They point at a problem a human can and should do something about right now."
     },
     {
       "type": "callout",
       "kind": "note",
       "title": "Beware alert fatigue",
-      "text": "Alert on symptoms users feel — high latency, elevated error rate — not on every internal metric. A flood of noisy, non-actionable alerts trains responders to ignore them, so the one alert that matters gets missed."
+      "text": "Alert on symptoms users feel, such as high latency or an elevated error rate, not on every internal metric. A flood of noisy, non-actionable alerts trains responders to ignore them, so the one alert that matters gets missed."
     },
     {
       "type": "heading",
@@ -60,7 +60,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Server-side monitoring sees what your infrastructure does, but it is blind to failures that never reach the server — a broken CDN edge, a client crash, a flaky last-mile network. Client-side or real-user monitoring reports from the user's device, capturing the experience the server can't observe. You need both to know the system is truly healthy for the people using it."
+      "text": "Server-side monitoring sees what your infrastructure does, but it is blind to failures that never reach the server, such as a broken CDN edge, a client crash, or a flaky last-mile network. Client-side or real-user monitoring reports from the user's device, capturing the experience the server can't observe. You need both to know the system is truly healthy for the people using it."
     }
   ]
 }

@@ -5,11 +5,11 @@
   "track": "fundamentals",
   "title": "Maintainability",
   "format": "article",
-  "summary": "Most of a system's cost comes after launch — maintainability is designing so the people who keep it running, understand it, and change it have an easy time.",
+  "summary": "Most of a system's cost comes after launch. Maintainability is designing so the people who keep it running, understand it, and change it have an easy time.",
   "blocks": [
     {
       "type": "paragraph",
-      "text": "A system is written once but lived with for years. The majority of its total cost isn't the initial build — it's the ongoing work of operating, debugging, adapting, and extending it. Maintainability is designing to minimize that long tail of pain."
+      "text": "A system is written once but lived with for years. The majority of its total cost isn't the initial build. It's the ongoing work of operating, debugging, adapting, and extending it. Maintainability is designing to minimize that long tail of pain."
     },
     {
       "type": "heading",
@@ -22,9 +22,9 @@
     {
       "type": "bullets",
       "items": [
-        "Operability — make it easy to run: good defaults, health checks, and runbooks so operators aren't fighting the system.",
-        "Simplicity — make it easy to understand: manage complexity so a new engineer can build an accurate mental model.",
-        "Evolvability — make it easy to change: structure the system so new requirements don't demand a rewrite."
+        "Operability means making it easy to run: good defaults, health checks, and runbooks so operators aren't fighting the system.",
+        "Simplicity means making it easy to understand, by managing complexity so a new engineer can build an accurate mental model.",
+        "Evolvability means making it easy to change, by structuring the system so new requirements don't demand a rewrite."
       ]
     },
     {
@@ -41,13 +41,13 @@
     },
     {
       "type": "paragraph",
-      "text": "Complexity is what makes a system hard to reason about, and reasoning is where bugs hide. The cure is good abstractions — clean contracts that hide internals — and removing incidental moving parts. The goal isn't fewer features; it's less complexity per feature."
+      "text": "Complexity is what makes a system hard to reason about, and reasoning is where bugs hide. The cure is good abstractions, which means clean contracts that hide internals, along with removing incidental moving parts. The goal isn't fewer features; it's less complexity per feature."
     },
     {
       "type": "callout",
       "kind": "tip",
       "title": "Simplicity is a feature",
-      "text": "Distinguish essential complexity, which the problem demands, from accidental complexity, which you added. Accidental complexity is the enemy — every line you don't write is a line you don't maintain."
+      "text": "Distinguish essential complexity, which the problem demands, from accidental complexity, which you added. Accidental complexity is the enemy, because every line you don't write is a line you don't maintain."
     },
     {
       "type": "heading",
@@ -55,7 +55,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Requirements never sit still, so the system must bend. Good abstractions make change local — you swap an implementation without touching callers — and observability turns 'is the change safe?' into a question you can answer with data rather than hope. Together they let a system grow without seizing up."
+      "text": "Requirements never sit still, so the system must bend. Good abstractions make change local, so you swap an implementation without touching callers. Observability turns 'is the change safe?' into a question you can answer with data rather than hope. Together they let a system grow without seizing up."
     }
   ]
 }

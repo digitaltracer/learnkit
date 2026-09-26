@@ -5,11 +5,11 @@
   "track": "fundamentals",
   "title": "Reliability",
   "format": "article",
-  "summary": "The probability a system keeps doing the right thing over time — and why that's a different promise from merely being up.",
+  "summary": "The probability a system keeps doing the right thing over time, and why that's a different promise from merely being up.",
   "blocks": [
     {
       "type": "paragraph",
-      "text": "Reliability is the probability that a system performs correctly over a period of time. It's not just about being reachable — it's about giving the right answer, every time, for as long as the work runs. A reliable system keeps its promises continuously, not just at the instant you check on it."
+      "text": "Reliability is the probability that a system performs correctly over a period of time. It's not just about being reachable. It's about giving the right answer, every time, for as long as the work runs. A reliable system keeps its promises continuously, not just at the instant you check on it."
     },
     {
       "type": "heading",
@@ -17,7 +17,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Availability asks 'is it up?'; reliability asks 'is it doing the right thing?'. The two come apart in both directions. A service can answer every request — fully available — while returning corrupted or wrong data, so it's available but unreliable. Another can be rock-solid correct yet go down for a brief maintenance window: reliable but, in that moment, unavailable."
+      "text": "Availability asks 'is it up?'; reliability asks 'is it doing the right thing?'. The two come apart in both directions. A service can be fully available, answering every request, while returning corrupted or wrong data, so it's available but unreliable. Another can be rock-solid correct yet go down for a brief maintenance window: reliable but, in that moment, unavailable."
     },
     {
       "type": "callout",
@@ -47,11 +47,11 @@
     },
     {
       "type": "paragraph",
-      "text": "Reliability tends to imply availability — a system that keeps working correctly is usually also up. But the implication is one-directional and imperfect: being available says nothing about being correct, and you can be highly reliable yet still have planned moments of downtime. Don't read a strong uptime number as proof the answers are right."
+      "text": "Reliability tends to imply availability, since a system that keeps working correctly is usually also up. But the implication is one-directional and imperfect: being available says nothing about being correct, and you can be highly reliable yet still have planned moments of downtime. Don't read a strong uptime number as proof the answers are right."
     },
     {
       "type": "paragraph",
-      "text": "So design for both, but separately: availability keeps the lights on, reliability keeps the answers true — and a system needs to earn each one on its own."
+      "text": "So design for both, but separately: availability keeps the lights on, reliability keeps the answers true. A system needs to earn each one on its own."
     }
   ]
 }

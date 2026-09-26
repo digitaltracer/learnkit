@@ -5,7 +5,7 @@
   "track": "designing-systems",
   "title": "Design Quora",
   "format": "article",
-  "summary": "A Q&A site where a few hot questions are read millions of times — the design is dominated by caching the read path and ranking answers, not by the writes.",
+  "summary": "A Q&A site where a few hot questions are read millions of times. The design is dominated by caching the read path and ranking answers, not by the writes.",
   "blocks": [
     {
       "type": "paragraph",
@@ -30,7 +30,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Assume hundreds of millions of monthly users and a read-to-write ratio well past 100:1 — billions of views against millions of new posts and votes. View counts are wildly skewed: a handful of evergreen questions accumulate millions of reads while most get a few. That skew is the whole story — it means a tiny cache can absorb the vast majority of traffic."
+      "text": "Assume hundreds of millions of monthly users and a read-to-write ratio well past 100:1, with billions of views against millions of new posts and votes. View counts are wildly skewed: a handful of evergreen questions accumulate millions of reads while most get a few. That skew is the whole story, because it means a tiny cache can absorb the vast majority of traffic."
     },
     {
       "type": "heading",
@@ -41,7 +41,7 @@
       "items": [
         "Questions: id, title, body, author, tags, timestamps.",
         "Answers: id, question_id, author, body, vote tally, timestamps.",
-        "Votes: (user_id, answer_id, direction) — one row per vote, deduplicated per user.",
+        "Votes: (user_id, answer_id, direction), with one row per vote, deduplicated per user.",
         "Users: profile, follows, and topic interests that drive the feed.",
         "Comments: attached to an answer, threaded lightly."
       ]
@@ -52,7 +52,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Stateless app servers sit behind a load balancer in front of a sharded primary store. Writes — a new answer, a vote — go to the database and invalidate or update the relevant cache entries. Reads are served from a cache layer first; only a miss touches the store. A separate ranking pipeline and a feed service precompute the expensive ordering off the hot path."
+      "text": "Stateless app servers sit behind a load balancer in front of a sharded primary store. Writes such as a new answer or a vote go to the database and invalidate or update the relevant cache entries. Reads are served from a cache layer first; only a miss touches the store. A separate ranking pipeline and a feed service precompute the expensive ordering off the hot path."
     },
     {
       "type": "bullets",
@@ -69,7 +69,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Sorting answers purely by raw vote count buries good new answers under old ones, and pure recency hides the best answer. So you blend signals — net votes, the asker's and editors' endorsements, author reputation, and a time-decay so fresh answers get a fair shot. The score is recomputed asynchronously as votes arrive rather than on every read, then cached alongside the answer list."
+      "text": "Sorting answers purely by raw vote count buries good new answers under old ones, and pure recency hides the best answer. So you blend signals: net votes, the asker's and editors' endorsements, author reputation, and a time-decay so fresh answers get a fair shot. The score is recomputed asynchronously as votes arrive rather than on every read, then cached alongside the answer list."
     },
     {
       "type": "heading",
@@ -83,7 +83,7 @@
       "type": "callout",
       "kind": "note",
       "title": "The read path dominates",
-      "text": "Rendering one hot question — its body, top answers in ranked order, vote tallies, and comments — is expensive, and that same question is requested millions of times. If every view recomputed ranking and hit the database, a single viral question could take the site down. The job is to compute the rendered view once and serve it from cache to everyone, recomputing only when something actually changes."
+      "text": "Rendering one hot question means assembling its body, top answers in ranked order, vote tallies, and comments. That is expensive, and that same question is requested millions of times. If every view recomputed ranking and hit the database, a single viral question could take the site down. The job is to compute the rendered view once and serve it from cache to everyone, recomputing only when something actually changes."
     },
     {
       "type": "callout",

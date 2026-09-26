@@ -17,13 +17,13 @@
     },
     {
       "type": "paragraph",
-      "text": "Vertical scaling means giving a single machine more resources — more CPU, more RAM, faster disks. The application doesn't change; it simply runs on a beefier box."
+      "text": "Vertical scaling means giving a single machine more resources: more CPU, more RAM, faster disks. The application doesn't change; it simply runs on a beefier box."
     },
     {
       "type": "bullets",
       "items": [
         "Simplest path: no code changes, no distributed-systems problems.",
-        "One machine means one source of truth — no coordination overhead.",
+        "One machine means one source of truth, with no coordination overhead.",
         "Great early on, when a bigger instance is one config change away."
       ]
     },
@@ -45,14 +45,14 @@
       "type": "bullets",
       "items": [
         "No hard ceiling: keep adding nodes as traffic grows.",
-        "Redundancy is built in — one node failing doesn't take the system down.",
+        "Redundancy is built in, so one node failing doesn't take the system down.",
         "But now state must be shared or partitioned, which is the hard part."
       ]
     },
     {
       "type": "callout",
       "kind": "note",
-      "text": "Stateless services scale out almost for free. The difficulty is always the stateful layer — the database and the cache."
+      "text": "Stateless services scale out almost for free. The difficulty is always the stateful layer: the database and the cache."
     },
     {
       "type": "heading",
@@ -60,7 +60,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Scale up first: it buys time cheaply and keeps the design simple. Plan to scale out before the ceiling forces your hand — design services to be stateless early, so adding nodes later is a deployment change, not a rewrite."
+      "text": "Scale up first: it buys time cheaply and keeps the design simple. Plan to scale out before the ceiling forces your hand. Design services to be stateless early, so adding nodes later is a deployment change, not a rewrite."
     }
   ]
 }

@@ -5,11 +5,11 @@
   "track": "designing-systems",
   "title": "Design Uber",
   "format": "article",
-  "summary": "Match a rider with a nearby driver in real time — a geospatial problem that has to absorb a flood of driver location updates while answering fast 'who's near me' queries.",
+  "summary": "Match a rider with a nearby driver in real time. It is a geospatial problem that has to absorb a flood of driver location updates while answering fast 'who's near me' queries.",
   "blocks": [
     {
       "type": "paragraph",
-      "text": "Uber's core job is matching: a rider requests a trip and the system must find a suitable driver near them, fast. Underneath it's a geospatial problem with an awkward shape — drivers report their location constantly (a heavy write stream) while riders ask for nearby drivers (a latency-sensitive read). The design lives or dies on indexing locations to serve both."
+      "text": "Uber's core job is matching: a rider requests a trip and the system must find a suitable driver near them, fast. Underneath it's a geospatial problem with an awkward shape. Drivers report their location constantly (a heavy write stream) while riders ask for nearby drivers (a latency-sensitive read). The design lives or dies on indexing locations to serve both."
     },
     {
       "type": "heading",
@@ -30,7 +30,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Millions of active drivers, each sending a location update every few seconds — that's millions of writes per second, the dominant load. Nearby-search queries are fewer but must return in milliseconds. Trips themselves are comparatively rare events, so the system is shaped by the location firehose, not the ride count."
+      "text": "Millions of active drivers, each sending a location update every few seconds. That's millions of writes per second, the dominant load. Nearby-search queries are fewer but must return in milliseconds. Trips themselves are comparatively rare events, so the system is shaped by the location firehose, not the ride count."
     },
     {
       "type": "heading",
@@ -62,7 +62,7 @@
       "type": "callout",
       "kind": "note",
       "title": "Write-heavy updates vs read-heavy search",
-      "text": "The location stream is overwhelmingly writes (every driver, every few seconds), while matching is reads. The same index must absorb constant updates and answer nearby-search fast — so keep the hot index in memory, often partitioned by region, and let each shard handle only its area's writes and queries. Don't index on a disk-bound store that can't take the write rate."
+      "text": "The location stream is overwhelmingly writes (every driver, every few seconds), while matching is reads. The same index must absorb constant updates and answer nearby-search fast, so keep the hot index in memory, often partitioned by region, and let each shard handle only its area's writes and queries. Don't index on a disk-bound store that can't take the write rate."
     },
     {
       "type": "heading",
@@ -70,7 +70,7 @@
     },
     {
       "type": "paragraph",
-      "text": "ETA comes from a routing/maps service using the road network, not straight-line distance. Surge pricing is computed per region from the live supply-demand ratio in the location index, raising prices where drivers are scarce. Payment is captured after the trip — the fare may depend on the actual route and time taken, so it can't be finalized up front."
+      "text": "ETA comes from a routing/maps service using the road network, not straight-line distance. Surge pricing is computed per region from the live supply-demand ratio in the location index, raising prices where drivers are scarce. Payment is captured after the trip because the fare may depend on the actual route and time taken, so it can't be finalized up front."
     },
     {
       "type": "callout",

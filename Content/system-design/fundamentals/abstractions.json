@@ -5,11 +5,11 @@
   "track": "fundamentals",
   "title": "Abstractions in System Design",
   "format": "article",
-  "summary": "Why we design with components that hide their internals behind a simple contract — and what happens when that contract leaks.",
+  "summary": "Why we design with components that hide their internals behind a simple contract, and what happens when that contract leaks.",
   "blocks": [
     {
       "type": "paragraph",
-      "text": "An abstraction hides how something works behind a simple contract. You use it through its interface — what it promises to do — without knowing the machinery underneath. A load balancer 'spreads traffic across servers'; you rely on that promise without tracking which server each request lands on."
+      "text": "An abstraction hides how something works behind a simple contract. You use it through its interface, meaning what it promises to do, without knowing the machinery underneath. A load balancer 'spreads traffic across servers'; you rely on that promise without tracking which server each request lands on."
     },
     {
       "type": "heading",
@@ -22,9 +22,9 @@
     {
       "type": "bullets",
       "items": [
-        "They contain complexity — a database's contract is 'store and query data', not its B-trees and write-ahead log.",
-        "They make parts swappable — anything honoring the contract can be substituted, so you can change the implementation without touching callers.",
-        "They give a shared vocabulary — 'put a cache in front of it' means the same thing to everyone on the team."
+        "They contain complexity. A database's contract is 'store and query data', not its B-trees and write-ahead log.",
+        "They make parts swappable. Anything honoring the contract can be substituted, so you can change the implementation without touching callers.",
+        "They give a shared vocabulary, so 'put a cache in front of it' means the same thing to everyone on the team."
       ]
     },
     {
@@ -33,7 +33,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Most of system design is composing a handful of well-understood building blocks — load balancers, caches, queues, databases, object stores. Each is an abstraction with a known contract and known tradeoffs, so a design becomes a conversation about which blocks to use and how to wire them, not a from-scratch invention."
+      "text": "Most of system design is composing a handful of well-understood building blocks: load balancers, caches, queues, databases, object stores. Each is an abstraction with a known contract and known tradeoffs, so a design becomes a conversation about which blocks to use and how to wire them, not a from-scratch invention."
     },
     {
       "type": "callout",
@@ -46,13 +46,13 @@
     },
     {
       "type": "paragraph",
-      "text": "The contract is a simplification, and reality occasionally pokes through. A remote call looks like a local function call — until the network is slow, drops the request, or the other side is down. Treating a leaky abstraction as if it were perfect is where many outages begin."
+      "text": "The contract is a simplification, and reality occasionally pokes through. A remote call looks like a local function call until the network is slow, drops the request, or the other side is down. Treating a leaky abstraction as if it were perfect is where many outages begin."
     },
     {
       "type": "callout",
       "kind": "warning",
       "title": "Know what leaks",
-      "text": "Use abstractions to think, but stay aware of what each one hides — latency, failure, and cost are the details that leak through most often."
+      "text": "Use abstractions to think, but stay aware of what each one hides. Latency, failure, and cost are the details that leak through most often."
     },
     {
       "type": "paragraph",

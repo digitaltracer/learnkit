@@ -5,7 +5,7 @@
   "track": "building-blocks",
   "title": "Publish-Subscribe",
   "format": "article",
-  "summary": "A one-to-many fan-out pattern where publishers send to a topic and every interested subscriber gets its own copy — broadcast, not work distribution.",
+  "summary": "A one-to-many fan-out pattern where publishers send to a topic and every interested subscriber gets its own copy. It is broadcast, not work distribution.",
   "blocks": [
     {
       "type": "paragraph",
@@ -17,7 +17,7 @@
     },
     {
       "type": "paragraph",
-      "text": "A message queue delivers each message to one consumer — work to be done once. Pub-sub delivers each message to all subscribers — an announcement everyone hears. The same 'order placed' event might be consumed once by a queue worker that charges the card, but fanned out by pub-sub to billing, shipping, and analytics, each getting its own copy."
+      "text": "A message queue delivers each message to one consumer, as work to be done once. Pub-sub delivers each message to all subscribers, like an announcement everyone hears. The same 'order placed' event might be consumed once by a queue worker that charges the card, but fanned out by pub-sub to billing, shipping, and analytics, each getting its own copy."
     },
     {
       "type": "heading",
@@ -34,8 +34,8 @@
     {
       "type": "bullets",
       "items": [
-        "Push: the broker actively delivers messages to subscribers as they arrive — low latency, but it can overwhelm a slow subscriber.",
-        "Pull: subscribers fetch on their own schedule — they control the pace, at the cost of some delay.",
+        "Push: the broker actively delivers messages to subscribers as they arrive. Latency is low, but it can overwhelm a slow subscriber.",
+        "Pull: subscribers fetch on their own schedule, so they control the pace at the cost of some delay.",
         "Pull also makes it natural to replay or catch up after a subscriber has been offline."
       ]
     },
@@ -57,7 +57,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Pub-sub carries the same delivery semantics as queues — at-most-once, at-least-once, exactly-once — and at-least-once with idempotent subscribers is again the common choice. But subscribers can be slow or absent, so the broker must decide what to do: buffer messages for later, expire them after a retention window, or drop them for a subscriber that has fallen too far behind."
+      "text": "Pub-sub carries the same delivery semantics as queues: at-most-once, at-least-once, and exactly-once. At-least-once with idempotent subscribers is again the common choice. But subscribers can be slow or absent, so the broker must decide what to do: buffer messages for later, expire them after a retention window, or drop them for a subscriber that has fallen too far behind."
     },
     {
       "type": "callout",

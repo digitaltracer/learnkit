@@ -5,11 +5,11 @@
   "track": "designing-systems",
   "title": "Design WhatsApp",
   "format": "article",
-  "summary": "Deliver 1:1 and group messages in real time, instantly online and reliably offline — built on persistent connections, a message router, and store-and-forward delivery.",
+  "summary": "Deliver 1:1 and group messages in real time, instantly online and reliably offline. It is built on persistent connections, a message router, and store-and-forward delivery.",
   "blocks": [
     {
       "type": "paragraph",
-      "text": "A chat system has to feel instant when both people are online and stay reliable when one isn't. The core job is routing a message from a sender's phone to a recipient's phone in real time — and holding it safely when the recipient is offline. Everything else (receipts, presence, groups, media) hangs off that routing core."
+      "text": "A chat system has to feel instant when both people are online and stay reliable when one isn't. The core job is routing a message from a sender's phone to a recipient's phone in real time, and holding it safely when the recipient is offline. Everything else (receipts, presence, groups, media) hangs off that routing core."
     },
     {
       "type": "heading",
@@ -30,7 +30,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Billions of users and tens of billions of messages a day, with hundreds of millions of connections open at once. Messages are tiny, so the dominant cost isn't storage — it's holding a vast number of long-lived connections and fanning messages out with low latency. Media is offloaded so the message path stays light."
+      "text": "Billions of users and tens of billions of messages a day, with hundreds of millions of connections open at once. Messages are tiny, so the dominant cost isn't storage. It's holding a vast number of long-lived connections and fanning messages out with low latency. Media is offloaded so the message path stays light."
     },
     {
       "type": "heading",
@@ -38,7 +38,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Each client holds a persistent connection — a WebSocket — to a chat server, kept open so the server can push messages down at any moment. A message-routing service maps each user to the server holding their live connection, so it knows where to deliver."
+      "text": "Each client holds a persistent WebSocket connection to a chat server, kept open so the server can push messages down at any moment. A message-routing service maps each user to the server holding their live connection, so it knows where to deliver."
     },
     {
       "type": "bullets",
@@ -54,7 +54,7 @@
       "type": "callout",
       "kind": "note",
       "title": "Store-and-forward",
-      "text": "When the recipient is offline, the message can't be pushed, so the server stores it in a per-user queue and forwards it on reconnect. Many designs delete the message once delivery is acknowledged — the server is a relay, not the long-term archive, which keeps storage small and aligns with end-to-end encryption."
+      "text": "When the recipient is offline, the message can't be pushed, so the server stores it in a per-user queue and forwards it on reconnect. Many designs delete the message once delivery is acknowledged. The server is a relay, not the long-term archive, which keeps storage small and aligns with end-to-end encryption."
     },
     {
       "type": "heading",
@@ -62,7 +62,7 @@
     },
     {
       "type": "paragraph",
-      "text": "A group message is fanned out: the server resolves the group's membership and routes a copy to each member, pushing to those online and queuing for those offline. Presence is tracked via the connection itself plus periodic heartbeats — when a socket drops or heartbeats stop, the user is marked offline, and status changes are pushed only to interested contacts to avoid a fan-out storm."
+      "text": "A group message is fanned out: the server resolves the group's membership and routes a copy to each member, pushing to those online and queuing for those offline. Presence is tracked via the connection itself plus periodic heartbeats. When a socket drops or heartbeats stop, the user is marked offline, and status changes are pushed only to interested contacts to avoid a fan-out storm."
     },
     {
       "type": "heading",
@@ -76,7 +76,7 @@
       "type": "callout",
       "kind": "tip",
       "title": "Receipts ride the same path",
-      "text": "Delivery and read receipts are just small messages flowing back the other way. When a client receives or opens a message, it sends an ack the server routes to the original sender — reuse the routing core rather than building a separate channel."
+      "text": "Delivery and read receipts are just small messages flowing back the other way. When a client receives or opens a message, it sends an ack the server routes to the original sender. Reuse the routing core rather than building a separate channel."
     }
   ]
 }

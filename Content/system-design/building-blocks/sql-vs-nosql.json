@@ -9,7 +9,7 @@
   "blocks": [
     {
       "type": "paragraph",
-      "text": "Almost every system needs to store data, and the first big choice is which kind of database. The split is usually framed as SQL versus NoSQL — relational databases on one side, a family of non-relational stores on the other. They make opposite tradeoffs, so the right pick depends on what your system actually does."
+      "text": "Almost every system needs to store data, and the first big choice is which kind of database. The split is usually framed as SQL versus NoSQL, with relational databases on one side and a family of non-relational stores on the other. They make opposite tradeoffs, so the right pick depends on what your system actually does."
     },
     {
       "type": "heading",
@@ -17,7 +17,7 @@
     },
     {
       "type": "paragraph",
-      "text": "SQL databases store data in tables with a fixed schema and relationships between them. They're built around correctness: ACID transactions, joins across tables, and strong consistency by default. That structure is ideal when data is highly related and integrity matters — orders, payments, inventory."
+      "text": "SQL databases store data in tables with a fixed schema and relationships between them. They're built around correctness: ACID transactions, joins across tables, and strong consistency by default. That structure is ideal when data is highly related and integrity matters: orders, payments, inventory."
     },
     {
       "type": "bullets",
@@ -40,7 +40,7 @@
       "type": "callout",
       "kind": "warning",
       "title": "\"NoSQL\" is not one thing",
-      "text": "It's several different tools with different shapes — say which one you mean. Key-value for simple lookups, document for nested records, wide-column for massive write-heavy tables, graph for richly connected data."
+      "text": "It's several different tools with different shapes, so say which one you mean. Key-value for simple lookups, document for nested records, wide-column for massive write-heavy tables, graph for richly connected data."
     },
     {
       "type": "heading",
@@ -48,14 +48,14 @@
     },
     {
       "type": "paragraph",
-      "text": "Don't start from SQL-or-NoSQL — start from your queries. Map the access patterns: what you read, how you read it, and how often. Then weigh scale and consistency. If you need transactions and complex queries over related data, reach for relational; if you need to scale writes massively and your reads follow a known key, a NoSQL store often fits better."
+      "text": "Don't start from SQL-or-NoSQL. Start from your queries. Map the access patterns: what you read, how you read it, and how often. Then weigh scale and consistency. If you need transactions and complex queries over related data, reach for relational; if you need to scale writes massively and your reads follow a known key, a NoSQL store often fits better."
     },
     {
       "type": "bullets",
       "items": [
-        "Access patterns — do you join across entities, or fetch by a single key?",
-        "Scale — does write volume exceed what one primary can handle?",
-        "Consistency — do reads need the latest write, or is eventual fine?"
+        "Access patterns: do you join across entities, or fetch by a single key?",
+        "Scale: does write volume exceed what one primary can handle?",
+        "Consistency: do reads need the latest write, or is eventual fine?"
       ]
     },
     {

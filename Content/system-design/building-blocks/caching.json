@@ -5,7 +5,7 @@
   "track": "building-blocks",
   "title": "Distributed Cache",
   "format": "article",
-  "summary": "A fast in-memory tier that absorbs reads in front of a slower store — and the staleness and invalidation problems you take on in exchange.",
+  "summary": "A fast in-memory tier that absorbs reads in front of a slower store, and the staleness and invalidation problems you take on in exchange.",
   "blocks": [
     {
       "type": "paragraph",
@@ -30,13 +30,13 @@
     },
     {
       "type": "paragraph",
-      "text": "For reads, cache-aside is the most common: the app checks the cache, and on a miss reads the database and populates the cache itself. Read-through hides this behind the cache — the cache loads on a miss, so the app only ever talks to the cache. Cache-aside gives you control; read-through keeps the app simpler. Writes have their own strategies:"
+      "text": "For reads, cache-aside is the most common: the app checks the cache, and on a miss reads the database and populates the cache itself. Read-through hides this behind the cache. The cache loads on a miss, so the app only ever talks to the cache. Cache-aside gives you control; read-through keeps the app simpler. Writes have their own strategies:"
     },
     {
       "type": "bullets",
       "items": [
-        "Write-through: write to the cache and the database together — consistent, but every write pays for both.",
-        "Write-back (write-behind): write to the cache and flush to the database later — fast writes, but a crash can lose un-flushed data.",
+        "Write-through: write to the cache and the database together. It is consistent, but every write pays for both.",
+        "Write-back (write-behind): write to the cache and flush to the database later. Writes are fast, but a crash can lose un-flushed data.",
         "Or just write to the database and invalidate the cache entry, letting the next read repopulate it."
       ]
     },
@@ -46,17 +46,17 @@
     },
     {
       "type": "paragraph",
-      "text": "Memory is finite, so the cache must drop entries to make room. LRU evicts the least recently used entry, LFU the least frequently used, and TTL expires entries after a fixed time regardless of use. TTL is also your cheapest tool against staleness — a short TTL caps how wrong the cache can be."
+      "text": "Memory is finite, so the cache must drop entries to make room. LRU evicts the least recently used entry, LFU the least frequently used, and TTL expires entries after a fixed time regardless of use. TTL is also your cheapest tool against staleness, because a short TTL caps how wrong the cache can be."
     },
     {
       "type": "callout",
       "kind": "warning",
       "title": "Invalidation is genuinely hard",
-      "text": "Knowing exactly when a cached copy has gone stale, across every node holding it, is one of the famously hard problems in computing. Decide your staleness tolerance up front — how out-of-date a read may be — and pick TTLs and invalidation to match it."
+      "text": "Knowing exactly when a cached copy has gone stale, across every node holding it, is one of the famously hard problems in computing. Decide your staleness tolerance up front, meaning how out-of-date a read may be. Then pick TTLs and invalidation to match it."
     },
     {
       "type": "paragraph",
-      "text": "Expiry has a sharp edge too. When a hot key expires, every request that wanted it misses at the same instant and stampedes the database — the thundering-herd or cache-stampede problem, which can knock over the store the cache was meant to protect. Defenses include letting only one request recompute the value while others wait, or refreshing hot keys just before they expire."
+      "text": "Expiry has a sharp edge too. When a hot key expires, every request that wanted it misses at the same instant and stampedes the database. This is the thundering-herd or cache-stampede problem, which can knock over the store the cache was meant to protect. Defenses include letting only one request recompute the value while others wait, or refreshing hot keys just before they expire."
     },
     {
       "type": "heading",
@@ -64,7 +64,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Both are popular in-memory caches. Memcached is lean and simple — strings keyed by strings, easy to scale horizontally. Redis adds rich data structures, persistence, replication, and pub/sub, which makes it the default when you want more than a plain key-value cache."
+      "text": "Both are popular in-memory caches. Memcached is lean and simple. It stores strings keyed by strings and is easy to scale horizontally. Redis adds rich data structures, persistence, replication, and pub/sub, which makes it the default when you want more than a plain key-value cache."
     }
   ]
 }

@@ -17,7 +17,7 @@
     },
     {
       "type": "paragraph",
-      "text": "The caching servers live in points of presence (PoPs) — data centers scattered across cities and regions. Each PoP keeps a local copy of popular content, so most requests are answered a few network hops away rather than from a single distant origin. More PoPs, closer to more users, means lower round-trip times."
+      "text": "The caching servers live in points of presence (PoPs), which are data centers scattered across cities and regions. Each PoP keeps a local copy of popular content, so most requests are answered a few network hops away rather than from a single distant origin. More PoPs, closer to more users, means lower round-trip times."
     },
     {
       "type": "heading",
@@ -26,8 +26,8 @@
     {
       "type": "bullets",
       "items": [
-        "Pull CDN: the edge fetches content from the origin on the first miss, then caches it — the origin is the source of truth and you do nothing to populate the edge.",
-        "Push CDN: you upload content to the CDN ahead of time and it serves what you pushed — more control, good for large files you know will be requested.",
+        "Pull CDN: the edge fetches content from the origin on the first miss, then caches it. The origin is the source of truth and you do nothing to populate the edge.",
+        "Push CDN: you upload content to the CDN ahead of time and it serves what you pushed. This gives more control and is good for large files you know will be requested.",
         "Pull is the common default; push suits rarely-changing bulk assets where a first-request miss would be costly."
       ]
     },
@@ -53,13 +53,13 @@
     },
     {
       "type": "paragraph",
-      "text": "CDNs shine for static, cacheable assets — images, CSS, JavaScript, fonts, and especially video, where edge delivery and segmenting dominate the experience. They also offer dynamic acceleration for non-cacheable requests: terminating TLS at the edge and carrying traffic to the origin over optimized backbone routes shaves latency even when the response itself can't be cached."
+      "text": "CDNs shine for static, cacheable assets: images, CSS, JavaScript, fonts, and especially video, where edge delivery and segmenting dominate the experience. They also offer dynamic acceleration for non-cacheable requests: terminating TLS at the edge and carrying traffic to the origin over optimized backbone routes shaves latency even when the response itself can't be cached."
     },
     {
       "type": "callout",
       "kind": "note",
       "title": "Two wins at once",
-      "text": "A CDN does double duty: it lowers user-perceived latency by serving from nearby, and it shields the origin by absorbing the bulk of requests at the edge. The same cache hit that makes a page fast also keeps a request off your servers. Reach for one whenever you serve cacheable content to a wide geography — but remember its cache leaks the usual way, through staleness, so design TTLs and invalidation deliberately."
+      "text": "A CDN does double duty: it lowers user-perceived latency by serving from nearby, and it shields the origin by absorbing the bulk of requests at the edge. The same cache hit that makes a page fast also keeps a request off your servers. Reach for one whenever you serve cacheable content to a wide geography. But remember its cache leaks the usual way, through staleness, so design TTLs and invalidation deliberately."
     }
   ]
 }

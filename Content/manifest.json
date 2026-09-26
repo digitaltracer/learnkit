@@ -537,14 +537,14 @@
           "icon": "rectangle.3.group",
           "format": "article",
           "overview": {
-            "tagline": "The vocabulary of large systems — how to add capacity, keep data consistent, and stay up when parts fail.",
+            "tagline": "The vocabulary of large systems: how to add capacity, keep data consistent, and stay up when parts fail.",
             "whenToUse": [
               "You're sizing a system before designing it.",
               "You need the tradeoffs behind scaling, caching, and replication.",
               "You're preparing for a system-design interview.",
               "You want the why behind the building blocks, not just their names."
             ],
-            "keyIdea": "Most design decisions trace back to a few fundamentals: scale up versus out, where state lives, and what you trade away — consistency, latency, or availability — when something has to give."
+            "keyIdea": "Most design decisions trace back to a few fundamentals: scale up versus out, where state lives, and what you trade away when something has to give, whether consistency, latency, or availability."
           },
           "lessons": [
             { "id": "scaling-basics", "title": "Scaling: Vertical vs Horizontal", "file": "system-design/fundamentals/scaling-basics.json" },
@@ -567,14 +567,14 @@
           "icon": "square.stack.3d.up",
           "format": "article",
           "overview": {
-            "tagline": "The reusable components every large system is assembled from — and the tradeoffs baked into each.",
+            "tagline": "The reusable components every large system is assembled from, and the tradeoffs baked into each.",
             "whenToUse": [
-              "You're choosing the pieces for a design — what stores data, spreads load, or moves messages.",
+              "You're choosing the pieces for a design, such as what stores data, spreads load, or moves messages.",
               "You need a component's contract and failure modes, not just its name.",
               "You're deciding between SQL and NoSQL, sync vs async, or a queue vs pub-sub.",
               "You want to recognize the same blocks reused across every system."
             ],
-            "keyIdea": "Most designs are a fresh arrangement of a small set of well-understood blocks — load balancers, databases, caches, queues. Learn each one's contract and tradeoffs once, and a design becomes a question of which blocks to combine and how to wire them."
+            "keyIdea": "Most designs are a fresh arrangement of a small set of well-understood blocks: load balancers, databases, caches, queues. Learn each one's contract and tradeoffs once, and a design becomes a question of which blocks to combine and how to wire them."
           },
           "lessons": [
             { "id": "dns", "title": "Domain Name System (DNS)", "file": "system-design/building-blocks/dns.json" },
@@ -623,14 +623,14 @@
           "icon": "square.on.square.dashed",
           "format": "article",
           "overview": {
-            "tagline": "End-to-end designs of real products — where the fundamentals and building blocks come together under the RESHADED method.",
+            "tagline": "End-to-end designs of real products, where the fundamentals and building blocks come together under the RESHADED method.",
             "whenToUse": [
               "You want to see the building blocks assembled into a complete system.",
-              "You're practising the classic interview prompts — design Twitter, YouTube, Uber.",
+              "You're practising the classic interview prompts, like design Twitter, YouTube or Uber.",
               "You want to study the one hard tradeoff at the heart of each product.",
               "You're rehearsing how to drive a design from requirements to evaluation."
             ],
-            "keyIdea": "Every real system is the same handful of building blocks arranged to fit one dominant constraint — read-heavy fan-out, geospatial lookup, real-time delivery, exactly-once money. Find that constraint, design around it with the RESHADED steps, and the rest follows."
+            "keyIdea": "Every real system is the same handful of building blocks arranged to fit one dominant constraint, such as read-heavy fan-out, geospatial lookup, real-time delivery or exactly-once money. Find that constraint, design around it with the RESHADED steps, and the rest follows."
           },
           "lessons": [
             { "id": "tinyurl", "title": "Design TinyURL", "file": "system-design/designing-systems/tinyurl.json" },

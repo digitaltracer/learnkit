@@ -5,11 +5,11 @@
   "track": "designing-systems",
   "title": "Design a Payment System",
   "format": "article",
-  "summary": "Move money reliably between customers and merchants — where correctness, auditability, and never double-charging matter far more than raw speed.",
+  "summary": "Move money reliably between customers and merchants, where correctness, auditability, and never double-charging matter far more than raw speed.",
   "blocks": [
     {
       "type": "paragraph",
-      "text": "A payment system moves money from a customer to a merchant and records it so the books always balance. Unlike most systems, here being wrong is catastrophic: a lost or duplicated transaction is real money gone or charged twice. So the design optimizes for correctness, durability, and auditability — strong consistency over availability — and treats retries and failures as the normal case, not the exception."
+      "text": "A payment system moves money from a customer to a merchant and records it so the books always balance. Unlike most systems, here being wrong is catastrophic: a lost or duplicated transaction is real money gone or charged twice. So the design optimizes for correctness, durability, and auditability, choosing strong consistency over availability. It treats retries and failures as the normal case, not the exception."
     },
     {
       "type": "heading",
@@ -20,7 +20,7 @@
       "items": [
         "Accept a payment from a customer (pay-in) and settle funds to a merchant (pay-out).",
         "Never double-charge: a given payment intent results in exactly one charge.",
-        "Strong consistency and durability — a committed payment is never lost or partially applied.",
+        "Strong consistency and durability, so a committed payment is never lost or partially applied.",
         "Full audit trail: every money movement is recorded and reconcilable against external providers."
       ]
     },
@@ -30,7 +30,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Even a large platform sees thousands of payments per second at peak, not millions — payment volume is modest next to a social feed. But every single transaction must be durable and exactly-once, and must reconcile to the cent. The bottleneck is correctness under failure, not throughput, so you happily trade some latency and availability for guarantees."
+      "text": "Even a large platform sees thousands of payments per second at peak, not millions. Payment volume is modest next to a social feed. But every single transaction must be durable and exactly-once, and must reconcile to the cent. The bottleneck is correctness under failure, not throughput, so you happily trade some latency and availability for guarantees."
     },
     {
       "type": "heading",
@@ -44,7 +44,7 @@
       "type": "bullets",
       "items": [
         "Payment service: validates the request, records the intent, and orchestrates pay-in and pay-out.",
-        "Double-entry ledger: every transaction is a balanced set of debits and credits — totals must always net to zero.",
+        "Double-entry ledger: every transaction is a balanced set of debits and credits, and totals must always net to zero.",
         "PSP integration: talks to card networks and banks to actually capture and disburse funds.",
         "Queue plus reconciliation: process charges asynchronously and continuously verify the ledger against the PSP."
       ]
@@ -55,7 +55,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Borrowed from accounting, double-entry records each money movement as two entries that must balance — debit one account, credit another, by the same amount. Because every transaction nets to zero, the books are self-auditing: if the totals don't reconcile, you know something is wrong. The ledger is append-only and immutable, which gives you a complete, tamper-evident history of where every cent went."
+      "text": "Borrowed from accounting, double-entry records each money movement as two entries that must balance, debiting one account and crediting another by the same amount. Because every transaction nets to zero, the books are self-auditing: if the totals don't reconcile, you know something is wrong. The ledger is append-only and immutable, which gives you a complete, tamper-evident history of where every cent went."
     },
     {
       "type": "heading",
@@ -63,13 +63,13 @@
     },
     {
       "type": "paragraph",
-      "text": "Networks drop responses, so clients and services retry — which means the same charge request can arrive many times. The fix is an idempotency key: the client attaches a unique key to a payment, and the service records the result against that key. A retry with the same key returns the stored result instead of charging again, turning at-least-once delivery into an exactly-once effect via deduplication."
+      "text": "Networks drop responses, so clients and services retry. That means the same charge request can arrive many times. The fix is an idempotency key: the client attaches a unique key to a payment, and the service records the result against that key. A retry with the same key returns the stored result instead of charging again, turning at-least-once delivery into an exactly-once effect via deduplication."
     },
     {
       "type": "callout",
       "kind": "warning",
-      "title": "Retries are guaranteed — so everything must be idempotent",
-      "text": "In a distributed payment flow, network timeouts and retries are not edge cases; they will happen on a meaningful fraction of requests. If any operation that moves money is not idempotent, those retries double-charge customers or double-pay merchants. Every step — the API call, the queue consumer, the PSP capture — must be safe to execute more than once with no extra effect."
+      "title": "Retries are guaranteed, so everything must be idempotent",
+      "text": "In a distributed payment flow, network timeouts and retries are not edge cases; they will happen on a meaningful fraction of requests. If any operation that moves money is not idempotent, those retries double-charge customers or double-pay merchants. Every step must be safe to execute more than once with no extra effect: the API call, the queue consumer, the PSP capture."
     },
     {
       "type": "heading",
@@ -77,7 +77,7 @@
     },
     {
       "type": "paragraph",
-      "text": "External PSP calls are slow and can fail, so the payment service writes the intent durably, enqueues the work, and lets workers drive the charge with retries and backoff. A reconciliation process then runs continuously, pulling settlement reports from each PSP and matching them against the ledger to catch any drift — a charge the PSP recorded but you missed, or vice versa — so discrepancies are detected and corrected, not discovered by an angry customer."
+      "text": "External PSP calls are slow and can fail, so the payment service writes the intent durably, enqueues the work, and lets workers drive the charge with retries and backoff. A reconciliation process then runs continuously, pulling settlement reports from each PSP and matching them against the ledger to catch any drift, such as a charge the PSP recorded but you missed, or vice versa. That way discrepancies are detected and corrected, not discovered by an angry customer."
     },
     {
       "type": "callout",

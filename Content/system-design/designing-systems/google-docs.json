@@ -5,7 +5,7 @@
   "track": "designing-systems",
   "title": "Design Google Docs",
   "format": "article",
-  "summary": "Real-time collaborative editing where many people type into one document at once — the whole problem is resolving concurrent edits so nobody's keystrokes get lost.",
+  "summary": "Real-time collaborative editing where many people type into one document at once. The whole problem is resolving concurrent edits so nobody's keystrokes get lost.",
   "blocks": [
     {
       "type": "paragraph",
@@ -30,7 +30,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Any single document has a small number of concurrent editors — a few to a few dozen — but the system holds hundreds of millions of documents and millions of live sessions at once. Each keystroke is a tiny operation, but at scale that is a high rate of small messages needing sub-second round trips. The hard constraint is latency and correctness per document, not raw throughput."
+      "text": "Any single document has a small number of concurrent editors, from a few to a few dozen, but the system holds hundreds of millions of documents and millions of live sessions at once. Each keystroke is a tiny operation, but at scale that is a high rate of small messages needing sub-second round trips. The hard constraint is latency and correctness per document, not raw throughput."
     },
     {
       "type": "heading",
@@ -44,7 +44,7 @@
       "type": "bullets",
       "items": [
         "Client: applies edits locally for instant feedback, then streams operations to the server.",
-        "Document server: the single ordering point for one document — serializes and rebroadcasts operations.",
+        "Document server: the single ordering point for one document. It serializes and rebroadcasts operations.",
         "Persistence: append the operation log plus periodic snapshots for fast load and version history.",
         "Presence channel: low-stakes cursor and selection positions, broadcast but not persisted."
       ]
@@ -55,7 +55,7 @@
     },
     {
       "type": "paragraph",
-      "text": "When two edits race, you cannot just apply them in arrival order — an insert at position 5 means something different after someone else inserted three characters before it. Two families of algorithms solve this. Operational Transformation (OT) transforms each incoming operation against the operations it didn't yet know about, so positions stay correct. CRDTs (Conflict-free Replicated Data Types) instead give every character a unique, globally ordered identity, so concurrent edits merge commutatively with no central transform."
+      "text": "When two edits race, you cannot just apply them in arrival order, because an insert at position 5 means something different after someone else inserted three characters before it. Two families of algorithms solve this. Operational Transformation (OT) transforms each incoming operation against the operations it didn't yet know about, so positions stay correct. CRDTs (Conflict-free Replicated Data Types) instead give every character a unique, globally ordered identity, so concurrent edits merge commutatively with no central transform."
     },
     {
       "type": "bullets",
@@ -70,7 +70,7 @@
       "type": "callout",
       "kind": "warning",
       "title": "Last-write-wins loses data",
-      "text": "The naive fix — whoever's edit arrives last overwrites — silently destroys the other person's typing, which in a live document is unacceptable. Concurrent edits are not a conflict to be discarded; they are two intentions that must both survive. OT and CRDTs exist to merge both edits into a consistent result instead of throwing one away."
+      "text": "The naive fix is to let whoever's edit arrives last overwrite. It silently destroys the other person's typing, which in a live document is unacceptable. Concurrent edits are not a conflict to be discarded; they are two intentions that must both survive. OT and CRDTs exist to merge both edits into a consistent result instead of throwing one away."
     },
     {
       "type": "heading",
@@ -78,7 +78,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Cursor and selection positions ride a separate, lossy channel — they update constantly and a dropped one doesn't matter. Offline edits queue locally and replay through the same transform/merge on reconnect, which is exactly why the conflict-resolution algorithm matters. Persisting the operation log gives you version history and the ability to rebuild any document by replaying from a snapshot."
+      "text": "Cursor and selection positions ride a separate, lossy channel, since they update constantly and a dropped one doesn't matter. Offline edits queue locally and replay through the same transform/merge on reconnect, which is exactly why the conflict-resolution algorithm matters. Persisting the operation log gives you version history and the ability to rebuild any document by replaying from a snapshot."
     },
     {
       "type": "callout",

@@ -5,7 +5,7 @@
   "track": "designing-systems",
   "title": "Design TinyURL",
   "format": "article",
-  "summary": "A URL shortener that maps a long URL to a tiny code and redirects on lookup — a small surface area hiding a sharp read-heavy, key-generation problem.",
+  "summary": "A URL shortener that maps a long URL to a tiny code and redirects on lookup. Its small surface area hides a sharp read-heavy, key-generation problem.",
   "blocks": [
     {
       "type": "paragraph",
@@ -20,7 +20,7 @@
       "items": [
         "Create a short link from a long URL, and redirect from the short code to the original.",
         "Optional custom alias and an optional expiry date on a link.",
-        "Basic click analytics — count and roughly attribute redirects.",
+        "Basic click analytics that count and roughly attribute redirects.",
         "Non-functional: extremely read-heavy, very low redirect latency, high availability."
       ]
     },
@@ -30,7 +30,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Assume 100M new URLs a month and a 100:1 read-to-write ratio, so on the order of 10B redirects a month. That is a few hundred writes per second but tens of thousands of reads per second. Even a decade of links at a few hundred bytes each is only low-terabyte storage — the challenge is read throughput and latency, not capacity."
+      "text": "Assume 100M new URLs a month and a 100:1 read-to-write ratio, so on the order of 10B redirects a month. That is a few hundred writes per second but tens of thousands of reads per second. Even a decade of links at a few hundred bytes each is only low-terabyte storage. The challenge is read throughput and latency, not capacity."
     },
     {
       "type": "heading",
@@ -46,13 +46,13 @@
     },
     {
       "type": "paragraph",
-      "text": "There are two camps. Hash the long URL (e.g. take the first few characters of an MD5) — simple, but different URLs can produce the same prefix, so you must detect and resolve collisions on every write. Or take a unique number from a counter or Snowflake-style ID generator and base62-encode it into [0-9a-zA-Z]; seven base62 characters cover over 3.5 trillion codes."
+      "text": "There are two camps. Hash the long URL (e.g. take the first few characters of an MD5). It is simple, but different URLs can produce the same prefix, so you must detect and resolve collisions on every write. Or take a unique number from a counter or Snowflake-style ID generator and base62-encode it into [0-9a-zA-Z]; seven base62 characters cover over 3.5 trillion codes."
     },
     {
       "type": "callout",
       "kind": "note",
       "title": "Why base62-of-an-ID beats hashing",
-      "text": "If each code is the base62 encoding of a guaranteed-unique ID, codes are unique by construction — there is nothing to collide. Hashing maps an unbounded URL space onto a short fixed-length code, so collisions are inevitable and every write needs a check-and-retry. Uniqueness moves from runtime luck to a property of how the key is made."
+      "text": "If each code is the base62 encoding of a guaranteed-unique ID, codes are unique by construction, so there is nothing to collide. Hashing maps an unbounded URL space onto a short fixed-length code, so collisions are inevitable and every write needs a check-and-retry. Uniqueness moves from runtime luck to a property of how the key is made."
     },
     {
       "type": "heading",
@@ -60,11 +60,11 @@
     },
     {
       "type": "paragraph",
-      "text": "A 301 (permanent) redirect lets browsers and intermediaries cache the mapping, so future clicks skip your servers entirely — great for load, terrible for analytics, since you stop seeing most clicks. A 302 (temporary) routes every click back through you, so you can count and update analytics, at the cost of serving every redirect. The choice is a direct trade between offloading traffic and observing it."
+      "text": "A 301 (permanent) redirect lets browsers and intermediaries cache the mapping, so future clicks skip your servers entirely. That is great for load but terrible for analytics, since you stop seeing most clicks. A 302 (temporary) routes every click back through you, so you can count and update analytics, at the cost of serving every redirect. The choice is a direct trade between offloading traffic and observing it."
     },
     {
       "type": "paragraph",
-      "text": "Link popularity is heavily skewed, so a cache like Redis in front of the store, keyed by short code, serves the bulk of redirects from memory. Cache-aside with a TTL works well — a miss reads the store and populates the cache, and a link's expiry naturally bounds how stale an entry can be. Counting clicks for a 302 can be fire-and-forget into an async pipeline so analytics never slow the redirect."
+      "text": "Link popularity is heavily skewed, so a cache like Redis in front of the store, keyed by short code, serves the bulk of redirects from memory. Cache-aside with a TTL works well. A miss reads the store and populates the cache, and a link's expiry naturally bounds how stale an entry can be. Counting clicks for a 302 can be fire-and-forget into an async pipeline so analytics never slow the redirect."
     },
     {
       "type": "callout",

@@ -5,11 +5,11 @@
   "track": "designing-systems",
   "title": "Design Google Maps",
   "format": "article",
-  "summary": "Render the world as map tiles and compute directions across it — by modeling roads as a weighted graph too big for one machine, partitioning it, and precomputing routes instead of running plain Dijkstra over the planet.",
+  "summary": "Render the world as map tiles and compute directions across it by modeling roads as a weighted graph too big for one machine, partitioning it, and precomputing routes instead of running plain Dijkstra over the planet.",
   "blocks": [
     {
       "type": "paragraph",
-      "text": "Google Maps does two big things: it draws the world, and it tells you how to get somewhere. Rendering is a tiling problem — serve pre-rendered images at many zoom levels. Directions is a graph problem — find a fast route over a road network so large that the obvious algorithm is far too slow. Both demand heavy precomputation."
+      "text": "Google Maps does two big things: it draws the world, and it tells you how to get somewhere. Rendering is a tiling problem, solved by serving pre-rendered images at many zoom levels. Directions is a graph problem, which means finding a fast route over a road network so large that the obvious algorithm is far too slow. Both demand heavy precomputation."
     },
     {
       "type": "heading",
@@ -30,7 +30,7 @@
     },
     {
       "type": "paragraph",
-      "text": "The road graph has on the order of hundreds of millions of intersections (nodes) and edges — far more than fits or computes efficiently on a single machine. Tile and route requests run to enormous read volumes. So the planet's graph is partitioned across machines, and answers are precomputed wherever possible."
+      "text": "The road graph has on the order of hundreds of millions of intersections (nodes) and edges, far more than fits or computes efficiently on a single machine. Tile and route requests run to enormous read volumes. So the planet's graph is partitioned across machines, and answers are precomputed wherever possible."
     },
     {
       "type": "heading",
@@ -56,27 +56,27 @@
     },
     {
       "type": "paragraph",
-      "text": "The map is cut into square tiles at each zoom level — zooming in quadruples the tile count for the same area. Tiles are rendered ahead of time and stored as static images, so a viewport is just a handful of cacheable tile fetches that the CDN serves without touching origin. Routing is the harder half:"
+      "text": "The map is cut into square tiles at each zoom level, and zooming in quadruples the tile count for the same area. Tiles are rendered ahead of time and stored as static images, so a viewport is just a handful of cacheable tile fetches that the CDN serves without touching origin. Routing is the harder half:"
     },
     {
       "type": "paragraph",
-      "text": "Roads form a weighted graph: intersections are nodes, road segments are edges, and an edge's weight is travel time. Shortest-path algorithms like Dijkstra or A* (which uses distance as a heuristic to search toward the goal) find a route — but running them across a planet-sized graph per request would be hopelessly slow. The fix is precomputation, such as contraction hierarchies that add shortcut edges so a query skips over vast stretches of the graph."
+      "text": "Roads form a weighted graph: intersections are nodes, road segments are edges, and an edge's weight is travel time. Shortest-path algorithms like Dijkstra or A* (which uses distance as a heuristic to search toward the goal) find a route, but running them across a planet-sized graph per request would be hopelessly slow. The fix is precomputation, such as contraction hierarchies that add shortcut edges so a query skips over vast stretches of the graph."
     },
     {
       "type": "callout",
       "kind": "note",
       "title": "Why partition and precompute, not plain Dijkstra",
-      "text": "Plain Dijkstra explores outward in all directions and would visit a huge fraction of a global graph per query — far too slow, and the graph doesn't fit on one machine anyway. So partition the graph into regions, route within and across boundaries, and precompute shortcuts (contraction hierarchies) so a query is near-instant. The route is effectively an approximation that's good enough, computed in advance rather than from scratch."
+      "text": "Plain Dijkstra explores outward in all directions and would visit a huge fraction of a global graph per query. That is far too slow, and the graph doesn't fit on one machine anyway. So partition the graph into regions, route within and across boundaries, and precompute shortcuts (contraction hierarchies) so a query is near-instant. The route is effectively an approximation that's good enough, computed in advance rather than from scratch."
     },
     {
       "type": "paragraph",
-      "text": "Folding in live traffic: speed data from phones and sensors continuously updates edge weights, so a congested road costs more travel time and routing naturally steers around it. ETA is the sum of weights along the chosen path under current traffic. The tension is freshness versus precomputation — traffic shifts the weights the precomputed shortcuts assumed, so the system periodically refreshes them rather than recomputing on every request."
+      "text": "Folding in live traffic: speed data from phones and sensors continuously updates edge weights, so a congested road costs more travel time and routing naturally steers around it. ETA is the sum of weights along the chosen path under current traffic. The tension is freshness versus precomputation. Traffic shifts the weights the precomputed shortcuts assumed, so the system periodically refreshes them rather than recomputing on every request."
     },
     {
       "type": "callout",
       "kind": "tip",
       "title": "Separate the rarely-changing from the live",
-      "text": "Tiles and the base road graph change slowly, so precompute and cache them aggressively. Traffic changes fast, so isolate it as a stream that adjusts edge weights — keeping the expensive structure stable while still reflecting current conditions."
+      "text": "Tiles and the base road graph change slowly, so precompute and cache them aggressively. Traffic changes fast, so isolate it as a stream that adjusts edge weights. That keeps the expensive structure stable while still reflecting current conditions."
     }
   ]
 }

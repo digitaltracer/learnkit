@@ -5,7 +5,7 @@
   "track": "building-blocks",
   "title": "Distributed Logging",
   "format": "article",
-  "summary": "Gathering logs from many services into one searchable place — a pipeline of agents, a buffer, and a search backend — so you can reconstruct what happened across a system.",
+  "summary": "Gathering logs from many services into one searchable place through a pipeline of agents, a buffer, and a search backend, so you can reconstruct what happened across a system.",
   "blocks": [
     {
       "type": "paragraph",
@@ -30,13 +30,13 @@
     },
     {
       "type": "paragraph",
-      "text": "Logs flow through three stages. A lightweight agent on each host tails log files and ships lines off-box, keeping the service itself fast. Those lines land in a buffer or queue — often Kafka — that absorbs spikes and decouples producers from storage. From there, logs are written into storage plus a search index, where they can be queried and visualized."
+      "text": "Logs flow through three stages. A lightweight agent on each host tails log files and ships lines off-box, keeping the service itself fast. Those lines land in a buffer or queue, often Kafka, that absorbs spikes and decouples producers from storage. From there, logs are written into storage plus a search index, where they can be queried and visualized."
     },
     {
       "type": "callout",
       "kind": "tip",
       "title": "Stitch with a correlation ID",
-      "text": "Attach a unique correlation (or trace) ID to each incoming request and pass it to every downstream service. Logging that ID lets you filter on one value and reconstruct the entire path of a single request across services — the difference between guessing and seeing."
+      "text": "Attach a unique correlation (or trace) ID to each incoming request and pass it to every downstream service. Logging that ID lets you filter on one value and reconstruct the entire path of a single request across services. That is the difference between guessing and seeing."
     },
     {
       "type": "heading",
@@ -52,7 +52,7 @@
     },
     {
       "type": "paragraph",
-      "text": "At scale, logging everything is too expensive to store and search. Sampling keeps a representative fraction — for instance, all errors but only a slice of successful requests — so you keep the signal without drowning in routine traffic. Setting sensible log levels per service is the simplest first lever."
+      "text": "At scale, logging everything is too expensive to store and search. Sampling keeps a representative fraction, for instance all errors but only a slice of successful requests, so you keep the signal without drowning in routine traffic. Setting sensible log levels per service is the simplest first lever."
     },
     {
       "type": "heading",
@@ -61,14 +61,14 @@
     {
       "type": "bullets",
       "items": [
-        "Clock skew: each host's clock drifts, so timestamps across machines don't line up perfectly — ordering events precisely is hard.",
+        "Clock skew: each host's clock drifts, so timestamps across machines don't line up perfectly. Ordering events precisely is hard.",
         "Sheer volume: ingest, storage, and index costs grow with the fleet and can dwarf the cost of the services themselves.",
         "Sensitive data: logs easily capture secrets or PII, so scrubbing and access control matter."
       ]
     },
     {
       "type": "paragraph",
-      "text": "The ELK stack — Elasticsearch for storage and search, Logstash or lightweight shippers for ingest, Kibana for visualization — is a common embodiment of this pattern, with Kafka frequently buffering in front."
+      "text": "The ELK stack is a common embodiment of this pattern, with Kafka frequently buffering in front. It uses Elasticsearch for storage and search, Logstash or lightweight shippers for ingest, and Kibana for visualization."
     }
   ]
 }

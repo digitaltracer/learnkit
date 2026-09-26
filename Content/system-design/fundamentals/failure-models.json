@@ -5,7 +5,7 @@
   "track": "fundamentals",
   "title": "Failure Models",
   "format": "article",
-  "summary": "Defining the kinds of faults a system is built to survive — because you can only tolerate the failures you've planned for.",
+  "summary": "Defining the kinds of faults a system is built to survive, because you can only tolerate the failures you've planned for.",
   "blocks": [
     {
       "type": "paragraph",
@@ -24,7 +24,7 @@
       "items": [
         "Fail-stop: the node halts and others can reliably tell it stopped.",
         "Crash: the node halts but its death isn't cleanly announced.",
-        "Omission: it drops some messages — requests or replies go missing.",
+        "Omission: it drops some messages, so requests or replies go missing.",
         "Timing: it responds, but too late to be useful.",
         "Byzantine: it behaves arbitrarily, even sending wrong or malicious data."
       ]
@@ -33,7 +33,7 @@
       "type": "callout",
       "kind": "note",
       "title": "Fault vs failure",
-      "text": "A fault is the underlying defect — a crashed process, a corrupted packet. A failure is when that fault becomes visible as the system deviating from its spec. Fault tolerance is stopping faults before they turn into failures."
+      "text": "A fault is the underlying defect, such as a crashed process or a corrupted packet. A failure is when that fault becomes visible as the system deviating from its spec. Fault tolerance is stopping faults before they turn into failures."
     },
     {
       "type": "heading",
@@ -41,7 +41,7 @@
     },
     {
       "type": "paragraph",
-      "text": "You can't react to a fault you can't see, so distributed systems lean on heartbeats and timeouts. A node periodically signals 'I'm alive', and if the signal stops arriving within a window, peers presume it's down. The catch is that a slow network is indistinguishable from a dead node — so detection is always a guess with a tunable threshold."
+      "text": "You can't react to a fault you can't see, so distributed systems lean on heartbeats and timeouts. A node periodically signals 'I'm alive', and if the signal stops arriving within a window, peers presume it's down. The catch is that a slow network is indistinguishable from a dead node, so detection is always a guess with a tunable threshold."
     },
     {
       "type": "heading",
@@ -49,7 +49,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Tolerating Byzantine faults — nodes that lie — requires expensive agreement protocols and extra replicas, since you must outvote the liars. Most systems run inside a trusted datacenter where nodes crash but don't deceive, so they assume crash or fail-stop and skip the cost. Byzantine tolerance is reserved for adversarial settings like blockchains, where you genuinely can't trust the participants."
+      "text": "Tolerating Byzantine faults, where nodes lie, requires expensive agreement protocols and extra replicas, since you must outvote the liars. Most systems run inside a trusted datacenter where nodes crash but don't deceive, so they assume crash or fail-stop and skip the cost. Byzantine tolerance is reserved for adversarial settings like blockchains, where you genuinely can't trust the participants."
     },
     {
       "type": "callout",

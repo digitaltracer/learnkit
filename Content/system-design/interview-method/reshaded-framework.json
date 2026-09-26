@@ -9,7 +9,7 @@
   "blocks": [
     {
       "type": "paragraph",
-      "text": "A system-design interview is open-ended on purpose, and that's what makes it stressful — there's no single right answer and no obvious place to start. A framework fixes that: instead of inventing a path each time, you walk the same steps in the same order, so your time goes to the design and not to deciding what to do next. RESHADED is one such structure."
+      "text": "A system-design interview is open-ended on purpose, and that's what makes it stressful. There's no single right answer and no obvious place to start. A framework fixes that: instead of inventing a path each time, you walk the same steps in the same order, so your time goes to the design and not to deciding what to do next. RESHADED is one such structure."
     },
     {
       "type": "heading",
@@ -18,14 +18,14 @@
     {
       "type": "bullets",
       "items": [
-        "Requirements — the functional features and the non-functional targets (availability, latency, scale).",
-        "Estimation — back-of-the-envelope numbers for traffic, storage, and bandwidth.",
-        "Storage schema — the data model: entities, fields, and how they relate.",
-        "High-level design — the major components and how a request flows between them.",
-        "API design — the key endpoints that expose the features.",
-        "Detailed design — scaling each component and removing bottlenecks.",
-        "Evaluation — checking the design back against the requirements.",
-        "Distinctive features — the extras that fit this particular problem."
+        "Requirements cover the functional features and the non-functional targets (availability, latency, scale).",
+        "Estimation means back-of-the-envelope numbers for traffic, storage, and bandwidth.",
+        "Storage schema is the data model: entities, fields, and how they relate.",
+        "High-level design shows the major components and how a request flows between them.",
+        "API design defines the key endpoints that expose the features.",
+        "Detailed design means scaling each component and removing bottlenecks.",
+        "Evaluation means checking the design back against the requirements.",
+        "Distinctive features are the extras that fit this particular problem."
       ]
     },
     {
@@ -40,7 +40,7 @@
       "type": "callout",
       "kind": "tip",
       "title": "Don't draw boxes too early",
-      "text": "Never start sketching components before you've nailed the requirements and rough scale. A clean diagram that solves the wrong problem — or the wrong size of problem — wins no points."
+      "text": "Never start sketching components before you've nailed the requirements and rough scale. A clean diagram that solves the wrong problem, or the wrong size of problem, wins no points."
     },
     {
       "type": "heading",
@@ -48,7 +48,7 @@
     },
     {
       "type": "paragraph",
-      "text": "With requirements and numbers in hand, lay out the data model and a high-level design that satisfies the features end to end. Only then go deep: in Detailed design you scale each piece — add a cache, partition the database, put work behind a queue — and call out where the bottlenecks would appear under your estimated load."
+      "text": "With requirements and numbers in hand, lay out the data model and a high-level design that satisfies the features end to end. Only then go deep: in Detailed design you scale each piece, such as adding a cache, partitioning the database, or putting work behind a queue, and call out where the bottlenecks would appear under your estimated load."
     },
     {
       "type": "heading",
@@ -56,7 +56,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Evaluation is the step candidates skip, and it's where you show seniority. Walk the design back against each non-functional target and name the tradeoffs you made. Distinctive features then let you tailor the answer to the specific prompt — a news feed's ranking, a chat app's delivery guarantees, a video site's CDN."
+      "text": "Evaluation is the step candidates skip, and it's where you show seniority. Walk the design back against each non-functional target and name the tradeoffs you made. Distinctive features then let you tailor the answer to the specific prompt: a news feed's ranking, a chat app's delivery guarantees, a video site's CDN."
     },
     {
       "type": "callout",
@@ -66,7 +66,7 @@
     },
     {
       "type": "paragraph",
-      "text": "The point of RESHADED isn't to recite eight words — it's to never freeze. When the prompt is vague and the whiteboard is blank, the framework gives you the next move, every time."
+      "text": "The point of RESHADED isn't to recite eight words. It's to never freeze. When the prompt is vague and the whiteboard is blank, the framework gives you the next move, every time."
     }
   ]
 }

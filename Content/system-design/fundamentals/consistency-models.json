@@ -5,7 +5,7 @@
   "track": "fundamentals",
   "title": "Consistency Models",
   "format": "article",
-  "summary": "The contract a storage system makes about what a read can return after writes — and what you trade to get a stronger one.",
+  "summary": "The contract a storage system makes about what a read can return after writes, and what you trade to get a stronger one.",
   "blocks": [
     {
       "type": "paragraph",
@@ -42,7 +42,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Stronger consistency means replicas must coordinate before answering, which adds latency and limits how the system behaves when nodes can't reach each other. Weaker models let any replica answer immediately, so they stay fast and available — at the price of occasionally serving stale data. This is the tradeoff at the heart of distributed storage."
+      "text": "Stronger consistency means replicas must coordinate before answering, which adds latency and limits how the system behaves when nodes can't reach each other. Weaker models let any replica answer immediately, so they stay fast and available, at the price of occasionally serving stale data. This is the tradeoff at the heart of distributed storage."
     },
     {
       "type": "callout",
@@ -55,11 +55,11 @@
     },
     {
       "type": "paragraph",
-      "text": "Match the model to the cost of being wrong. A bank balance or inventory count wants strong consistency — a stale read here moves money or oversells stock. A social feed or like count is happy with eventual consistency, where a few seconds of staleness is invisible and the speed is worth far more than perfect freshness."
+      "text": "Match the model to the cost of being wrong. A bank balance or inventory count wants strong consistency, because a stale read here moves money or oversells stock. A social feed or like count is happy with eventual consistency, where a few seconds of staleness is invisible and the speed is worth far more than perfect freshness."
     },
     {
       "type": "paragraph",
-      "text": "So ask what a stale read actually costs before reaching for the strongest model — most of a real system lives comfortably in the relaxed middle."
+      "text": "So ask what a stale read actually costs before reaching for the strongest model. Most of a real system lives comfortably in the relaxed middle."
     }
   ]
 }
