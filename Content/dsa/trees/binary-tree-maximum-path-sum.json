@@ -65,7 +65,7 @@
       }
     },
     {
-      "caption": "Through the root: -10 + max(0, 9) + max(0, 35) = 34 — worse than 42, so the best stays 42.",
+      "caption": "Through the root: -10 + max(0, 9) + max(0, 35) = 34, worse than 42, so the best stays 42.",
       "visual": {
         "type": "tree",
         "root": {

@@ -14,19 +14,19 @@
       "visual": { "type": "array", "cells": ["e", "i", "d", "b", "a", "o", "o", "o"] }
     },
     {
-      "caption": "Target counts from s1: a:1, b:1. Window [0..1] = 'ei' — counts don't match.",
+      "caption": "Target counts from s1: a:1, b:1. Window [0..1] = 'ei': counts don't match.",
       "visual": { "type": "array", "cells": ["e", "i", "d", "b", "a", "o", "o", "o"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 1 }], "highlights": [{ "range": [0, 1], "state": "compare" }] }
     },
     {
-      "caption": "Slide to [1..2] = 'id' — still no match.",
+      "caption": "Slide to [1..2] = 'id', still no match.",
       "visual": { "type": "array", "cells": ["e", "i", "d", "b", "a", "o", "o", "o"], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 2 }], "highlights": [{ "range": [1, 2], "state": "compare" }] }
     },
     {
-      "caption": "[2..3] = 'db' — it has a b but no a. No match.",
+      "caption": "[2..3] = 'db' has a b but no a. No match.",
       "visual": { "type": "array", "cells": ["e", "i", "d", "b", "a", "o", "o", "o"], "pointers": [{ "label": "L", "index": 2 }, { "label": "R", "index": 3 }], "highlights": [{ "range": [2, 3], "state": "compare" }] }
     },
     {
-      "caption": "[3..4] = 'ba' — counts b:1, a:1, exactly the target. Match!",
+      "caption": "[3..4] = 'ba' has counts b:1, a:1, exactly the target. Match!",
       "visual": { "type": "array", "cells": ["e", "i", "d", "b", "a", "o", "o", "o"], "pointers": [{ "label": "L", "index": 3 }, { "label": "R", "index": 4 }], "highlights": [{ "range": [3, 4], "state": "match" }] }
     },
     {

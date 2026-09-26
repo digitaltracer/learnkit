@@ -6,7 +6,7 @@
   "title": "Valid Anagram",
   "difficulty": "easy",
   "summary": "Count every letter in s, then subtract one for each letter in t. If every count lands back at zero, t is a rearrangement of s.",
-  "problem": "Return true if t is an anagram of s — the same letters with the same counts, just reordered.",
+  "problem": "Return true if t is an anagram of s: the same letters with the same counts, just reordered.",
   "example": { "input": "s = \"cat\", t = \"act\"", "output": "true" },
   "steps": [
     {
@@ -45,7 +45,7 @@
       }
     },
     {
-      "caption": "Every count is back to zero, so t spent exactly the letters s had. \"act\" is an anagram of \"cat\" — return true.",
+      "caption": "Every count is back to zero, so t spent exactly the letters s had. \"act\" is an anagram of \"cat\", so return true.",
       "visual": {
         "type": "hashmap",
         "entries": [ { "key": "c", "value": 0, "state": "done" }, { "key": "a", "value": 0, "state": "done" }, { "key": "t", "value": 0, "state": "done" } ]

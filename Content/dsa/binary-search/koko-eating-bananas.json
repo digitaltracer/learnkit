@@ -18,7 +18,7 @@
       "visual": { "type": "array", "cells": [1, 2, 3, 4, 5, 6, 7, 8], "pointers": [{ "label": "lo", "index": 0 }, { "label": "hi", "index": 7 }], "highlights": [{ "range": [0, 7], "state": "active" }] }
     },
     {
-      "caption": "Test mid = 4: hours = 1+2+2+2 = 7 <= 7. Feasible — 4 works, but maybe a slower speed does too.",
+      "caption": "Test mid = 4: hours = 1+2+2+2 = 7 <= 7. Feasible: 4 works, but maybe a slower speed does too.",
       "visual": { "type": "array", "cells": [1, 2, 3, 4, 5, 6, 7, 8], "pointers": [{ "label": "lo", "index": 0 }, { "label": "mid", "index": 3 }, { "label": "hi", "index": 7 }], "highlights": [{ "index": 3, "state": "match" }] }
     },
     {
@@ -26,7 +26,7 @@
       "visual": { "type": "array", "cells": [1, 2, 3, 4, 5, 6, 7, 8], "pointers": [{ "label": "lo", "index": 0 }, { "label": "hi", "index": 3 }], "highlights": [{ "range": [0, 3], "state": "active" }] }
     },
     {
-      "caption": "Test mid = 2: hours = 2+3+4+4 = 13 > 7. Too slow — 2 and anything slower can't finish in time.",
+      "caption": "Test mid = 2: hours = 2+3+4+4 = 13 > 7. Too slow: 2 and anything slower can't finish in time.",
       "visual": { "type": "array", "cells": [1, 2, 3, 4, 5, 6, 7, 8], "pointers": [{ "label": "lo", "index": 0 }, { "label": "mid", "index": 1 }, { "label": "hi", "index": 3 }], "highlights": [{ "index": 1, "state": "mismatch" }] }
     },
     {

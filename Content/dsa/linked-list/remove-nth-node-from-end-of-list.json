@@ -32,7 +32,7 @@
       }
     },
     {
-      "caption": "Again: slow to 3, fast reaches the last node, 5. Stop — slow now sits just before the node to remove.",
+      "caption": "Again: slow to 3, fast reaches the last node, 5. Stop: slow now sits just before the node to remove.",
       "visual": {
         "type": "list",
         "nodes": [1, 2, 3, 4, 5],
@@ -41,7 +41,7 @@
       }
     },
     {
-      "caption": "The node after slow is 4 — the 2nd from the end. Re-point slow's arrow past it, from 3 straight to 5.",
+      "caption": "The node after slow is 4, the 2nd from the end. Re-point slow's arrow past it, from 3 straight to 5.",
       "visual": {
         "type": "list",
         "nodes": [1, 2, 3, 4, 5], "links": [[0, 1], [1, 2], [2, 4]],

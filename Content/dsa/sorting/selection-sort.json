@@ -30,7 +30,7 @@
       "visual": { "type": "array", "style": "bars", "cells": [1, 2, 4, 5], "highlights": [{ "range": [0, 1], "state": "done" }] }
     },
     {
-      "caption": "Pass 3: the smallest of the rest (4, 5) is 4 — already in place.",
+      "caption": "Pass 3: the smallest of the rest (4, 5) is 4, already in place.",
       "visual": { "type": "array", "style": "bars", "cells": [1, 2, 4, 5], "pointers": [{ "label": "i", "index": 2 }], "highlights": [{ "range": [0, 1], "state": "done" }, { "index": 2, "state": "active" }] }
     },
     {

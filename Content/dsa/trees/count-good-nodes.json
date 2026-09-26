@@ -21,7 +21,7 @@
       }
     },
     {
-      "caption": "The root 3 is always good — nothing sits above it. The running max starts at 3.",
+      "caption": "The root 3 is always good because nothing sits above it. The running max starts at 3.",
       "visual": {
         "type": "tree",
         "root": {

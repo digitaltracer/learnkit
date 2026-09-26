@@ -10,11 +10,11 @@
   "example": { "input": "[-1, 0, 3, 5, 9, 12], target 5", "output": "3" },
   "steps": [
     {
-      "caption": "Find 5 in this sorted array — without checking every cell.",
+      "caption": "Find 5 in this sorted array without checking every cell.",
       "visual": { "type": "array", "cells": [-1, 0, 3, 5, 9, 12] }
     },
     {
-      "caption": "The answer, if any, lies in [lo, hi] — the whole array to start.",
+      "caption": "The answer, if any, lies in [lo, hi], the whole array to start.",
       "visual": { "type": "array", "cells": [-1, 0, 3, 5, 9, 12], "pointers": [{ "label": "lo", "index": 0 }, { "label": "hi", "index": 5 }], "highlights": [{ "range": [0, 5], "state": "active" }] }
     },
     {
@@ -26,15 +26,15 @@
       "visual": { "type": "array", "cells": [-1, 0, 3, 5, 9, 12], "pointers": [{ "label": "lo", "index": 3 }, { "label": "hi", "index": 5 }], "highlights": [{ "range": [3, 5], "state": "active" }] }
     },
     {
-      "caption": "Middle is index 4 (value 9). 9 > 5, so 5 is to the left. Drop the right half — hi moves to 3.",
+      "caption": "Middle is index 4 (value 9). 9 > 5, so 5 is to the left. Drop the right half, so hi moves to 3.",
       "visual": { "type": "array", "cells": [-1, 0, 3, 5, 9, 12], "pointers": [{ "label": "lo", "index": 3 }, { "label": "mid", "index": 4 }, { "label": "hi", "index": 5 }], "highlights": [{ "index": 4, "state": "compare" }] }
     },
     {
-      "caption": "lo and hi have met — the range is now a single cell, index 3.",
+      "caption": "lo and hi have met: the range is now a single cell, index 3.",
       "visual": { "type": "array", "cells": [-1, 0, 3, 5, 9, 12], "highlights": [{ "range": [3, 3], "state": "active" }] }
     },
     {
-      "caption": "Check it: 5 = 5. Found at index 3 — three probes, never scanning all six.",
+      "caption": "Check it: 5 = 5. Found at index 3 in three probes, never scanning all six.",
       "visual": { "type": "array", "cells": [-1, 0, 3, 5, 9, 12], "pointers": [{ "label": "mid", "index": 3 }], "highlights": [{ "index": 3, "state": "done" }] }
     }
   ]

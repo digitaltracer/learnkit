@@ -10,7 +10,7 @@
   "example": { "input": "[\"eat\", \"tea\", \"tan\", \"ate\", \"nat\", \"bat\"]", "output": "[[\"eat\", \"tea\", \"ate\"], [\"tan\", \"nat\"], [\"bat\"]]" },
   "steps": [
     {
-      "caption": "Two words are anagrams exactly when their letters sorted are equal. So the sorted word is a perfect group key — map each key to its bucket of words.",
+      "caption": "Two words are anagrams exactly when their letters sorted are equal. So the sorted word is a perfect group key: map each key to its bucket of words.",
       "visual": { "type": "hashmap" }
     },
     {
@@ -22,7 +22,7 @@
       }
     },
     {
-      "caption": "\"tea\" also sorts to \"aet\" — bucket exists, drop it in next to \"eat\".",
+      "caption": "\"tea\" also sorts to \"aet\": bucket exists, drop it in next to \"eat\".",
       "visual": {
         "type": "hashmap",
         "entries": [ { "key": "aet", "value": "eat, tea", "state": "active" } ],
@@ -30,7 +30,7 @@
       }
     },
     {
-      "caption": "\"tan\" sorts to \"ant\" — a new key, so open a second bucket.",
+      "caption": "\"tan\" sorts to \"ant\", a new key, so open a second bucket.",
       "visual": {
         "type": "hashmap",
         "entries": [ { "key": "aet", "value": "eat, tea" }, { "key": "ant", "value": "tan", "state": "active" } ],
@@ -38,7 +38,7 @@
       }
     },
     {
-      "caption": "\"ate\" sorts to \"aet\" again — append to the first bucket.",
+      "caption": "\"ate\" sorts to \"aet\" again, so append to the first bucket.",
       "visual": {
         "type": "hashmap",
         "entries": [ { "key": "aet", "value": "eat, tea, ate", "state": "active" }, { "key": "ant", "value": "tan" } ],
@@ -46,7 +46,7 @@
       }
     },
     {
-      "caption": "\"nat\" sorts to \"ant\" — join \"tan\".",
+      "caption": "\"nat\" sorts to \"ant\", so join \"tan\".",
       "visual": {
         "type": "hashmap",
         "entries": [ { "key": "aet", "value": "eat, tea, ate" }, { "key": "ant", "value": "tan, nat", "state": "active" } ],
@@ -54,7 +54,7 @@
       }
     },
     {
-      "caption": "\"bat\" sorts to \"abt\" — new key, third bucket.",
+      "caption": "\"bat\" sorts to \"abt\": new key, third bucket.",
       "visual": {
         "type": "hashmap",
         "entries": [ { "key": "aet", "value": "eat, tea, ate" }, { "key": "ant", "value": "tan, nat" }, { "key": "abt", "value": "bat", "state": "active" } ],

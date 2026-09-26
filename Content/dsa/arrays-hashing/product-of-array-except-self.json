@@ -6,7 +6,7 @@
   "title": "Product of Array Except Self",
   "difficulty": "medium",
   "summary": "No division allowed. Sweep left filling each slot with the product of everything to its left, then sweep right multiplying in the product of everything to its right.",
-  "problem": "Return res where res[i] is the product of every element of nums except nums[i] — without using division.",
+  "problem": "Return res where res[i] is the product of every element of nums except nums[i], without using division.",
   "example": { "input": "nums = [1, 2, 3, 4]", "output": "[24, 12, 8, 6]" },
   "steps": [
     {

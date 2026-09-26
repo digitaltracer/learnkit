@@ -18,23 +18,23 @@
       "visual": { "type": "array", "cells": [1, 3, 4, 6, 8, 11], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 5 }] }
     },
     {
-      "caption": "1 + 11 = 12. Too big — to shrink the sum, move R to a smaller value.",
+      "caption": "1 + 11 = 12. Too big: to shrink the sum, move R to a smaller value.",
       "visual": { "type": "array", "cells": [1, 3, 4, 6, 8, 11], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 0, "state": "compare" }, { "index": 5, "state": "compare" }] }
     },
     {
-      "caption": "1 + 8 = 9. Too small — to grow the sum, move L to a larger value.",
+      "caption": "1 + 8 = 9. Too small: to grow the sum, move L to a larger value.",
       "visual": { "type": "array", "cells": [1, 3, 4, 6, 8, 11], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 4 }], "highlights": [{ "index": 0, "state": "compare" }, { "index": 4, "state": "compare" }] }
     },
     {
-      "caption": "3 + 8 = 11. Too big again — move R left.",
+      "caption": "3 + 8 = 11. Too big again, so move R left.",
       "visual": { "type": "array", "cells": [1, 3, 4, 6, 8, 11], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 4 }], "highlights": [{ "index": 1, "state": "compare" }, { "index": 4, "state": "compare" }] }
     },
     {
-      "caption": "3 + 6 = 9. Too small — move L right.",
+      "caption": "3 + 6 = 9. Too small, so move L right.",
       "visual": { "type": "array", "cells": [1, 3, 4, 6, 8, 11], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 3 }], "highlights": [{ "index": 1, "state": "compare" }, { "index": 3, "state": "compare" }] }
     },
     {
-      "caption": "4 + 6 = 10. That's the target — the answer is indices 2 and 3.",
+      "caption": "4 + 6 = 10. That's the target: the answer is indices 2 and 3.",
       "visual": { "type": "array", "cells": [1, 3, 4, 6, 8, 11], "pointers": [{ "label": "L", "index": 2 }, { "label": "R", "index": 3 }], "highlights": [{ "index": 2, "state": "done" }, { "index": 3, "state": "done" }] }
     }
   ]

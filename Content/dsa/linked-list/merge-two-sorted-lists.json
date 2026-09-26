@@ -68,7 +68,7 @@
       }
     },
     {
-      "caption": "A is empty, so append the rest of B — its remaining 4. Merged list: 1 -> 1 -> 2 -> 3 -> 4 -> 4.",
+      "caption": "A is empty, so append the rest of B, its remaining 4. Merged list: 1 -> 1 -> 2 -> 3 -> 4 -> 4.",
       "visual": {
         "type": "list",
         "nodes": [1, 2, 4, 1, 3, 4], "links": [[0, 1], [1, 2], [3, 4], [4, 5]],

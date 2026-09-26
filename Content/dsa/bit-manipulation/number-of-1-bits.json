@@ -5,7 +5,7 @@
   "track": "bit-manipulation",
   "title": "Number of 1 Bits",
   "difficulty": "easy",
-  "summary": "Repeatedly apply n & (n - 1), which erases the lowest set bit each time. Count how many times you can do it before n reaches 0 — that's the number of 1-bits.",
+  "summary": "Repeatedly apply n & (n - 1), which erases the lowest set bit each time. Count how many times you can do it before n reaches 0. That's the number of 1-bits.",
   "problem": "Return the number of set bits (the Hamming weight) in the binary representation of an unsigned integer.",
   "example": { "input": "11 (binary 1011)", "output": "3" },
   "steps": [

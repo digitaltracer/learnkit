@@ -5,7 +5,7 @@
   "track": "two-pointers",
   "title": "3Sum",
   "difficulty": "medium",
-  "summary": "Sort first. Fix one number, then sweep the rest with two pointers from both ends — just like Two Sum on a sorted array — and skip repeats to avoid duplicate triples.",
+  "summary": "Sort first. Fix one number, then sweep the rest with two pointers from both ends, just like Two Sum on a sorted array, and skip repeats to avoid duplicate triples.",
   "problem": "Find every unique triple in the array that sums to 0.",
   "example": { "input": "[-1, 0, 1, 2, -1, -4]", "output": "[[-1, -1, 2], [-1, 0, 1]]" },
   "steps": [
@@ -18,7 +18,7 @@
       "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2] }
     },
     {
-      "caption": "Fix i; L and R then seek two values that, with i, total 0 — here a pair summing to 4. But the two largest left, 1 and 2, make only 3. Move i on.",
+      "caption": "Fix i; L and R then seek two values that, with i, total 0: here a pair summing to 4. But the two largest left, 1 and 2, make only 3. Move i on.",
       "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2], "pointers": [{ "label": "i", "index": 0 }, { "label": "L", "index": 1 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 0, "state": "compare" }] }
     },
     {
@@ -30,7 +30,7 @@
       "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2], "pointers": [{ "label": "i", "index": 1 }, { "label": "L", "index": 2 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 1, "state": "match" }, { "index": 2, "state": "match" }, { "index": 5, "state": "match" }] }
     },
     {
-      "caption": "After a hit, move both inward. Now nums[L] + nums[R] = 0 + 1 = 1 — still the target.",
+      "caption": "After a hit, move both inward. Now nums[L] + nums[R] = 0 + 1 = 1, still the target.",
       "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2], "pointers": [{ "label": "i", "index": 1 }, { "label": "L", "index": 3 }, { "label": "R", "index": 4 }], "highlights": [{ "index": 3, "state": "compare" }, { "index": 4, "state": "compare" }] }
     },
     {
@@ -42,11 +42,11 @@
       "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2], "pointers": [{ "label": "i", "index": 1 }, { "label": "L", "index": 4 }, { "label": "R", "index": 3 }] }
     },
     {
-      "caption": "i would land on another -1 — the same value as before. Skip it so we don't repeat triples.",
+      "caption": "i would land on another -1, the same value as before. Skip it so we don't repeat triples.",
       "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2], "pointers": [{ "label": "i", "index": 2 }], "highlights": [{ "index": 2, "state": "mismatch" }] }
     },
     {
-      "caption": "Next i lands on 0. From here on every value is >= 0, so no three of them can sum to 0. Stop — we've found them all.",
+      "caption": "Next i lands on 0. From here on every value is >= 0, so no three of them can sum to 0. Stop: we've found them all.",
       "visual": { "type": "array", "cells": [-4, -1, -1, 0, 1, 2], "pointers": [{ "label": "i", "index": 3 }], "highlights": [{ "range": [3, 5], "state": "active" }] }
     },
     {

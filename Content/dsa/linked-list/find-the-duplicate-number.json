@@ -38,7 +38,7 @@
       "visual": { "type": "array", "cells": [1, 3, 4, 2, 2], "pointers": [{ "label": "s", "index": 0 }, { "label": "f", "index": 4 }] }
     },
     {
-      "caption": "Stepping both one at a time, they meet at index 2 — the entrance where the cycle's tail joins the loop.",
+      "caption": "Stepping both one at a time, they meet at index 2, the entrance where the cycle's tail joins the loop.",
       "visual": { "type": "array", "cells": [1, 3, 4, 2, 2], "pointers": [{ "label": "s", "index": 2 }, { "label": "f", "index": 2 }], "highlights": [{ "index": 2, "state": "match" }] }
     },
     {

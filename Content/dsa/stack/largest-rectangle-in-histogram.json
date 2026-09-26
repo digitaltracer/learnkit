@@ -22,7 +22,7 @@
       "visual": { "type": "array", "style": "bars", "cells": [2, 1, 5, 6, 2, 3], "highlights": [{ "index": 3, "state": "compare" }] }
     },
     {
-      "caption": "Bar 5 now spans where 6 stood too: height 5 across width 2, area 5 x 2 = 10 — the best so far.",
+      "caption": "Bar 5 now spans where 6 stood too: height 5 across width 2, area 5 x 2 = 10, the best so far.",
       "visual": { "type": "array", "style": "bars", "cells": [2, 1, 5, 6, 2, 3], "highlights": [{ "index": 2, "state": "match" }, { "index": 3, "state": "match" }] }
     },
     {

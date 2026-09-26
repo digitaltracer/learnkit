@@ -22,11 +22,11 @@
       "visual": { "type": "array", "cells": [2, 3, 1, 1, 4], "pointers": [{ "label": "i", "index": 1 }, { "label": "R", "index": 4 }], "highlights": [{ "range": [0, 4], "state": "active" }] }
     },
     {
-      "caption": "Reach is now 4 — the last index. Every index up to here was reachable, so the end is reachable too.",
+      "caption": "Reach is now 4, the last index. Every index up to here was reachable, so the end is reachable too.",
       "visual": { "type": "array", "cells": [2, 3, 1, 1, 4], "pointers": [{ "label": "i", "index": 1 }, { "label": "R", "index": 4 }], "highlights": [{ "range": [0, 3], "state": "active" }, { "index": 4, "state": "match" }] }
     },
     {
-      "caption": "So yes — the last index is reachable (e.g. 0 -> 1 -> 4). Had reach ever fallen behind the current index, we'd be stuck and return false.",
+      "caption": "So yes, the last index is reachable (e.g. 0 -> 1 -> 4). Had reach ever fallen behind the current index, we'd be stuck and return false.",
       "visual": { "type": "array", "cells": [2, 3, 1, 1, 4], "highlights": [{ "range": [0, 4], "state": "done" }] }
     }
   ]

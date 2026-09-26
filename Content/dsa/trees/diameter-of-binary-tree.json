@@ -21,7 +21,7 @@
       }
     },
     {
-      "caption": "Compute heights bottom-up. Leaves 4 and 5 each have height 1 — just themselves.",
+      "caption": "Compute heights bottom-up. Leaves 4 and 5 each have height 1, just themselves.",
       "visual": {
         "type": "tree",
         "root": {

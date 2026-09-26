@@ -10,27 +10,27 @@
   "example": { "input": "[4, 5, 6, 7, 0, 1, 2], target 0", "output": "4" },
   "steps": [
     {
-      "caption": "This sorted array was rotated. Find 0 — still in O(log n) time.",
+      "caption": "This sorted array was rotated. Find 0, still in O(log n) time.",
       "visual": { "type": "array", "cells": [4, 5, 6, 7, 0, 1, 2] }
     },
     {
-      "caption": "Search the whole range. The trick: compare the low end with the middle — whichever side is in order is the one we can reason about.",
+      "caption": "Search the whole range. The trick: compare the low end with the middle; whichever side is in order is the one we can reason about.",
       "visual": { "type": "array", "cells": [4, 5, 6, 7, 0, 1, 2], "pointers": [{ "label": "lo", "index": 0 }, { "label": "hi", "index": 6 }], "highlights": [{ "range": [0, 6], "state": "active" }] }
     },
     {
-      "caption": "Mid is 7. Since low (4) <= mid (7), the left half [4..7] is in order. Is 0 inside that sorted range [4, 7]? No — so search the right side.",
+      "caption": "Mid is 7. Since low (4) <= mid (7), the left half [4..7] is in order. Is 0 inside that sorted range [4, 7]? No, so search the right side.",
       "visual": { "type": "array", "cells": [4, 5, 6, 7, 0, 1, 2], "pointers": [{ "label": "lo", "index": 0 }, { "label": "mid", "index": 3 }, { "label": "hi", "index": 6 }], "highlights": [{ "range": [0, 3], "state": "active" }, { "index": 3, "state": "compare" }] }
     },
     {
-      "caption": "New range [4, 6]: values 0, 1, 2 — back in order.",
+      "caption": "New range [4, 6]: values 0, 1, 2 are back in order.",
       "visual": { "type": "array", "cells": [4, 5, 6, 7, 0, 1, 2], "pointers": [{ "label": "lo", "index": 4 }, { "label": "hi", "index": 6 }], "highlights": [{ "range": [4, 6], "state": "active" }] }
     },
     {
-      "caption": "Mid is 1. Again low (0) <= mid (1), so the left half [0, 1] is sorted — and 0 sits inside it. Search left: hi moves to 4.",
+      "caption": "Mid is 1. Again low (0) <= mid (1), so the left half [0, 1] is sorted, and 0 sits inside it. Search left: hi moves to 4.",
       "visual": { "type": "array", "cells": [4, 5, 6, 7, 0, 1, 2], "pointers": [{ "label": "lo", "index": 4 }, { "label": "mid", "index": 5 }, { "label": "hi", "index": 6 }], "highlights": [{ "index": 5, "state": "compare" }] }
     },
     {
-      "caption": "lo and hi have met — one cell left, at index 4.",
+      "caption": "lo and hi have met, leaving one cell at index 4.",
       "visual": { "type": "array", "cells": [4, 5, 6, 7, 0, 1, 2], "highlights": [{ "range": [4, 4], "state": "active" }] }
     },
     {

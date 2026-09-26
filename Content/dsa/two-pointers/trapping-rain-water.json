@@ -14,7 +14,7 @@
       "visual": { "type": "array", "style": "bars", "cells": [2, 0, 3, 1, 0, 2] }
     },
     {
-      "caption": "Two pointers at the ends. Track the tallest wall seen from each side, and always work the shorter side — it's what caps the water.",
+      "caption": "Two pointers at the ends. Track the tallest wall seen from each side, and always work the shorter side, since it's what caps the water.",
       "visual": { "type": "array", "style": "bars", "cells": [2, 0, 3, 1, 0, 2], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 0, "state": "compare" }, { "index": 5, "state": "compare" }] }
     },
     {
@@ -26,7 +26,7 @@
       "visual": { "type": "array", "style": "bars", "cells": [2, 0, 3, 1, 0, 2], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 1, "state": "match" }] }
     },
     {
-      "caption": "Now the left wall is 3 — taller than the right wall, 2. The shorter side is the right now, so switch to moving R.",
+      "caption": "Now the left wall, 3, is taller than the right wall, 2. The shorter side is the right now, so switch to moving R.",
       "visual": { "type": "array", "style": "bars", "cells": [2, 0, 3, 1, 0, 2], "pointers": [{ "label": "L", "index": 2 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 2, "state": "compare" }, { "index": 5, "state": "compare" }] }
     },
     {
@@ -42,7 +42,7 @@
       "visual": { "type": "array", "style": "bars", "cells": [2, 0, 3, 1, 0, 2], "pointers": [{ "label": "L", "index": 2 }, { "label": "R", "index": 3 }], "highlights": [{ "index": 3, "state": "match" }] }
     },
     {
-      "caption": "L and R meet at the tallest wall (height 3) — a peak holds no water. Total trapped = 2 + 2 + 1 = 5.",
+      "caption": "L and R meet at the tallest wall (height 3); a peak holds no water. Total trapped = 2 + 2 + 1 = 5.",
       "visual": { "type": "array", "style": "bars", "cells": [2, 0, 3, 1, 0, 2], "highlights": [{ "index": 1, "state": "done" }, { "index": 3, "state": "done" }, { "index": 4, "state": "done" }] }
     }
   ]

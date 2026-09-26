@@ -21,7 +21,7 @@
       }
     },
     {
-      "caption": "Go as far left as possible. 1 is the smallest value — the 1st visited.",
+      "caption": "Go as far left as possible. 1 is the smallest value, the 1st visited.",
       "visual": {
         "type": "tree",
         "root": {
@@ -32,7 +32,7 @@
       }
     },
     {
-      "caption": "1 has a right child 2, which comes next — the 2nd visited.",
+      "caption": "1 has a right child 2, which comes next as the 2nd visited.",
       "visual": {
         "type": "tree",
         "root": {
@@ -43,7 +43,7 @@
       }
     },
     {
-      "caption": "Back up to the root 3 — the 3rd value visited.",
+      "caption": "Back up to the root 3, the 3rd value visited.",
       "visual": {
         "type": "tree",
         "root": {
@@ -54,7 +54,7 @@
       }
     },
     {
-      "caption": "k = 3, so we stop here — the 3rd smallest is 3. We never even visit 4.",
+      "caption": "k = 3, so we stop here: the 3rd smallest is 3. We never even visit 4.",
       "visual": {
         "type": "tree",
         "root": {

@@ -18,7 +18,7 @@
       }
     },
     {
-      "caption": "Compare each meeting with the next. The first runs from 0 to 30, while the next starts at 5 — before the first one ends.",
+      "caption": "Compare each meeting with the next. The first runs from 0 to 30, while the next starts at 5, before the first one ends.",
       "visual": {
         "type": "intervals",
         "axisMin": 0, "axisMax": 30,
@@ -26,7 +26,7 @@
       }
     },
     {
-      "caption": "Since 5 < 30, these two meetings overlap — you'd have to be in both at once.",
+      "caption": "Since 5 < 30, these two meetings overlap; you'd have to be in both at once.",
       "visual": {
         "type": "intervals",
         "axisMin": 0, "axisMax": 30,

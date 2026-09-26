@@ -10,7 +10,7 @@
   "example": { "input": "x = 2, n = 10", "output": "1024" },
   "steps": [
     {
-      "caption": "Computing 2^10 the slow way is ten multiplications. Square repeatedly instead: 2^1, 2^2, 2^4, 2^8 — each cell is the one before it, squared.",
+      "caption": "Computing 2^10 the slow way is ten multiplications. Square repeatedly instead: 2^1, 2^2, 2^4, 2^8; each cell is the one before it, squared.",
       "visual": { "type": "array", "cells": [2, 4, 16, 256] }
     },
     {

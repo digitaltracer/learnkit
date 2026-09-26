@@ -6,11 +6,11 @@
   "title": "Reorder List",
   "difficulty": "medium",
   "summary": "Three moves: find the middle, reverse the second half, then weave the two halves together one node at a time.",
-  "problem": "Reorder the list so it runs first, last, second, second-last, ... — i.e. L0, Ln, L1, Ln-1, ...",
+  "problem": "Reorder the list so it runs first, last, second, second-last, ..., i.e. L0, Ln, L1, Ln-1, ...",
   "example": { "input": "1 -> 2 -> 3 -> 4", "output": "1 -> 4 -> 2 -> 3" },
   "steps": [
     {
-      "caption": "Reorder so it alternates front, back, front, back: 1, 4, 2, 3. Do it in three moves — find the middle, reverse the back, then weave.",
+      "caption": "Reorder so it alternates front, back, front, back: 1, 4, 2, 3. Do it in three moves: find the middle, reverse the back, then weave.",
       "visual": { "type": "list", "nodes": [1, 2, 3, 4] }
     },
     {
@@ -31,7 +31,7 @@
       }
     },
     {
-      "caption": "Move 3: weave the halves. Take front's head 1, then back's head 4 — link 1 -> 4.",
+      "caption": "Move 3: weave the halves. Take front's head 1, then back's head 4, and link 1 -> 4.",
       "visual": {
         "type": "list",
         "nodes": [1, 2, 3, 4], "links": [[0, 3], [3, 2]],

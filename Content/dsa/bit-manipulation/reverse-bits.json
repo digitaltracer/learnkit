@@ -10,7 +10,7 @@
   "example": { "input": "00111001", "output": "10011100" },
   "steps": [
     {
-      "caption": "Reverse the order of all 8 bits — the first bit becomes the last, and so on. Mirror the row end to end.",
+      "caption": "Reverse the order of all 8 bits: the first bit becomes the last, and so on. Mirror the row end to end.",
       "visual": { "type": "array", "cells": [0, 0, 1, 1, 1, 0, 0, 1], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 7 }] }
     },
     {
@@ -18,7 +18,7 @@
       "visual": { "type": "array", "cells": [1, 0, 1, 1, 1, 0, 0, 0], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 7 }], "highlights": [{ "index": 0, "state": "match" }, { "index": 7, "state": "match" }] }
     },
     {
-      "caption": "Move inward and swap bit 1 and bit 6 — both are 0, so nothing visibly changes.",
+      "caption": "Move inward and swap bit 1 and bit 6; both are 0, so nothing visibly changes.",
       "visual": { "type": "array", "cells": [1, 0, 1, 1, 1, 0, 0, 0], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 6 }], "highlights": [{ "index": 1, "state": "match" }, { "index": 6, "state": "match" }] }
     },
     {
@@ -26,7 +26,7 @@
       "visual": { "type": "array", "cells": [1, 0, 0, 1, 1, 1, 0, 0], "pointers": [{ "label": "L", "index": 2 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 2, "state": "match" }, { "index": 5, "state": "match" }] }
     },
     {
-      "caption": "Swap the innermost pair, bit 3 and bit 4 — both are 1, so no change. The pointers have now met.",
+      "caption": "Swap the innermost pair, bit 3 and bit 4; both are 1, so no change. The pointers have now met.",
       "visual": { "type": "array", "cells": [1, 0, 0, 1, 1, 1, 0, 0], "pointers": [{ "label": "L", "index": 3 }, { "label": "R", "index": 4 }], "highlights": [{ "index": 3, "state": "match" }, { "index": 4, "state": "match" }] }
     },
     {

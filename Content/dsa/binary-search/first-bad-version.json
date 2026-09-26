@@ -5,7 +5,7 @@
   "track": "binary-search",
   "title": "First Bad Version",
   "difficulty": "easy",
-  "summary": "Versions go good then bad — a sorted boolean. Binary search the boundary: if mid is good, the first bad is to the right; if bad, it's here or to the left.",
+  "summary": "Versions go good then bad: a sorted boolean. Binary search the boundary: if mid is good, the first bad is to the right; if bad, it's here or to the left.",
   "problem": "Versions 1..n; after the first bad one, every later version is bad too. Find the first bad version with the fewest checks.",
   "example": { "input": "n = 5, first bad = 4", "output": "4" },
   "steps": [
@@ -30,7 +30,7 @@
       "visual": { "type": "array", "cells": [1, 2, 3, 4, 5], "pointers": [{ "label": "mid", "index": 3 }, { "label": "hi", "index": 4 }], "highlights": [{ "index": 3, "state": "compare" }] }
     },
     {
-      "caption": "Version 4 is bad. Version 3 (its neighbor) is good — so that good-to-bad boundary is the answer: version 4.",
+      "caption": "Version 4 is bad. Version 3 (its neighbor) is good, so that good-to-bad boundary is the answer: version 4.",
       "visual": { "type": "array", "cells": [1, 2, 3, 4, 5], "highlights": [{ "index": 2, "state": "match" }, { "index": 3, "state": "mismatch" }] }
     }
   ]

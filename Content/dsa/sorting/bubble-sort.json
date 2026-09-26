@@ -18,11 +18,11 @@
       "visual": { "type": "array", "style": "bars", "cells": [5, 1, 4, 2], "highlights": [{ "index": 0, "state": "compare" }, { "index": 1, "state": "compare" }] }
     },
     {
-      "caption": "Compare 5 and 4. 5 > 4 — swap.",
+      "caption": "Compare 5 and 4. 5 > 4, so swap.",
       "visual": { "type": "array", "style": "bars", "cells": [1, 5, 4, 2], "highlights": [{ "index": 1, "state": "compare" }, { "index": 2, "state": "compare" }] }
     },
     {
-      "caption": "Compare 5 and 2. 5 > 2 — swap. 5 has bubbled to the end; it's now in place.",
+      "caption": "Compare 5 and 2. 5 > 2, so swap. 5 has bubbled to the end; it's now in place.",
       "visual": { "type": "array", "style": "bars", "cells": [1, 4, 5, 2], "highlights": [{ "index": 2, "state": "compare" }, { "index": 3, "state": "compare" }] }
     },
     {
@@ -30,7 +30,7 @@
       "visual": { "type": "array", "style": "bars", "cells": [1, 4, 2, 5], "highlights": [{ "index": 0, "state": "compare" }, { "index": 1, "state": "compare" }, { "index": 3, "state": "done" }] }
     },
     {
-      "caption": "Compare 4 and 2. 4 > 2 — swap. Now 4 settles into place.",
+      "caption": "Compare 4 and 2. 4 > 2, so swap. Now 4 settles into place.",
       "visual": { "type": "array", "style": "bars", "cells": [1, 4, 2, 5], "highlights": [{ "index": 1, "state": "compare" }, { "index": 2, "state": "compare" }, { "index": 3, "state": "done" }] }
     },
     {

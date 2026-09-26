@@ -1,6 +1,6 @@
 # Content
 
-All learning content for LearnKit. This whole directory is **bundled into the app** (added to the Xcode project as a *folder reference* — the blue-folder kind — so the directory layout is preserved inside the app bundle). The app reads it offline at runtime; there is no server.
+All learning content for LearnKit. This whole directory is **bundled into the app** (added to the Xcode project as a *folder reference*, the blue-folder kind, so the directory layout is preserved inside the app bundle). The app reads it offline at runtime; there is no server.
 
 ## Layout
 
@@ -24,7 +24,7 @@ Content/
 - A Lesson's `id` is kebab-case and **matches its filename** (`valid-palindrome` → `valid-palindrome.json`).
 - A Lesson only appears in the app if it's listed in `manifest.json` **and** its file exists. Add new content by writing the file and adding a manifest entry.
 - Every Step is a **complete snapshot**, never a delta. The exact fields depend on the Visual Primitive, but the Step must include the complete state needed to draw that moment. See ADR-0002 and the representative lesson files for examples.
-- v1 supports these Primitives: `array`, `grid`, `tree`, `list`, `graph`, `hashmap`, `intervals`, and `rtree`. Adding another Primitive means extending the schema, models, validator, and SwiftUI renderer — it is not just a content change.
+- v1 supports these Primitives: `array`, `grid`, `tree`, `list`, `graph`, `hashmap`, `intervals`, and `rtree`. Adding another Primitive means extending the schema, models, validator, and SwiftUI renderer. It is not just a content change.
 
 ## Representative lessons
 

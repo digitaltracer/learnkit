@@ -18,7 +18,7 @@
       "visual": { "type": "array", "style": "bars", "cells": [7, 1, 5, 3, 6, 4], "pointers": [{ "label": "B", "index": 0 }, { "label": "S", "index": 1 }], "highlights": [{ "index": 0, "state": "compare" }, { "index": 1, "state": "compare" }] }
     },
     {
-      "caption": "Day 1's price 1 is below B's 7. We'd rather buy at 1 — so reset B to day 1.",
+      "caption": "Day 1's price 1 is below B's 7. We'd rather buy at 1, so reset B to day 1.",
       "visual": { "type": "array", "style": "bars", "cells": [7, 1, 5, 3, 6, 4], "pointers": [{ "label": "B", "index": 0 }, { "label": "S", "index": 1 }], "highlights": [{ "index": 1, "state": "mismatch" }] }
     },
     {
@@ -26,7 +26,7 @@
       "visual": { "type": "array", "style": "bars", "cells": [7, 1, 5, 3, 6, 4], "pointers": [{ "label": "B", "index": 1 }, { "label": "S", "index": 2 }], "highlights": [{ "index": 1, "state": "match" }, { "index": 2, "state": "match" }] }
     },
     {
-      "caption": "Day 3: profit 3 - 1 = 2. Worse than 4 — keep 4.",
+      "caption": "Day 3: profit 3 - 1 = 2. Worse than 4, so keep 4.",
       "visual": { "type": "array", "style": "bars", "cells": [7, 1, 5, 3, 6, 4], "pointers": [{ "label": "B", "index": 1 }, { "label": "S", "index": 3 }], "highlights": [{ "index": 1, "state": "compare" }, { "index": 3, "state": "compare" }] }
     },
     {

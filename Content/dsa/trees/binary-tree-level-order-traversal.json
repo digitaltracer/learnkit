@@ -21,7 +21,7 @@
       }
     },
     {
-      "caption": "Seed the queue with the root. Whatever the queue holds right now is one full level — the first level is just [3].",
+      "caption": "Seed the queue with the root. Whatever the queue holds right now is one full level: the first level is just [3].",
       "visual": {
         "type": "tree",
         "root": {
@@ -54,7 +54,7 @@
       }
     },
     {
-      "caption": "Record [15, 7] — both are leaves, so nothing new is enqueued and the queue empties. Levels top to bottom: [[3], [9, 20], [15, 7]].",
+      "caption": "Record [15, 7]; both are leaves, so nothing new is enqueued and the queue empties. Levels top to bottom: [[3], [9, 20], [15, 7]].",
       "visual": {
         "type": "tree",
         "root": {

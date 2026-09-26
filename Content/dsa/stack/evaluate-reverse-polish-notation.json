@@ -14,7 +14,7 @@
       "visual": { "type": "array", "cells": [2], "highlights": [{ "index": 0, "state": "active" }] }
     },
     {
-      "caption": "Next token 1 is a number — push it. Stack, bottom to top: 2, 1.",
+      "caption": "Next token 1 is a number, so push it. Stack, bottom to top: 2, 1.",
       "visual": { "type": "array", "cells": [2, 1], "highlights": [{ "range": [0, 1], "state": "active" }] }
     },
     {
@@ -22,7 +22,7 @@
       "visual": { "type": "array", "cells": [3], "highlights": [{ "index": 0, "state": "match" }] }
     },
     {
-      "caption": "Next token 3 is a number — push it. Stack: 3, 3.",
+      "caption": "Next token 3 is a number, so push it. Stack: 3, 3.",
       "visual": { "type": "array", "cells": [3, 3], "highlights": [{ "range": [0, 1], "state": "active" }] }
     },
     {

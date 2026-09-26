@@ -14,7 +14,7 @@
       "visual": { "type": "array", "cells": [2, 3, 1, 1, 4] }
     },
     {
-      "caption": "With 0 jumps you're at index 0. Its value 2 means the first jump can land up to index 2 — that's the 1-jump window [0..2].",
+      "caption": "With 0 jumps you're at index 0. Its value 2 means the first jump can land up to index 2; that's the 1-jump window [0..2].",
       "visual": { "type": "array", "cells": [2, 3, 1, 1, 4], "pointers": [{ "label": "end", "index": 2 }], "highlights": [{ "range": [0, 2], "state": "active" }] }
     },
     {
@@ -22,7 +22,7 @@
       "visual": { "type": "array", "cells": [2, 3, 1, 1, 4], "pointers": [{ "label": "end", "index": 4 }], "highlights": [{ "range": [0, 2], "state": "compare" }, { "range": [3, 4], "state": "active" }] }
     },
     {
-      "caption": "Index 4 is the last index, now covered after 2 jumps — no need to look further.",
+      "caption": "Index 4 is the last index, now covered after 2 jumps, so no need to look further.",
       "visual": { "type": "array", "cells": [2, 3, 1, 1, 4], "highlights": [{ "range": [0, 3], "state": "done" }, { "index": 4, "state": "match" }] }
     },
     {

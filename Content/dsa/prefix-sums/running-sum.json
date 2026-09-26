@@ -5,7 +5,7 @@
   "track": "prefix-sums",
   "title": "Running Sum",
   "difficulty": "easy",
-  "summary": "Sweep left to right, adding each value to the total so far. Every cell becomes the sum of everything up to it — the prefix-sum array.",
+  "summary": "Sweep left to right, adding each value to the total so far. Every cell becomes the sum of everything up to it, giving the prefix-sum array.",
   "problem": "Return the running sum: each output cell is the sum of all input values up to and including that index.",
   "example": { "input": "[3, 1, 2, 4]", "output": "[3, 4, 6, 10]" },
   "steps": [
@@ -14,7 +14,7 @@
       "visual": { "type": "array", "cells": [3, 1, 2, 4] }
     },
     {
-      "caption": "Index 0 stays 3 — there's nothing before it.",
+      "caption": "Index 0 stays 3, as there's nothing before it.",
       "visual": { "type": "array", "cells": [3, 1, 2, 4], "highlights": [{ "index": 0, "state": "done" }] }
     },
     {

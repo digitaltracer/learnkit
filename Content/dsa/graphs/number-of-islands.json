@@ -18,11 +18,11 @@
       "visual": { "type": "grid", "rows": [[1, 1, 0], [0, 1, 0], [0, 0, 1]], "highlights": [{ "row": 0, "col": 0, "state": "active" }] }
     },
     {
-      "caption": "The fill spreads right to (0,1) and down to (1,1) — three connected cells. Mark them visited. Islands so far: 1.",
+      "caption": "The fill spreads right to (0,1) and down to (1,1): three connected cells. Mark them visited. Islands so far: 1.",
       "visual": { "type": "grid", "rows": [[1, 1, 0], [0, 1, 0], [0, 0, 1]], "highlights": [{ "row": 0, "col": 0, "state": "match" }, { "row": 0, "col": 1, "state": "match" }, { "row": 1, "col": 1, "state": "match" }] }
     },
     {
-      "caption": "Keep scanning past visited land and water. At (2,2) we find unvisited land — island #2. Flood-fill it.",
+      "caption": "Keep scanning past visited land and water. At (2,2) we find unvisited land: island #2. Flood-fill it.",
       "visual": { "type": "grid", "rows": [[1, 1, 0], [0, 1, 0], [0, 0, 1]], "highlights": [{ "row": 0, "col": 0, "state": "done" }, { "row": 0, "col": 1, "state": "done" }, { "row": 1, "col": 1, "state": "done" }, { "row": 2, "col": 2, "state": "active" }] }
     },
     {

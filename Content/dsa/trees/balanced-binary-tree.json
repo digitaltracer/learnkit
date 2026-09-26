@@ -43,7 +43,7 @@
       }
     },
     {
-      "caption": "Node 20: left height 1, right height 1, difference 0 — OK. Its height is 1 + max(1, 1) = 2.",
+      "caption": "Node 20: left height 1, right height 1, difference 0: OK. Its height is 1 + max(1, 1) = 2.",
       "visual": {
         "type": "tree",
         "root": {
@@ -54,7 +54,7 @@
       }
     },
     {
-      "caption": "Root 3: left height 1 (from 9), right height 2 (from 20). They differ by 1 — within the limit, so OK. Height = 3.",
+      "caption": "Root 3: left height 1 (from 9), right height 2 (from 20). They differ by 1, within the limit, so OK. Height = 3.",
       "visual": {
         "type": "tree",
         "root": {
@@ -65,7 +65,7 @@
       }
     },
     {
-      "caption": "Every node's two subtrees differed by at most 1, so the tree is height-balanced — return true.",
+      "caption": "Every node's two subtrees differed by at most 1, so the tree is height-balanced: return true.",
       "visual": {
         "type": "tree",
         "root": {

@@ -22,7 +22,7 @@
       }
     },
     {
-      "caption": "Next is 2 (index 1). Not in the set yet — a miss. Add 2.",
+      "caption": "Next is 2 (index 1). Not in the set yet: a miss. Add 2.",
       "visual": {
         "type": "hashmap",
         "entries": [ { "key": 1, "value": 0 }, { "key": 2, "value": 1, "state": "active" } ],
@@ -30,7 +30,7 @@
       }
     },
     {
-      "caption": "Then 3 (index 2). Still new — a miss. Add 3.",
+      "caption": "Then 3 (index 2). Still new: a miss. Add 3.",
       "visual": {
         "type": "hashmap",
         "entries": [ { "key": 1, "value": 0 }, { "key": 2, "value": 1 }, { "key": 3, "value": 2, "state": "active" } ],
@@ -38,7 +38,7 @@
       }
     },
     {
-      "caption": "Now 1 again (index 3). Look it up — hit! 1 is already in the set, first seen at index 0.",
+      "caption": "Now 1 again (index 3). Look it up: hit! 1 is already in the set, first seen at index 0.",
       "visual": {
         "type": "hashmap",
         "entries": [ { "key": 1, "value": 0, "state": "match" }, { "key": 2, "value": 1 }, { "key": 3, "value": 2 } ],
@@ -46,7 +46,7 @@
       }
     },
     {
-      "caption": "A value repeated, so we stop and return true. Reaching the end with no hit would mean every value is distinct — false.",
+      "caption": "A value repeated, so we stop and return true. Reaching the end with no hit would mean every value is distinct: false.",
       "visual": {
         "type": "hashmap",
         "entries": [ { "key": 1, "value": 0, "state": "done" }, { "key": 2, "value": 1 }, { "key": 3, "value": 2 } ]

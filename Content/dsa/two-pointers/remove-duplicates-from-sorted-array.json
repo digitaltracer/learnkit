@@ -10,7 +10,7 @@
   "example": { "input": "[1, 1, 2, 2, 3]", "output": "3  →  [1, 2, 3]" },
   "steps": [
     {
-      "caption": "It's sorted, so equal values touch. Keep one of each — in place — and report how many remain.",
+      "caption": "It's sorted, so equal values touch. Keep one of each in place and report how many remain.",
       "visual": { "type": "array", "cells": [1, 1, 2, 2, 3] }
     },
     {
@@ -18,11 +18,11 @@
       "visual": { "type": "array", "cells": [1, 1, 2, 2, 3], "pointers": [{ "label": "w", "index": 0 }, { "label": "r", "index": 1 }], "highlights": [{ "index": 0, "state": "done" }] }
     },
     {
-      "caption": "nums[r]=1 equals nums[w]=1 — a duplicate. Leave it and advance r.",
+      "caption": "nums[r]=1 equals nums[w]=1, a duplicate. Leave it and advance r.",
       "visual": { "type": "array", "cells": [1, 1, 2, 2, 3], "pointers": [{ "label": "w", "index": 0 }, { "label": "r", "index": 1 }], "highlights": [{ "index": 0, "state": "compare" }, { "index": 1, "state": "compare" }] }
     },
     {
-      "caption": "nums[r]=2 differs from nums[w]=1 — a new value. Bump w and write it there.",
+      "caption": "nums[r]=2 differs from nums[w]=1, a new value. Bump w and write it there.",
       "visual": { "type": "array", "cells": [1, 1, 2, 2, 3], "pointers": [{ "label": "w", "index": 0 }, { "label": "r", "index": 2 }], "highlights": [{ "index": 0, "state": "compare" }, { "index": 2, "state": "compare" }] }
     },
     {
@@ -30,11 +30,11 @@
       "visual": { "type": "array", "cells": [1, 2, 2, 2, 3], "pointers": [{ "label": "w", "index": 1 }, { "label": "r", "index": 3 }], "highlights": [{ "range": [0, 1], "state": "done" }] }
     },
     {
-      "caption": "nums[r]=2 equals nums[w]=2 — duplicate again. Skip it.",
+      "caption": "nums[r]=2 equals nums[w]=2, duplicate again. Skip it.",
       "visual": { "type": "array", "cells": [1, 2, 2, 2, 3], "pointers": [{ "label": "w", "index": 1 }, { "label": "r", "index": 3 }], "highlights": [{ "index": 1, "state": "compare" }, { "index": 3, "state": "compare" }] }
     },
     {
-      "caption": "nums[r]=3 differs — a new value. Bump w and write it.",
+      "caption": "nums[r]=3 differs, a new value. Bump w and write it.",
       "visual": { "type": "array", "cells": [1, 2, 2, 2, 3], "pointers": [{ "label": "w", "index": 1 }, { "label": "r", "index": 4 }], "highlights": [{ "index": 1, "state": "compare" }, { "index": 4, "state": "compare" }] }
     },
     {

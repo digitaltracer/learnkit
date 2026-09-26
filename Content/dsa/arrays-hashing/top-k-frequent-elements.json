@@ -33,15 +33,15 @@
       "visual": { "type": "array", "cells": ["-", "3", "2", "1", "-", "-", "-"], "pointers": [{ "label": "f", "index": 6 }] }
     },
     {
-      "caption": "Bucket 3 holds value 1 — the most frequent. Take it. Collected so far: [1].",
+      "caption": "Bucket 3 holds value 1, the most frequent. Take it. Collected so far: [1].",
       "visual": { "type": "array", "cells": ["-", "3", "2", "1", "-", "-", "-"], "pointers": [{ "label": "f", "index": 3 }], "highlights": [{ "index": 3, "state": "match" }] }
     },
     {
-      "caption": "Bucket 2 holds value 2. Take it. Collected: [1, 2] — that's k=2, so we can stop.",
+      "caption": "Bucket 2 holds value 2. Take it. Collected: [1, 2]; that's k=2, so we can stop.",
       "visual": { "type": "array", "cells": ["-", "3", "2", "1", "-", "-", "-"], "pointers": [{ "label": "f", "index": 2 }], "highlights": [{ "index": 3, "state": "done" }, { "index": 2, "state": "match" }] }
     },
     {
-      "caption": "The two most frequent elements are [1, 2] — found in O(n) with counting and buckets, no sort.",
+      "caption": "The two most frequent elements are [1, 2], found in O(n) with counting and buckets, no sort.",
       "visual": { "type": "array", "cells": ["-", "3", "2", "1", "-", "-", "-"], "highlights": [{ "index": 2, "state": "done" }, { "index": 3, "state": "done" }] }
     }
   ]

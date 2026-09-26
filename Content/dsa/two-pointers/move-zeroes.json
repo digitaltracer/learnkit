@@ -6,31 +6,31 @@
   "title": "Move Zeroes",
   "difficulty": "easy",
   "summary": "Keep a write pointer for the next non-zero slot. Scan with a read pointer; every non-zero you find gets swapped forward, so the zeros fall to the back.",
-  "problem": "Move all 0s to the end while keeping the non-zero numbers in their original order — in place.",
+  "problem": "Move all 0s to the end while keeping the non-zero numbers in their original order, in place.",
   "example": { "input": "[0, 1, 0, 3, 12]", "output": "[1, 3, 12, 0, 0]" },
   "steps": [
     {
-      "caption": "Push every 0 to the end, but keep the other numbers in their original order — and do it in place.",
+      "caption": "Push every 0 to the end, but keep the other numbers in their original order, and do it in place.",
       "visual": { "type": "array", "cells": [0, 1, 0, 3, 12] }
     },
     {
-      "caption": "w marks where the next non-zero should land; r scans the array. r is on a 0 — skip it, advance r.",
+      "caption": "w marks where the next non-zero should land; r scans the array. r is on a 0: skip it, advance r.",
       "visual": { "type": "array", "cells": [0, 1, 0, 3, 12], "pointers": [{ "label": "w", "index": 0 }, { "label": "r", "index": 0 }], "highlights": [{ "index": 0, "state": "compare" }] }
     },
     {
-      "caption": "r finds 1 — a non-zero. Swap nums[r] into w's slot.",
+      "caption": "r finds 1, a non-zero. Swap nums[r] into w's slot.",
       "visual": { "type": "array", "cells": [0, 1, 0, 3, 12], "pointers": [{ "label": "w", "index": 0 }, { "label": "r", "index": 1 }], "highlights": [{ "index": 1, "state": "compare" }] }
     },
     {
-      "caption": "1 is now in place; w moves to 1. r advances and sits on a 0 — skip it.",
+      "caption": "1 is now in place; w moves to 1. r advances and sits on a 0, so skip it.",
       "visual": { "type": "array", "cells": [1, 0, 0, 3, 12], "pointers": [{ "label": "w", "index": 1 }, { "label": "r", "index": 2 }], "highlights": [{ "index": 0, "state": "done" }, { "index": 2, "state": "compare" }] }
     },
     {
-      "caption": "r finds 3 — a non-zero. Swap it into w's slot.",
+      "caption": "r finds 3, a non-zero. Swap it into w's slot.",
       "visual": { "type": "array", "cells": [1, 0, 0, 3, 12], "pointers": [{ "label": "w", "index": 1 }, { "label": "r", "index": 3 }], "highlights": [{ "index": 0, "state": "done" }, { "index": 3, "state": "compare" }] }
     },
     {
-      "caption": "3 placed; w is at 2. r finds 12 — also non-zero, so swap it too.",
+      "caption": "3 placed; w is at 2. r finds 12, also non-zero, so swap it too.",
       "visual": { "type": "array", "cells": [1, 3, 0, 0, 12], "pointers": [{ "label": "w", "index": 2 }, { "label": "r", "index": 4 }], "highlights": [{ "index": 1, "state": "done" }, { "index": 4, "state": "compare" }] }
     },
     {

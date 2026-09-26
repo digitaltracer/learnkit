@@ -63,7 +63,7 @@
         "style": {
           "type": "string",
           "enum": ["cells", "bars"],
-          "description": "How to draw the array. 'cells' (default) draws boxed values — for indices, characters, sorted numbers. 'bars' draws vertical bars scaled to each cell's numeric value — for heights/magnitudes (e.g. Container With Most Water). 'bars' requires all cells to be numeric."
+          "description": "How to draw the array. 'cells' (default) draws boxed values, for indices, characters, sorted numbers. 'bars' draws vertical bars scaled to each cell's numeric value, for heights/magnitudes (e.g. Container With Most Water). 'bars' requires all cells to be numeric."
         },
         "cells": {
           "type": "array",
@@ -103,7 +103,7 @@
       "type": "object",
       "required": ["type", "rows"],
       "additionalProperties": false,
-      "description": "A 2-D matrix of cells — for matrices (rotate, spiral, search) and DP tables.",
+      "description": "A 2-D matrix of cells, for matrices (rotate, spiral, search) and DP tables.",
       "properties": {
         "type": { "const": "grid" },
         "rows": {

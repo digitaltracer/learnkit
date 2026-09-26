@@ -17,7 +17,7 @@
               "A brute force would be O(n²) with nested loops over the same array.",
               "You want to solve it with O(1) extra space."
             ],
-            "keyIdea": "Place two pointers — often at both ends, or one chasing the other — and move them based on a comparison, so each element is visited at most once. That collapses O(n²) into a single O(n) pass.",
+            "keyIdea": "Place two pointers, often at both ends or one chasing the other, and move them based on a comparison, so each element is visited at most once. That collapses O(n²) into a single O(n) pass.",
             "complexity": "Typically O(n) time, O(1) space"
           },
           "lessons": [
@@ -62,12 +62,12 @@
           "overview": {
             "tagline": "Halve the search space every step by exploiting sorted order.",
             "whenToUse": [
-              "The data is sorted, or the answer is monotonic — true then false.",
+              "The data is sorted, or the answer is monotonic, true then false.",
               "You're searching for a value, a boundary, or a threshold.",
               "A linear scan would be O(n) and you want O(log n).",
               "You can decide which half to keep after looking at the middle."
             ],
-            "keyIdea": "Track a range [lo, hi]. Look at the middle: if it's the target you're done; otherwise the comparison tells you which half can't hold the answer, so discard it. Each step throws away half of what remains — O(log n).",
+            "keyIdea": "Track a range [lo, hi]. Look at the middle: if it's the target you're done; otherwise the comparison tells you which half can't hold the answer, so discard it. Each step throws away half of what remains, so it runs in O(log n).",
             "complexity": "O(log n) time, O(1) space"
           },
           "lessons": [
@@ -90,7 +90,7 @@
               "You need data in order, or sorting unlocks a simpler next step (two pointers, binary search).",
               "The input is small enough that O(n^2) is fine, or you're learning how ordering works.",
               "You want an in-place rearrangement with O(1) extra space.",
-              "You need a stable order — insertion and bubble keep equal elements in their original sequence."
+              "You need a stable order: insertion and bubble keep equal elements in their original sequence."
             ],
             "keyIdea": "Each algorithm grows a sorted region one element at a time. Bubble floats the largest to the end each pass; selection picks the smallest and places it; insertion slides each new value back into the sorted prefix.",
             "complexity": "O(n^2) time, O(1) space"
@@ -113,7 +113,7 @@
               "Recomputing each range by looping would be O(n) per query.",
               "The data doesn't change between queries."
             ],
-            "keyIdea": "Build an array where prefix[i] is the sum of everything up to i. Then the sum of any range [l, r] is prefix[r] - prefix[l-1] — O(1) instead of a loop. The same running-total idea finds balance points and target-sum subarrays in one pass.",
+            "keyIdea": "Build an array where prefix[i] is the sum of everything up to i. Then the sum of any range [l, r] is prefix[r] - prefix[l-1], which is O(1) instead of a loop. The same running-total idea finds balance points and target-sum subarrays in one pass.",
             "complexity": "O(n) preprocessing, O(1) per range query"
           },
           "lessons": [
@@ -134,7 +134,7 @@
               "The answer at position i can be built from the answer at i-1.",
               "The array can include negative numbers."
             ],
-            "keyIdea": "Walk left to right, keeping the best subarray that ends at the current cell: either extend the previous best or start fresh here. The largest running best is the answer — a single O(n) pass. For products, also track the min, since a negative can flip it into the new max.",
+            "keyIdea": "Walk left to right, keeping the best subarray that ends at the current cell: either extend the previous best or start fresh here. The largest running best is the answer, found in a single O(n) pass. For products, also track the min, since a negative can flip it into the new max.",
             "complexity": "O(n) time, O(1) space"
           },
           "lessons": [
@@ -405,14 +405,14 @@
           "title": "Greedy",
           "icon": "bolt.fill",
           "overview": {
-            "tagline": "Take the locally best choice at each step and never look back — when that's provably enough, it beats searching every option.",
+            "tagline": "Take the locally best choice at each step and never look back. When that's provably enough, it beats searching every option.",
             "whenToUse": [
               "A locally optimal pick at each step builds a global optimum.",
               "You can argue you never need to undo an earlier choice.",
               "A single scan or a sort exposes the best next move.",
               "Searching all combinations would be exponential and unnecessary."
             ],
-            "keyIdea": "Commit to the best immediate option — the farthest reach, the earliest finish, the biggest coin — and move on without backtracking. The real work is proving that this greedy choice can never be beaten by a more careful plan.",
+            "keyIdea": "Commit to the best immediate option, such as the farthest reach, the earliest finish or the biggest coin, and move on without backtracking. The real work is proving that this greedy choice can never be beaten by a more careful plan.",
             "complexity": "Typically O(n) or O(n log n) time, O(1) space"
           },
           "lessons": [

@@ -10,7 +10,7 @@
   "example": { "input": "nums = [4, 5, 6, 7, 0, 1, 2]", "output": "0" },
   "steps": [
     {
-      "caption": "This sorted array was rotated, so it climbs then wraps down to a low. Find the minimum in O(log n) — it sits right where the order breaks.",
+      "caption": "This sorted array was rotated, so it climbs then wraps down to a low. Find the minimum in O(log n): it sits right where the order breaks.",
       "visual": { "type": "array", "cells": [4, 5, 6, 7, 0, 1, 2] }
     },
     {

@@ -22,7 +22,7 @@
       "visual": { "type": "array", "cells": ["A", "D", "B", "A", "C"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 2 }], "highlights": [{ "range": [0, 2], "state": "active" }] }
     },
     {
-      "caption": "R = 4, window \"ADBAC\" now holds A, B and C. A valid window — now shrink from the left to make it smaller.",
+      "caption": "R = 4, window \"ADBAC\" now holds A, B and C. A valid window; now shrink from the left to make it smaller.",
       "visual": { "type": "array", "cells": ["A", "D", "B", "A", "C"], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 4 }], "highlights": [{ "range": [0, 4], "state": "match" }] }
     },
     {

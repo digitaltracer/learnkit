@@ -6,7 +6,7 @@
   "title": "Linked List Cycle",
   "difficulty": "easy",
   "summary": "Run two pointers: slow moves one node per step, fast moves two. If the list loops, fast keeps lapping the loop and eventually lands on slow.",
-  "problem": "Return true if the linked list has a cycle — some node's next pointer revisits an earlier node.",
+  "problem": "Return true if the linked list has a cycle: some node's next pointer revisits an earlier node.",
   "example": { "input": "3 -> 2 -> 0 -> -4, and -4 links back to 2", "output": "true" },
   "steps": [
     {
@@ -50,7 +50,7 @@
       }
     },
     {
-      "caption": "Fast caught slow inside the loop, so the list has a cycle — return true. With no cycle, fast would have reached null first.",
+      "caption": "Fast caught slow inside the loop, so the list has a cycle: return true. With no cycle, fast would have reached null first.",
       "visual": {
         "type": "list",
         "nodes": [3, 2, 0, -4], "links": [[0, 1], [1, 2], [2, 3], [3, 1]],

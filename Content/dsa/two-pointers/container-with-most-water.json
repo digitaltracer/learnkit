@@ -5,7 +5,7 @@
   "track": "two-pointers",
   "title": "Container With Most Water",
   "difficulty": "medium",
-  "summary": "Each bar is a wall. Start wide and always move the shorter wall inward — that's the only move that can ever increase the trapped area.",
+  "summary": "Each bar is a wall. Start wide and always move the shorter wall inward. That's the only move that can ever increase the trapped area.",
   "problem": "Each value is a wall height. Find the two walls that, with the x-axis, hold the most water.",
   "example": { "input": "[1, 8, 6, 2, 5, 7]", "output": "28" },
   "steps": [
@@ -18,15 +18,15 @@
       "visual": { "type": "array", "style": "bars", "cells": [1, 8, 6, 2, 5, 7], "pointers": [{ "label": "L", "index": 0 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 0, "state": "compare" }, { "index": 5, "state": "compare" }] }
     },
     {
-      "caption": "L=1, R=5. Area = 4 x min(8, 7) = 28 — our best yet! Now the right wall is shorter, so move R inward.",
+      "caption": "L=1, R=5. Area = 4 x min(8, 7) = 28, our best yet! Now the right wall is shorter, so move R inward.",
       "visual": { "type": "array", "style": "bars", "cells": [1, 8, 6, 2, 5, 7], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 5 }], "highlights": [{ "index": 1, "state": "match" }, { "index": 5, "state": "match" }] }
     },
     {
-      "caption": "L=1, R=4. Area = 3 x min(8, 5) = 15. Smaller than 28. Right wall is shorter — move R.",
+      "caption": "L=1, R=4. Area = 3 x min(8, 5) = 15. Smaller than 28. Right wall is shorter, so move R.",
       "visual": { "type": "array", "style": "bars", "cells": [1, 8, 6, 2, 5, 7], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 4 }], "highlights": [{ "index": 1, "state": "compare" }, { "index": 4, "state": "compare" }] }
     },
     {
-      "caption": "L=1, R=3. Area = 2 x min(8, 2) = 4. Right wall shorter — move R.",
+      "caption": "L=1, R=3. Area = 2 x min(8, 2) = 4. Right wall shorter, so move R.",
       "visual": { "type": "array", "style": "bars", "cells": [1, 8, 6, 2, 5, 7], "pointers": [{ "label": "L", "index": 1 }, { "label": "R", "index": 3 }], "highlights": [{ "index": 1, "state": "compare" }, { "index": 3, "state": "compare" }] }
     },
     {

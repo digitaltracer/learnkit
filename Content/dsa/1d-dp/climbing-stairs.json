@@ -10,7 +10,7 @@
   "example": { "input": "n = 5", "output": "8" },
   "steps": [
     {
-      "caption": "Climb 5 steps, taking 1 or 2 at a time — count the distinct ways. Let dp[i] = the number of ways to reach step i.",
+      "caption": "Climb 5 steps, taking 1 or 2 at a time, and count the distinct ways. Let dp[i] = the number of ways to reach step i.",
       "visual": { "type": "array", "cells": ["?", "?", "?", "?", "?", "?"] }
     },
     {
@@ -34,7 +34,7 @@
       "visual": { "type": "array", "cells": [1, 1, 2, 3, 5, 8], "pointers": [{ "label": "i", "index": 5 }], "highlights": [{ "range": [3, 4], "state": "compare" }, { "index": 5, "state": "active" }] }
     },
     {
-      "caption": "There are 8 distinct ways to climb 5 steps — each value is just the sum of the two before it.",
+      "caption": "There are 8 distinct ways to climb 5 steps; each value is just the sum of the two before it.",
       "visual": { "type": "array", "cells": [1, 1, 2, 3, 5, 8], "highlights": [{ "range": [0, 5], "state": "done" }] }
     }
   ]

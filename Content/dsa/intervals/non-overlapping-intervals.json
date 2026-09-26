@@ -18,7 +18,7 @@
       }
     },
     {
-      "caption": "Keep [1,2] — it ends first, so it leaves the most room for the rest.",
+      "caption": "Keep [1,2]: it ends first, so it leaves the most room for the rest.",
       "visual": {
         "type": "intervals",
         "axisMin": 0, "axisMax": 4,
