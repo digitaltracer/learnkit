@@ -651,7 +651,8 @@
             { "id": "chatgpt-system", "title": "Design a ChatGPT-style System", "file": "system-design/designing-systems/chatgpt-system.json" },
             { "id": "dropbox", "title": "Design Dropbox", "file": "system-design/designing-systems/dropbox.json" },
             { "id": "notification-system", "title": "Design a Notification System", "file": "system-design/designing-systems/notification-system.json" },
-            { "id": "ticketmaster", "title": "Design Ticketmaster", "file": "system-design/designing-systems/ticketmaster.json" }
+            { "id": "ticketmaster", "title": "Design Ticketmaster", "file": "system-design/designing-systems/ticketmaster.json" },
+            { "id": "ad-click-aggregation", "title": "Design an Ad Click Aggregator", "file": "system-design/designing-systems/ad-click-aggregation.json" }
           ]
         }
       ]

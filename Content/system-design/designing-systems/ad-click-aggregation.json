@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "id": "ad-click-aggregation",
+  "subject": "system-design",
+  "track": "designing-systems",
+  "title": "Design an Ad Click Aggregator",
+  "format": "article",
+  "summary": "Count a billion ad clicks a day per ad per minute, fast enough for live dashboards and exact enough to bill advertisers. A stream-processing problem with money on the line.",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Every time someone clicks an ad, the ad network owes a publisher money and bills an advertiser. Advertisers want to watch their clicks per minute on a dashboard, and the finance team wants totals that match to the click. You cannot run a SQL count over raw events for every dashboard refresh at this volume. So the system counts clicks as they stream in, into small per-minute buckets, and fixes up the stragglers afterwards."
+    },
+    {
+      "type": "heading",
+      "text": "Requirements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Ingest click events from ad servers.",
+        "Return the click count for an ad over the last M minutes, broken down per minute.",
+        "Return the top N most-clicked ads in each minute.",
+        "Filter both queries by a few attributes such as country and device type.",
+        "Non-functional: counts accurate enough to bill on, dashboards a few minutes behind at most, and raw data kept so any number can be recomputed."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Scale"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "1B clicks a day is about 12,000 per second on average and around 50,000 at peak.",
+        "At about 200 bytes per event, raw clicks add up to 200 GB a day, or 70 TB a year.",
+        "A few hundred thousand distinct ads get clicks in any one minute, so per-minute aggregates are a few hundred million small rows a day.",
+        "Queries come from dashboards and billing jobs. That is thousands per second at most, far fewer than the writes."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Aggregation shrinks the data by about a thousand times. Raw events are big and only needed for audits and recomputes. Aggregates are small and answer every query. So the design keeps both, in different stores."
+    },
+    {
+      "type": "heading",
+      "text": "API"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "GET /v1/ads/{adId}/clicks?from=...&to=...&country=...: counts per minute for one ad.",
+        "GET /v1/ads/top?minute=...&n=100&country=...: the most-clicked ads in a given minute.",
+        "Ingestion is not a public API. Ad servers write click events straight to a log such as Kafka."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Data model"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Raw click: clickId, adId, userId, IP, country, device, event timestamp. Written once and never updated.",
+        "Aggregate: adId, minute, filter key (for example country=US), count. The key (adId, minute, filter) is unique, so rewriting a row overwrites it.",
+        "Top ads: minute, filter key, and an ordered list of (adId, count). Precomputed, because a top-N query over all ads is too slow to run on demand."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "High-level design"
+    },
+    {
+      "type": "paragraph",
+      "text": "Ad servers append each click to a raw Kafka topic, partitioned by adId. A stream processor such as Flink reads the topic, counts clicks per ad per minute in memory, and writes finished minutes to an aggregate store built for fast reads by key and time, such as Cassandra or ClickHouse. A copy of the raw topic goes to cheap object storage. A nightly batch job recounts from that copy and corrects any aggregate that drifted. The query service reads only aggregates."
+    },
+    {
+      "type": "diagram",
+      "caption": "The streaming path gives fast counts. The raw archive and batch job make them exact.",
+      "visual": {
+        "type": "architecture",
+        "nodes": [
+          { "id": "ads", "title": "Ad Servers", "subtitle": "click events", "kind": "client", "x": 0.05, "y": 0.05 },
+          { "id": "raw", "title": "Raw Clicks", "subtitle": "Kafka", "kind": "queue", "x": 0.5, "y": 0.05 },
+          { "id": "agg", "title": "Aggregator", "subtitle": "Flink", "kind": "service", "x": 0.95, "y": 0.05 },
+          { "id": "archive", "title": "Raw Archive", "subtitle": "object store", "kind": "storage", "x": 0.5, "y": 0.5 },
+          { "id": "aggdb", "title": "Aggregate DB", "kind": "database", "x": 0.95, "y": 0.5 },
+          { "id": "dash", "title": "Dashboard", "kind": "client", "x": 0.05, "y": 0.95 },
+          { "id": "query", "title": "Query Service", "kind": "service", "x": 0.5, "y": 0.95 }
+        ],
+        "connectors": [
+          { "from": "ads", "to": "raw" },
+          { "from": "raw", "to": "agg" },
+          { "from": "agg", "to": "aggdb" },
+          { "from": "raw", "to": "archive", "style": "async" },
+          { "from": "archive", "to": "aggdb", "style": "async" },
+          { "from": "dash", "to": "query" },
+          { "from": "query", "to": "aggdb" }
+        ]
+      }
+    },
+    {
+      "type": "heading",
+      "text": "Windows, event time and late clicks"
+    },
+    {
+      "type": "paragraph",
+      "text": "A click belongs to the minute it happened, not the minute it arrived. A phone on a train might send a 10:04 click at 10:07. So the aggregator groups by event time into tumbling one-minute windows. The hard question is when a window is done. The aggregator tracks a watermark, its estimate of how far event time has progressed. When the watermark passes 10:05 plus an allowed lateness of, say, 30 seconds, the 10:04 window closes and its counts are written out."
+    },
+    {
+      "type": "paragraph",
+      "text": "Clicks that arrive after their window closed are not thrown away. They are in the raw archive, and the nightly recount includes them. That is the trade the design makes on purpose. The streaming number is fast and almost always right, and the batch number is slow and exactly right. Billing uses the batch number."
+    },
+    {
+      "type": "heading",
+      "text": "Counting each click once"
+    },
+    {
+      "type": "paragraph",
+      "text": "Three things can make a click count twice. The same user double-clicks, an ad server retries a send, or the aggregator crashes and replays events it already counted. Each has its own fix."
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Drop repeated clickIds within a short window before counting. The same check filters obvious click fraud, such as one IP hammering one ad.",
+        "Make the aggregator checkpoint its Kafka offsets and its in-memory counts together. After a crash it restores both and resumes, so no event is counted twice or skipped.",
+        "Write aggregates as upserts keyed by (adId, minute, filter). If a window is written twice, the second write replaces the first instead of adding to it."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "note",
+      "title": "Why keep the raw data at all",
+      "text": "Aggregates cannot be un-aggregated. If a bug miscounts for a week, or finance asks why an invoice is off, the only way to answer is to recount from raw events. The archive is cheap insurance on a system that bills money."
+    },
+    {
+      "type": "heading",
+      "text": "Bottlenecks and tradeoffs"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "A viral ad sends most clicks to one Kafka partition and one aggregator task. Split a hot adId into several sub-keys, count each separately, and sum them when the window closes.",
+        "Top N is computed in two stages. Each aggregator task keeps a small heap of its local top ads, and a final step merges those heaps for the minute.",
+        "Every filter you support multiplies the aggregate rows. Precompute only the few filters the dashboards use, and send rare ad-hoc queries to the raw archive.",
+        "Allowed lateness trades freshness for accuracy. A longer wait catches more late clicks but delays every dashboard by that much."
+      ]
+    },
+    {
+      "type": "callout",
+      "kind": "tip",
+      "text": "Count in the stream, correct in batch. Window by event time with a watermark, make every step idempotent so replays never double-count, and keep the raw clicks so the batch job can make the numbers exact enough to bill."
+    }
+  ]
+}
